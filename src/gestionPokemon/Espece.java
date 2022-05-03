@@ -11,7 +11,8 @@ public class Espece {
     
 
     public int niv;
-    public String prochaineEvolution;
+    public int nivEvolution;
+    public Espece prochaineEvolution;
     public Capacite[] listeCapacite;
 
 
@@ -23,9 +24,11 @@ public class Espece {
     private int evSpe;
     private int evPV;
     //Valeurs déterminantes == puissance native
-    private int dvAtk;
-    private int dvDef;
-    private int dvVit;
-    private int dvSpe;
-    private int dvPV;    
+    // private int dvAtk;
+    // private int dvDef;
+    // private int dvVit;
+    // private int dvSpe;
+    // private int dvPV;    
+    
+  
 }
