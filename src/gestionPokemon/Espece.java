@@ -1,13 +1,16 @@
 package gestionPokemon;
+
 public class Espece {
     public String nom;
-    
-    //Stats spécifiques :
+    public Type type1;
+    public Type type2;
+    //Stats spï¿½cifiques :
     public int atk;
     public int def;
     public int vit;
     public int spe;
     public int pv;
+    
     
 
     public int niv;
@@ -23,7 +26,7 @@ public class Espece {
     private int evVit;
     private int evSpe;
     private int evPV;
-    //Valeurs déterminantes == puissance native
+    //Valeurs dï¿½terminantes == puissance native
     // private int dvAtk;
     // private int dvDef;
     // private int dvVit;
