@@ -54,7 +54,7 @@ public class Type {
 		return tab;
 	}
 	
-	public double obtenirCoeffDegatSur(Type other) {
-		return this.tabCoeffEfficacite[other.id];
+	public double obtenirCoeffDegatSur(Pokemon cible) {
+		return this.tabCoeffEfficacite[cible.espPoke.type1.id]*this.tabCoeffEfficacite[cible.espPoke.type2.id];
 	}
 }
