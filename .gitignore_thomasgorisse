@@ -1,4 +1,4 @@
-# Built application files
+# Built application files
 *.apk
 *.aar
 *.ap_
@@ -52,3 +52,11 @@ captures/
 # External native build folder generated in Android Studio 2.2 and later
 .externalNativeBuild
 .cxx/
+<<<<<<< HEAD
+# lint
+lint/intermediates/
+lint/generated/
+lint/outputs/
+lint/tmp/
+=======
+>>>>>>> 7c24e92e937001f5e1e8ebd7aae54631a1bb0092
