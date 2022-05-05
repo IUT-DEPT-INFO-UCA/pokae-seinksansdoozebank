@@ -5,10 +5,10 @@ public class Pokemon {
     public int id = 0; // identifiant unique
     public String nom; // Nom du pokemon
     public int niv;
-    public double xp; // Points d'expériences
+    public double xp; // Points d'expï¿½riences
     public Espece espPoke= new Espece();
     
-    // Stats spécifiques :
+    // Stats spï¿½cifiques :
     public int atk;
     public int def;
     public int vit;
@@ -23,7 +23,7 @@ public class Pokemon {
     private int evVit;
     private int evSpe;
     private int evPV;
-    // Valeurs déterminantes == puissance native
+    // Valeurs  determinantes == puissance native
     private int dvAtk;
     private int dvDef;
     private int dvVit;
@@ -57,7 +57,7 @@ public class Pokemon {
         this.pv-=degats;
     }
     public boolean estMort() {
-        //si les pv sont inf à 0 
+        //si les pv sont inf ï¿½ 0 
         if (this.pv <= 0) {
         
             // mort
@@ -82,8 +82,8 @@ public class Pokemon {
         if(this.niv>=espPoke.nivEvolution){
             evoluer();
         }
-        //Les stats de base sont celles de l'espece actuelle du pokémon. 
-        //Ainsi, si le pokémon a évolué, son espece a changé juste avant donc les stats sont calculées sur les nouvelles stat de base.
+        //Les stats de base sont celles de l'espece actuelle du pokï¿½mon. 
+        //Ainsi, si le pokï¿½mon a ï¿½voluï¿½, son espece a changï¿½ juste avant donc les stats sont calculï¿½es sur les nouvelles stat de base.
         this.pvMax = (((2*(this.espPoke.pv + this.dvPV)+this.evPV/4)*this.niv ) /100 ) + this.niv + 10;
         this.atk = ((2*(this.espPoke.atk + this.dvAtk)+(evAtk/4)/100)+5);
         this.def = ((2*(this.espPoke.def + this.dvDef)+(evDef/4)/100)+5);
@@ -91,8 +91,23 @@ public class Pokemon {
         this.spe = ((2*(this.espPoke.spe + this.dvSpe)+(evSpe/4)/100)+5);
     }
     public void evoluer(){
-        // On modifie uniquement l'espece du pokémon. Le calcul des nouvelles stat se fait dans augmenterNiv
+        // On modifie uniquement l'espece du pokï¿½mon. Le calcul des nouvelles stat se fait dans augmenterNiv
         this.espPoke=this.espPoke.prochaineEvolution;
+    }
+    
+    public float obtenirDefSur(String categorieCapa) {
+    	if(categorieCapa == "Physique") {
+    		return this.def;
+    	}else {
+    		return this.spe;
+    	}
+    }    
+    public float obtenirAtkSur(String categorieCapa) {
+    	if(categorieCapa == "Physique") {
+    		return this.atk;
+    	}else {
+    		return this.spe;
+    	}
     }
 
 }
