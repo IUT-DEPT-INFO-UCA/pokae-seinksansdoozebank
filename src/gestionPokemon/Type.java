@@ -12,15 +12,11 @@ public class Type {
 	public Type(int id, String nom){
 		this.id = id;
 	    this.nom = nom;
+	    this.initialiserCoeff("efficacite.csv");
 	}
 	
-	public void showTab() {
-		StringBuilder s  = new StringBuilder();
-		s.append(this.nom+" :");
-		for(double d : this.tabCoeffEfficacite) {
-			s.append(" "+d+",");
-		}
-		System.out.println(s);
+	public double obtenirCoeffDegatSur(Pokemon cible) {
+		return this.tabCoeffEfficacite[cible.espPoke.type1.id]*this.tabCoeffEfficacite[cible.espPoke.type2.id];
 	}
 	
 	public void initialiserCoeff(String fileName){
@@ -44,6 +40,10 @@ public class Type {
 	        e.printStackTrace();
 	    }
 	}
+	
+	
+	///////////////// Methodes de debug /////////////////
+	
 
 	public static Type[] creerTypes(String fileName) {
 		Type[] tab = new Type[15];
@@ -54,7 +54,13 @@ public class Type {
 		return tab;
 	}
 	
-	public double obtenirCoeffDegatSur(Pokemon cible) {
-		return this.tabCoeffEfficacite[cible.espPoke.type1.id]*this.tabCoeffEfficacite[cible.espPoke.type2.id];
+	public void showTab() {
+		StringBuilder s  = new StringBuilder();
+		s.append(this.nom+" :");
+		for(double d : this.tabCoeffEfficacite) {
+			s.append(" "+d+",");
+		}
+		System.out.println(s);
 	}
+
 }
