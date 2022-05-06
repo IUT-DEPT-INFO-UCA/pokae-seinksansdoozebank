@@ -28,17 +28,52 @@ public class Capacite {
     public double calculerCM(Pokemon attaquant, Pokemon defenseur){
         double stab = 0;
         double efficacite;
-        if(attaquant.espPoke.type1==this.type || attaquant.espPoke.type2==this.type) {
+        if(attaquant.aLeType(this.type)) {
         	stab = 1.5;
         }
-        efficacite = this.type.obtenirCoeffDegatSur(defenseur);
+        efficacite = this.calculerEfficacite(defenseur);
         return stab*efficacite*(0.85*(Math.random()*0.15));
+    }
+    
+    public double calculerEfficacite(Pokemon defenseur) {
+    	return this.type.obtenirCoeffDegatSur(defenseur);
     }
     
     public double calculerDegat(Pokemon attaquant, Pokemon defenseur) {
     	if(this.touche()) {
-    		double degat = ((attaquant.niv*0.4+2)*attaquant.obtenirAtkSur(this.categorie)*this.puissance/(defenseur.obtenirDefSur(this.categorie)*50))*calculerCM(attaquant, defenseur);
-        	return degat;
+    		if(this.puissance>0) {
+	    		return ((attaquant.niv*0.4+2)*attaquant.obtenirAtqSur(this.categorie)*this.puissance/(defenseur.obtenirDefSur(this.categorie)*50))*calculerCM(attaquant, defenseur);
+    		}else {
+	    		switch(this.puissance) {
+	    		case -1 : //one shot
+	    			if(this.calculerEfficacite(defenseur)!=0) {
+		    			return defenseur.pvMax;
+	    			}
+	    		case -2 : //-20 sur les non spectre
+	    			if(this.calculerEfficacite(defenseur)!=0) {
+	    				return 20;
+	    			}
+	    		case -3 : //degat subit au tours precedent * 2 si capacite physique
+	    			if(attaquant.obtenirDerniereCapaUtilisee().categorie == "Physique") {
+	    				return attaquant.obtenirDeniersDegatsSubits()*2;
+	    			}
+	    		case -4 : //degat = nivLanceur si la cible n'est pas imunise au type de l'attaque
+	    			if(this.calculerEfficacite(defenseur)!=0) {
+	    				return attaquant.niv;
+	    			}
+	    		case -5 : //40 degat sur type acier ou dragon sans prendre en compte les  stat de la cible
+	    				return 40;
+	    		case -6 : //degat = nivLanceur si la cible n'est pas imunise au type de l'attaque
+	    			if(this.calculerEfficacite(defenseur)!=0) {
+	    				return attaquant.niv;
+	    			}
+	    		case -7 : //impossible d' attaquer pendant 2 tours puis degat infligés = (2*les degat encaissé pendant les 2 tours) sans tenir compte des types
+	    			attaquant.mettreNombreDeToursAvantAttaqueA(2);
+	    			if(attaquant.obtenirNombreDeToursAvantAttaque()==0) {
+	    				return (attaquant.obtenirAvantDeniersDegatsSubits()+attaquant.obtenirDeniersDegatsSubits())*2;
+	    			}
+	    		}
+    		}
     	}
     	return 0;
     }
