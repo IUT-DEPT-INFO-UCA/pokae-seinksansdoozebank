@@ -62,13 +62,12 @@
 	    	return this.expDeBase;
 	    }
 
-		public HashMap<Capacite,Integer> capaciteDispo(Pokemon pokemon){
+		public Capacite capaciteDispo(Pokemon pokemon){
 			for (Map.Entry mapentry : capaciteSelonNiveau.entrySet()) {
-				if (Integer.parseInt(mapentry.getValue().toString())<=pokemon.niv)
-				System.out.println("clé: "+mapentry.getKey()
-						+ " | valeur: " + mapentry.getValue());
+				if (Integer.parseInt(mapentry.getKey().toString())<=pokemon.niv){
+					return (Capacite) mapentry.getValue();
+				}
 			}
-
 			return null;
 		}
 	
