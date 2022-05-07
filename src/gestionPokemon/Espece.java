@@ -17,6 +17,16 @@ public class Espece {
     public int nivEvolution;
     public Espece evolution;
 
+
+
+    private int expDeBase;
+
+    //Valeur d'Effort == puissance suite aux combats
+    private int evAtq;
+    private int evDef;
+    private int evVit;
+    private int evSpe;
+    private int evPv;
     public void setExpDeBase(int expDeBase) {
         this.expDeBase = expDeBase;
     }
@@ -40,16 +50,6 @@ public class Espece {
     public void setEvPv(int evPv) {
         this.evPv = evPv;
     }
-
-    private int expDeBase;
-
-    //Valeur d'Effort == puissance suite aux combats
-    private int evAtq;
-    private int evDef;
-    private int evVit;
-    private int evSpe;
-    private int evPv;
-
     public Espece(int id) {
         this.id = id;
     }

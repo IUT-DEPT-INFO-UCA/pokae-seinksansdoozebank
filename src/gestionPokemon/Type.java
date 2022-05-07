@@ -68,7 +68,7 @@ public class Type {
 		return tab;
 	}
 
-	public void showTab() {
+	public void afficherTab() {
 		StringBuilder s  = new StringBuilder();
 		s.append(this.nom+" :");
 		for(double d : this.tabCoeffEfficacite) {

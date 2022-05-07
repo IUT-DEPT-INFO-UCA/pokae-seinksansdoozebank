@@ -4,7 +4,8 @@ import java.io.FileNotFoundException;
 import java.util.*;
 public class Pokedex {
     public static Espece[] listeEspece;
-    static int nombrePokemons;
+    public static Capacite[] listeCapacite;
+//    static int nombrePokemons;
     public Espece createEspece(int id) throws FileNotFoundException {
         Espece espece = new Espece(id);
         File fichierCSV = new File("./listePokemon1G_new.csv");
@@ -40,21 +41,77 @@ public class Pokedex {
         return espece;
     }
 
-    public void createListeEspece(int id) throws FileNotFoundException {
+    public void createListeEspece() throws FileNotFoundException {
         for (int i=1; i<152;i++){
             listeEspece[i]=createEspece(i);
         }
     }
 
-    public void createCapacite(int id) throws FileNotFoundException {
+    public Capacite createCapacite(int id) throws FileNotFoundException {
         Capacite capacite = new Capacite(id);
         File fichierCSV = new File("./listePokemon1G_new.csv");
         Scanner scannerCSV = new Scanner(fichierCSV);
         scannerCSV.useDelimiter(";");
         scannerCSV.nextLine();
         while (scannerCSV.hasNext()) {
-            capacite.nom=scannerCSV.next();
-
+            Scanner scannerTemp =scannerCSV;
+            for (int i = 0; i <4;i++){
+                scannerTemp.next();
+            }
+            if (Integer.parseInt(scannerTemp.next())==id){
+                capacite.nom=scannerCSV.next();
+                capacite.puissance=Integer.parseInt(scannerCSV.next());
+                capacite.precision=Integer.parseInt(scannerCSV.next());
+                capacite.ppBase=Integer.parseInt(scannerCSV.next());
+                capacite.pp=capacite.ppBase;
+            }
+            else{
+                scannerCSV.nextLine();
+            }
         }
+
+        return capacite;
+
+    }
+    public void createListeCapacite() throws FileNotFoundException {
+        for (int i =0;i<110;i++){
+            listeCapacite[i]=createCapacite(i);
+        }
+    }
+
+    public Espece especeParId(int id) {
+        return listeEspece[id];
+    }
+
+    public Espece especeParNom(String nom){
+        int i=0;
+        boolean tester = false;
+        while(i<listeEspece.length&& !tester){
+            if (listeEspece[i].nom.equals(nom)){
+                tester = true;
+            }
+            i++;
+        }
+        return listeEspece[i];
+    }
+
+    public Capacite capaciteParId(int id){
+        return listeCapacite[id];
+    }
+
+    public Capacite capaciteParNom(String nom){
+        int i=0;
+        boolean tester = false;
+        while(i<listeCapacite.length&& !tester){
+            if (listeCapacite[i].nom.equals(nom)){
+                tester=true;
+            }
+            i++;
+        }
+        return listeCapacite[i];
+    }
+
+    public static void main(String[] args){
+        System.out.println("test");
     }
 }
