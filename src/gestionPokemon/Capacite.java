@@ -1,13 +1,18 @@
 package gestionPokemon;
 
 public class Capacite {
-	private String nom;
-	private Type type;
-	private String categorie;
-	private int puissance;
-	private int precision;
-	private int pp;
-	private int ppBase;
+	public int id;
+	public String nom;
+	public Type type;
+	public String categorie;
+	public int puissance;
+	public int precision;
+	public int pp;
+	public int ppBase;
+
+	public Capacite(int id) {
+		this.id = id;
+	}
 
 	public Capacite(String nom, Type type, String categorie, int puissance, int precision, int pp, int ppBase) {
 		this.nom = nom;

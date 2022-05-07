@@ -9,12 +9,26 @@ public class Type {
 	private double [] tabCoeffEfficacite = new double[15];
 
 
-	public Type(int id, String nom){
-		this.id = id;
+	public Type(String nom){
+		this.id=obtenirIndexDuType(nom);
 		this.nom = nom;
 		this.initialiserCoeff("efficacite.csv");
 	}
 
+	public Type(int id, String nom) {
+		this.id = id;
+		this.nom = nom;
+	}
+
+	public static int obtenirIndexDuType(String type){
+		for (int i = 0; i <Type.listeTypes.length;i++){
+			if (listeTypes[i].equals(type));{
+				return i;
+			}
+		}
+		return -1;
+
+	}
 	public double obtenirCoeffDegatSur(Pokemon cible) {
 		return this.tabCoeffEfficacite[cible.espPoke.type1.id]*this.tabCoeffEfficacite[cible.espPoke.type2.id];
 	}
