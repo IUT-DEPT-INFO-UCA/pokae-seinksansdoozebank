@@ -26,6 +26,10 @@ public class Espece {
     private int evSpe;
     private int evPv;
 
+    public Espece(int id) {
+        this.id = id;
+    }
+
     //Valeurs dï¿½terminantes == puissance native
     // private int dvAtk;
     // private int dvDef;
