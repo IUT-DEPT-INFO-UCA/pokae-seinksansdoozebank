@@ -1,5 +1,8 @@
 	package gestionPokemon;
-	
+
+	import java.util.HashMap;
+	import java.util.Map;
+
 	public class Espece {
 	    private int id;
 	    public String nom;
@@ -20,12 +23,13 @@
 	    private int expDeBase;
 	
 	    //Valeur d'Effort == puissance suite aux combats
-	    private int evAtq;
-	    private int evDef;
-	    private int evVit;
-	    private int evSpe;
-	    private int evPv;
-	
+	    private int gainAtq;
+	    private int gainDef;
+	    private int gainVit;
+	    private int gainSpe;
+	    private int gainPv;
+
+		private static HashMap<Capacite,Integer> capaciteSelonNiveau;
 	    public Espece(int id) {
 	        this.id = id;
 	    }
@@ -34,29 +38,39 @@
 	        this.expDeBase = expDeBase;
 	    }
 	
-	    public void setEvAtq(int evAtq) {
-	        this.evAtq = evAtq;
+	    public void setGainAtq(int gainAtq) {
+	        this.gainAtq = gainAtq;
 	    }
 	
-	    public void setEvDef(int evDef) {
-	        this.evDef = evDef;
+	    public void setGainDef(int gainDef) {
+	        this.gainDef = gainDef;
 	    }
 	
-	    public void setEvVit(int evVit) {
-	        this.evVit = evVit;
+	    public void setGainVit(int gainVit) {
+	        this.gainVit = gainVit;
 	    }
 	
-	    public void setEvSpe(int evSpe) {
-	        this.evSpe = evSpe;
+	    public void setGainSpe(int gainSpe) {
+	        this.gainSpe = gainSpe;
 	    }
 	
-	    public void setEvPv(int evPv) {
-	        this.evPv = evPv;
+	    public void setGainPv(int gainPv) {
+	        this.gainPv = gainPv;
 	    }
 	    
 	    public int obtenirExpDeBase() {
 	    	return this.expDeBase;
 	    }
+
+		public HashMap<Capacite,Integer> capaciteDispo(Pokemon pokemon){
+			for (Map.Entry mapentry : capaciteSelonNiveau.entrySet()) {
+				if (Integer.parseInt(mapentry.getValue().toString())<=pokemon.niv)
+				System.out.println("clé: "+mapentry.getKey()
+						+ " | valeur: " + mapentry.getValue());
+			}
+
+			return null;
+		}
 	
 	    //Valeurs dï¿½terminantes == puissance native
 	    // private int dvAtk;

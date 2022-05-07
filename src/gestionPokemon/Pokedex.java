@@ -22,11 +22,11 @@ public class Pokedex {
                 espece.spe=Integer.parseInt(scannerCSV.next());
                 espece.vit=Integer.parseInt(scannerCSV.next());
                 espece.setExpDeBase(Integer.parseInt(scannerCSV.next()));
-                espece.setEvPv(Integer.parseInt(scannerCSV.next()));
-                espece.setEvAtq(Integer.parseInt(scannerCSV.next()));
-                espece.setEvDef(Integer.parseInt(scannerCSV.next()));
-                espece.setEvSpe(Integer.parseInt(scannerCSV.next()));
-                espece.setEvVit(Integer.parseInt(scannerCSV.next()));
+                espece.setGainPv(Integer.parseInt(scannerCSV.next()));
+                espece.setGainAtq(Integer.parseInt(scannerCSV.next()));
+                espece.setGainDef(Integer.parseInt(scannerCSV.next()));
+                espece.setGainSpe(Integer.parseInt(scannerCSV.next()));
+                espece.setGainVit(Integer.parseInt(scannerCSV.next()));
                 espece.type1= new Type(scannerCSV.next());
                 espece.type2= new Type(scannerCSV.next());
                 espece.nivDepart=Integer.parseInt(scannerCSV.next());
