@@ -43,12 +43,12 @@ public class Combat {
 		return true;
 	}
 
-	private void choisirActions(){
-		choisirActions(dresseur1);
-		choisirActions(dresseur2);
+	private void initialiserActions(){
+		choisirAction(dresseur1);
+		choisirAction(dresseur2);
 	}
 
-	private void choisirActions(Dresseur d){
+	private void choisirAction(Dresseur d){
 		if(input = "echange"){
 			d.choisirPokemon();
 		}else{
