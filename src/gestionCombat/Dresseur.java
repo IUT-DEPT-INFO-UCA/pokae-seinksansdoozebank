@@ -41,7 +41,10 @@ public class Dresseur {
 	public void choisirAttaqueDe(Pokemon p) {
 		this.actionChoisie = p.listeCapacite[1];
 	}
-	
+
+	public void enseignerCapacite(Pokemon p){
+
+	}
 	public void attaquer(Dresseur other) {
 		
 	}

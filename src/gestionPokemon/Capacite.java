@@ -82,6 +82,8 @@ public class Capacite {
 		}
 		return 0;
 	}
-
+	public void resetPp(){
+		this.pp=this.ppBase;
+	}
 
 }
