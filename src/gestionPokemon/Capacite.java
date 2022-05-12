@@ -1,6 +1,13 @@
 package gestionPokemon;
 
-public class Capacite {
+import interfaces.IAttaque;
+import interfaces.ICapacite;
+import interfaces.ICategorie;
+import interfaces.IPokemon;
+import interfaces.IType;
+
+public class Capacite implements ICategorie, IAttaque, ICapacite{
+	//on met la categorie dans une enumeration ???
 	public int id;
 	public String nom;
 	public Type type;
@@ -16,14 +23,95 @@ public class Capacite {
 
 	public Capacite(String nom, Type type, String categorie, int puissance, int precision, int pp, int ppBase) {
 		this.nom = nom;
-		this.type = type;
 		this.categorie = categorie;
 		this.puissance = puissance;
 		this.precision = precision;
 		this.pp = pp;
 		this.ppBase = ppBase;
 	}
+	//metode de ICategorie
+	public boolean isSpecial() {
+		return this.categorie=="Special";
+	}
 
+	@Override
+	public String getNom() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	public String getCategoryName() {
+		return this.categorie;
+	}
+	
+	//emthodes de IAttaque
+	
+	public void utilise() {
+		System.out.println("execution de public void utilise().");
+	}
+
+	@Override
+	public int calculeDommage(IPokemon lanceur, IPokemon receveur) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public double calculeDommage(Pokemon lanceur, Pokemon receveur) {
+		if(this.touche()) {
+			if(this.puissance>0) {
+				return ((lanceur.niv*0.4+2)*lanceur.obtenirAtqSur(this)*this.puissance/(receveur.obtenirDefSur(this)*50))*calculerCM(lanceur, receveur);
+			}else {
+				switch(this.puissance) {
+					case -1 : //one shot
+						if(this.getEfficiencyOn(receveur)!=0) {
+							return receveur.pvMax;
+						}
+					case -2 : //-20 sur les non spectre
+						if(this.getEfficiencyOn(receveur)!=0) {
+							return 20;
+						}
+					case -3 : //degat subit au tours precedent * 2 si capacite physique
+						if(!lanceur.obtenirDerniereCapaUtilisee().isSpecial()) {
+							return lanceur.obtenirDeniersDegatsSubits()*2;
+						}
+					case -4 : //degat = nivLanceur si la cible n'est pas imunise au type de l'attaque
+						if(this.getEfficiencyOn(receveur)!=0) {
+							return lanceur.niv;
+						}
+					case -5 : //40 degat sur type acier ou dragon sans prendre en compte les  stat de la cible
+						return 40;
+					case -6 : //degat = nivLanceur si la cible n'est pas imunise au type de l'attaque
+						if(this.getEfficiencyOn(receveur)!=0) {
+							return lanceur.niv;
+						}
+					case -7 : //impossible d' attaquer pendant 2 tours puis degat infligés = (2*les degat encaissé pendant les 2 tours) sans tenir compte des types
+						lanceur.mettreNombreDeToursAvantAttaqueA(2);
+						if(lanceur.obtenirNombreDeToursAvantAttaque()==0) {
+							return (lanceur.obtenirAvantDeniersDegatsSubits()+lanceur.obtenirDeniersDegatsSubits())*2;
+						}
+				}
+			}
+		}
+		return 0;
+	}
+	
+	//methode de Icapacite
+	
+	 // jsp comment ca marche les type interface
+ 
+	@Override
+	public ICategorie getCategorie() {
+		return null;
+	}
+
+	@Override
+	public IType getType() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+
+	
 	public boolean touche() {
 		double r = Math.random();
 		System.out.println(""+r+"><"+this.precision);
@@ -36,54 +124,34 @@ public class Capacite {
 		if(attaquant.possedeLeType(this.type)) {
 			stab = 1.5;
 		}
-		efficacite = this.calculerEfficacite(defenseur);
+		efficacite = this.getEfficiencyOn(defenseur);
 		return stab*efficacite*(0.85*(Math.random()*0.15));
 	}
 
-	public double calculerEfficacite(Pokemon defenseur) {
-		return this.type.obtenirCoeffDegatSur(defenseur);
+	public double getEfficiencyOn(Pokemon defenseur) {
+		return this.type.getCoeffDamageOn(defenseur);
 	}
 
-	public double calculerDegats(Pokemon attaquant, Pokemon defenseur) {
-		if(this.touche()) {
-			if(this.puissance>0) {
-				return ((attaquant.niv*0.4+2)*attaquant.obtenirAtqSur(this.categorie)*this.puissance/(defenseur.obtenirDefSur(this.categorie)*50))*calculerCM(attaquant, defenseur);
-			}else {
-				switch(this.puissance) {
-					case -1 : //one shot
-						if(this.calculerEfficacite(defenseur)!=0) {
-							return defenseur.pvMax;
-						}
-					case -2 : //-20 sur les non spectre
-						if(this.calculerEfficacite(defenseur)!=0) {
-							return 20;
-						}
-					case -3 : //degat subit au tours precedent * 2 si capacite physique
-						if(attaquant.obtenirDerniereCapaUtilisee().categorie == "Physique") {
-							return attaquant.obtenirDeniersDegatsSubits()*2;
-						}
-					case -4 : //degat = nivLanceur si la cible n'est pas imunise au type de l'attaque
-						if(this.calculerEfficacite(defenseur)!=0) {
-							return attaquant.niv;
-						}
-					case -5 : //40 degat sur type acier ou dragon sans prendre en compte les  stat de la cible
-						return 40;
-					case -6 : //degat = nivLanceur si la cible n'est pas imunise au type de l'attaque
-						if(this.calculerEfficacite(defenseur)!=0) {
-							return attaquant.niv;
-						}
-					case -7 : //impossible d' attaquer pendant 2 tours puis degat infligés = (2*les degat encaissé pendant les 2 tours) sans tenir compte des types
-						attaquant.mettreNombreDeToursAvantAttaqueA(2);
-						if(attaquant.obtenirNombreDeToursAvantAttaque()==0) {
-							return (attaquant.obtenirAvantDeniersDegatsSubits()+attaquant.obtenirDeniersDegatsSubits())*2;
-						}
-				}
-			}
-		}
-		return 0;
+
+	@Override
+	public double getPrecision() {
+		return this.precision;
 	}
-	public void resetPp(){
+
+	@Override
+	public int getPuissance() {
+		return this.puissance;
+	}
+
+	@Override
+	public int getPP() {
+		return this.ppBase;
+	}
+
+	@Override
+	public void resetPP() {
 		this.pp=this.ppBase;
 	}
+
 
 }

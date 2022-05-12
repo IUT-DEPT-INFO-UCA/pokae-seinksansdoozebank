@@ -1,7 +1,13 @@
 package gestionPokemon;
 
-public class Pokemon {
-    static int cptId = 0;
+import interfaces.IAttaque;
+import interfaces.ICapacite;
+import interfaces.IEspece;
+import interfaces.IPokemon;
+import interfaces.IStat;
+
+public class Pokemon implements IStat, IPokemon{
+    public static int cptId = 0;
     public int id = 0; // identifiant unique
     public String nom; // Nom du pokemon
     public int niv;
@@ -38,7 +44,7 @@ public class Pokemon {
     private int nombreDeToursAvantAttaque;
 
     public Pokemon(String nom) {
-        this.mettreId(cptId);
+        this.setId(cptId);
         this.nom = nom;
         evAtq = 0;
         evDef = 0;
@@ -52,14 +58,147 @@ public class Pokemon {
         dvPv = (int) (Math.random() * ((15) + 1));
 
     }
+    
+    //////////////// methodes de IStat ///////////////////////
+	public int getPV() {
+		return this.pv;
+	}
 
-    public int obtenirId() {
-        return id;
-    }
+	public int getForce() {
+		return this.atk;
+	}
 
-    public void mettreId(int id) {
-        this.id = id;
-    }
+	public int getDefense() {
+		return this.def;
+	}
+
+	public int getSpecial() {
+		return this.spe;
+	}
+
+	public int getVitesse() {
+		return this.vit;
+	}
+
+	public void setPV(int pv) {
+		this.pv = pv;
+	}
+
+	public void setForce(int atk) {
+		this.atk = atk;
+	}
+
+	public void setDefense(int def) { 
+		this.def = def;
+	}
+
+	public void setVitesse(int vit) {
+		this.vit = vit;
+		
+	}
+
+	public void setSpecial(int spe) {
+		this.spe = spe;
+	}
+
+	//////////////////////////////////////////////////////////  
+	
+	
+	
+    //////////////// methodes de IPokemon ///////////////////////
+	public IStat getStat() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public double getExperience() {
+		return this.xp;
+	}
+
+	public int getNiveau() {
+		return this.niv;
+	}
+	
+	public int getId() {
+		return this.id;
+	}
+	
+	public String getNom() {
+		return this.nom;
+	}
+
+	public double getPourcentagePV() {
+		return this.pv*100*this.pvMax;
+	}
+
+	@Override
+	public IEspece getEspece() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void vaMuterEn(IEspece esp) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public ICapacite[] getCapacitesApprises() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void apprendCapacites(ICapacite[] caps) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void remplaceCapacite(int i, ICapacite cap) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void gagneExperienceDe(IPokemon pok) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void subitAttaqueDe(IPokemon pok, IAttaque atk) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public boolean estEvanoui() {
+        //si les pv sont inf a 0 
+    	return this.pv <= 0;
+	}
+
+	@Override
+	public boolean aChangeNiveau() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean peutMuter() {
+		return this.espPoke.evolution!=null;
+	}
+
+	public void soigne() {
+    	this.pv = this.pvMax;
+    	this.resetPp();
+	}
+
+	//////////////////////////////////////////////////////////  
+	
+	private void setId(int cptId) {
+		this.id = cptId;
+		Pokemon.cptId ++;
+	}
     
     public Capacite obtenirDerniereCapaUtilisee() {
     	return this.derniereCapciteUtilisee;
@@ -90,20 +229,15 @@ public class Pokemon {
         this.pv-=degats;
     }
     
-    public boolean estMort() {
-        //si les pv sont inf � 0 
-    	return this.pv <= 0;
-    }
-    
-    
     public void augmenterXP(int baseExpAdv, int nivAdv) {
-        double xpTemporaire = this.xp + (1.5 * nivAdv * baseExpAdv) / 7;
+    	double gainXp = (1.5 * nivAdv * baseExpAdv) / 7;
+        double xpTemporaire = this.xp + gainXp ;
         double seuil = (Math.pow(this.niv, 3) * 0.8);
         if (xpTemporaire >= seuil) {
             augmenterNiveau();
             this.xp = xpTemporaire - seuil;
         } else {
-            this.xp += (1.5 * nivAdv * baseExpAdv) / 7;
+            this.xp += gainXp;
         }
     }
 
@@ -125,15 +259,15 @@ public class Pokemon {
         this.espPoke=this.espPoke.evolution;
     }
     
-    public float obtenirDefSur(String categorieCapa) {
-    	if(categorieCapa == "Physique") {
+    public float obtenirDefSur(Capacite c) {
+    	if(!c.isSpecial()) {
     		return this.def;
     	}else {
     		return this.spe;
     	}
     }    
-    public float obtenirAtqSur(String categorieCapa) {
-    	if(categorieCapa == "Physique") {
+    public float obtenirAtqSur(Capacite c) {
+    	if(!c.isSpecial()) {
     		return this.atk;
     	}else {
     		return this.spe;
@@ -144,15 +278,11 @@ public class Pokemon {
     	return this.espPoke.type1==type || this.espPoke.type2==type;
     }
     
-    public void soigner() {
-    	this.pv = this.pvMax;
-    	this.resetPp();
-    }
     
     public void resetPp()
     {
     	for (Capacite c : this.listeCapacite) {
-    		c.resetPp();
+    		c.resetPP();
     	}
     }
 	public boolean estPlusRapideQue(Pokemon other) {
@@ -162,6 +292,5 @@ public class Pokemon {
 			return this.vit>other.vit;
 		}
 	}
-    
-    
+
 }

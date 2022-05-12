@@ -2,7 +2,9 @@ package gestionPokemon;
 
 import java.io.*;
 
-public class Type {
+import interfaces.IType;
+
+public class Type implements IType{
 	public static String[] listeTypes = {"Combat","Dragon","Eau","Electrik","Feu","Glace","Insecte","Normal","Plante","Poison","Psy","Roche","Sol","Spectre","Vol"};
 	public int id;
 	public String nom;
@@ -10,30 +12,36 @@ public class Type {
 
 
 	public Type(String nom){
-		this.id=obtenirIndexDuType(nom);
 		this.nom = nom;
-		this.initialiserCoeff("efficacite.csv");
+		this.id=getIndexOfType();
+		this.initCoeff("efficacite.csv");
 	}
 
 	public Type(int id, String nom) {
 		this.id = id;
 		this.nom = nom;
 	}
-
-	public static int obtenirIndexDuType(String type){
-		for (int i = 0; i <Type.listeTypes.length;i++){
-			if (listeTypes[i].equals(type));{
-				return i;
-			}
-		}
-		return -1;
-
+	
+	public String getNom() {
+		return this.nom;
 	}
-	public double obtenirCoeffDegatSur(Pokemon cible) {
+	//methode utilisee à la construction des types pour leur attribuer le bon id
+	private int getIndexOfType(){
+		int i=0;
+		while (i<listeTypes.length && listeTypes[i].equals(this.nom)) {
+			i++;
+		}
+		if(i==listeTypes.length) {
+			return -1;
+		}
+		return i;
+	}
+	
+	public double getCoeffDamageOn(Pokemon cible) {
 		return this.tabCoeffEfficacite[cible.espPoke.type1.id]*this.tabCoeffEfficacite[cible.espPoke.type2.id];
 	}
 
-	public void initialiserCoeff(String fileName){
+	public void initCoeff(String fileName){
 		try{
 			FileReader fichier = new FileReader(fileName);
 			BufferedReader reader = new BufferedReader(fichier);
@@ -55,6 +63,12 @@ public class Type {
 		}
 	}
 
+	
+	
+	
+	
+	
+	
 
 	///////////////// Methodes de debug /////////////////
 
@@ -63,7 +77,7 @@ public class Type {
 		Type[] tab = new Type[15];
 		for (int i=0;i<15;i++) {
 			tab[i]=new Type(i,Type.listeTypes[i]);
-			tab[i].initialiserCoeff(fileName);
+			tab[i].initCoeff(fileName);
 		}
 		return tab;
 	}
