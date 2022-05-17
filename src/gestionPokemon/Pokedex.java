@@ -9,36 +9,55 @@ public class Pokedex {
     public Espece createEspece(int id) throws FileNotFoundException {
         Espece espece = new Espece(id);
         File fichierCSV = new File("./listePokemon1G_new.csv");
-        Scanner scannerCSV = new Scanner(fichierCSV);
-        scannerCSV.useDelimiter(";");
-        scannerCSV.nextLine();
-        while (scannerCSV.hasNext()) {
-            if(Integer.parseInt(scannerCSV.next())==id){
-                espece.nom=scannerCSV.next();
-                System.out.println(espece);
-                espece.pv=Integer.parseInt(scannerCSV.next());
-                espece.atq=Integer.parseInt(scannerCSV.next());
-                espece.def=Integer.parseInt(scannerCSV.next());
-                espece.spe=Integer.parseInt(scannerCSV.next());
-                espece.vit=Integer.parseInt(scannerCSV.next());
-                espece.setExpDeBase(Integer.parseInt(scannerCSV.next()));
-                espece.setGainPv(Integer.parseInt(scannerCSV.next()));
-                espece.setGainAtq(Integer.parseInt(scannerCSV.next()));
-                espece.setGainDef(Integer.parseInt(scannerCSV.next()));
-                espece.setGainSpe(Integer.parseInt(scannerCSV.next()));
-                espece.setGainVit(Integer.parseInt(scannerCSV.next()));
-                espece.type1= new Type(scannerCSV.next());
-                espece.type2= new Type(scannerCSV.next());
-                espece.nivDepart=Integer.parseInt(scannerCSV.next());
-                espece.nivEvolution=Integer.parseInt(scannerCSV.next());
-                //ca c'est dramatique pcq mewtwo doit pas evoluer et pourtant la il peut evoluer en mew
-                espece.evolution=createEspece(id+1);
-            }
-            else{
-                scannerCSV.nextLine();
-            }
+        try (Scanner scannerCSV = new Scanner(fichierCSV)) {
+			scannerCSV.useDelimiter(";");
+			scannerCSV.nextLine();
+			while (scannerCSV.hasNext()) {
+			    if(Integer.parseInt(scannerCSV.next())==id){
+			        espece.nom=scannerCSV.next();
+			        System.out.println(espece);
+			        /*
+			        espece.pv=Integer.parseInt(scannerCSV.next());
+			        espece.atq=Integer.parseInt(scannerCSV.next());
+			        espece.def=Integer.parseInt(scannerCSV.next());
+			        espece.spe=Integer.parseInt(scannerCSV.next());
+			        espece.vit=Integer.parseInt(scannerCSV.next());
+			        espece.setExpDeBase(Integer.parseInt(scannerCSV.next()));
+			        espece.setGainPv(Integer.parseInt(scannerCSV.next()));
+			        espece.setGainAtq(Integer.parseInt(scannerCSV.next()));
+			        espece.setGainDef(Integer.parseInt(scannerCSV.next()));
+			        espece.setGainSpe(Integer.parseInt(scannerCSV.next()));
+			        espece.setGainVit(Integer.parseInt(scannerCSV.next()));*/
+			        
 
-        }
+			        espece.getBaseStat().setPV(Integer.parseInt(scannerCSV.next()));
+			        espece.getBaseStat().setForce(Integer.parseInt(scannerCSV.next()));
+			        espece.getBaseStat().setDefense(Integer.parseInt(scannerCSV.next()));
+			        espece.getBaseStat().setSpecial(Integer.parseInt(scannerCSV.next()));
+			        espece.getBaseStat().setVitesse(Integer.parseInt(scannerCSV.next()));
+			        espece.setExpDeBase(Integer.parseInt(scannerCSV.next()));
+			        espece.getGainsStat().setPV(Integer.parseInt(scannerCSV.next()));
+			        espece.getGainsStat().setForce(Integer.parseInt(scannerCSV.next()));
+			        espece.getGainsStat().setDefense(Integer.parseInt(scannerCSV.next()));
+			        espece.getGainsStat().setSpecial(Integer.parseInt(scannerCSV.next()));
+			        espece.getGainsStat().setVitesse(Integer.parseInt(scannerCSV.next()));
+			        
+			        espece.type1= new Type(scannerCSV.next());
+			        espece.type2= new Type(scannerCSV.next());
+			        espece.nivDepart=Integer.parseInt(scannerCSV.next());
+			        espece.nivEvolution=Integer.parseInt(scannerCSV.next());
+			        //ca c'est dramatique pcq mewtwo doit pas evoluer et pourtant la il peut evoluer en mew
+			        espece.evolution=createEspece(id+1);
+			    }
+			    else{
+			        scannerCSV.nextLine();
+			    }
+
+			}
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         return espece;
     }
 
@@ -51,26 +70,30 @@ public class Pokedex {
     public Capacite createCapacite(int id) throws FileNotFoundException {
         Capacite capacite = new Capacite(id);
         File fichierCSV = new File("./listePokemon1G_new.csv");
-        Scanner scannerCSV = new Scanner(fichierCSV);
-        scannerCSV.useDelimiter(";");
-        scannerCSV.nextLine();
-        while (scannerCSV.hasNext()) {
-            Scanner scannerTemp =scannerCSV;
-            for (int i = 0; i <4;i++){
-                scannerTemp.next();
-            }
-            if (Integer.parseInt(scannerTemp.next())==id){
-                capacite.nom=scannerCSV.next();
-                capacite.puissance=Integer.parseInt(scannerCSV.next());
-                capacite.precision=Integer.parseInt(scannerCSV.next());
-                capacite.ppBase=Integer.parseInt(scannerCSV.next());
-                capacite.pp=capacite.ppBase;
-            }
-            else{
-                scannerCSV.nextLine();
-            }
-        }
-
+        try (Scanner scannerCSV = new Scanner(fichierCSV)) {
+			scannerCSV.useDelimiter(";");
+			scannerCSV.nextLine();
+			while (scannerCSV.hasNext()) {
+			    try (Scanner scannerTemp = scannerCSV) {
+					for (int i = 0; i <4;i++){
+					    scannerTemp.next();
+					}
+					if (Integer.parseInt(scannerTemp.next())==id){
+					    capacite.nom=scannerCSV.next();
+					    capacite.puissance=Integer.parseInt(scannerCSV.next());
+					    capacite.precision=Integer.parseInt(scannerCSV.next());
+					    capacite.ppBase=Integer.parseInt(scannerCSV.next());
+					    capacite.pp=capacite.ppBase;
+					}
+					else{
+					    scannerCSV.nextLine();
+					}
+				}
+			}
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         return capacite;
 
     }

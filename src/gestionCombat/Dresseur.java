@@ -1,13 +1,15 @@
 package gestionCombat;
 import gestionPokemon.*;
+import interfaces.IEchange;
+import interfaces.IPokemon;
 
-public class Dresseur {
+public class Dresseur implements IEchange{
 	private String identifiant;
 	private String motDepasse;
 	private String nom;
 	private Pokemon[] equipe = new Pokemon[6];
 	private int niveau;
-	private Pokemon pokemonActif;
+	private Pokemon pokemon;
 	private Pokemon pokemonChoisi;
 	private Capacite actionChoisie;
 	private String type; //joueur ou IA
@@ -19,22 +21,50 @@ public class Dresseur {
 	public Dresseur(String id, String mdp, String nom) {
 		//on cree un dresseur en l'ajoutant au stockage
 	}
-	
-	public Pokemon obtenirPokemonActif() {
-		return this.pokemonActif;
-	}
-	public void mettrePokemonActifA(Pokemon pokemonActif) {
-		this.pokemonActif = pokemonActif;
+
+	/////////////////////// methode de IEchange ///////////////////////
+	public int calculeDommage(IPokemon lanceur, IPokemon receveur) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
-	public Pokemon obtenirPokemonChoisi() {
+	public void utilise() {
+
+	}
+
+	
+	public void setPokemon(IPokemon pok) {
+		this.pokemonChoisi = (Pokemon) pok;
+	}
+
+	public IPokemon echangeCombattant() {
+		Pokemon oldPokemonActif = this.pokemon;
+		this.pokemon=this.pokemonChoisi;
+		return oldPokemonActif;
+	}
+	/////////////////////////////////////////////////////////////////////
+	
+	public Pokemon getPokemon() {
+		return this.pokemon;
+	}
+
+	public Pokemon getPokemonChoisi() {
 		return pokemonChoisi;
 	}
+	
+	public Pokemon[] getEquipe() {
+		return this.equipe;
+	}
+	
 	public void choisirPokemon() {
-		this.pokemonChoisi = this.equipe[0];
+		System.out.println("Choisissez le pokemon à envoyer au combat : ");
+		//affichage de l'equipe
+		//scanner et tout
+		Pokemon choosen = new Pokemon("carapute");
+		this.setPokemon(choosen);
 	}
 
-	public Capacite obtenirActionChoisie() {
+	public Capacite getActionChoisie() {
 		return actionChoisie;
 	}
 
@@ -45,6 +75,7 @@ public class Dresseur {
 	public void enseignerCapacite(Pokemon p){
 
 	}
+	
 	public void attaquer(Dresseur other) {
 		
 	}
@@ -60,8 +91,7 @@ public class Dresseur {
 	
 	public void soignerEquipe() {
 		for (Pokemon p : this.equipe) {
-			p.estEvanoui();
+			p.soigne();
 		}
 	}
-	
 }

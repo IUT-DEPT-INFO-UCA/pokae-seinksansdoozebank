@@ -25,7 +25,7 @@ public class Type implements IType{
 	public String getNom() {
 		return this.nom;
 	}
-	//methode utilisee à la construction des types pour leur attribuer le bon id
+	//methode utilisee ï¿½ la construction des types pour leur attribuer le bon id
 	private int getIndexOfType(){
 		int i=0;
 		while (i<listeTypes.length && listeTypes[i].equals(this.nom)) {
@@ -37,8 +37,8 @@ public class Type implements IType{
 		return i;
 	}
 	
-	public double getCoeffDamageOn(Pokemon cible) {
-		return this.tabCoeffEfficacite[cible.espPoke.type1.id]*this.tabCoeffEfficacite[cible.espPoke.type2.id];
+	public double getCoeffDamageOn(IType cible) {
+		return this.tabCoeffEfficacite[((Type)cible).id];
 	}
 
 	public void initCoeff(String fileName){
