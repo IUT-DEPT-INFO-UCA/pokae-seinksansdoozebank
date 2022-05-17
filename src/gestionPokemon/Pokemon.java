@@ -43,7 +43,7 @@ public class Pokemon implements IStat, IPokemon{
     private double avantDeniersDegatsSubits;
     private int nombreDeToursAvantAttaque;
 
-    public Pokemon(String nom) {
+    public Pokemon(String nom,Espece espPoke) {
         this.setId(cptId);
         this.nom = nom;
         evAtq = 0;
@@ -56,8 +56,24 @@ public class Pokemon implements IStat, IPokemon{
         dvVit = (int) (Math.random() * ((15) + 1));
         dvSpe = (int) (Math.random() * ((15) + 1));
         dvPv = (int) (Math.random() * ((15) + 1));
-
+		this.espPoke=espPoke;
     }
+
+	public Pokemon(Espece espPoke) {
+		this.setId(cptId);
+		this.nom = espPoke.getNom();
+		evAtq = 0;
+		evDef = 0;
+		evVit = 0;
+		evSpe = 0;
+		evPv = 0;
+		dvAtq = (int) (Math.random() * ((15) + 1));
+		dvDef = (int) (Math.random() * ((15) + 1));
+		dvVit = (int) (Math.random() * ((15) + 1));
+		dvSpe = (int) (Math.random() * ((15) + 1));
+		dvPv = (int) (Math.random() * ((15) + 1));
+		this.espPoke=espPoke;
+	}
     
     //////////////// methodes de IStat ///////////////////////
 	public int getPV() {

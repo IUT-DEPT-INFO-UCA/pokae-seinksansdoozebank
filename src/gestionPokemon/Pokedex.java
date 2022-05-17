@@ -1,4 +1,9 @@
 package gestionPokemon;
+import interfaces.ICapacite;
+import interfaces.IEspece;
+import interfaces.IPokemon;
+import interfaces.IType;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
@@ -6,6 +11,49 @@ public class Pokedex {
     public static Espece[] listeEspece;
     public static Capacite[] listeCapacite;
 //    static int nombrePokemons;
+
+    public IPokemon[] engendreRanch(){
+        IPokemon[] listePokeAleatoire=new Pokemon[6];
+        for (int i=0; i<6; i++){
+            listePokeAleatoire[0]=new Pokemon(listeEspece[(int) (Math.random() * ((151) + 1))]);
+        }
+        return listePokeAleatoire;
+    }
+    public IEspece getInfo(String nomEspece){
+        int i=0;
+        boolean trouve=false;
+        IEspece info = null;
+        while(i<listeEspece.length&& !trouve){
+            if (listeEspece[i].nom.equals(nomEspece)){
+                trouve=true;
+                info=listeEspece[i];
+            }
+            i++;
+        }
+        return info;
+    }
+
+    public Double getEfficacite(Type attaque, Type defense){
+        return attaque.getCoeffDamageOn(defense);
+    }
+
+    public ICapacite getCapacite(String nomCapacite){
+        int i=0;
+        boolean trouve=false;
+        ICapacite capacite = null;
+        while(i<listeCapacite.length&& !trouve){
+            if (listeEspece[i].nom.equals(nomCapacite)){
+                trouve=true;
+                capacite=listeCapacite[i];
+            }
+            i++;
+        }
+        return capacite;
+    }
+    public ICapacite getCapacite(int nunCapacite){
+        return listeCapacite[nunCapacite];
+    }
+    //TODO : méthodes déjà faites initiative
     public Espece createEspece(int id) throws FileNotFoundException {
         Espece espece = new Espece(id);
         File fichierCSV = new File("./listePokemon1G_new.csv");
