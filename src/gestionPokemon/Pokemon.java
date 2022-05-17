@@ -131,10 +131,8 @@ public class Pokemon implements IStat, IPokemon{
 		return this.pv*100*this.pvMax;
 	}
 
-	@Override
 	public IEspece getEspece() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.espPoke;
 	}
 
 	@Override

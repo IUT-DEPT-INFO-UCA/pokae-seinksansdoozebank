@@ -29,7 +29,7 @@ public class Capacite implements ICategorie, IAttaque, ICapacite{
 		this.pp = pp;
 		this.ppBase = ppBase;
 	}
-	//metode de ICategorie
+	 ///////////////////////metode de ICategorie ///////////////////////
 	public boolean isSpecial() {
 		return this.categorie=="Special";
 	}
@@ -43,8 +43,9 @@ public class Capacite implements ICategorie, IAttaque, ICapacite{
 	public String getCategoryName() {
 		return this.categorie;
 	}
+	/////////////////////////////////////////////////////////////////////
 	
-	//emthodes de IAttaque
+	/////////////////////// methodes de IAttaque ///////////////////////
 	
 	public void utilise() {
 		System.out.println("execution de public void utilise().");
@@ -94,8 +95,10 @@ public class Capacite implements ICategorie, IAttaque, ICapacite{
 		}
 		return 0;
 	}
+	/////////////////////////////////////////////////////////////////////
 	
-	//methode de Icapacite
+	
+	/////////////////////// methode de Icapacite ///////////////////////
 	
 	 // jsp comment ca marche les type interface
  
@@ -110,7 +113,7 @@ public class Capacite implements ICategorie, IAttaque, ICapacite{
 		return null;
 	}
 	
-
+	/////////////////////////////////////////////////////////////////////
 	
 	public boolean touche() {
 		double r = Math.random();

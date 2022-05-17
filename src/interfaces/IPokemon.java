@@ -20,18 +20,19 @@ public interface IPokemon {
 	public double getPourcentagePV();
 	
 	public IEspece getEspece();
-	public void vaMuterEn(IEspece esp);
+	public void vaMuterEn(IEspece esp);			//Modifie l'espèce du Pokemon en esp
 	
-	public ICapacite[] getCapacitesApprises();
-	public void apprendCapacites(ICapacite[] caps);
-	public void remplaceCapacite(int i, ICapacite cap) throws Exception;
+	public ICapacite[] getCapacitesApprises();	//Tableau des capacités que le Pokemon peut utiliser
+	public void apprendCapacites(ICapacite[] caps);	//Enseigne les capacités au Pokemon
+	public void remplaceCapacite(int i, ICapacite cap) throws Exception; 
 	
-	public void gagneExperienceDe(IPokemon pok);
-	public void subitAttaqueDe(IPokemon pok, IAttaque atk);
+	public void gagneExperienceDe(IPokemon pok); //Met à jour l'exprérience de this suite à la défaite de pok
+	public void subitAttaqueDe(IPokemon pok, IAttaque atk); //Met à jour les stats de this en tenant compte des dégats subits par l'attaque atk de pok
 	
-	public boolean estEvanoui();
-	public boolean aChangeNiveau();
-	public boolean peutMuter();
 	
-	public void soigne();
+	public boolean estEvanoui();		//renvoie true si les pointes de vie du pokemonsont 0
+	public boolean aChangeNiveau();		//renvoie true si le Pokemon vient de changer de niveau
+	public boolean peutMuter();			//renvoie true si le Pokemon peut muter
+	
+	public void soigne();				//Remet les PV au maximum
 }
