@@ -36,9 +36,11 @@ public class Type implements IType{
 		}
 		return i;
 	}
-	
-	public double getCoeffDamageOn(Pokemon cible) {
-		return this.tabCoeffEfficacite[cible.espPoke.type1.id]*this.tabCoeffEfficacite[cible.espPoke.type2.id];
+	public double getCoeffTotal(Type type1,Type type2) {
+		return getCoeffDamageOn(type1)*getCoeffDamageOn(type2);
+	}
+	public double getCoeffDamageOn(Type cible) {
+		return this.tabCoeffEfficacite[cible.id];
 	}
 
 	public void initCoeff(String fileName){

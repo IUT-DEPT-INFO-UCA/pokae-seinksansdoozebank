@@ -1,6 +1,8 @@
 package gestionPokemon;
+import interfaces.ICapacite;
 import interfaces.IEspece;
 import interfaces.IPokemon;
+import interfaces.IType;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -26,11 +28,31 @@ public class Pokedex {
                 trouve=true;
                 info=listeEspece[i];
             }
+            i++;
         }
         return info;
     }
 
+    public Double getEfficacite(Type attaque, Type defense){
+        return attaque.getCoeffDamageOn(defense);
+    }
 
+    public ICapacite getCapacite(String nomCapacite){
+        int i=0;
+        boolean trouve=false;
+        ICapacite capacite = null;
+        while(i<listeCapacite.length&& !trouve){
+            if (listeEspece[i].nom.equals(nomCapacite)){
+                trouve=true;
+                capacite=listeCapacite[i];
+            }
+            i++;
+        }
+        return capacite;
+    }
+    public ICapacite getCapacite(int nunCapacite){
+        return listeCapacite[nunCapacite];
+    }
     //TODO : méthodes déjà faites initiative
     public Espece createEspece(int id) throws FileNotFoundException {
         Espece espece = new Espece(id);
