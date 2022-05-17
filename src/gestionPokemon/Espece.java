@@ -3,7 +3,12 @@
 	import java.util.HashMap;
 	import java.util.Map;
 
-	public class Espece {
+import interfaces.ICapacite;
+import interfaces.IEspece;
+import interfaces.IStat;
+import interfaces.IType;
+
+	public class Espece implements IEspece {
 	    private int id;
 	    public String nom;
 	    public Type type1;
@@ -33,6 +38,57 @@
 	    public Espece(int id) {
 	        this.id = id;
 	    }
+
+		///////////////methode de IEspece/////////////////////////////////
+
+		@Override
+		public IStat getBaseStat() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public String getNom() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public int getNiveauDepart() {
+			// TODO Auto-generated method stub
+			return 0;
+		}
+
+		@Override
+		public int getBaseExp() {
+			// TODO Auto-generated method stub
+			return 0;
+		}
+
+		@Override
+		public IStat getGainsStat() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public ICapacite[] getCapSet() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public IEspece getEvolution(int niveau) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public IType[] getTypes() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+		//////////////////////////////////////////////////////////////
 	    
 	    public void setExpDeBase(int expDeBase) {
 	        this.expDeBase = expDeBase;

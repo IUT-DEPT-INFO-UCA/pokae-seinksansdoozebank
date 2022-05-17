@@ -31,7 +31,7 @@ public class Dresseur {
 		return pokemonChoisi;
 	}
 	public void choisirPokemon() {
-		this.pokemonChoisi = this.equipe[1];
+		this.pokemonChoisi = this.equipe[0];
 	}
 
 	public Capacite obtenirActionChoisie() {
@@ -53,14 +53,14 @@ public class Dresseur {
 		boolean rep = false;
 		int i=0;
 		while (!rep && i<6) {
-			rep = !this.equipe[i].estMort();
+			rep = !this.equipe[i].estEvanoui();
 		}
 		return !rep;
 	}
 	
 	public void soignerEquipe() {
 		for (Pokemon p : this.equipe) {
-			p.soigner();
+			p.estEvanoui();
 		}
 	}
 	

@@ -31,6 +31,7 @@ public class Pokedex {
                 espece.type2= new Type(scannerCSV.next());
                 espece.nivDepart=Integer.parseInt(scannerCSV.next());
                 espece.nivEvolution=Integer.parseInt(scannerCSV.next());
+                //ca c'est dramatique pcq mewtwo doit pas evoluer et pourtant la il peut evoluer en mew
                 espece.evolution=createEspece(id+1);
             }
             else{

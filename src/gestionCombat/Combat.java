@@ -1,7 +1,7 @@
 package gestionCombat;
-import gestionPokemon.Pokemon;
 
 public class Combat {
+	@SuppressWarnings("unused")
 	private int nbTours;
 	private Dresseur dresseur1;
 	private Dresseur dresseur2;
@@ -17,7 +17,7 @@ public class Combat {
 		this.initialiser();
 		while (!this.estTermine()){
 			this.passerAuTourSuivant();
-			this.choisirActions();
+			this.initialiserActions();
 			this.executerActions();
 		}
 		return this.vainqueur;
@@ -49,7 +49,8 @@ public class Combat {
 	}
 
 	private void choisirAction(Dresseur d){
-		if(input = "echange"){
+		String input = "";
+		if(input == "echange"){
 			d.choisirPokemon();
 		}else{
 			d.choisirAttaqueDe(d.obtenirPokemonActif());
@@ -63,7 +64,7 @@ public class Combat {
 				dresseur2.mettrePokemonActifA(dresseur2.obtenirPokemonChoisi());
 			}else{ //d2 attaque
 				dresseur2.attaquer(dresseur1);
-				if(dresseur1.obtenirPokemonActif().estMort()){
+				if(dresseur1.obtenirPokemonActif().estEvanoui()){
 					if(!this.estTermine()){
 						dresseur1.choisirPokemon();
 						dresseur1.mettrePokemonActifA(dresseur1.obtenirPokemonChoisi());
@@ -74,7 +75,7 @@ public class Combat {
 			if(this.dresseur2.obtenirActionChoisie()==null){ //d2 echange
 				dresseur2.mettrePokemonActifA(dresseur2.obtenirPokemonChoisi());
 				dresseur1.attaquer(dresseur2);
-				if(dresseur2.obtenirPokemonActif().estMort()){
+				if(dresseur2.obtenirPokemonActif().estEvanoui()){
 					if(!this.estTermine()){
 						dresseur2.choisirPokemon();
 						dresseur2.mettrePokemonActifA(dresseur2.obtenirPokemonChoisi());
@@ -83,7 +84,7 @@ public class Combat {
 			}else{ //d2 attaque
 				if(dresseur1.obtenirPokemonActif().estPlusRapideQue(dresseur2.obtenirPokemonActif())){
 					dresseur1.attaquer(dresseur2);
-					if(dresseur2.obtenirPokemonActif().estMort()){
+					if(dresseur2.obtenirPokemonActif().estEvanoui()){
 						if(!this.estTermine()){
 							dresseur2.choisirPokemon();
 							dresseur2.mettrePokemonActifA(dresseur2.obtenirPokemonChoisi());
@@ -93,7 +94,7 @@ public class Combat {
 					}
 				}else{
 					dresseur2.attaquer(dresseur1);
-					if(dresseur1.obtenirPokemonActif().estMort()){
+					if(dresseur1.obtenirPokemonActif().estEvanoui()){
 						if(!this.estTermine()){
 							dresseur1.choisirPokemon();
 							dresseur1.mettrePokemonActifA(dresseur1.obtenirPokemonChoisi());
