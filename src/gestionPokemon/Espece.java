@@ -69,7 +69,11 @@ import interfaces.IType;
 		//Liste des capacités
 		private static HashMap<Capacite,Integer> capaciteSelonNiveau;
 		
+<<<<<<< Updated upstream
 		public Espece(int id) {
+=======
+	    public Espece(int id) {
+>>>>>>> Stashed changes
 	        this.id = id;
 	    }
 
@@ -107,15 +111,22 @@ import interfaces.IType;
 			return this.capaciteSelonNiveau;
 		}
 
-		@Override
 		public IEspece getEvolution(int niveau) {
+<<<<<<< Updated upstream
 			return this.evolution;
+=======
+			if(this.evolution.nivDepart==niveau) {
+				return this.evolution;
+			}
+			return null;
+>>>>>>> Stashed changes
 		}
 
 		@Override
 		public IType[] getTypes() {
 			return {this.type1, this.type2};
 		}
+<<<<<<< Updated upstream
 		///////////////////////////Méthodes de IStat///////////////////////////////////
 		@Override
 		public int getPV(){
@@ -161,6 +172,31 @@ import interfaces.IType;
 
 	    ///////////////////////////////////////////////////////////////////////////////
 	    public void setExpDeBase(int expDeBase) {
+=======
+		//////////////////////////////////////////////////////////////
+	    
+	    public int getGainAtq() {
+			return gainAtq;
+		}
+
+		public int getGainDef() {
+			return gainDef;
+		}
+
+		public int getGainVit() {
+			return gainVit;
+		}
+
+		public int getGainSpe() {
+			return gainSpe;
+		}
+
+		public int getGainPv() {
+			return gainPv;
+		}
+
+		public void setExpDeBase(int expDeBase) {
+>>>>>>> Stashed changes
 	        this.expDeBase = expDeBase;
 	    }
 

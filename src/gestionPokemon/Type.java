@@ -25,7 +25,7 @@ public class Type implements IType{
 	public String getNom() {
 		return this.nom;
 	}
-	//methode utilisee à la construction des types pour leur attribuer le bon id
+	//methode utilisee ï¿½ la construction des types pour leur attribuer le bon id
 	private int getIndexOfType(){
 		int i=0;
 		while (i<listeTypes.length && listeTypes[i].equals(this.nom)) {
@@ -36,11 +36,17 @@ public class Type implements IType{
 		}
 		return i;
 	}
+<<<<<<< Updated upstream
 	public double getCoeffTotal(Type type1,Type type2) {
 		return getCoeffDamageOn(type1)*getCoeffDamageOn(type2);
 	}
 	public double getCoeffDamageOn(Type cible) {
 		return this.tabCoeffEfficacite[cible.id];
+=======
+	
+	public double getCoeffDamageOn(IType cible) {
+		return this.tabCoeffEfficacite[((Type)cible).id];
+>>>>>>> Stashed changes
 	}
 
 	public void initCoeff(String fileName){

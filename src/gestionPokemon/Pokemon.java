@@ -8,6 +8,7 @@ import interfaces.IStat;
 
 public class Pokemon implements IStat, IPokemon{
     public static int cptId = 0;
+    
     public int id = 0; // identifiant unique
     public String nom; // Nom du pokemon
     public int niv;
@@ -117,32 +118,29 @@ public class Pokemon implements IStat, IPokemon{
 		this.spe = spe;
 	}
 
-	//////////////////////////////////////////////////////////  
+	/////////////////////////////////////////////////////////////  
 	
 	
 	
     //////////////// methodes de IPokemon ///////////////////////
 	public IStat getStat() {
 		// TODO Auto-generated method stub
+		//ptetre on doit mettre les 5 stats dans un hashmap ? mais on 
+		// pourait meme pas le return ici vu que ce serait pas le bon type
 		return null;
 	}
-
 	public double getExperience() {
 		return this.xp;
 	}
-
 	public int getNiveau() {
 		return this.niv;
 	}
-	
 	public int getId() {
 		return this.id;
 	}
-	
 	public String getNom() {
 		return this.nom;
 	}
-
 	public double getPourcentagePV() {
 		return this.pv*100*this.pvMax;
 	}
@@ -150,41 +148,42 @@ public class Pokemon implements IStat, IPokemon{
 	public IEspece getEspece() {
 		return this.espPoke;
 	}
-
-	@Override
 	public void vaMuterEn(IEspece esp) {
-		// TODO Auto-generated method stub
-		
+		this.espPoke=(Espece) esp;
 	}
 
-	@Override
 	public ICapacite[] getCapacitesApprises() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.listeCapacite;
 	}
-
 	@Override
 	public void apprendCapacites(ICapacite[] caps) {
 		// TODO Auto-generated method stub
 		
 	}
-
-	@Override
 	public void remplaceCapacite(int i, ICapacite cap) throws Exception {
-		// TODO Auto-generated method stub
-		
+		this.listeCapacite[i]=(Capacite) cap;
 	}
 
 	@Override
 	public void gagneExperienceDe(IPokemon pok) {
-		// TODO Auto-generated method stub
-		
+		//TODO faut checker ce calcul
+    	double gainXp = (1.5 * pok.getNiveau() * pok.getEspece().getBaseExp()) / 7;
+        double xpTemporaire = this.xp + gainXp ;
+        double seuil = (Math.pow(this.niv, 3) * 0.8);
+        if (xpTemporaire >= seuil) {
+            augmenterNiveau();
+            this.xp = xpTemporaire - seuil;
+        } else {
+            this.xp += gainXp;
+        }
+        // augmentation des EV
+        //this.evAtq+=pok.espPoke.getGainAtk;
+        //...
 	}
 
 	@Override
 	public void subitAttaqueDe(IPokemon pok, IAttaque atk) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	public boolean estEvanoui() {
@@ -260,8 +259,8 @@ public class Pokemon implements IStat, IPokemon{
         if(this.niv>=espPoke.nivEvolution){
             evoluer();
         }
-        //Les stats de base sont celles de l'espece actuelle du pok�mon. 
-        //Ainsi, si le pok�mon a �volu�, son espece a chang� juste avant donc les stats sont calcul�es sur les nouvelles stat de base.
+        //Les stats de base sont celles de l'espece actuelle du pokemon. 
+        //Ainsi, si le pokemon a evolue, son espece a change juste avant donc les stats sont calculees sur les nouvelles stat de base.
         this.pvMax = (((2*(this.espPoke.pv + this.dvPv)+this.evPv/4)*this.niv ) /100 ) + this.niv + 10;
         this.atk = ((2*(this.espPoke.atq + this.dvAtq)+(evAtq/4)/100)+5);
         this.def = ((2*(this.espPoke.def + this.dvDef)+(evDef/4)/100)+5);
@@ -269,19 +268,19 @@ public class Pokemon implements IStat, IPokemon{
         this.spe = ((2*(this.espPoke.spe + this.dvSpe)+(evSpe/4)/100)+5);
     }
     public void evoluer(){
-        // On modifie uniquement l'espece du pok�mon. Le calcul des nouvelles stat se fait dans augmenterNiv
-        this.espPoke=this.espPoke.evolution;
+        // On modifie uniquement l'espece du pokemon. Le calcul des nouvelles stat se fait dans augmenterNiv
+        this.vaMuterEn(this.getEspece().getEvolution(niv));
     }
     
     public float obtenirDefSur(Capacite c) {
-    	if(!c.isSpecial()) {
+    	if(!c.getCategorie().isSpecial()) {
     		return this.def;
     	}else {
     		return this.spe;
     	}
     }    
     public float obtenirAtqSur(Capacite c) {
-    	if(!c.isSpecial()) {
+    	if(!c.getCategorie().isSpecial()) {
     		return this.atk;
     	}else {
     		return this.spe;

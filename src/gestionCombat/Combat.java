@@ -26,9 +26,9 @@ public class Combat {
 	private void initialiser(){
 		this.nbTours = 1;
 		this.dresseur1.choisirPokemon();
-		this.dresseur1.mettrePokemonActifA(dresseur1.obtenirPokemonChoisi());
+		this.dresseur1.setPokemon(dresseur1.getEquipe()[0]);
 		this.dresseur2.choisirPokemon();
-		this.dresseur2.mettrePokemonActifA(dresseur2.obtenirPokemonChoisi());
+		this.dresseur2.setPokemon(dresseur2.getEquipe()[0]);
 	}
 
 	private boolean estTermine(){
@@ -53,51 +53,51 @@ public class Combat {
 		if(input == "echange"){
 			d.choisirPokemon();
 		}else{
-			d.choisirAttaqueDe(d.obtenirPokemonActif());
+			d.choisirAttaqueDe(d.getPokemon());
 		}
 	}
 
 	private void executerActions(){
-		if (this.dresseur1.obtenirActionChoisie()==null){ //d1 echange
-			dresseur1.mettrePokemonActifA(dresseur1.obtenirPokemonChoisi());
-			if(this.dresseur2.obtenirActionChoisie()==null){ //d2 echange
-				dresseur2.mettrePokemonActifA(dresseur2.obtenirPokemonChoisi());
+		if (this.dresseur1.getActionChoisie()==null){ //d1 echange
+			dresseur1.echangeCombattant();
+			if(this.dresseur2.getActionChoisie()==null){ //d2 echange
+				dresseur2.echangeCombattant();
 			}else{ //d2 attaque
 				dresseur2.attaquer(dresseur1);
-				if(dresseur1.obtenirPokemonActif().estEvanoui()){
+				if(dresseur1.getPokemon().estEvanoui()){
 					if(!this.estTermine()){
 						dresseur1.choisirPokemon();
-						dresseur1.mettrePokemonActifA(dresseur1.obtenirPokemonChoisi());
+						dresseur1.echangeCombattant();
 					}
 				}
 			}
 		}else{ //d1 attaque
-			if(this.dresseur2.obtenirActionChoisie()==null){ //d2 echange
-				dresseur2.mettrePokemonActifA(dresseur2.obtenirPokemonChoisi());
+			if(this.dresseur2.getActionChoisie()==null){ //d2 echange
+				dresseur2.echangeCombattant();
 				dresseur1.attaquer(dresseur2);
-				if(dresseur2.obtenirPokemonActif().estEvanoui()){
+				if(dresseur2.getPokemon().estEvanoui()){
 					if(!this.estTermine()){
 						dresseur2.choisirPokemon();
-						dresseur2.mettrePokemonActifA(dresseur2.obtenirPokemonChoisi());
+						dresseur2.echangeCombattant();
 					}
 				}
 			}else{ //d2 attaque
-				if(dresseur1.obtenirPokemonActif().estPlusRapideQue(dresseur2.obtenirPokemonActif())){
+				if(dresseur1.getPokemon().estPlusRapideQue(dresseur2.getPokemon())){
 					dresseur1.attaquer(dresseur2);
-					if(dresseur2.obtenirPokemonActif().estEvanoui()){
+					if(dresseur2.getPokemon().estEvanoui()){
 						if(!this.estTermine()){
 							dresseur2.choisirPokemon();
-							dresseur2.mettrePokemonActifA(dresseur2.obtenirPokemonChoisi());
+							dresseur2.echangeCombattant();
 						}
 					}else{
 						dresseur2.attaquer(dresseur1);
 					}
 				}else{
 					dresseur2.attaquer(dresseur1);
-					if(dresseur1.obtenirPokemonActif().estEvanoui()){
+					if(dresseur1.getPokemon().estEvanoui()){
 						if(!this.estTermine()){
 							dresseur1.choisirPokemon();
-							dresseur1.mettrePokemonActifA(dresseur1.obtenirPokemonChoisi());
+							dresseur1.echangeCombattant();
 						}
 					}else{
 						dresseur1.attaquer(dresseur2);
