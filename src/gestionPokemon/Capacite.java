@@ -29,71 +29,103 @@ public class Capacite implements ICategorie, IAttaque, ICapacite{
 		this.pp = pp;
 		this.ppBase = ppBase;
 	}
-	 ///////////////////////metode de ICategorie ///////////////////////
+	
+	///////////////////////metode de ICategorie ///////////////////////
 	public boolean isSpecial() {
 		return this.categorie=="Special";
 	}
 
-	@Override
 	public String getNom() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	public String getCategoryName() {
 		return this.categorie;
 	}
 	/////////////////////////////////////////////////////////////////////
 	
+	
 	/////////////////////// methodes de IAttaque ///////////////////////
 	
 	public void utilise() {
-		System.out.println("execution de public void utilise().");
+		this.pp--;
 	}
 
 	@Override
 	public int calculeDommage(IPokemon lanceur, IPokemon receveur) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public double calculeDommage(Pokemon lanceur, Pokemon receveur) {
+		double degats = 0;
 		if(this.touche()) {
 			if(this.puissance>0) {
-				return ((lanceur.niv*0.4+2)*lanceur.obtenirAtqSur(this)*this.puissance/(receveur.obtenirDefSur(this)*50))*calculerCM(lanceur, receveur);
+				degats = ((lanceur.getNiveau()*0.4+2)*((Pokemon) lanceur).obtenirAtqSur(this)*this.puissance/(((Pokemon) receveur).obtenirDefSur(this)*50))*calculerCM((Pokemon) lanceur, (Pokemon) receveur);
+			}else {
+				switch(this.puissance) {
+					case -1 : //one shot
+						if(this.getEfficiencyOn((Pokemon) receveur)!=0) {
+							degats = ((Pokemon)receveur).pvMax;
+						}
+					case -2 : //-20 sur les non spectre
+						if(this.getEfficiencyOn((Pokemon) receveur)!=0) {
+							degats = 20;
+						}
+					case -3 : //degat subit au tours precedent * 2 si capacite physique
+						if(!((Pokemon) lanceur).obtenirDerniereCapaUtilisee().isSpecial()) {
+							degats = ((Pokemon) lanceur).obtenirDeniersDegatsSubits()*2;
+						}
+					case -4 : //degat = nivLanceur si la cible n'est pas imunise au type de l'attaque
+						if(this.getEfficiencyOn((Pokemon) receveur)!=0) {
+							degats = lanceur.getNiveau();
+						}
+					case -5 : //40 degat sur type acier ou dragon sans prendre en compte les  stat de la cible
+						return 40;
+					case -6 : //degat = nivLanceur si la cible n'est pas imunise au type de l'attaque
+						if(this.getEfficiencyOn((Pokemon) receveur)!=0) {
+							degats = lanceur.getNiveau();
+						}
+					case -7 : //impossible d' attaquer pendant 2 tours puis degat infligés = (2*les degat encaissé pendant les 2 tours) sans tenir compte des types
+						((Pokemon) lanceur).mettreNombreDeToursAvantAttaqueA(2);
+						if(((Pokemon) lanceur).obtenirNombreDeToursAvantAttaque()==0) {
+							degats = (((Pokemon) lanceur).obtenirAvantDeniersDegatsSubits()+((Pokemon) lanceur).obtenirDeniersDegatsSubits())*2;
+						}
+				}
+			}
+		}
+		return (int) degats;
+	}
+
+	public int calculeDommage(Pokemon lanceur, Pokemon receveur) {
+		double degats = 0;
+		if(this.touche()) {
+			if(this.puissance>0) {
+				degats = ((lanceur.niv*0.4+2)*lanceur.obtenirAtqSur(this)*this.puissance/(receveur.obtenirDefSur(this)*50))*calculerCM(lanceur, receveur);
 			}else {
 				switch(this.puissance) {
 					case -1 : //one shot
 						if(this.getEfficiencyOn(receveur)!=0) {
-							return receveur.pvMax;
+							degats = receveur.pvMax;
 						}
 					case -2 : //-20 sur les non spectre
 						if(this.getEfficiencyOn(receveur)!=0) {
-							return 20;
+							degats = 20;
 						}
 					case -3 : //degat subit au tours precedent * 2 si capacite physique
 						if(!lanceur.obtenirDerniereCapaUtilisee().isSpecial()) {
-							return lanceur.obtenirDeniersDegatsSubits()*2;
+							degats = lanceur.obtenirDeniersDegatsSubits()*2;
 						}
 					case -4 : //degat = nivLanceur si la cible n'est pas imunise au type de l'attaque
 						if(this.getEfficiencyOn(receveur)!=0) {
-							return lanceur.niv;
+							degats = lanceur.niv;
 						}
 					case -5 : //40 degat sur type acier ou dragon sans prendre en compte les  stat de la cible
 						return 40;
 					case -6 : //degat = nivLanceur si la cible n'est pas imunise au type de l'attaque
 						if(this.getEfficiencyOn(receveur)!=0) {
-							return lanceur.niv;
+							degats = lanceur.niv;
 						}
 					case -7 : //impossible d' attaquer pendant 2 tours puis degat infligés = (2*les degat encaissé pendant les 2 tours) sans tenir compte des types
 						lanceur.mettreNombreDeToursAvantAttaqueA(2);
 						if(lanceur.obtenirNombreDeToursAvantAttaque()==0) {
-							return (lanceur.obtenirAvantDeniersDegatsSubits()+lanceur.obtenirDeniersDegatsSubits())*2;
+							degats = (lanceur.obtenirAvantDeniersDegatsSubits()+lanceur.obtenirDeniersDegatsSubits())*2;
 						}
 				}
 			}
 		}
-		return 0;
+		return (int) degats;
 	}
 	/////////////////////////////////////////////////////////////////////
 	
@@ -132,7 +164,7 @@ public class Capacite implements ICategorie, IAttaque, ICapacite{
 	}
 
 	public double getEfficiencyOn(Pokemon defenseur) {
-		return this.type.getCoeffDamageOn(defenseur);
+		return this.type.getCoeffDamageOn(defenseur.getEspece().getTypes()[0]) * this.type.getCoeffDamageOn(defenseur.getEspece().getTypes()[1]);
 	}
 
 
