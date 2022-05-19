@@ -14,7 +14,7 @@ public class Capacite implements  ICapacite{
 	public Type type;
 	public CategorieAttaque categorie;
 	public int puissance;
-	public int precision;
+	public double precision;
 	public int pp;
 	public int ppBase;
 
