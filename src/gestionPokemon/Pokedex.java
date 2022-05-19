@@ -12,7 +12,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.*;
 public class Pokedex {
-    public static Espece[] listeEspece;
+    public static Espece[] listeEspece=new Espece[152];
     public static Capacite[] listeCapacite=new Capacite[110];
 //    static int nombrePokemons;
 
@@ -44,7 +44,7 @@ public class Pokedex {
         System.out.println(Arrays.toString(listeCapacite));
     }
     public ICapacite getCapacite(String nomCapacite){
-        int i=0;
+        int i=1;
         boolean trouve=false;
         ICapacite capacite = null;
         while(i<listeCapacite.length&& !trouve){
@@ -71,7 +71,7 @@ public class Pokedex {
 			while (scannerCSV.hasNext()) {
 			    if(Integer.parseInt(scannerCSV.next())==id){
 			        espece.nom=scannerCSV.next();
-			        System.out.println(espece);
+//			        System.out.println(espece);
 
 			        espece.getBaseStat().setPV(Integer.parseInt(scannerCSV.next()));
 			        espece.getBaseStat().setForce(Integer.parseInt(scannerCSV.next()));
@@ -91,7 +91,7 @@ public class Pokedex {
                     String nivEvolutionTemp=scannerCSV.next();
                     if(nivEvolutionTemp!=null){
                         espece.nivEvolution=Integer.parseInt(nivEvolutionTemp);
-                        espece.evolution=createEspece(id+1);
+                        espece.evolution=scannerCSV.next();
                     }
 			        else{
                         espece.nivEvolution=0;
@@ -102,10 +102,11 @@ public class Pokedex {
 
 			    }
 			    else{
-			        scannerCSV.nextLine();
-			    }
 
+			    }
+                scannerCSV.nextLine();
 			}
+
 		} catch (NumberFormatException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -225,7 +226,7 @@ public class Pokedex {
         return listeEspece[id];
     }
 
-    public Espece especeParNom(String nom){
+    public static Espece especeParNom(String nom){
         int i=0;
         boolean tester = false;
         while(i<listeEspece.length&& !tester){
@@ -242,7 +243,7 @@ public class Pokedex {
     }
 
     public Capacite capaciteParNom(String nom){
-        int i=0;
+        int i=1;
         boolean tester = false;
         while(i<listeCapacite.length&& !tester){
             if (listeCapacite[i].nom.equals(nom)){
@@ -254,15 +255,15 @@ public class Pokedex {
             return null;
         }
         else{
-        return listeCapacite[i];}
+        return listeCapacite[i-1];}
     }
 
 
     public static void main(String[] args) throws FileNotFoundException {
         Pokedex pokedex = new Pokedex();
         pokedex.createListeCapacite();
-        System.out.println(pokedex.createEspece(1).nom);
-        Espece espece=Pokedex.listeEspece[1];
+        pokedex.createListeEspece();
+        Espece espece=Pokedex.listeEspece[2];
         espece.initCapaciteSelonNiveau();
         System.out.println(Arrays.toString(espece.getCapSet()));
 //        pokedex.getCapaciteSet();
