@@ -261,7 +261,7 @@ public class Pokedex {
     public static void main(String[] args) throws FileNotFoundException {
         Pokedex pokedex = new Pokedex();
         pokedex.createListeCapacite();
-        pokedex.createListeEspece();
+        System.out.println(pokedex.createEspece(1).nom);
         Espece espece=Pokedex.listeEspece[1];
         espece.initCapaciteSelonNiveau();
         System.out.println(Arrays.toString(espece.getCapSet()));
