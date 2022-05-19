@@ -1,9 +1,14 @@
 package gestionPokemon;
+<<<<<<< Updated upstream
 import interfaces.ICapacite;
 import interfaces.IEspece;
 import interfaces.IPokemon;
 //import interfaces.IType;
 import org.json.simple.JSONArray;
+=======
+import interfaces.*;
+//import org.json.simple.JSONArray;
+>>>>>>> Stashed changes
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -114,6 +119,7 @@ public class Pokedex {
     /* CSV utilisation
     public Capacite createCapacite(int id) throws FileNotFoundException {
         Capacite capacite = new Capacite(id);
+<<<<<<< Updated upstream
         File fichierCSV = new File("./listePokemon1G_new.csv");
         try (Scanner scannerCSV = new Scanner(fichierCSV)) {
 			scannerCSV.useDelimiter(";");
@@ -134,6 +140,34 @@ public class Pokedex {
 					    scannerCSV.nextLine();
 					}
 				}
+=======
+        File fichierCSV = new File("./csv/listeCapacites.csv");
+        try {
+            try (Scanner scannerCSV = new Scanner(fichierCSV)) {
+				scannerCSV.useDelimiter(";");
+				scannerCSV.nextLine();
+				while (scannerCSV.hasNext()) {
+				    try {
+				        String ligneTemp = scannerCSV.nextLine();
+				        String[] tabLigneTemp = ligneTemp.split(";");
+
+						if (Integer.parseInt(tabLigneTemp[4])==id){
+						    capacite.nom=tabLigneTemp[0];
+//                        System.out.println(capacite.nom);
+						    capacite.puissance=Integer.parseInt(tabLigneTemp[1]);
+						    capacite.precision= Double.parseDouble(tabLigneTemp[2]);
+						    capacite.ppBase=Integer.parseInt(tabLigneTemp[3]);
+						    capacite.pp=capacite.ppBase;
+						}
+						else{
+//					    scannerCSV.nextLine();
+						}
+					} catch (NumberFormatException e) {
+				        throw new RuntimeException(e);
+				    }
+				}
+				scannerCSV.close();
+>>>>>>> Stashed changes
 			}
 		} catch (NumberFormatException e) {
 			// TODO Auto-generated catch block
