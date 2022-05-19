@@ -1,7 +1,7 @@
 package gestionPokemon;
 
 import java.io.*;
-import java.util.Arrays;
+//import java.util.Arrays;
 import java.util.Objects;
 
 import interfaces.IType;
@@ -52,7 +52,7 @@ public class Type implements IType{
 			FileReader fichier = new FileReader(fileName);
 			BufferedReader reader = new BufferedReader(fichier);
 			reader.readLine();
-			int i=0;
+			//int i=0; unused askip
 			while(reader.ready()){
 
 				String line = reader.readLine();
@@ -62,7 +62,7 @@ public class Type implements IType{
 						this.tabCoeffEfficacite[j] = Double.parseDouble(tab[j+1]);
 					}
 				}
-				i++;
+				//i++;
 			}
 //			System.out.println(this.nom+" tab = "+Arrays.toString(this.tabCoeffEfficacite));
 			reader.close();
@@ -85,7 +85,7 @@ public class Type implements IType{
 	public static Type[] creerTypes(String fileName) {
 		Type[] tab = new Type[15];
 		for (int i=0;i<15;i++) {
-			tab[i]=new Type(i,Type.listeTypes[i]);
+			tab[i]=new Type(Type.listeTypes[i]);
 			tab[i].initCoeff(fileName);
 		}
 		return tab;

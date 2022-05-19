@@ -72,19 +72,6 @@ public class Pokedex {
 			    if(Integer.parseInt(scannerCSV.next())==id){
 			        espece.nom=scannerCSV.next();
 			        System.out.println(espece);
-                    /*
-			        espece.pv=Integer.parseInt(scannerCSV.next());
-			        espece.atq=Integer.parseInt(scannerCSV.next());
-			        espece.def=Integer.parseInt(scannerCSV.next());
-			        espece.spe=Integer.parseInt(scannerCSV.next());
-			        espece.vit=Integer.parseInt(scannerCSV.next());
-			        espece.setExpDeBase(Integer.parseInt(scannerCSV.next()));
-			        espece.setGainPv(Integer.parseInt(scannerCSV.next()));
-			        espece.setGainAtq(Integer.parseInt(scannerCSV.next()));
-			        espece.setGainDef(Integer.parseInt(scannerCSV.next()));
-			        espece.setGainSpe(Integer.parseInt(scannerCSV.next()));
-			        espece.setGainVit(Integer.parseInt(scannerCSV.next()));*/
-			        
 
 			        espece.getBaseStat().setPV(Integer.parseInt(scannerCSV.next()));
 			        espece.getBaseStat().setForce(Integer.parseInt(scannerCSV.next()));
