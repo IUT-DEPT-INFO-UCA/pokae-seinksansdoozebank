@@ -64,7 +64,7 @@ public class Pokedex {
 
     public Espece createEspece(int id) throws FileNotFoundException {
         Espece espece = new Espece(id);
-        File fichierCSV = new File("./listePokemon1G_new.csv");
+        File fichierCSV = new File("./csv/listePokemon1G_new.csv");
         try (Scanner scannerCSV = new Scanner(fichierCSV)) {
 			scannerCSV.useDelimiter(";");
 			scannerCSV.nextLine();
@@ -88,9 +88,18 @@ public class Pokedex {
 			        espece.type1= new Type(scannerCSV.next());
 			        espece.type2= new Type(scannerCSV.next());
 			        espece.nivDepart=Integer.parseInt(scannerCSV.next());
-			        espece.nivEvolution=Integer.parseInt(scannerCSV.next());
+                    String nivEvolutionTemp=scannerCSV.next();
+                    if(nivEvolutionTemp!=null){
+                        espece.nivEvolution=Integer.parseInt(nivEvolutionTemp);
+                        espece.evolution=createEspece(id+1);
+                    }
+			        else{
+                        espece.nivEvolution=0;
+                        espece.evolution=null;
+                    }
+
 			        //ca c'est dramatique pcq mewtwo doit pas evoluer et pourtant la il peut evoluer en mew
-			        espece.evolution=createEspece(id+1);
+
 			    }
 			    else{
 			        scannerCSV.nextLine();
@@ -208,7 +217,7 @@ public class Pokedex {
     public void createListeCapacite() throws FileNotFoundException {
         for (int i =1;i<110;i++){
             listeCapacite[i]=createCapacite(i);
-            System.out.println(listeCapacite[i].nom);
+//            System.out.println(listeCapacite[i].nom);
         }
     }
 
@@ -241,13 +250,21 @@ public class Pokedex {
             }
             i++;
         }
-        return listeCapacite[i];
+        if(!tester){
+            return null;
+        }
+        else{
+        return listeCapacite[i];}
     }
 
 
     public static void main(String[] args) throws FileNotFoundException {
         Pokedex pokedex = new Pokedex();
         pokedex.createListeCapacite();
-        pokedex.getCapaciteSet();
+        pokedex.createListeEspece();
+        Espece espece=Pokedex.listeEspece[1];
+        espece.initCapaciteSelonNiveau();
+        System.out.println(Arrays.toString(espece.getCapSet()));
+//        pokedex.getCapaciteSet();
     }
 }

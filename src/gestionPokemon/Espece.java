@@ -7,6 +7,8 @@ import interfaces.ICapacite;
 import interfaces.IEspece;
 import interfaces.IStat;
 import interfaces.IType;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 public class Espece implements IEspece {
 	private int id;
@@ -72,6 +74,25 @@ public class Espece implements IEspece {
 	public IStat getGainsStat() {
 		return this.getGainsStat();
 	}
+	public void initCapaciteSelonNiveau(){
+		JSONObject jsonCapacite = Pokedex.getJSONfromURL("https://pokeapi.co/api/v2/move/"+this.id);
+		assert jsonCapacite != null;
+		JSONArray listeMoves=(JSONArray) jsonCapacite.get("moves");
+		Pokedex pokedex=new Pokedex();
+		for(int i=0;i<listeMoves.size();i++){
+			Capacite capaTemp= (Capacite) pokedex.getCapacite(((JSONObject) listeMoves.get(i)).get("name").toString());
+			if(capaTemp!=null){
+				JSONArray listeVersionGroupDetail=(JSONArray) ((JSONObject) listeMoves.get(i)).get("version_group_details");
+				for(int j=0;j<listeVersionGroupDetail.size();j++){
+					if(((JSONObject)((JSONObject) listeVersionGroupDetail.get(j)).get("version_group")).get("name")=="red-blue"){
+						capaciteSelonNiveau.put(capaTemp,Integer.parseInt((((JSONObject)listeVersionGroupDetail.get(j)).get("level_learned_at")).toString()));
+					}
+				}
+			}
+
+		}
+	}
+
 
 	@Override
 	public ICapacite[] getCapSet() {
