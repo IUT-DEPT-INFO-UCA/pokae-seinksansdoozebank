@@ -16,15 +16,18 @@ public class Pokemon implements IStat, IPokemon{
     public Espece espPoke;
     public Capacite[] listeCapacite = new Capacite[4];
     
-    // Stats sp�cifiques :
+    // Stats specifiques :
+    public Stats statsSpecifiques;
     public int atk;
     public int def;
     public int vit;
     public int spe;
     public int pv;
+    
     public int pvMax;
 
     // Valeur d'Effort == puissance suite aux combats
+    public Stats statsEV;
     private int evAtq;
     private int evDef;
     private int evVit;
@@ -32,6 +35,7 @@ public class Pokemon implements IStat, IPokemon{
     private int evPv;
     
     // Valeurs  determinantes == puissance native
+    public Stats statsDV; //stats de naissance
     private int dvAtq;
     private int dvDef;
     private int dvVit;
@@ -265,7 +269,12 @@ public class Pokemon implements IStat, IPokemon{
         this.atk = ((2*(this.espPoke.atq + this.dvAtq)+(evAtq/4)/100)+5);
         this.def = ((2*(this.espPoke.def + this.dvDef)+(evDef/4)/100)+5);
         this.vit = ((2*(this.espPoke.vit + this.dvVit)+(evVit/4)/100)+5);
-        this.spe = ((2*(this.espPoke.spe + this.dvSpe)+(evSpe/4)/100)+5);
+        this.spe = ((2*(this.espPoke.spe + this.dvSpe)+(evSpe/4)/100)+5);*/
+        this.pvMax = (((2*(this.getEspece().getBaseStat().getPV() + this.dvPv)+this.evPv/4)*this.niv ) /100 ) + this.niv + 10;
+        this.atk = ((2*(this.getEspece().getBaseStat().getForce() + this.dvAtq)+(evAtq/4)/100)+5);
+        this.def = ((2*(this.getEspece().getBaseStat().getDefense() + this.dvDef)+(evDef/4)/100)+5);
+        this.vit = ((2*(this.getEspece().getBaseStat().getVitesse() + this.dvVit)+(evVit/4)/100)+5);
+        this.spe = ((2*(this.getEspece().getBaseStat().getSpecial()+ this.dvSpe)+(evSpe/4)/100)+5);
     }
     public void evoluer(){
         // On modifie uniquement l'espece du pokemon. Le calcul des nouvelles stat se fait dans augmenterNiv

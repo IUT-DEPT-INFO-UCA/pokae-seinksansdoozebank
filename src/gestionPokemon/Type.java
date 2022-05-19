@@ -36,17 +36,14 @@ public class Type implements IType{
 		}
 		return i;
 	}
-<<<<<<< Updated upstream
 	public double getCoeffTotal(Type type1,Type type2) {
 		return getCoeffDamageOn(type1)*getCoeffDamageOn(type2);
 	}
 	public double getCoeffDamageOn(Type cible) {
 		return this.tabCoeffEfficacite[cible.id];
-=======
 	
 	public double getCoeffDamageOn(IType cible) {
 		return this.tabCoeffEfficacite[((Type)cible).id];
->>>>>>> Stashed changes
 	}
 
 	public void initCoeff(String fileName){
