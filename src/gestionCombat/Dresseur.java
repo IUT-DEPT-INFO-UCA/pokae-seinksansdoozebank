@@ -60,7 +60,7 @@ public class Dresseur implements IEchange{
 		System.out.println("Choisissez le pokemon à envoyer au combat : ");
 		//affichage de l'equipe
 		//scanner et tout
-		Pokemon choosen = new Pokemon("carapute");
+		Pokemon choosen = new Pokemon("carapute",new Espece(5));
 		this.setPokemon(choosen);
 	}
 

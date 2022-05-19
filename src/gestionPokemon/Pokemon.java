@@ -269,7 +269,7 @@ public class Pokemon implements IStat, IPokemon{
         this.atk = ((2*(this.espPoke.atq + this.dvAtq)+(evAtq/4)/100)+5);
         this.def = ((2*(this.espPoke.def + this.dvDef)+(evDef/4)/100)+5);
         this.vit = ((2*(this.espPoke.vit + this.dvVit)+(evVit/4)/100)+5);
-        this.spe = ((2*(this.espPoke.spe + this.dvSpe)+(evSpe/4)/100)+5);*/
+        this.spe = ((2*(this.espPoke.spe + this.dvSpe)+(evSpe/4)/100)+5);
         this.pvMax = (((2*(this.getEspece().getBaseStat().getPV() + this.dvPv)+this.evPv/4)*this.niv ) /100 ) + this.niv + 10;
         this.atk = ((2*(this.getEspece().getBaseStat().getForce() + this.dvAtq)+(evAtq/4)/100)+5);
         this.def = ((2*(this.getEspece().getBaseStat().getDefense() + this.dvDef)+(evDef/4)/100)+5);

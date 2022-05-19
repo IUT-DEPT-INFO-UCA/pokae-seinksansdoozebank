@@ -12,14 +12,8 @@ package interfaces;
  *
  */
 public interface IPokedex {
-<<<<<<< Updated upstream
-	public IPokemon[] engendreRanch();			//Renvoie un tableau de 6 Pokemon au hasard
-	public IEspece getInfo(String nomEspece);	//Renvoie une instance de l'espèce de Pokemon dont on fournit le nom
-	public Double getEfficacite(IType attaque, IType defense); //Calcule l'efficacité d'un type d'attaque sur un type de cible
-	public ICapacite getCapacite(String nomCapacite);   //Renvoie une instance de la capacité appelée nomCapacite
-	public ICapacite getCapacite(int nunCapacite);
-=======
-	
+
+
 	/**Génère un tableau de 6 pokemon choisi au hasard.
 	 * @return Un tableau de 6 pokemons.
 	 */
@@ -30,7 +24,7 @@ public interface IPokedex {
 	 * @return Une espece réprésentant celle correspondant au nom en paramètre.
 	 */
 	public IEspece getInfo(String nomEspece);
-	
+
 	/**Récupère l'efficacité d'une attaque sur un type de pokemon.
 	 * @param attaque Un type représentant le type de l'attaque.
 	 * @param defense Un type représentant le type du pokemon cible.
@@ -49,5 +43,4 @@ public interface IPokedex {
 	 * @return Une capacité réprésentant celle correspondant au numéro en paramètre.
 	 */
 	public ICapacite getCapacite(int numCapacite);
->>>>>>> Stashed changes
 }

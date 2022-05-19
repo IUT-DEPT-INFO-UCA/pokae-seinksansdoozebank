@@ -5,6 +5,8 @@ import interfaces.ICategorie;
 import interfaces.IPokemon;
 import interfaces.IType;
 
+import java.util.Objects;
+
 public class Capacite implements  ICapacite{
 	//on met la categorie dans une enumeration ???
 	public int id;
@@ -22,13 +24,15 @@ public class Capacite implements  ICapacite{
 
 	public Capacite(String nom, Type type, String categorie, int puissance, int precision, int pp, int ppBase) {
 		this.nom = nom;
-		this.categorie = categorie =="Physique"? CategorieAttaque.PHYSIQUE : CategorieAttaque.SPECIALE;
+		this.categorie = Objects.equals(categorie, "Physique") ? CategorieAttaque.PHYSIQUE : CategorieAttaque.SPECIALE;
 		this.puissance = puissance;
 		this.precision = precision;
 		this.pp = pp;
 		this.ppBase = ppBase;
 	}
-	
+	public String toString() {
+		return "Capacite [id=" + id +"  nom :"+nom+"]";
+	}
 	
 	/////////////////////// methodes de IAttaque ///////////////////////
 	public int calculeDommage(IPokemon lanceur, IPokemon receveur) {

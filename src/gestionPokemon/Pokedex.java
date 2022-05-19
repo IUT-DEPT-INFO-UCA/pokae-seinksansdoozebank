@@ -3,13 +3,20 @@ import interfaces.ICapacite;
 import interfaces.IEspece;
 import interfaces.IPokemon;
 import interfaces.IType;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.*;
 public class Pokedex {
     public static Espece[] listeEspece;
-    public static Capacite[] listeCapacite;
+    public static Capacite[] listeCapacite=new Capacite[110];
 //    static int nombrePokemons;
 
     public IPokemon[] engendreRanch(){
@@ -36,7 +43,9 @@ public class Pokedex {
     public Double getEfficacite(Type attaque, Type defense){
         return attaque.getCoeffDamageOn(defense);
     }
-
+    public void getCapaciteSet(){
+        System.out.println(Arrays.toString(listeCapacite));
+    }
     public ICapacite getCapacite(String nomCapacite){
         int i=0;
         boolean trouve=false;
@@ -54,6 +63,8 @@ public class Pokedex {
         return listeCapacite[nunCapacite];
     }
     //TODO : méthodes déjà faites initiative
+
+
     public Espece createEspece(int id) throws FileNotFoundException {
         Espece espece = new Espece(id);
         File fichierCSV = new File("./listePokemon1G_new.csv");
@@ -64,7 +75,7 @@ public class Pokedex {
 			    if(Integer.parseInt(scannerCSV.next())==id){
 			        espece.nom=scannerCSV.next();
 			        System.out.println(espece);
-			        /*
+                    /*
 			        espece.pv=Integer.parseInt(scannerCSV.next());
 			        espece.atq=Integer.parseInt(scannerCSV.next());
 			        espece.def=Integer.parseInt(scannerCSV.next());
@@ -108,13 +119,12 @@ public class Pokedex {
 		}
         return espece;
     }
-
     public void createListeEspece() throws FileNotFoundException {
         for (int i=1; i<152;i++){
             listeEspece[i]=createEspece(i);
         }
     }
-
+    /* CSV utilisation
     public Capacite createCapacite(int id) throws FileNotFoundException {
         Capacite capacite = new Capacite(id);
         File fichierCSV = new File("./listePokemon1G_new.csv");
@@ -145,9 +155,69 @@ public class Pokedex {
         return capacite;
 
     }
+    */
+    public static JSONObject getJSONfromURL(String url) {
+        try {
+            URL hp = new URL(url);
+            HttpURLConnection hpCon = (HttpURLConnection) hp.openConnection();
+            hpCon.connect();
+
+            BufferedReader streamReader = new BufferedReader(new InputStreamReader(hpCon.getInputStream()));
+            StringBuilder responseStrBuilder = new StringBuilder();
+
+            String inputStr = "";
+            while ((inputStr = streamReader.readLine()) != null) {
+                responseStrBuilder.append(inputStr);
+//                System.out.println(inputStr);
+            }
+            inputStr = responseStrBuilder.toString();
+
+            streamReader.close();
+
+            return (JSONObject) new JSONParser().parse(inputStr);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public Capacite createCapacite(int i){
+        Capacite capacite=new Capacite(i);
+        JSONObject jsonCapacite = getJSONfromURL("https://pokeapi.co/api/v2/move/"+i);
+        assert jsonCapacite != null;
+        if(jsonCapacite.get("accuracy")==null){
+            capacite.precision=-1;
+        }
+        else{
+            capacite.precision=Integer.parseInt(jsonCapacite.get("accuracy").toString());
+        }
+
+        capacite.nom=jsonCapacite.get("name").toString();
+        capacite.pp=Integer.parseInt(jsonCapacite.get("pp").toString());
+        capacite.ppBase= capacite.pp;
+        System.out.println(" i = "+i);
+        if(jsonCapacite.get("power")==null){
+            capacite.puissance=-1;
+        }
+        else{
+            capacite.puissance=Integer.parseInt(jsonCapacite.get("power").toString());
+        }
+
+        if ((((JSONObject)jsonCapacite.get("damage_class")).get("name").toString()).equals("physical")){
+            capacite.categorie=CategorieAttaque.PHYSIQUE;
+        }
+        else{
+            capacite.categorie=CategorieAttaque.SPECIALE;
+        }
+        JSONObject jsonNomType=getJSONfromURL(((JSONObject)jsonCapacite.get("type")).get("url").toString());
+        assert jsonNomType != null;
+        capacite.type=new Type((((JSONObject)(((JSONArray)jsonNomType.get("names")).get(3))).get("name").toString()));
+        System.out.println(capacite.type.id);
+        return capacite;
+    }
     public void createListeCapacite() throws FileNotFoundException {
-        for (int i =0;i<110;i++){
+        for (int i =1;i<110;i++){
             listeCapacite[i]=createCapacite(i);
+            System.out.println(listeCapacite[i].nom);
         }
     }
 
@@ -183,7 +253,9 @@ public class Pokedex {
         return listeCapacite[i];
     }
 
-    public static void main(String[] args){
-        System.out.println("test");
+    public static void main(String[] args) throws FileNotFoundException {
+        Pokedex pokedex = new Pokedex();
+        pokedex.createListeCapacite();
+        pokedex.getCapaciteSet();
     }
 }

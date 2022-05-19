@@ -1,11 +1,13 @@
 package gestionPokemon;
 
 import java.io.*;
+import java.util.Arrays;
+import java.util.Objects;
 
 import interfaces.IType;
 
 public class Type implements IType{
-	public static String[] listeTypes = {"Combat","Dragon","Eau","Electrik","Feu","Glace","Insecte","Normal","Plante","Poison","Psy","Roche","Sol","Spectre","Vol"};
+	public static String[] listeTypes = {"Combat","Dragon","Eau","Électrik","Feu","Glace","Insecte","Normal","Plante","Poison","Psy","Roche","Sol","Spectre","Vol"};
 	public int id;
 	public String nom;
 	private double [] tabCoeffEfficacite = new double[15];
@@ -13,8 +15,9 @@ public class Type implements IType{
 
 	public Type(String nom){
 		this.nom = nom;
+		System.out.println(this.nom);
 		this.id=getIndexOfType();
-		this.initCoeff("efficacite.csv");
+		this.initCoeff("./csv/efficacites.csv");
 	}
 
 	public Type(int id, String nom) {
@@ -28,7 +31,7 @@ public class Type implements IType{
 	//methode utilisee � la construction des types pour leur attribuer le bon id
 	private int getIndexOfType(){
 		int i=0;
-		while (i<listeTypes.length && listeTypes[i].equals(this.nom)) {
+		while (i<listeTypes.length && !listeTypes[i].equals(this.nom)) {
 			i++;
 		}
 		if(i==listeTypes.length) {
@@ -39,9 +42,7 @@ public class Type implements IType{
 	public double getCoeffTotal(Type type1,Type type2) {
 		return getCoeffDamageOn(type1)*getCoeffDamageOn(type2);
 	}
-	public double getCoeffDamageOn(Type cible) {
-		return this.tabCoeffEfficacite[cible.id];
-	
+
 	public double getCoeffDamageOn(IType cible) {
 		return this.tabCoeffEfficacite[((Type)cible).id];
 	}
@@ -53,17 +54,20 @@ public class Type implements IType{
 			reader.readLine();
 			int i=0;
 			while(reader.ready()){
+
 				String line = reader.readLine();
-				//System.out.println(line);
 				String[] tab = line.split(";");
-				this.tabCoeffEfficacite[i]=Double.parseDouble(tab[this.id+1]);
+				if(Objects.equals(tab[0], this.nom)) {
+					for (int j=0;j< listeTypes.length;j++){
+						this.tabCoeffEfficacite[j] = Double.parseDouble(tab[j+1]);
+					}
+				}
 				i++;
 			}
+//			System.out.println(this.nom+" tab = "+Arrays.toString(this.tabCoeffEfficacite));
 			reader.close();
 			fichier.close();
-		}catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}catch (IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -89,9 +93,9 @@ public class Type implements IType{
 
 	public void afficherTab() {
 		StringBuilder s  = new StringBuilder();
-		s.append(this.nom+" :");
+		s.append(this.nom).append(" :");
 		for(double d : this.tabCoeffEfficacite) {
-			s.append(" "+d+",");
+			s.append(" ").append(d).append(",");
 		}
 		System.out.println(s);
 	}

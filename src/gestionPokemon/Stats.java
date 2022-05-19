@@ -1,22 +1,7 @@
 package gestionPokemon;
 
 import interfaces.IStat;
-<<<<<<< Updated upstream
 
-public class Stats implements IStat {
-	
-	public int force;
-    public int defense;
-    public int vitesse;
-    public int special;
-    public int pv;
-    
-
-=======
-/**
- * Représente un ensemble de variable représentant les statistiques d'un pokemon ou d'une espèce
- * 
- */
 public class Stats implements IStat {
 	/**
 	 * La stat de Force de l'ensemble.
@@ -47,7 +32,6 @@ public class Stats implements IStat {
 	 * @param s La stat Special de l'ensemble.
 	 * @param pv La stat de Point de Vie de l'ensemble.
 	 */
->>>>>>> Stashed changes
 	public Stats(int f, int d, int v, int s, int pv) {
 		this.force=f;
 		this.defense=d;
@@ -59,7 +43,6 @@ public class Stats implements IStat {
 	public int getForce() {
 		return force;
 	}
-<<<<<<< Updated upstream
 	public int getDefense() {
 		return defense;
 	}
@@ -88,46 +71,6 @@ public class Stats implements IStat {
 		this.pv = pv;
 	}
     
-    
-=======
-	
-	public int getDefense() {
-		return defense;
-	}
-	
-	public int getVitesse() {
-		return vitesse;
-	}
-	
-	public int getSpecial() {
-		return special;
-	}
-	
-	public int getPV() {
-		return pv;
-	}
-	
-	
-	public void setForce(int force) {
-		this.force = force;
-	}
-	
-	public void setDefense(int defense) {
-		this.defense = defense;
-	}
-	
-	public void setVitesse(int vitesse) {
-		this.vitesse = vitesse;
-	}
-	
-	public void setSpecial(int special) {
-		this.special = special;
-	}
-	
-	public void setPV(int pv) {
-		this.pv = pv;
-	}
 
->>>>>>> Stashed changes
 
 }
