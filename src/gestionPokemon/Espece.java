@@ -21,12 +21,12 @@ public class Espece implements IEspece {
 
 	//Stats specifiques :
 	public Stats statsDeBase;
-
+	/*
     public int atq;
     public int def;
     public int vit;
     public int spe;
-    public int pv;
+    public int pv;*/
 
 	//Valeur d'Effort == puissance suite aux combats
 	public Stats statsGain;
@@ -49,9 +49,7 @@ public class Espece implements IEspece {
 
 	@Override
 	public IStat getBaseStat() {
-		// TODO Auto-generated method stub
-		// return this.statsDeBase;
-		return null;
+		return this.statsDeBase;
 	}
 
 	@Override

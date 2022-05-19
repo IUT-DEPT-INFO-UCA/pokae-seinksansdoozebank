@@ -6,7 +6,7 @@ import interfaces.IEspece;
 import interfaces.IPokemon;
 import interfaces.IStat;
 
-public class Pokemon implements IStat, IPokemon{
+public class Pokemon implements IPokemon{
     public static int cptId = 0;
     
     public int id = 0; // identifiant unique
@@ -18,29 +18,14 @@ public class Pokemon implements IStat, IPokemon{
     
     // Stats specifiques :
     public Stats statsSpecifiques;
-    public int atk;
-    public int def;
-    public int vit;
-    public int spe;
-    public int pv;
     
     public int pvMax;
 
     // Valeur d'Effort == puissance suite aux combats
     public Stats statsEV;
-    private int evAtq;
-    private int evDef;
-    private int evVit;
-    private int evSpe;
-    private int evPv;
     
     // Valeurs  determinantes == puissance native
     public Stats statsDV; //stats de naissance
-    private int dvAtq;
-    private int dvDef;
-    private int dvVit;
-    private int dvSpe;
-    private int dvPv;
     
     //historique et effet des capacite
     private Capacite derniereCapciteUtilisee;
@@ -51,87 +36,40 @@ public class Pokemon implements IStat, IPokemon{
     public Pokemon(String nom,Espece espPoke) {
         this.setId(cptId);
         this.nom = nom;
-        evAtq = 0;
-        evDef = 0;
-        evVit = 0;
-        evSpe = 0;
-        evPv = 0;
-        dvAtq = (int) (Math.random() * ((15) + 1));
-        dvDef = (int) (Math.random() * ((15) + 1));
-        dvVit = (int) (Math.random() * ((15) + 1));
-        dvSpe = (int) (Math.random() * ((15) + 1));
-        dvPv = (int) (Math.random() * ((15) + 1));
+        this.statsEV.setForce(0);
+        this.statsEV.setDefense(0);
+        this.statsEV.setVitesse(0);
+        this.statsEV.setSpecial(0);
+        this.statsEV.setPV(0);
+        this.statsDV.setForce((int) (Math.random() * ((15) + 1)));
+        this.statsDV.setDefense((int) (Math.random() * ((15) + 1)));
+        this.statsDV.setVitesse((int) (Math.random() * ((15) + 1)));
+        this.statsDV.setSpecial((int) (Math.random() * ((15) + 1)));
+        this.statsDV.setPV((int) (Math.random() * ((15) + 1)));
 		this.espPoke=espPoke;
     }
 
 	public Pokemon(Espece espPoke) {
 		this.setId(cptId);
 		this.nom = espPoke.getNom();
-		evAtq = 0;
-		evDef = 0;
-		evVit = 0;
-		evSpe = 0;
-		evPv = 0;
-		dvAtq = (int) (Math.random() * ((15) + 1));
-		dvDef = (int) (Math.random() * ((15) + 1));
-		dvVit = (int) (Math.random() * ((15) + 1));
-		dvSpe = (int) (Math.random() * ((15) + 1));
-		dvPv = (int) (Math.random() * ((15) + 1));
+        this.statsEV.setForce(0);
+        this.statsEV.setDefense(0);
+        this.statsEV.setVitesse(0);
+        this.statsEV.setSpecial(0);
+        this.statsEV.setPV(0);
+        this.statsDV.setForce((int) (Math.random() * ((15) + 1)));
+        this.statsDV.setDefense((int) (Math.random() * ((15) + 1)));
+        this.statsDV.setVitesse((int) (Math.random() * ((15) + 1)));
+        this.statsDV.setSpecial((int) (Math.random() * ((15) + 1)));
+        this.statsDV.setPV((int) (Math.random() * ((15) + 1)));
 		this.espPoke=espPoke;
 	}
     
-    //////////////// methodes de IStat ///////////////////////
-	public int getPV() {
-		return this.pv;
-	}
-
-	public int getForce() {
-		return this.atk;
-	}
-
-	public int getDefense() {
-		return this.def;
-	}
-
-	public int getSpecial() {
-		return this.spe;
-	}
-
-	public int getVitesse() {
-		return this.vit;
-	}
-
-	public void setPV(int pv) {
-		this.pv = pv;
-	}
-
-	public void setForce(int atk) {
-		this.atk = atk;
-	}
-
-	public void setDefense(int def) { 
-		this.def = def;
-	}
-
-	public void setVitesse(int vit) {
-		this.vit = vit;
-		
-	}
-
-	public void setSpecial(int spe) {
-		this.spe = spe;
-	}
-
-	/////////////////////////////////////////////////////////////  
-	
 	
 	
     //////////////// methodes de IPokemon ///////////////////////
 	public IStat getStat() {
-		// TODO Auto-generated method stub
-		//ptetre on doit mettre les 5 stats dans un hashmap ? mais on 
-		// pourait meme pas le return ici vu que ce serait pas le bon type
-		return null;
+		return this.statsSpecifiques;
 	}
 	public double getExperience() {
 		return this.xp;
@@ -146,7 +84,7 @@ public class Pokemon implements IStat, IPokemon{
 		return this.nom;
 	}
 	public double getPourcentagePV() {
-		return this.pv*100*this.pvMax;
+		return this.getStat().getPV()*100*this.pvMax;
 	}
 
 	public IEspece getEspece() {
@@ -161,7 +99,9 @@ public class Pokemon implements IStat, IPokemon{
 	}
 	@Override
 	public void apprendCapacites(ICapacite[] caps) {
-		// TODO Auto-generated method stub
+		for(int i=0;i<Math.min(caps.length,4);i++) {
+			
+		}
 		
 	}
 	public void remplaceCapacite(int i, ICapacite cap) throws Exception {
@@ -171,6 +111,7 @@ public class Pokemon implements IStat, IPokemon{
 	@Override
 	public void gagneExperienceDe(IPokemon pok) {
 		//TODO faut checker ce calcul
+		this.augmenterEV(pok);
     	double gainXp = (1.5 * pok.getNiveau() * pok.getEspece().getBaseExp()) / 7;
         double xpTemporaire = this.xp + gainXp ;
         double seuil = (Math.pow(this.niv, 3) * 0.8);
@@ -180,9 +121,6 @@ public class Pokemon implements IStat, IPokemon{
         } else {
             this.xp += gainXp;
         }
-        // augmentation des EV
-        //this.evAtq+=pok.espPoke.getGainAtk;
-        //...
 	}
 
 	@Override
@@ -192,7 +130,7 @@ public class Pokemon implements IStat, IPokemon{
 
 	public boolean estEvanoui() {
         //si les pv sont inf a 0 
-    	return this.pv <= 0;
+    	return this.getStat().getPV() <= 0;
 	}
 
 	@Override
@@ -206,7 +144,7 @@ public class Pokemon implements IStat, IPokemon{
 	}
 
 	public void soigne() {
-    	this.pv = this.pvMax;
+    	this.getStat().setPV(this.pvMax);;
     	this.resetPp();
 	}
 
@@ -217,7 +155,15 @@ public class Pokemon implements IStat, IPokemon{
 		Pokemon.cptId ++;
 	}
     
-    public Capacite obtenirDerniereCapaUtilisee() {
+    public IStat getStatsEV() {
+		return statsEV;
+	}
+
+	public IStat getStatsDV() {
+		return statsDV;
+	}
+
+	public Capacite obtenirDerniereCapaUtilisee() {
     	return this.derniereCapciteUtilisee;
     }
 
@@ -243,20 +189,17 @@ public class Pokemon implements IStat, IPokemon{
 	}
 	
     public void subirDegats(int degats) {
-        this.pv-=degats;
+        this.getStat().setPV(this.getStat().getPV()-degats);
+    }
+
+    public void augmenterEV(IPokemon vaincu) {
+    	this.getStatsEV().setForce(this.getStatsEV().getForce()+vaincu.getEspece().getGainsStat().getForce());
+    	this.getStatsEV().setDefense(this.getStatsEV().getDefense()+vaincu.getEspece().getGainsStat().getDefense());
+    	this.getStatsEV().setVitesse(this.getStatsEV().getVitesse()+vaincu.getEspece().getGainsStat().getVitesse());
+    	this.getStatsEV().setSpecial(this.getStatsEV().getSpecial()+vaincu.getEspece().getGainsStat().getSpecial());
+    	this.getStatsEV().setPV(this.getStatsEV().getPV()+vaincu.getEspece().getGainsStat().getPV());
     }
     
-    public void augmenterXP(int baseExpAdv, int nivAdv) {
-    	double gainXp = (1.5 * nivAdv * baseExpAdv) / 7;
-        double xpTemporaire = this.xp + gainXp ;
-        double seuil = (Math.pow(this.niv, 3) * 0.8);
-        if (xpTemporaire >= seuil) {
-            augmenterNiveau();
-            this.xp = xpTemporaire - seuil;
-        } else {
-            this.xp += gainXp;
-        }
-    }
 
     public void augmenterNiveau() {
         this.niv++;
@@ -265,17 +208,13 @@ public class Pokemon implements IStat, IPokemon{
         }
         //Les stats de base sont celles de l'espece actuelle du pokemon. 
         //Ainsi, si le pokemon a evolue, son espece a change juste avant donc les stats sont calculees sur les nouvelles stat de base.
-        this.pvMax = (((2*(this.espPoke.pv + this.dvPv)+this.evPv/4)*this.niv ) /100 ) + this.niv + 10;
-        this.atk = ((2*(this.espPoke.atq + this.dvAtq)+(evAtq/4)/100)+5);
-        this.def = ((2*(this.espPoke.def + this.dvDef)+(evDef/4)/100)+5);
-        this.vit = ((2*(this.espPoke.vit + this.dvVit)+(evVit/4)/100)+5);
-        this.spe = ((2*(this.espPoke.spe + this.dvSpe)+(evSpe/4)/100)+5);
-        this.pvMax = (((2*(this.getEspece().getBaseStat().getPV() + this.dvPv)+this.evPv/4)*this.niv ) /100 ) + this.niv + 10;
-        this.atk = ((2*(this.getEspece().getBaseStat().getForce() + this.dvAtq)+(evAtq/4)/100)+5);
-        this.def = ((2*(this.getEspece().getBaseStat().getDefense() + this.dvDef)+(evDef/4)/100)+5);
-        this.vit = ((2*(this.getEspece().getBaseStat().getVitesse() + this.dvVit)+(evVit/4)/100)+5);
-        this.spe = ((2*(this.getEspece().getBaseStat().getSpecial()+ this.dvSpe)+(evSpe/4)/100)+5);
+        this.pvMax = (((2*(this.espPoke.getBaseStat().getPV()+ this.getStatsDV().getPV())+this.getStatsEV().getPV()/4)*this.getNiveau() ) /100 ) + this.getNiveau() + 10;
+        this.getStat().setForce((2*(this.getEspece().getBaseStat().getForce() + this.getStatsDV().getForce())+(this.getStatsEV().getPV()/4)/100)+5);
+        this.getStat().setDefense((2*(this.getEspece().getBaseStat().getDefense() + this.getStatsDV().getDefense())+(this.getStatsEV().getDefense()/4)/100)+5);
+        this.getStat().setVitesse((2*(this.getEspece().getBaseStat().getVitesse() + this.getStatsDV().getVitesse())+(this.getStatsEV().getVitesse()/4)/100)+5);
+        this.getStat().setSpecial((2*(this.getEspece().getBaseStat().getSpecial()+ this.getStatsDV().getSpecial())+(this.getStatsEV().getSpecial()/4)/100)+5);
     }
+    
     public void evoluer(){
         // On modifie uniquement l'espece du pokemon. Le calcul des nouvelles stat se fait dans augmenterNiv
         this.vaMuterEn(this.getEspece().getEvolution(niv));
@@ -283,16 +222,16 @@ public class Pokemon implements IStat, IPokemon{
     
     public float obtenirDefSur(Capacite c) {
     	if(!c.getCategorie().isSpecial()) {
-    		return this.def;
+    		return this.getStat().getDefense();
     	}else {
-    		return this.spe;
+    		return this.getStat().getSpecial();
     	}
     }    
     public float obtenirAtqSur(Capacite c) {
     	if(!c.getCategorie().isSpecial()) {
-    		return this.atk;
+    		return this.getStat().getForce();
     	}else {
-    		return this.spe;
+    		return this.getStat().getSpecial();
     	}
     }
     
@@ -308,10 +247,10 @@ public class Pokemon implements IStat, IPokemon{
     	}
     }
 	public boolean estPlusRapideQue(Pokemon other) {
-		if(this.vit==other.vit) {
+		if(this.getStat().getVitesse()==other.getStat().getVitesse()) {
 			return Math.random()>0.5;
 		}else {
-			return this.vit>other.vit;
+			return this.getStat().getVitesse()>other.getStat().getVitesse();
 		}
 	}
 

@@ -62,7 +62,7 @@ public interface IPokemon {
 	 */
 	public void apprendCapacites(ICapacite[] caps);	//Enseigne les capacités au Pokemon
 	
-	/**Change une capacité du tableau des capacité que le ppkemon peut utiliser par une autre.
+	/**Change une capacité du tableau des capacité que le pokemon peut utiliser par une autre.
 	 * @param i Un int représentant l'indice de la capacité à oublier.
 	 * @param cap Une Capacite représenant la capacité à apprendre.
 	 * @throws Exception Une exception gérant l'éventuel cas où i n'est pas un indice du tableau.
@@ -91,7 +91,7 @@ public interface IPokemon {
 	public boolean aChangeNiveau();		//renvoie true si le Pokemon vient de changer de niveau
 	
 	/**Récupère la possbilité d'évoluer d'un pokemon.
-	 * @return Un booléen valant true si le pokemon eut évoluer, false sinon.
+	 * @return Un booléen valant true si le pokemon peut évoluer, false sinon.
 	 */
 	public boolean peutMuter();
 	
