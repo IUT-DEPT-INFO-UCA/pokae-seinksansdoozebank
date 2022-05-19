@@ -29,7 +29,7 @@ public class Dresseur implements IEchange{
 	}
 
 	public void utilise() {
-
+		this.getPokemon().utilise(this.getActionChoisie());
 	}
 
 	
@@ -69,7 +69,9 @@ public class Dresseur implements IEchange{
 	}
 
 	public void choisirAttaqueDe(Pokemon p) {
-		this.actionChoisie = p.listeCapacite[1];
+		//TODO print la liste des attaque et choisir l'attaque
+		int indexChoisie = 0;
+		this.actionChoisie = p.listeCapacite[indexChoisie];
 	}
 
 	public void enseignerCapacite(Pokemon p){
@@ -77,7 +79,8 @@ public class Dresseur implements IEchange{
 	}
 	
 	public void attaquer(Dresseur other) {
-		
+		other.getPokemon().subitAttaqueDe(this.getPokemon(), this.actionChoisie);
+		this.utilise();
 	}
 	
 	public boolean pouvoirSeBattre() {

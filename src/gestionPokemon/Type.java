@@ -12,24 +12,35 @@ public class Type implements IType{
 	public String nom;
 	private double [] tabCoeffEfficacite = new double[15];
 
-
+	/**Créé un objet type 1 parametre 
+	 *	@param nom qui initialise le nom du pokémon
+	 * Les autres attributs sont initialisés grâce a des méthodes.
+	 * On affecte un id qui est égal au résultat de la méthode getIndexOfType()
+	 * On affecte a initCoeff la position du fichier effecacites.csv 
+	 */
 	public Type(String nom){
 		this.nom = nom;
-		System.out.println(this.nom);
+		//System.out.println(this.nom);
 		this.id=getIndexOfType();
 		this.initCoeff("./csv/efficacites.csv");
 	}
-
+	/**
+	 Peut-etre a supprimer
 	public Type(int id, String nom) {
 		this.id = id;
 		this.nom = nom;
 	}
-	
+	*/
+	/** La methode getNom() renvoie le nom d'un Type
+	 * @return un string étant le nom du type
+	 */
 	public String getNom() {
 		return this.nom;
 	}
-	//methode utilisee � la construction des types pour leur attribuer le bon id
-	private int getIndexOfType(){
+	/**methode utilisee a la construction des types pour leur attribuer le bon id
+	* @return un entier i si le type est trouvé ou -1 s'il ne l'est pas
+	*/
+	private int getIndexOfType(){ // il faut throws une exeception si le pokémon n'est pas trouvé (si la méthode return -1)
 		int i=0;
 		while (i<listeTypes.length && !listeTypes[i].equals(this.nom)) {
 			i++;
@@ -39,10 +50,18 @@ public class Type implements IType{
 		}
 		return i;
 	}
+	/**La methode getCoeffTotal renvoie le coefficient total en fonction du type
+	 * @param type1 est de type Type et correspond au premier type
+	 * @param type2 est de type Type et correspond au second type 
+	 * @return un double correspondant aux coefficient avec lesquels les degats seront calcules. 
+	 */
 	public double getCoeffTotal(Type type1,Type type2) {
 		return getCoeffDamageOn(type1)*getCoeffDamageOn(type2);
 	}
-
+	/** La methode getCoeffDamageOn() renvoie ???
+	 * @param cible est de type IType representant le type sur lequel on souhaite determiner le coeff de l'attaque
+	 * @return ?????
+	 */
 	public double getCoeffDamageOn(IType cible) {
 		return this.tabCoeffEfficacite[((Type)cible).id];
 	}

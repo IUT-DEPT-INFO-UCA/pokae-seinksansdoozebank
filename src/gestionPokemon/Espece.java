@@ -22,22 +22,10 @@ public class Espece implements IEspece {
 	private int expDeBase;
 
 	//Stats specifiques :
-	public Stats statsDeBase;
-	/*
-    public int atq;
-    public int def;
-    public int vit;
-    public int spe;
-    public int pv;*/
+	public Stats statsDeBase = new Stats();
 
 	//Valeur d'Effort == puissance suite aux combats
-	public Stats statsGain;
-    /*
-    private int gainAtq;
-    private int gainDef;
-    private int gainVit;
-    private int gainSpe;
-    private int gainPv;*/
+	public Stats statsGain = new Stats();
 
 	private static HashMap<Capacite,Integer> capaciteSelonNiveau;
 
@@ -56,14 +44,13 @@ public class Espece implements IEspece {
 
 	@Override
 	public String getNom() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.nom;
 	}
 
 	@Override
 	public int getNiveauDepart() {
 		return this.nivDepart;
-	}
+	} 
 
 	@Override
 	public int getBaseExp() {
@@ -114,8 +101,8 @@ public class Espece implements IEspece {
 
 	@Override
 	public IType[] getTypes() {
-		// TODO Auto-generated method stub
-		return null;
+		Type[] tab = {this.type1,this.type2};
+		return tab;
 	}
 	//////////////////////////////////////////////////////////////
 
