@@ -17,15 +17,15 @@ public class Pokemon implements IPokemon{
     public Capacite[] listeCapacite = new Capacite[4];
     
     // Stats specifiques :
-    public Stats statsSpecifiques;
+    public Stats statsSpecifiques = new Stats();
     
     public int pvMax;
 
     // Valeur d'Effort == puissance suite aux combats
-    public Stats statsEV;
+    public Stats statsEV = new Stats();
     
     // Valeurs  determinantes == puissance native
-    public Stats statsDV; //stats de naissance
+    public Stats statsDV = new Stats(); //stats de naissance
     
     //historique et effet des capacite
     private Capacite derniereCapciteUtilisee;
@@ -100,7 +100,11 @@ public class Pokemon implements IPokemon{
 	@Override
 	public void apprendCapacites(ICapacite[] caps) {
 		for(int i=0;i<Math.min(caps.length,4);i++) {
-			
+			try {
+				this.remplaceCapacite(i, caps[i]);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		
 	}
@@ -110,10 +114,9 @@ public class Pokemon implements IPokemon{
 
 	@Override
 	public void gagneExperienceDe(IPokemon pok) {
-		//TODO faut checker ce calcul
 		this.augmenterEV(pok);
     	double gainXp = (1.5 * pok.getNiveau() * pok.getEspece().getBaseExp()) / 7;
-        double xpTemporaire = this.xp + gainXp ;
+        double xpTemporaire = this.getExperience() + gainXp ;
         double seuil = (Math.pow(this.niv, 3) * 0.8);
         if (xpTemporaire >= seuil) {
             augmenterNiveau();
@@ -124,8 +127,8 @@ public class Pokemon implements IPokemon{
 	}
 
 	@Override
-	public void subitAttaqueDe(IPokemon pok, IAttaque atk) {
-		// TODO Auto-generated method stub
+	public void subitAttaqueDe(IPokemon pok, IAttaque attaque) {
+		this.getStat().setPV(attaque.calculeDommage(pok, this));
 	}
 
 	public boolean estEvanoui() {
@@ -135,8 +138,7 @@ public class Pokemon implements IPokemon{
 
 	@Override
 	public boolean aChangeNiveau() {
-		// TODO Auto-generated method stub
-		return false;
+		return this.getNiveau()!=this.getEspece().getNiveauDepart();
 	}
 
 	public boolean peutMuter() {
@@ -251,6 +253,14 @@ public class Pokemon implements IPokemon{
 			return Math.random()>0.5;
 		}else {
 			return this.getStat().getVitesse()>other.getStat().getVitesse();
+		}
+	}
+
+	public void utilise(Capacite actionChoisie) {
+		for(ICapacite c : this.getCapacitesApprises()) {
+			if(c.equals(actionChoisie)) {
+				c.utilise();
+			}
 		}
 	}
 

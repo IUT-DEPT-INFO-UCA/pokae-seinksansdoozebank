@@ -32,7 +32,16 @@ public class Stats implements IStat {
 	 * @param s La stat Special de l'ensemble.
 	 * @param pv La stat de Point de Vie de l'ensemble.
 	 */
-	public Stats(int f, int d, int v, int s, int pv) {
+	 
+	public Stats() {
+		this.force=0;
+		this.defense=0;
+		this.vitesse=0;
+		this.special=0;
+		this.pv=0;
+	}
+	
+	public Stats (int f, int d, int v, int s, int pv) {
 		this.force=f;
 		this.defense=d;
 		this.vitesse=v;
