@@ -59,7 +59,7 @@ public class Espece implements IEspece {
 
 	@Override
 	public IStat getGainsStat() {
-		return this.getGainsStat();
+		return this.statsGain;
 	}
 	public void initCapaciteSelonNiveau(){
 		JSONObject jsonCapacite = Pokedex.getJSONfromURL("https://pokeapi.co/api/v2/move/"+this.id);
