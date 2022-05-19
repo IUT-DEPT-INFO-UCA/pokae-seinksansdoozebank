@@ -69,11 +69,8 @@ import interfaces.IType;
 		//Liste des capacités
 		private static HashMap<Capacite,Integer> capaciteSelonNiveau;
 		
-<<<<<<< Updated upstream
-		public Espece(int id) {
-=======
+
 	    public Espece(int id) {
->>>>>>> Stashed changes
 	        this.id = id;
 	    }
 
