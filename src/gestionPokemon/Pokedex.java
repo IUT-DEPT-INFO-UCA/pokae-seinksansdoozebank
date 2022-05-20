@@ -1,6 +1,8 @@
 package gestionPokemon;
-import interfaces.*;
-import org.json.simple.JSONArray;
+
+import interfaces.ICapacite;
+import interfaces.IEspece;
+import interfaces.IPokemon;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -10,7 +12,8 @@ import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Scanner;
 public class Pokedex {
     // Création d'un tableau d'objets Espece.
     public static Espece[] listeEspece=new Espece[152];
@@ -199,7 +202,7 @@ public class Pokedex {
             BufferedReader streamReader = new BufferedReader(new InputStreamReader(hpCon.getInputStream()));
             StringBuilder responseStrBuilder = new StringBuilder();
 
-            String inputStr = "";
+            String inputStr;
             while ((inputStr = streamReader.readLine()) != null) {
                 responseStrBuilder.append(inputStr);
                 // System.out.println(inputStr);

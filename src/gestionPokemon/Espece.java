@@ -28,7 +28,7 @@ public class Espece implements IEspece {
 	public Stats statsGain = new Stats();
 
 	// Une Hashmap qui contient le niveau auquel un pokémon apprend un certain mouvement.
-	private static HashMap<Capacite,Integer> capaciteSelonNiveau=new HashMap<Capacite,Integer>();
+	private static HashMap<Capacite,Integer> capaciteSelonNiveau= new HashMap<>();
 
 
 	public Espece(int id) {
@@ -98,12 +98,13 @@ public class Espece implements IEspece {
 		JSONArray listeMoves=(JSONArray) jsonCapacite.get("moves");
 		System.out.println(this.nom);
 		Pokedex pokedex=new Pokedex();
-		for(int i=0;i<listeMoves.size();i++){
-			JSONObject jsonNomsMoves = Pokedex.getJSONfromURL(((JSONObject)((JSONObject) listeMoves.get(i)).get("move")).get("url").toString());
-			String nomCapaTemp=((JSONObject)((JSONArray) jsonNomsMoves.get("names")).get(3)).get("name").toString();
-			Capacite capaTemp= (Capacite) pokedex.capaciteParNom(nomCapaTemp);
-			if(capaTemp!=null){
-				JSONArray listeVersionGroupDetail=(JSONArray) ((JSONObject) listeMoves.get(i)).get("version_group_details");
+		for (Object listeMove : listeMoves) {
+			JSONObject jsonNomsMoves = Pokedex.getJSONfromURL(((JSONObject) ((JSONObject) listeMove).get("move")).get("url").toString());
+			assert jsonNomsMoves != null;
+			String nomCapaTemp = ((JSONObject) ((JSONArray) jsonNomsMoves.get("names")).get(3)).get("name").toString();
+			Capacite capaTemp = pokedex.capaciteParNom(nomCapaTemp);
+			if (capaTemp != null) {
+				JSONArray listeVersionGroupDetail = (JSONArray) ((JSONObject) listeMove).get("version_group_details");
 				for (Object o : listeVersionGroupDetail) {
 					capaciteSelonNiveau.put(capaTemp, Integer.parseInt((((JSONObject) o).get("level_learned_at")).toString()));
 				}
@@ -122,7 +123,7 @@ public class Espece implements IEspece {
 		Capacite[] liste = new Capacite[Espece.capaciteSelonNiveau.size()];
 		int i =0;
 		for (Entry<Capacite, Integer> c : Espece.capaciteSelonNiveau.entrySet()) {
-			liste[i] = (Capacite) c.getKey();
+			liste[i] = c.getKey();
 			i++;
 		}
 		return liste;
