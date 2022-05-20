@@ -1,5 +1,7 @@
 package gestionCombat;
 
+import java.util.Scanner;
+
 public class Combat {
 	@SuppressWarnings("unused")
 	private int nbTours;
@@ -49,11 +51,14 @@ public class Combat {
 	}
 
 	private void choisirAction(Dresseur d){
-		String input = "";
-		if(input == "echange"){
-			d.choisirPokemon();
-		}else{
-			d.choisirAttaqueDe(d.getPokemon());
+		System.out.println("Entrez <0> pour attaquer ou <1> pour changer de pokemon : ");
+		try (Scanner sc = new Scanner(System.in)) {
+			int input = sc.nextInt();
+			if(input == 0){
+				d.choisirPokemon();
+			}else{
+				d.choisirAttaqueDe(d.getPokemon());
+			}
 		}
 	}
 

@@ -7,6 +7,8 @@ import interfaces.ICapacite;
 import interfaces.IEspece;
 import interfaces.IStat;
 import interfaces.IType;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 public class Espece implements IEspece {
 	private int id;
@@ -16,30 +18,22 @@ public class Espece implements IEspece {
 
 	public int nivDepart;
 	public int nivEvolution;
-	public Espece evolution;
+	public String evolution;
 	private int expDeBase;
 
 	//Stats specifiques :
-	public Stats statsDeBase;
-
-    public int atq;
-    public int def;
-    public int vit;
-    public int spe;
-    public int pv;
+	public Stats statsDeBase = new Stats();
 
 	//Valeur d'Effort == puissance suite aux combats
-	public Stats statsGain;
-    /*
-    private int gainAtq;
-    private int gainDef;
-    private int gainVit;
-    private int gainSpe;
-    private int gainPv;*/
+	public Stats statsGain = new Stats();
 
-	private static HashMap<Capacite,Integer> capaciteSelonNiveau;
+	// Une Hashmap qui contient le niveau auquel un pokemon apprend un certain mouvement.
+	private static HashMap<Capacite,Integer> capaciteSelonNiveau= new HashMap<>();
 
-
+	/**
+	 * Constructeur de espece qui l'instancie avec son id
+	 * @param id
+	 */
 	public Espece(int id) {
 		this.setId(id);
 	}
@@ -47,75 +41,160 @@ public class Espece implements IEspece {
 	///////////////methode de IEspece/////////////////////////////////
 
 
+	/**
+	 * Il renvoie les statistiques de base du Pokemon
+	 *
+	 * @return Les statistiques de base du pokemon.
+	 */
 	@Override
 	public IStat getBaseStat() {
-		// TODO Auto-generated method stub
-		// return this.statsDeBase;
-		return null;
+		return this.statsDeBase;
 	}
 
+	/**
+	 * > Cette fonction renvoie le nom de la personne
+	 *
+	 * @return Le nom de la personne.
+	 */
 	@Override
 	public String getNom() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.nom;
 	}
 
+	/**
+	 * > Cette fonction renvoie le niveau auquel le joueur commence la partie
+	 *
+	 * @return Le niveau du joueur.
+	 */
 	@Override
 	public int getNiveauDepart() {
 		return this.nivDepart;
-	}
+	} 
 
+	/**
+	 * Renvoie l'experience de base du Pokemon.
+	 *
+	 * @return L'experience de base du Pokemon.
+	 */
 	@Override
 	public int getBaseExp() {
 		return this.expDeBase;
 	}
 
+	/**
+	 * Renvoie la statistique utilisee pour calculer les gains de cette statistique.
+	 *
+	 * @return La variable statsGain.
+	 */
 	@Override
 	public IStat getGainsStat() {
-		return this.getGainsStat();
+		return this.statsGain;
 	}
 
+	/**
+	 * Il prend l'objet JSON du pokemon, obtient les mouvements, obtient les noms des mouvements, obtient le niveau auquel le
+	 * pokemon apprend le mouvement et place le mouvement et le niveau dans un hashmap
+	 */
+	public void initCapaciteSelonNiveau(){
+		JSONObject jsonCapacite = Pokedex.getJSONfromURL("https://pokeapi.co/api/v2/pokemon/"+this.id);
+		assert jsonCapacite != null;
+		JSONArray listeMoves=(JSONArray) jsonCapacite.get("moves");
+		System.out.println(this.nom);
+		Pokedex pokedex=new Pokedex();
+		for (Object listeMove : listeMoves) {
+			JSONObject jsonNomsMoves = Pokedex.getJSONfromURL(((JSONObject) ((JSONObject) listeMove).get("move")).get("url").toString());
+			assert jsonNomsMoves != null;
+			String nomCapaTemp = ((JSONObject) ((JSONArray) jsonNomsMoves.get("names")).get(3)).get("name").toString();
+			Capacite capaTemp = pokedex.capaciteParNom(nomCapaTemp);
+			if (capaTemp != null) {
+				JSONArray listeVersionGroupDetail = (JSONArray) ((JSONObject) listeMove).get("version_group_details");
+				for (Object o : listeVersionGroupDetail) {
+					capaciteSelonNiveau.put(capaTemp, Integer.parseInt((((JSONObject) o).get("level_learned_at")).toString()));
+				}
+			}
+		}
+	}
+
+
+	/**
+	 * Il renvoie un tableau de toutes les capacites que l'espece peut apprendre
+	 *
+	 * @return Une gamme d'ICapacite
+	 */
 	@Override
 	public ICapacite[] getCapSet() {
 		Capacite[] liste = new Capacite[Espece.capaciteSelonNiveau.size()];
 		int i =0;
 		for (Entry<Capacite, Integer> c : Espece.capaciteSelonNiveau.entrySet()) {
-			liste[i] = (Capacite) c;
+			liste[i] = c.getKey();
 			i++;
 		}
 		return liste;
 	}
 
+	/**
+	 * Il renvoie l'espece dans laquelle cette espece evolue
+	 *
+	 * @param niveau Le niveau du Pokemon.
+	 * @return L'evolution du pokemon
+	 */
 	public IEspece getEvolution(int niveau) {
-		if(this.evolution.nivDepart==niveau) {
-			return this.evolution;
-		}
-		return null;
+		return Pokedex.especeParNom(this.evolution);
 	}
 
+	/**
+	 * Renvoie un tableau des types des deux operandes.
+	 *
+	 * @return Un tableau des deux types.
+	 */
 	@Override
 	public IType[] getTypes() {
-		// TODO Auto-generated method stub
-		return null;
+		return new Type[]{this.type1,this.type2};
 	}
 	//////////////////////////////////////////////////////////////
 
+	/**
+	 * Cette fonction renvoie l'identifiant de l'Espece.
+	 *
+	 * @return L'identifiant de l'Espece.
+	 */
 	public int getId() {
 		return id;
 	}
 
+	/**
+	 * Cette fonction definit l'id de l'Espece sur la valeur du parametre id.
+	 *
+	 * @param id L'identifiant de l'Espece.
+	 */
 	public void setId(int id) {
 		this.id = id;
 	}
 
+	/**
+	 * > Cette fonction fixe la valeur de la variable `expDeBase` a la valeur du parametre `expDeBase`
+	 *
+	 * @param expDeBase L'experience de base du Pokemon.
+	 */
 	public void setExpDeBase(int expDeBase) {
 		this.expDeBase = expDeBase;
 	}
 
+	/**
+	 * Il renvoie la valeur de la variable privee `expDeBase`
+	 *
+	 * @return La variable expDeBase est renvoyee.
+	 */
 	public int obtenirExpDeBase() {
 		return this.expDeBase;
 	}
 
+	/**
+	 * Il renvoie la premiere capacite disponible d'un pokemon
+	 *
+	 * @param pokemon le pokemon qui utilisera le mouvement
+	 * @return La methode renvoie le premier objet Capacite disponible pour l'objet Pokemon.
+	 */
 	public Capacite capaciteDispo(Pokemon pokemon){
 		for (Entry<Capacite, Integer> c : Espece.capaciteSelonNiveau.entrySet()) {
 			if (Integer.parseInt(c.getKey().toString())<=pokemon.niv){

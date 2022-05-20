@@ -2,6 +2,10 @@ package gestionPokemon;
 
 import interfaces.IStat;
 
+/**
+ * Un objet représentant un ensemble de statistique utilsié pour stocker les
+ * stats d'une espèce ou d'un Pokémon
+ */
 public class Stats implements IStat {
 	/**
 	 * La stat de Force de l'ensemble.
@@ -24,53 +28,106 @@ public class Stats implements IStat {
 	 */
 	public int pv;
 
-
-	/**Creer un objet Stat avec 5 valeurs.
-	 * @param f La stat de Force de l'ensemble.
-	 * @param d La stat de Defense de l'ensemble.
-	 * @param v La stat de Vitesse de l'ensemble.
-	 * @param s La stat Special de l'ensemble.
-	 * @param pv La stat de Point de Vie de l'ensemble.
+	/**
+	 * Creer un objet Stat avec chachue de ses valeurs initilisée à 0
 	 */
-	public Stats(int f, int d, int v, int s, int pv) {
-		this.force=f;
-		this.defense=d;
-		this.vitesse=v;
-		this.special=s;
-		this.pv=pv;
+	public Stats() {
+		this.force = 0;
+		this.defense = 0;
+		this.vitesse = 0;
+		this.special = 0;
+		this.pv = 0;
 	}
-	
+
+	/**
+	 * Cette fonction renvoie la force du Pokémon
+	 * 
+	 * @return La variable de force est renvoyée.
+	 */
 	public int getForce() {
 		return force;
 	}
+
+	/**
+	 * Cette fonction renvoie la défense du Pokémon
+	 * 
+	 * @return La variable de défense est renvoyée.
+	 */
 	public int getDefense() {
 		return defense;
 	}
+
+	/**
+	 * Cette fonction renvoie la vitesse du Pokémon
+	 * 
+	 * @return La vitesse du Pokémon.
+	 */
 	public int getVitesse() {
 		return vitesse;
 	}
+
+	/**
+	 * Cette fonction renvoie la valeur de la variable spéciale
+	 * 
+	 * @return La variable spéciale est renvoyée.
+	 */
 	public int getSpecial() {
 		return special;
 	}
+
+	/**
+	 * Cette fonction renvoie la valeur de la variable pv
+	 * 
+	 * @return La valeur de la variable pv.
+	 */
 	public int getPV() {
 		return pv;
 	}
+
+	/**
+	 * Cette fonction définit la force du Pokémon
+	 * 
+	 * @param force La quantité de force du Pokémon.
+	 */
 	public void setForce(int force) {
 		this.force = force;
 	}
+
+	/**
+	 * Cette fonction définit la défense du Pokémon
+	 * 
+	 * @param defense La valeur de la défense du Pokémon.
+	 */
 	public void setDefense(int defense) {
 		this.defense = defense;
 	}
+
+	/**
+	 * Cette fonction définit la vitesse du Pokémon
+	 * 
+	 * @param vitesse la vitesse du Pokémon
+	 */
 	public void setVitesse(int vitesse) {
 		this.vitesse = vitesse;
 	}
+
+	/**
+	 * Cette fonction définit la variable spéciale à la valeur du paramètre spécial
+	 * 
+	 * @param special La valeur spéciale du Pokémon.
+	 */
 	public void setSpecial(int special) {
 		this.special = special;
 	}
+
+	/**
+	 * Cette fonction fixe la valeur de la variable privée pv à la valeur du
+	 * paramètre pv
+	 * 
+	 * @param pv Le nombre de points de vie du Pokémon.
+	 */
 	public void setPV(int pv) {
 		this.pv = pv;
 	}
-    
-
 
 }

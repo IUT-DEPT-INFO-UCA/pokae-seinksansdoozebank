@@ -25,12 +25,12 @@ public interface IStat {
 	/**Recupère la stat de Vitesse.
 	 * @return Un int représentant stat de Vitesse de l'ensemble.
 	 */
-	public int getSpecial();
+	public int getVitesse();
 
 	/**Recupère la stat de Special.
 	 * @return Un int représentant stat de Special de l'ensemble.
 	 */
-	public int getVitesse();
+	public int getSpecial();
 
 	/**Recupère la stat de Point de Vie.
 	 * @return Un int représentant stat de Point de Vie de l'ensemble.

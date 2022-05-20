@@ -1,5 +1,8 @@
 package gestionCombat;
+import java.util.Scanner;
+
 import gestionPokemon.*;
+import interfaces.ICapacite;
 import interfaces.IEchange;
 import interfaces.IPokemon;
 
@@ -29,7 +32,7 @@ public class Dresseur implements IEchange{
 	}
 
 	public void utilise() {
-
+		this.getPokemon().utilise(this.getActionChoisie());
 	}
 
 	
@@ -56,12 +59,58 @@ public class Dresseur implements IEchange{
 		return this.equipe;
 	}
 	
+	
+	public String getIdentifiant() {
+		return identifiant;
+	}
+
+	public String getMotDepasse() {
+		return motDepasse;
+	}
+
+	public String getNom() {
+		return nom;
+	}
+
+	public int getNiveau() {
+		return niveau;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setIdentifiant(String identifiant) {
+		this.identifiant = identifiant;
+	}
+
+	public void setMotDepasse(String motDepasse) {
+		this.motDepasse = motDepasse;
+	}
+
+	public void setNom(String nom) {
+		this.nom = nom;
+	}
+
+	public void setNiveau(int niveau) {
+		this.niveau = niveau;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
 	public void choisirPokemon() {
 		System.out.println("Choisissez le pokemon à envoyer au combat : ");
-		//affichage de l'equipe
-		//scanner et tout
-		Pokemon choosen = new Pokemon("carapute",new Espece(5));
-		this.setPokemon(choosen);
+		for(Pokemon p: this.getEquipe()) {
+			System.out.print(p+"     ");
+		}
+		System.out.println("Choississez le numéro du pokemon à envoyer au combat : ");
+		try (Scanner sc = new Scanner(System.in)) {
+			int input = sc.nextInt();
+			Pokemon choosen = this.getEquipe()[input+1];
+			this.setPokemon(choosen);
+		}
 	}
 
 	public Capacite getActionChoisie() {
@@ -69,7 +118,14 @@ public class Dresseur implements IEchange{
 	}
 
 	public void choisirAttaqueDe(Pokemon p) {
-		this.actionChoisie = p.listeCapacite[1];
+		for(ICapacite c : this.getPokemon().getCapacitesApprises()) {
+			System.out.print(c+"     ");
+		}
+		System.out.println("Choississez le numéro de l'attaque à utiliser : ");
+		try (Scanner sc = new Scanner(System.in)) {
+			int input = sc.nextInt();
+			this.actionChoisie = p.listeCapacite[input+1];
+		}
 	}
 
 	public void enseignerCapacite(Pokemon p){
@@ -77,7 +133,8 @@ public class Dresseur implements IEchange{
 	}
 	
 	public void attaquer(Dresseur other) {
-		
+		other.getPokemon().subitAttaqueDe(this.getPokemon(), this.actionChoisie);
+		this.utilise();
 	}
 	
 	public boolean pouvoirSeBattre() {
