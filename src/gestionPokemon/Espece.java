@@ -30,7 +30,10 @@ public class Espece implements IEspece {
 	// Une Hashmap qui contient le niveau auquel un pokemon apprend un certain mouvement.
 	private static HashMap<Capacite,Integer> capaciteSelonNiveau= new HashMap<>();
 
-
+	/**
+	 * Constructeur de espece qui l'instancie avec son id
+	 * @param id
+	 */
 	public Espece(int id) {
 		this.setId(id);
 	}
