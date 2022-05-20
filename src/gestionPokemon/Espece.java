@@ -70,7 +70,7 @@ public class Espece implements IEspece {
 	/**
 	 * Constructeur de espece qui l'instancie avec son id
 	 * 
-	 * @param id
+	 * @param id l'identifiant du Pokemon
 	 */
 	public Espece(int id) {
 		this.setId(id);

@@ -10,6 +10,7 @@ import interfaces.IType;
  * Un objet représentant un Type d'un Pokemon ou d'une Attaque
  */
 public class Type implements IType {
+	
 	/**
 	 * Liste statique des Types existant dans notre version du jeu
 	 */
@@ -34,13 +35,9 @@ public class Type implements IType {
 	private double[] tabCoeffEfficacite = new double[15];
 
 	/**
-	 * Créé un objet Type pour seul paramètre son nom
+	 * Créé un objet Type pour seul paramètre son nom et initialise les autres attributs par des méthodes
 	 * 
-	 * @param nom qui initialise le nom du pokémon
-	 *            Les autres attributs sont initialisés grâce a des méthodes.
-	 *            On affecte un id qui est égal au résultat de la méthode
-	 *            getIndexOfType()
-	 *            On affecte a initCoeff la position du fichier effecacites.csv
+	 * @param nom Le nom du Type
 	 */
 	public Type(String nom) {
 		this.nom = nom;
@@ -52,7 +49,7 @@ public class Type implements IType {
 	/**
 	 * La methode getNom() renvoie le nom d'un Type
 	 * 
-	 * @return un string étant le nom du type
+	 * @return le nom du type
 	 */
 	public String getNom() {
 		return this.nom;
@@ -76,10 +73,10 @@ public class Type implements IType {
 	}
 
 	/**
-	 * La methode getCoeffTotal renvoie le coefficient total en fonction du type
+	 * La methode getCoeffTotal renvoie le coefficient multiplicateur total de l'attaque en fonction des types du Pokemon
 	 * 
-	 * @param type1 est de type Type et correspond au premier type
-	 * @param type2 est de type Type et correspond au second type
+	 * @param type1 le premier type du Pokemon
+	 * @param type2 le deuxieme type du Pokemon
 	 * @return un double correspondant aux coefficient avec lesquels les degats
 	 *         seront calcules.
 	 */
@@ -88,11 +85,12 @@ public class Type implements IType {
 	}
 
 	/**
-	 * La methode getCoeffDamageOn() renvoie ???
+	 * Calcule le coefficient multipicateur correspondant aux force du type de l'attaque sur les types du Pokemon
 	 * 
 	 * @param cible est de type IType representant le type sur lequel on souhaite
 	 *              determiner le coeff de l'attaque
-	 * @return ?????
+	 * @return Le tableau regroupant l'efficacité des attques de type this sur chacun des
+	 * types
 	 */
 	public double getCoeffDamageOn(IType cible) {
 		return this.tabCoeffEfficacite[((Type) cible).id];

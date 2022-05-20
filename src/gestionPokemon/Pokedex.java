@@ -20,11 +20,6 @@ import java.util.Scanner;
  * On peut interroger la classe pokedex en lui demandant des capacites ou des especes
  * Elle permet aussi de generer le ranch d'un dresseur
  */
-public class Pokedex {
-    // Création d'un tableau d'objets Espece.
-    public static Espece[] listeEspece=new Espece[152];
-    // Il crée un tableau de 110 objets Capacite.
-    public static Capacite[] listeCapacite=new Capacite[110];
 
 public class Pokedex {
     /**
@@ -215,7 +210,6 @@ public class Pokedex {
      *
      * @param url L'URL de l'API que vous souhaitez appeler.
      * @return Un objet JSON
-     * @throws FileNotFoundException Exception lancée si le fichier csv n'est pas trouvé
      */
     public static JSONObject getJSONfromURL(String url) {
         try {
