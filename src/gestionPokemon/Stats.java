@@ -2,6 +2,10 @@ package gestionPokemon;
 
 import interfaces.IStat;
 
+/**
+ * Un objet représentant un ensemble de statistique utilsié pour stocker les
+ * stats d'une espèce ou d'un Pokémon
+ */
 public class Stats implements IStat {
 	/**
 	 * La stat de Force de l'ensemble.
@@ -24,29 +28,15 @@ public class Stats implements IStat {
 	 */
 	public int pv;
 
+	/**
+	 * Creer un objet Stat avec chachue de ses valeurs initilisée à 0
+	 */
 	public Stats() {
 		this.force = 0;
 		this.defense = 0;
 		this.vitesse = 0;
 		this.special = 0;
 		this.pv = 0;
-	}
-
-	/**
-	 * Creer un objet Stat avec 5 valeurs.
-	 * 
-	 * @param f  La stat de Force de l'ensemble.
-	 * @param d  La stat de Defense de l'ensemble.
-	 * @param v  La stat de Vitesse de l'ensemble.
-	 * @param s  La stat Special de l'ensemble.
-	 * @param pv La stat de Point de Vie de l'ensemble.
-	 */
-	public Stats(int f, int d, int v, int s, int pv) {
-		this.force = f;
-		this.defense = d;
-		this.vitesse = v;
-		this.special = s;
-		this.pv = pv;
 	}
 
 	/**
