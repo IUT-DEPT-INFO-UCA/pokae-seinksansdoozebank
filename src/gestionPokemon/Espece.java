@@ -21,25 +21,26 @@ public class Espece implements IEspece {
 	public String evolution;
 	private int expDeBase;
 
-	//Stats specifiques :
+	// Stats specifiques :
 	public Stats statsDeBase = new Stats();
 
-	//Valeur d'Effort == puissance suite aux combats
+	// Valeur d'Effort == puissance suite aux combats
 	public Stats statsGain = new Stats();
 
-	// Une Hashmap qui contient le niveau auquel un pokemon apprend un certain mouvement.
-	private static HashMap<Capacite,Integer> capaciteSelonNiveau= new HashMap<>();
+	// Une Hashmap qui contient le niveau auquel un pokemon apprend un certain
+	// mouvement.
+	private static HashMap<Capacite, Integer> capaciteSelonNiveau = new HashMap<>();
 
 	/**
 	 * Constructeur de espece qui l'instancie avec son id
+	 * 
 	 * @param id
 	 */
 	public Espece(int id) {
 		this.setId(id);
 	}
 
-	///////////////methode de IEspece/////////////////////////////////
-
+	/////////////// methode de IEspece/////////////////////////////////
 
 	/**
 	 * Il renvoie les statistiques de base du Pokemon
@@ -69,7 +70,7 @@ public class Espece implements IEspece {
 	@Override
 	public int getNiveauDepart() {
 		return this.nivDepart;
-	} 
+	}
 
 	/**
 	 * Renvoie l'experience de base du Pokemon.
@@ -92,29 +93,32 @@ public class Espece implements IEspece {
 	}
 
 	/**
-	 * Il prend l'objet JSON du pokemon, obtient les mouvements, obtient les noms des mouvements, obtient le niveau auquel le
-	 * pokemon apprend le mouvement et place le mouvement et le niveau dans un hashmap
+	 * Il prend l'objet JSON du pokemon, obtient les mouvements, obtient les noms
+	 * des mouvements, obtient le niveau auquel le
+	 * pokemon apprend le mouvement et place le mouvement et le niveau dans un
+	 * hashmap
 	 */
-	public void initCapaciteSelonNiveau(){
-		JSONObject jsonCapacite = Pokedex.getJSONfromURL("https://pokeapi.co/api/v2/pokemon/"+this.id);
+	public void initCapaciteSelonNiveau() {
+		JSONObject jsonCapacite = Pokedex.getJSONfromURL("https://pokeapi.co/api/v2/pokemon/" + this.id);
 		assert jsonCapacite != null;
-		JSONArray listeMoves=(JSONArray) jsonCapacite.get("moves");
+		JSONArray listeMoves = (JSONArray) jsonCapacite.get("moves");
 		System.out.println(this.nom);
-		Pokedex pokedex=new Pokedex();
+		Pokedex pokedex = new Pokedex();
 		for (Object listeMove : listeMoves) {
-			JSONObject jsonNomsMoves = Pokedex.getJSONfromURL(((JSONObject) ((JSONObject) listeMove).get("move")).get("url").toString());
+			JSONObject jsonNomsMoves = Pokedex
+					.getJSONfromURL(((JSONObject) ((JSONObject) listeMove).get("move")).get("url").toString());
 			assert jsonNomsMoves != null;
 			String nomCapaTemp = ((JSONObject) ((JSONArray) jsonNomsMoves.get("names")).get(3)).get("name").toString();
 			Capacite capaTemp = pokedex.capaciteParNom(nomCapaTemp);
 			if (capaTemp != null) {
 				JSONArray listeVersionGroupDetail = (JSONArray) ((JSONObject) listeMove).get("version_group_details");
 				for (Object o : listeVersionGroupDetail) {
-					capaciteSelonNiveau.put(capaTemp, Integer.parseInt((((JSONObject) o).get("level_learned_at")).toString()));
+					capaciteSelonNiveau.put(capaTemp,
+							Integer.parseInt((((JSONObject) o).get("level_learned_at")).toString()));
 				}
 			}
 		}
 	}
-
 
 	/**
 	 * Il renvoie un tableau de toutes les capacites que l'espece peut apprendre
@@ -124,7 +128,7 @@ public class Espece implements IEspece {
 	@Override
 	public ICapacite[] getCapSet() {
 		Capacite[] liste = new Capacite[Espece.capaciteSelonNiveau.size()];
-		int i =0;
+		int i = 0;
 		for (Entry<Capacite, Integer> c : Espece.capaciteSelonNiveau.entrySet()) {
 			liste[i] = c.getKey();
 			i++;
@@ -149,7 +153,7 @@ public class Espece implements IEspece {
 	 */
 	@Override
 	public IType[] getTypes() {
-		return new Type[]{this.type1,this.type2};
+		return new Type[] { this.type1, this.type2 };
 	}
 	//////////////////////////////////////////////////////////////
 
@@ -172,7 +176,8 @@ public class Espece implements IEspece {
 	}
 
 	/**
-	 * > Cette fonction fixe la valeur de la variable `expDeBase` a la valeur du parametre `expDeBase`
+	 * > Cette fonction fixe la valeur de la variable `expDeBase` a la valeur du
+	 * parametre `expDeBase`
 	 *
 	 * @param expDeBase L'experience de base du Pokemon.
 	 */
@@ -193,12 +198,13 @@ public class Espece implements IEspece {
 	 * Il renvoie la premiere capacite disponible d'un pokemon
 	 *
 	 * @param pokemon le pokemon qui utilisera le mouvement
-	 * @return La methode renvoie le premier objet Capacite disponible pour l'objet Pokemon.
+	 * @return La methode renvoie le premier objet Capacite disponible pour l'objet
+	 *         Pokemon.
 	 */
-	public Capacite capaciteDispo(Pokemon pokemon){
+	public Capacite capaciteDispo(Pokemon pokemon) {
 		for (Entry<Capacite, Integer> c : Espece.capaciteSelonNiveau.entrySet()) {
-			if (Integer.parseInt(c.getKey().toString())<=pokemon.niv){
-				return ((Capacite)c);
+			if (Integer.parseInt(c.getKey().toString()) <= pokemon.niv) {
+				return ((Capacite) c);
 			}
 		}
 		return null;

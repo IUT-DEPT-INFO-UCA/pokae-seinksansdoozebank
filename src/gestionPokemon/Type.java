@@ -98,6 +98,11 @@ public class Type implements IType {
 		return this.tabCoeffEfficacite[((Type) cible).id];
 	}
 
+	/**
+	 * Methode qui initialise le tableau des coefficients d'efficacités
+	 * 
+	 * @param fileName fichier csv stockant les coefficiants d'efficacité
+	 */
 	public void initCoeff(String fileName) {
 		try {
 			FileReader fichier = new FileReader(fileName);
@@ -123,25 +128,4 @@ public class Type implements IType {
 			e.printStackTrace();
 		}
 	}
-
-	///////////////// Methodes de debug /////////////////
-
-	public static Type[] creerTypes(String fileName) {
-		Type[] tab = new Type[15];
-		for (int i = 0; i < 15; i++) {
-			tab[i] = new Type(Type.listeTypes[i]);
-			tab[i].initCoeff(fileName);
-		}
-		return tab;
-	}
-
-	public void afficherTab() {
-		StringBuilder s = new StringBuilder();
-		s.append(this.nom).append(" :");
-		for (double d : this.tabCoeffEfficacite) {
-			s.append(" ").append(d).append(",");
-		}
-		System.out.println(s);
-	}
-
 }

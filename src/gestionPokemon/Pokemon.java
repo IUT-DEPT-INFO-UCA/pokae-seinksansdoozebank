@@ -397,7 +397,8 @@ public class Pokemon implements IPokemon {
 	/**
 	 * > Cette fonction retourne vrai si le pokemon a le type passe en parametre
 	 * 
-	 * @param type Le type cherche
+	 * @param type Le type cherché
+	 * @return un boolean indiquant la présence type parmis ceux du Pokemon
 	 */
 	public boolean possedeLeType(Type type) {
 		return this.espPoke.type1 == type || this.espPoke.type2 == type;
@@ -419,6 +420,8 @@ public class Pokemon implements IPokemon {
 	 * pokemon
 	 * 
 	 * @param other Le Pokemon auquel comparer
+	 * @return un booleen indiquant si le Pokemon this est plus rapide que le
+	 *         Pokemon en parametre
 	 */
 	public boolean estPlusRapideQue(Pokemon other) {
 		if (this.getStat().getVitesse() == other.getStat().getVitesse()) {

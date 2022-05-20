@@ -7,7 +7,14 @@ import interfaces.ICategorie;
  * PHYSIQUE
  */
 public enum CategorieAttaque implements ICategorie {
-	PHYSIQUE("physique"), SPECIALE("special");
+	/**
+	 * Construction de la Categorie PHYSIQUE avec son
+	 */
+	PHYSIQUE("physique"),
+	/**
+	 * Construction de la Categorie SPECIALE avec son
+	 */
+	SPECIALE("special");
 
 	/**
 	 * Nom de la catégorie
