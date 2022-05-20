@@ -13,6 +13,7 @@ import org.json.simple.JSONObject;
 
 /**
  * Cette classe est utilisée pour créer une espèce de Pokémon
+ * Elle est utilisee pour generer les capacites disponible selon les niveaux
  */
 public class Espece implements IEspece {
 	/**
