@@ -27,7 +27,7 @@ public class Espece implements IEspece {
 	//Valeur d'Effort == puissance suite aux combats
 	public Stats statsGain = new Stats();
 
-	// Une Hashmap qui contient le niveau auquel un pokémon apprend un certain mouvement.
+	// Une Hashmap qui contient le niveau auquel un pokemon apprend un certain mouvement.
 	private static HashMap<Capacite,Integer> capaciteSelonNiveau= new HashMap<>();
 
 
@@ -39,9 +39,9 @@ public class Espece implements IEspece {
 
 
 	/**
-	 * Il renvoie les statistiques de base du Pokémon
+	 * Il renvoie les statistiques de base du Pokemon
 	 *
-	 * @return Les statistiques de base du pokémon.
+	 * @return Les statistiques de base du pokemon.
 	 */
 	@Override
 	public IStat getBaseStat() {
@@ -69,9 +69,9 @@ public class Espece implements IEspece {
 	} 
 
 	/**
-	 * Renvoie l'expérience de base du Pokémon.
+	 * Renvoie l'experience de base du Pokemon.
 	 *
-	 * @return L'expérience de base du Pokémon.
+	 * @return L'experience de base du Pokemon.
 	 */
 	@Override
 	public int getBaseExp() {
@@ -79,7 +79,7 @@ public class Espece implements IEspece {
 	}
 
 	/**
-	 * Renvoie la statistique utilisée pour calculer les gains de cette statistique.
+	 * Renvoie la statistique utilisee pour calculer les gains de cette statistique.
 	 *
 	 * @return La variable statsGain.
 	 */
@@ -114,7 +114,7 @@ public class Espece implements IEspece {
 
 
 	/**
-	 * Il renvoie un tableau de toutes les capacités que l'espèce peut apprendre
+	 * Il renvoie un tableau de toutes les capacites que l'espece peut apprendre
 	 *
 	 * @return Une gamme d'ICapacite
 	 */
@@ -130,17 +130,17 @@ public class Espece implements IEspece {
 	}
 
 	/**
-	 * Il renvoie l'espèce dans laquelle cette espèce évolue
+	 * Il renvoie l'espece dans laquelle cette espece evolue
 	 *
-	 * @param niveau Le niveau du Pokémon.
-	 * @return L'évolution du pokémon
+	 * @param niveau Le niveau du Pokemon.
+	 * @return L'evolution du pokemon
 	 */
 	public IEspece getEvolution(int niveau) {
 		return Pokedex.especeParNom(this.evolution);
 	}
 
 	/**
-	 * Renvoie un tableau des types des deux opérandes.
+	 * Renvoie un tableau des types des deux operandes.
 	 *
 	 * @return Un tableau des deux types.
 	 */
@@ -160,7 +160,7 @@ public class Espece implements IEspece {
 	}
 
 	/**
-	 * Cette fonction définit l'id de l'Espece sur la valeur du paramètre id.
+	 * Cette fonction definit l'id de l'Espece sur la valeur du parametre id.
 	 *
 	 * @param id L'identifiant de l'Espece.
 	 */
@@ -169,28 +169,28 @@ public class Espece implements IEspece {
 	}
 
 	/**
-	 * > Cette fonction fixe la valeur de la variable `expDeBase` à la valeur du paramètre `expDeBase`
+	 * > Cette fonction fixe la valeur de la variable `expDeBase` a la valeur du parametre `expDeBase`
 	 *
-	 * @param expDeBase L'expérience de base du Pokémon.
+	 * @param expDeBase L'experience de base du Pokemon.
 	 */
 	public void setExpDeBase(int expDeBase) {
 		this.expDeBase = expDeBase;
 	}
 
 	/**
-	 * Il renvoie la valeur de la variable privée `expDeBase`
+	 * Il renvoie la valeur de la variable privee `expDeBase`
 	 *
-	 * @return La variable expDeBase est renvoyée.
+	 * @return La variable expDeBase est renvoyee.
 	 */
 	public int obtenirExpDeBase() {
 		return this.expDeBase;
 	}
 
 	/**
-	 * Il renvoie la première capacité disponible d'un pokémon
+	 * Il renvoie la premiere capacite disponible d'un pokemon
 	 *
-	 * @param pokemon le pokémon qui utilisera le mouvement
-	 * @return La méthode renvoie le premier objet Capacite disponible pour l'objet Pokemon.
+	 * @param pokemon le pokemon qui utilisera le mouvement
+	 * @return La methode renvoie le premier objet Capacite disponible pour l'objet Pokemon.
 	 */
 	public Capacite capaciteDispo(Pokemon pokemon){
 		for (Entry<Capacite, Integer> c : Espece.capaciteSelonNiveau.entrySet()) {
