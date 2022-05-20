@@ -16,12 +16,15 @@ public class Campagne {
     public void continuerCampagne(){
 
     }
-    private void lancerNouveauCombat(){
+    @SuppressWarnings("unused")
+	private void lancerNouveauCombat(){
 
     }
+    @SuppressWarnings("unused")
     private void genererNouvelAdversaire(){
 
     }
+    @SuppressWarnings("unused")
     private String choisirTypeAdversaire() {
         return null;
     }

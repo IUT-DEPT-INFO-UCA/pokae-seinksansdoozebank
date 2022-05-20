@@ -6,13 +6,16 @@ import java.util.Objects;
 
 import interfaces.IType;
 
+
+/**Un objet représentant un type
+ */
 public class Type implements IType{
 	public static String[] listeTypes = {"Combat","Dragon","Eau","Électrik","Feu","Glace","Insecte","Normal","Plante","Poison","Psy","Roche","Sol","Spectre","Vol"};
 	public int id;
 	public String nom;
 	private double [] tabCoeffEfficacite = new double[15];
 
-	/**Créé un objet type 1 parametre 
+	/**Créé un objet Type  avec 1 parametre 
 	 *	@param nom qui initialise le nom du pokémon
 	 * Les autres attributs sont initialisés grâce a des méthodes.
 	 * On affecte un id qui est égal au résultat de la méthode getIndexOfType()

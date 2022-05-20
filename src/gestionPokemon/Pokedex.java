@@ -23,44 +23,47 @@ public class Pokedex {
         }
         return listePokeAleatoire;
     }
-    public IEspece getInfo(String nomEspece){
-        int i=0;
-        boolean trouve=false;
+
+    public IEspece getInfo(String nomEspece) {
+        int i = 0;
+        boolean trouve = false;
         IEspece info = null;
-        while(i<listeEspece.length&& !trouve){
-            if (listeEspece[i].nom.equals(nomEspece)){
-                trouve=true;
-                info=listeEspece[i];
+        while (i < listeEspece.length && !trouve) {
+            if (listeEspece[i].nom.equals(nomEspece)) {
+                trouve = true;
+                info = listeEspece[i];
             }
             i++;
         }
         return info;
     }
 
-    public Double getEfficacite(Type attaque, Type defense){
+    public Double getEfficacite(Type attaque, Type defense) {
         return attaque.getCoeffDamageOn(defense);
     }
-    public void getCapaciteSet(){
+
+    public void getCapaciteSet() {
         System.out.println(Arrays.toString(listeCapacite));
     }
     public ICapacite getCapacite(String nomCapacite){
         int i=1;
         boolean trouve=false;
         ICapacite capacite = null;
-        while(i<listeCapacite.length&& !trouve){
-            if (listeEspece[i].nom.equals(nomCapacite)){
-                trouve=true;
-                capacite=listeCapacite[i];
+        while (i < listeCapacite.length && !trouve) {
+            if (listeEspece[i].nom.equals(nomCapacite)) {
+                trouve = true;
+                capacite = listeCapacite[i];
             }
             i++;
         }
         return capacite;
     }
-    public ICapacite getCapacite(int nunCapacite){
-        return listeCapacite[nunCapacite];
-    }
-    //TODO : méthodes déjà faites initiative
 
+    public ICapacite getCapacite(int numCapacite) {
+        return listeCapacite[numCapacite];
+    }
+    // TODO : méthodes déjà faites initiative
+    // ca veut dire quoi la ligne d'au dessus ?
 
     public Espece createEspece(int id) throws FileNotFoundException {
         Espece espece = new Espece(id);
@@ -113,9 +116,10 @@ public class Pokedex {
 		}
         return espece;
     }
+
     public void createListeEspece() throws FileNotFoundException {
-        for (int i=1; i<152;i++){
-            listeEspece[i]=createEspece(i);
+        for (int i = 1; i < 152; i++) {
+            listeEspece[i] = createEspece(i);
         }
     }
 
@@ -168,14 +172,14 @@ public class Pokedex {
             String inputStr = "";
             while ((inputStr = streamReader.readLine()) != null) {
                 responseStrBuilder.append(inputStr);
-//                System.out.println(inputStr);
+                // System.out.println(inputStr);
             }
             inputStr = responseStrBuilder.toString();
 
             streamReader.close();
 
             return (JSONObject) new JSONParser().parse(inputStr);
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
@@ -229,8 +233,8 @@ public class Pokedex {
     public static Espece especeParNom(String nom){
         int i=0;
         boolean tester = false;
-        while(i<listeEspece.length&& !tester){
-            if (listeEspece[i].nom.equals(nom)){
+        while (i < listeEspece.length && !tester) {
+            if (listeEspece[i].nom.equals(nom)) {
                 tester = true;
             }
             i++;
@@ -238,24 +242,24 @@ public class Pokedex {
         return listeEspece[i];
     }
 
-    public Capacite capaciteParId(int id){
+    public Capacite capaciteParId(int id) {
         return listeCapacite[id];
     }
 
-    public Capacite capaciteParNom(String nom){
-        int i=1;
+    public Capacite capaciteParNom(String nom) {
+        int i = 1;
         boolean tester = false;
-        while(i<listeCapacite.length&& !tester){
-            if (listeCapacite[i].nom.equals(nom)){
-                tester=true;
+        while (i < listeCapacite.length && !tester) {
+            if (listeCapacite[i].nom.equals(nom)) {
+                tester = true;
             }
             i++;
         }
-        if(!tester){
+        if (!tester) {
             return null;
+        } else {
+            return listeCapacite[i - 1];
         }
-        else{
-        return listeCapacite[i-1];}
     }
 
 
@@ -263,9 +267,9 @@ public class Pokedex {
         Pokedex pokedex = new Pokedex();
         pokedex.createListeCapacite();
         pokedex.createListeEspece();
-        Espece espece=Pokedex.listeEspece[2];
+        Espece espece = Pokedex.listeEspece[2];
         espece.initCapaciteSelonNiveau();
         System.out.println(Arrays.toString(espece.getCapSet()));
-//        pokedex.getCapaciteSet();
+        // pokedex.getCapaciteSet();
     }
 }
