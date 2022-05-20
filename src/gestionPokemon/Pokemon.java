@@ -13,32 +13,79 @@ import interfaces.IStat;
  * Une classe qui représente un Pokémon.
  */
 public class Pokemon implements IPokemon {
+
+	/** Le compteur d'id attribuant un id à chaque nouveau Pokemon */
 	public static int cptId = 0;
 
-	public int id = 0; // identifiant unique
-	public String nom; // Nom du pokemon
+	/**
+	 * L'identifiant unique du Pokémon
+	 */
+	public int id = 0;
+	/**
+	 * Le nom du Pokémon
+	 */
+	public String nom;
+
+	/**
+	 * Le nivea uactuel du Pokémon
+	 */
 	public int niv;
-	public double xp; // Points d'exp�riences
+
+	/**
+	 * La quantité d'expérience du Pokémon
+	 */
+	public double xp;
+
+	/** L'espèce du Pokémon */
 	public Espece espPoke;
+
+	/**
+	 * Le tableau des capacites que le Pokemon peut utiliser
+	 */
 	public Capacite[] listeCapacite = new Capacite[4];
 
-	// Stats specifiques :
+	/** L'ensemble des stats spécique du Pokemon */
 	public Stats statsSpecifiques = new Stats();
 
+	/** Le nombre maximum de PV que le Pokemon peut avoir */
 	public int pvMax;
 
-	// Valeur d'Effort == puissance suite aux combats
+	/**
+	 * L'ensemble de stats des EV du Pokemon
+	 */
 	public Stats statsEV = new Stats();
 
-	// Valeurs determinantes == puissance native
-	public Stats statsDV = new Stats(); // stats de naissance
+	/**
+	 * L'ensemble de stats des EV du Pokemon
+	 */
+	public Stats statsDV = new Stats();
 
-	// historique et effet des capacite
+	/**
+	 * La capacité que le pokemon à utiliser en dernier
+	 */
 	private Capacite derniereCapciteUtilisee;
+
+	/**
+	 * La quantité de degat que le pokemon a subit lors du dernier tour
+	 */
 	private double deniersDegatsSubits;
+
+	/**
+	 * La quantité de degat que le pokemon a subit lors de l'avant-dernier tour
+	 */
 	private double avantDeniersDegatsSubits;
+
+	/**
+	 * Le nombre de tours avat que le Pokemon puisse à nouveau attaquer
+	 */
 	private int nombreDeToursAvantAttaque;
 
+	/**
+	 * Creer un objet Pokemon avec 2 parametres
+	 * 
+	 * @param nom     le nom du Pokemon
+	 * @param espPoke l'espece du Pokemon
+	 */
 	public Pokemon(String nom, Espece espPoke) {
 		this.setId(cptId);
 		this.nom = nom;
@@ -55,6 +102,11 @@ public class Pokemon implements IPokemon {
 		this.espPoke = espPoke;
 	}
 
+	/**
+	 * Creer un objet Pokemon avec 2 parametres
+	 * 
+	 * @param espPoke l'espece du Pokemon
+	 */
 	public Pokemon(Espece espPoke) {
 		this.setId(cptId);
 		this.nom = espPoke.getNom();

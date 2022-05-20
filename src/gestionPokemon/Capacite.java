@@ -12,17 +12,49 @@ import interfaces.IType;
  * utiliser.
  */
 public class Capacite implements ICapacite {
+
+	/**
+	 * L'identifiant unique de la capacite
+	 */
 	public int id;
+
+	/**
+	 * Le nom de la capacite
+	 */
 	public String nom;
+
+	/**
+	 * Le Type de la capacite
+	 */
 	public Type type;
+
+	/**
+	 * La Categorie de la capacite
+	 */
 	public CategorieAttaque categorie;
+
+	/**
+	 * La puissance brute de la capacite
+	 */
 	public int puissance;
+
+	/**
+	 * La précision de la capacite (entre 0 et 1)
+	 */
 	public double precision;
+
+	/**
+	 * Le nombre de points de pouvoir actuels de la capacite
+	 */
 	public int pp;
+
+	/**
+	 * Le nombre de points de pouvoir maximum de la capacite
+	 */
 	public int ppBase;
 
 	/**
-	 * Créé un objet type 1 parametre
+	 * Creer un objet Type avec son identifiant comme seul parametre
 	 * 
 	 * @param id Un itn qui initialise l'id du pokémon
 	 *           Les autres attributs sont initialisés grâce a des méthodes.
@@ -32,29 +64,11 @@ public class Capacite implements ICapacite {
 	}
 
 	/**
-	 * Créé un objet type 1 parametre
+	 * La méthode toString() renvoie la représentation sous forme de chaîne de
+	 * l'objet
 	 * 
-	 * @param nom       Un string qui sera le nom de la capacité
-	 * @param type
-	 * @param categorie
-	 * @param puissance
-	 * @param precision
-	 * @param pp
-	 * @param ppBase
+	 * @return Un texte contenant l'identifiant et le nom de la capacité.
 	 */
-	/*
-	 * public Capacite(String nom, Type type, String categorie, int puissance, int
-	 * precision, int pp, int ppBase) {
-	 * this.nom = nom;
-	 * this.categorie = Objects.equals(categorie, "Physique") ?
-	 * CategorieAttaque.PHYSIQUE : CategorieAttaque.SPECIALE;
-	 * this.puissance = puissance;
-	 * this.precision = precision;
-	 * this.pp = pp;
-	 * this.ppBase = ppBase;
-	 * }
-	 */
-
 	public String toString() {
 		return "Capacite [id=" + id + "  nom :" + nom + "]";
 	}
