@@ -15,6 +15,17 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.Scanner;
 
+/**
+ * Classe appelée Pokedex qui gère toutes les espèces et toutes les capacites
+ * On peut interroger la classe pokedex en lui demandant des capacites ou des especes
+ * Elle permet aussi de generer le ranch d'un dresseur
+ */
+public class Pokedex {
+    // Création d'un tableau d'objets Espece.
+    public static Espece[] listeEspece=new Espece[152];
+    // Il crée un tableau de 110 objets Capacite.
+    public static Capacite[] listeCapacite=new Capacite[110];
+
 public class Pokedex {
     /**
      * Création d'un tableau d'objets Espece.
