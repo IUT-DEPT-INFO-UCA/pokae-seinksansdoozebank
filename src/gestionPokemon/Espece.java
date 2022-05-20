@@ -10,24 +10,60 @@ import interfaces.IType;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+
+/**
+ * Cette classe est utilisée pour créer une espèce de Pokémon
+ */
 public class Espece implements IEspece {
+	/**
+	 * Id de l'espece
+	 */
 	private int id;
+	/**
+	 * Nom de l'espece
+	 */
 	public String nom;
+	/**
+	 * Premier type de l'espece
+	 */
 	public Type type1;
+	/**
+	 * Deuxieme type de l'espece
+	 */
 	public Type type2;
 
+	/**
+	 * Niveau de depart de l'espece
+	 */
 	public int nivDepart;
+	/**
+	 * Niveau de la prochaine evolution de l'espece
+	 */
 	public int nivEvolution;
+	/**
+	 * Prochaine evolution de l'espece
+	 */
 	public String evolution;
+	/**
+	 * Expérience de base de l'espece
+	 */
 	private int expDeBase;
 
-	//Stats specifiques :
+	/**
+	 * les statistiques de base de l'espece
+	 */
 	public Stats statsDeBase = new Stats();
 
-	//Valeur d'Effort == puissance suite aux combats
+
+	/**
+	 * Les statistiques de Gain de l'espece
+	 */
 	public Stats statsGain = new Stats();
 
-	// Une Hashmap qui contient le niveau auquel un pokemon apprend un certain mouvement.
+	/**
+	 * Une Hashmap qui contient le niveau auquel un pokemon apprend un certain mouvement.
+ 	 */
+
 	private static HashMap<Capacite,Integer> capaciteSelonNiveau= new HashMap<>();
 
 	/**
