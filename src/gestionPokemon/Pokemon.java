@@ -107,6 +107,7 @@ public class Pokemon implements IPokemon {
         this.apprendCapacites(this.espPoke.capaciteDispo(this));
         this.niv=espPoke.nivDepart;
         calculPV();
+        calculPVMax();
         calculDefense();
         calculSpecial();
         calculForce();
@@ -137,6 +138,7 @@ public class Pokemon implements IPokemon {
         this.apprendCapacites(this.espPoke.capaciteDispo(this));
         this.niv=espPoke.nivDepart;
         calculPV();
+        calculPVMax();
         calculDefense();
         calculSpecial();
         calculForce();
@@ -368,9 +370,13 @@ public class Pokemon implements IPokemon {
         this.getStatsEV().setSpecial(this.getStatsEV().getSpecial() + vaincu.getEspece().getGainsStat().getSpecial());
         this.getStatsEV().setPV(this.getStatsEV().getPV() + vaincu.getEspece().getGainsStat().getPV());
     }
-    public void calculPV(){
+    public void calculPVMax(){
         this.pvMax = (((2 * (this.espPoke.getBaseStat().getPV() + this.getStatsDV().getPV())
                 + this.getStatsEV().getPV() / 4) * this.getNiveau()) / 100) + this.getNiveau() + 10;
+    }
+    public void calculPV(){
+        this.getStat().setPV((((2 * (this.espPoke.getBaseStat().getPV() + this.getStatsDV().getPV())
+                + this.getStatsEV().getPV() / 4) * this.getNiveau()) / 100) + this.getNiveau() + 10);
     }
     public void calculForce(){
         this.getStat().setForce((2 * (this.getEspece().getBaseStat().getForce() + this.getStatsDV().getForce())

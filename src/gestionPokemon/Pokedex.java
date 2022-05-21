@@ -265,15 +265,15 @@ public class Pokedex {
      * @return L'espèce avec le nom donné en paramètre.
      */
     public static Espece especeParNom(String nom) {
-        int i = 0;
+        int i = 1;
         boolean tester = false;
-        while (i < listeEspece.length && !tester) {
+        while (i < listeEspece.length-1 && !tester) {
             if (listeEspece[i].nom.equals(nom)) {
                 tester = true;
             }
             i++;
         }
-        return listeEspece[i];
+        return listeEspece[i-1];
     }
 
     /**

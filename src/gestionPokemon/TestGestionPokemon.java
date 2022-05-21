@@ -11,7 +11,7 @@ public class TestGestionPokemon {
                 Pokedex.createListeEspece();
                 ///////////////////////  Pokedex /////////////////////////////
                 //Ranch
-                System.out.println(Arrays.toString(Pokedex.engendreRanch()));
+//                System.out.println(Arrays.toString(Pokedex.engendreRanch()));
                 //Espece
                 System.out.println("Espece n°3  = "+Pokedex.especeParId(3));
                 System.out.println("Espece qui a pour nom Pikachu :"+Pokedex.especeParNom("Pikachu"));
@@ -21,6 +21,7 @@ public class TestGestionPokemon {
 
                 ///////////////////////  Espece /////////////////////////////
                 Espece espece = Pokedex.especeParId(4);
+                espece.initCapaciteSelonNiveau();
                 System.out.println(Arrays.toString(espece.getCapSet()));
 
         }
