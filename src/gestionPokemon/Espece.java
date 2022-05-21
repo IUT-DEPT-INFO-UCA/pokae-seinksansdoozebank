@@ -75,6 +75,21 @@ public class Espece implements IEspece {
 		this.setId(id);
 	}
 
+	@Override
+	public String toString() {
+		return "Espece{" +
+				"id=" + id +
+				", nom='" + nom + '\'' +
+				", type1=" + type1 +
+				", type2=" + type2 +
+				", nivDepart=" + nivDepart +
+				", nivEvolution=" + nivEvolution +
+				", evolution='" + evolution + '\'' +
+				", expDeBase=" + expDeBase +
+				", statsDeBase=" + statsDeBase +
+				", statsGain=" + statsGain +
+				'}';
+	}
 	/////////////// methode de IEspece/////////////////////////////////
 
 	/**
@@ -178,7 +193,12 @@ public class Espece implements IEspece {
 	 * @return L'evolution du pokemon
 	 */
 	public IEspece getEvolution(int niveau) {
-		return Pokedex.especeParNom(this.evolution);
+		if (niveau>this.nivEvolution){
+			return Pokedex.especeParNom(this.evolution);
+		}
+		else{
+			return null;
+		}
 	}
 
 	/**

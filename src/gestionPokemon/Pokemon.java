@@ -109,6 +109,7 @@ public class Pokemon implements IPokemon {
         this.espPoke.initCapaciteSelonNiveau();
         this.apprendCapacites(this.espPoke.capaciteDispo(this));
         this.niv=espPoke.nivDepart;
+        gainXp(this.espPoke.getExpDeBase());
         calculPV();
         calculPVMax();
         calculDefense();
@@ -140,6 +141,7 @@ public class Pokemon implements IPokemon {
         this.espPoke.initCapaciteSelonNiveau();
         this.apprendCapacites(this.espPoke.capaciteDispo(this));
         this.niv=espPoke.nivDepart;
+        gainXp(this.espPoke.getExpDeBase());
         calculPV();
         calculPVMax();
         calculDefense();
@@ -200,6 +202,7 @@ public class Pokemon implements IPokemon {
 
     public void vaMuterEn(IEspece esp) {
         this.espPoke = (Espece) esp;
+        this.niv--;
     }
 
     public ICapacite[] getCapacitesApprises() {
@@ -229,25 +232,32 @@ public class Pokemon implements IPokemon {
     public void gagneExperienceDe(IPokemon pok) {
         this.augmenterEV(pok);
         double gainXp = (1.5 * pok.getNiveau() * pok.getEspece().getBaseExp()) / 7;
-        double xpTemporaire = this.getExperience() + gainXp;
-        double seuil = (Math.pow(this.niv, 3) * 0.8);
-        gainXp(gainXp,xpTemporaire,seuil);
+
+        gainXp(gainXp);
     }
+
     /**
-     * > Si l'XP temporaire est supérieure au seuil, augmentez le niveau et soustrayez le seuil de l'XP temporaire. Sinon,
-     * ajoutez l'XP à gagner à l'XP en cours
+     * > Si l'expérience du joueur est supérieure au seuil, augmentez le niveau du joueur et soustrayez le seuil de
+     * l'expérience du joueur. Sinon, ajoutez simplement l'expérience à l'expérience du joueur
      *
-     * @param expAGagner la quantité d'xp à ajouter au joueur
-     * @param xpTemporaire la quantité d'xp que le joueur a
-     * @param seuil la quantité d'xp nécessaire pour monter de niveau
+     * @param expAGagner la quantité d'expérience à acquérir
      */
-    public void gainXp(double expAGagner,double xpTemporaire,double seuil) {
+    public void gainXp(double expAGagner) {
+        double gainExp = expAGagner;
+        double xpTemporaire = this.getExperience() + expAGagner;
+        double seuil = (Math.pow(this.niv + 1, 3) * 0.8);
         if (xpTemporaire >= seuil) {
-            augmenterNiveau();
-            this.xp = xpTemporaire - seuil;
+            while (xpTemporaire >= seuil) {
+                augmenterNiveau();
+                this.xp = gainExp - seuil;
+                gainExp -= seuil;
+                seuil = (Math.pow(this.niv + 1, 3) * 0.8);
+                xpTemporaire = this.getExperience() + (gainExp-seuil);
+            }
         } else {
             this.xp += expAGagner;
         }
+
     }
 
     @Override
@@ -270,7 +280,7 @@ public class Pokemon implements IPokemon {
 
     public void soigne() {
         this.getStat().setPV(this.pvMax);
-        ;
+
         this.resetPp();
     }
 
@@ -436,6 +446,7 @@ public class Pokemon implements IPokemon {
      */
     public void augmenterNiveau() {
         this.niv++;
+
         if (this.niv >= espPoke.nivEvolution) {
             evoluer();
         }
@@ -458,7 +469,7 @@ public class Pokemon implements IPokemon {
     public void evoluer() {
         // On modifie uniquement l'espece du pokemon. Le calcul des nouvelles stat se
         // fait dans augmenterNiv
-        this.vaMuterEn(this.getEspece().getEvolution(niv));
+        this.vaMuterEn(this.getEspece().getEvolution(this.niv));
     }
 
     /**
