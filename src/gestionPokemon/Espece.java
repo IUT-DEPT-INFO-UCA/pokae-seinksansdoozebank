@@ -55,7 +55,6 @@ public class Espece implements IEspece {
 	 */
 	public Stats statsDeBase = new Stats();
 
-
 	/**
 	 * Les statistiques de Gain de l'espece
 	 */

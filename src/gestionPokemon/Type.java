@@ -35,10 +35,11 @@ public enum Type implements IType {
 	 */
 	public int id;
 
-	/**
-	 * Le nom du type
-	 */
-	public String nom;
+    /**
+     * L'id unique du type, correspondant à l'index du nom du type dans la liste
+     * statique
+     */
+    public int id;
 
 	/**
 	 * Le tableau regroupant l'efficacité des attque de type this sur chacun des

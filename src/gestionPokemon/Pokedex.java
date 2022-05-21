@@ -25,21 +25,23 @@ public class Pokedex {
     /**
      * Création d'un tableau d'objets Espece.
      */
-    public static Espece[] listeEspece = new Espece[152];
+    private static int nbPokemon = 152;
+    private static int nbCapacite = 110;
+    public static Espece[] listeEspece = new Espece[nbPokemon];
     /**
      * Creation d'un tableau de 110 objets Capacite.
      */
-    public static Capacite[] listeCapacite = new Capacite[110];
+    public static Capacite[] listeCapacite = new Capacite[nbCapacite];
 
     /**
      * Il crée une liste de 6 Pokémon aléatoires
      *
      * @return Une liste de 6 Pokémon aléatoires.
      */
-    public IPokemon[] engendreRanch() {
+    public static IPokemon[] engendreRanch() {
         IPokemon[] listePokeAleatoire = new Pokemon[6];
         for (int i = 0; i < 6; i++) {
-            listePokeAleatoire[i] = new Pokemon(listeEspece[(int) (Math.random() * ((151) + 1))]);
+            listePokeAleatoire[i] = new Pokemon(listeEspece[(int) (Math.random() * ((nbPokemon) + 1))]);
         }
         return listePokeAleatoire;
     }
@@ -50,7 +52,7 @@ public class Pokedex {
      * @param nomEspece le nom de l'espèce
      * @return Les informations de l'espèce.
      */
-    public IEspece getInfo(String nomEspece) {
+    public static IEspece getInfo(String nomEspece) {
         int i = 0;
         boolean trouve = false;
         IEspece info = null;
@@ -72,8 +74,8 @@ public class Pokedex {
      * @param defense Le type du Pokémon défenseur
      * @return Le coefficient de dégâts de l'attaque sur la défense.
      */
-    public Double getEfficacite(Type attaque, Type defense) {
-        return null;//attaque.getCoeffDamageOn(defense);
+    public static Double getEfficacite(Type attaque, Type defense) {
+        return attaque.getCoeffDamageOn(defense);
     }
 
     /**
@@ -84,7 +86,7 @@ public class Pokedex {
      * @return La méthode renvoie l'objet ICapacite qui porte le même nom que la
      *         chaîne nomCapacite.
      */
-    public ICapacite getCapacite(String nomCapacite) {
+    public static ICapacite getCapacite(String nomCapacite) {
         int i = 1;
         boolean trouve = false;
         ICapacite capacite = null;
@@ -104,7 +106,7 @@ public class Pokedex {
      * @param numCapacite Le numéro de la capacité que vous souhaitez obtenir.
      * @return La méthode renvoie la capacité du pokémon.
      */
-    public ICapacite getCapacite(int numCapacite) {
+    public static ICapacite getCapacite(int numCapacite) {
         return listeCapacite[numCapacite];
     }
 
@@ -116,7 +118,7 @@ public class Pokedex {
      * @return L'objet espèce concerné
      * @throws FileNotFoundException Exception lancée si le fichier csv n'est pas trouvé
      */
-    public Espece createEspece(int id) throws FileNotFoundException {
+    public static Espece createEspece(int id) throws FileNotFoundException {
         Espece espece = new Espece(id);
         File fichierCSV = new File("./csv/listePokemon1G_new.csv");
         try (Scanner scannerCSV = new Scanner(fichierCSV)) {
@@ -161,8 +163,8 @@ public class Pokedex {
      * 
      * @throws FileNotFoundException Exception lancée si le fichier csv n'est pas trouvé
      */
-    public void createListeEspece() throws FileNotFoundException {
-        for (int i = 1; i < 152; i++) {
+    public static void createListeEspece() throws FileNotFoundException {
+        for (int i = 1; i < nbPokemon; i++) {
             listeEspece[i] = createEspece(i);
         }
     }
@@ -175,7 +177,7 @@ public class Pokedex {
      * @return Un objet Capacite
      * @throws FileNotFoundException Exception lancée si le fichier csv n'est pas trouvé
      */
-    public Capacite createCapacite(int id) throws FileNotFoundException {
+    public static Capacite createCapacite(int id) throws FileNotFoundException {
         Capacite capacite = new Capacite(id);
         File fichierCSV = new File("./csv/listeCapacites.csv");
         try {
@@ -240,8 +242,8 @@ public class Pokedex {
      * Il crée une liste de toutes les capacités du jeu
      * @throws FileNotFoundException Exception lancée si le fichier csv n'est pas trouvé
      */
-    public void createListeCapacite() throws FileNotFoundException {
-        for (int i = 1; i < 110; i++) {
+    public static void createListeCapacite() throws FileNotFoundException {
+        for (int i = 1; i < nbCapacite; i++) {
             listeCapacite[i] = createCapacite(i);
         }
     }
@@ -252,7 +254,7 @@ public class Pokedex {
      * @param id l'identifiant de l'espèce
      * @return L'espèce avec le numéro d'identification.
      */
-    public Espece especeParId(int id) {
+    public static Espece especeParId(int id) {
         return listeEspece[id];
     }
 
@@ -280,7 +282,7 @@ public class Pokedex {
      * @param id L'identifiant du déplacement.
      * @return La capacité avec l'identifiant donné.
      */
-    public Capacite capaciteParId(int id) {
+    public static Capacite capaciteParId(int id) {
         return listeCapacite[id];
     }
 
@@ -291,7 +293,7 @@ public class Pokedex {
      * @param nom le nom de la capacité
      * @return La méthode retourne la capacité avec le nom donné en paramètre.
      */
-    public Capacite capaciteParNom(String nom) {
+    public static Capacite capaciteParNom(String nom) {
         int i = 1;
         boolean tester = false;
         while (i < listeCapacite.length && !tester) {

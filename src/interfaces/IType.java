@@ -2,8 +2,8 @@
  * Université Côte d'Azur
  * IUT Côte d'Azur
  * Département Informatique
- * @date
- * IType.java
+ *
+ * @date IType.java
  */
 package interfaces;
 
@@ -12,8 +12,8 @@ package interfaces;
  *
  */
 public interface IType {
-	/**Recupère le nom du type
-	 * @return Un string représentant le nom du type.
-	 */
-	public String getNom();
+    /**Recupère le nom du type
+     * @return Un string représentant le nom du type.
+     */
+    public String getNom();
 }
