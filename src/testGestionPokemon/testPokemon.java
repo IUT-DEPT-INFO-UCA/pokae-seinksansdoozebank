@@ -10,13 +10,13 @@ import java.io.FileNotFoundException;
 
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class testPokemon {
     private Pokemon pokeTest ;
     @BeforeEach
     public void createPokedex() throws FileNotFoundException {
+        // Initialisation du pokedex et du pokemon Test.
         Pokedex pokedex = new Pokedex();
         Pokedex.createListeCapacite();
         Pokedex.createListeEspece();
@@ -49,17 +49,51 @@ public class testPokemon {
         //On test si les capacités sont bien instanciées
         assertNotNull(pokeTest.getCapacitesApprises());
     }
-    //On test les cas limite du remplacement d'une capacite
+
     @Test
     public void testRemplacementCapacite() throws Exception {
+        //On test s'il on peut changer une capacité
        pokeTest.remplaceCapacite(3,Pokedex.listeCapacite[73]);
     }
     @Test
     public void testSubirDegats(){
+        // On test si le pokemon peut subir des dégats
+        int pvAvantAttaque = pokeTest.getStat().getPV();
         pokeTest.subirDegats(5);
-        // Le pokemon a 80 Pv de base
-        System.out.println(pokeTest.getStat().getPV());
-        //assertEquals(pokeTest.getStat().getPV(), 75);
+        assertNotEquals(pvAvantAttaque,pokeTest.getStat().getPV());
+        assertEquals(pokeTest.obtenirDeniersDegatsSubits(),5);
     }
+    @Test
+    public void testGainNiveau(){
+        // On test si le pokemon peut gagner des niveaux
+        double xpBefore= pokeTest.getExperience();
+        Pokemon pokeBattu = new Pokemon(Pokedex.listeEspece[33]);
+        pokeTest.gagneExperienceDe(pokeBattu);
+        assertNotEquals(pokeTest.getExperience(),xpBefore);
+    }
+    @Test
+    public void testEstEvanoui(){
+        // test si le pokémon est évanoui
+        assertFalse(pokeTest.estEvanoui());
+        pokeTest.subirDegats(200);
+        assertTrue(pokeTest.estEvanoui());
+    }
+    @Test
+    public void testSoigne(){
+        // On test si le pokemon peut etre soigne
 
+        pokeTest.subirDegats(200);
+        assertTrue(pokeTest.estEvanoui());
+        assertNotEquals(pokeTest.getStat().getPV(),pokeTest.pvMax);
+        pokeTest.soigne();
+        assertFalse(pokeTest.estEvanoui());
+        assertEquals(pokeTest.getStat().getPV(), pokeTest.pvMax);
+
+    }
+    @Test
+    public void testResetPP(){
+        int nbPPBeforeUse = pokeTest.getCapacitesApprises()[1].getPP();
+        pokeTest.getCapacitesApprises()[1].utilise();
+        assertNotEquals(nbPPBeforeUse,pokeTest.getCapacitesApprises()[1].getPP());
+    }
 }

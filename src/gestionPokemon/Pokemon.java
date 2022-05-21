@@ -351,6 +351,7 @@ public class Pokemon implements IPokemon {
      * @param degats les degâts a faire
      */
     public void subirDegats(int degats) {
+
         this.getStat().setPV(this.getStat().getPV() - degats);
     }
 
