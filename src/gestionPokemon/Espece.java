@@ -258,7 +258,7 @@ public class Espece implements IEspece {
 	 *         Pokemon.
 	 */
 	public Capacite[] capaciteDispo(Pokemon pokemon) {
-		Capacite[] tabCapaciteDispo=new Capacite[20];
+		Capacite[] tabCapaciteDispo=new Capacite[50];
 		int i=0;
 		for (Entry<Capacite, Integer> c : this.capaciteSelonNiveau.entrySet()) {
 			if (Integer.parseInt(c.getValue().toString()) <= pokemon.niv) {

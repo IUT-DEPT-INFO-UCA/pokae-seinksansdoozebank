@@ -25,11 +25,13 @@ public class Pokedex {
     /**
      * Création d'un tableau d'objets Espece.
      */
-    public static Espece[] listeEspece = new Espece[152];
+    private static int nbPokemon = 152;
+    private static int nbCapacite = 110;
+    public static Espece[] listeEspece = new Espece[nbPokemon];
     /**
      * Creation d'un tableau de 110 objets Capacite.
      */
-    public static Capacite[] listeCapacite = new Capacite[110];
+    public static Capacite[] listeCapacite = new Capacite[nbCapacite];
 
     /**
      * Il crée une liste de 6 Pokémon aléatoires
@@ -39,7 +41,7 @@ public class Pokedex {
     public static IPokemon[] engendreRanch() {
         IPokemon[] listePokeAleatoire = new Pokemon[6];
         for (int i = 0; i < 6; i++) {
-            listePokeAleatoire[i] = new Pokemon(listeEspece[(int) (Math.random() * ((150) + 1))]);
+            listePokeAleatoire[i] = new Pokemon(listeEspece[(int) (Math.random() * ((nbPokemon) + 1))]);
         }
         return listePokeAleatoire;
     }
@@ -162,7 +164,7 @@ public class Pokedex {
      * @throws FileNotFoundException Exception lancée si le fichier csv n'est pas trouvé
      */
     public static void createListeEspece() throws FileNotFoundException {
-        for (int i = 1; i < 152; i++) {
+        for (int i = 1; i < nbPokemon; i++) {
             listeEspece[i] = createEspece(i);
         }
     }
@@ -241,7 +243,7 @@ public class Pokedex {
      * @throws FileNotFoundException Exception lancée si le fichier csv n'est pas trouvé
      */
     public static void createListeCapacite() throws FileNotFoundException {
-        for (int i = 1; i < 110; i++) {
+        for (int i = 1; i < nbCapacite; i++) {
             listeCapacite[i] = createCapacite(i);
         }
     }
