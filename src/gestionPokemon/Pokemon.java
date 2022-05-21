@@ -400,7 +400,7 @@ public class Pokemon implements IPokemon {
 	 * @param type Le type cherché
 	 */
 	public boolean possedeLeType(Type type) {
-		return this.espPoke.type1 == type || this.espPoke.type2 == type;
+		return this.espPoke.type1.equals(type) || this.espPoke.type2.equals(type);
 	}
 
 	/**

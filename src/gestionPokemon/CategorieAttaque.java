@@ -7,7 +7,18 @@ import interfaces.ICategorie;
  * PHYSIQUE
  */
 public enum CategorieAttaque implements ICategorie {
+<<<<<<< Updated upstream
 	PHYSIQUE("physique"), SPECIALE("special");
+=======
+	/**
+	 * Construction de la Categorie PHYSIQUE avec son nom
+	 */
+	PHYSIQUE("physique"),
+	/**
+	 * Construction de la Categorie SPECIALE avec son nom
+	 */
+	SPECIALE("special");
+>>>>>>> Stashed changes
 
 	/**
 	 * Nom de la catégorie
