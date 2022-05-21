@@ -33,5 +33,4 @@ public class TestGestionPokemon {
          * System.out.println(s);
          * }
          */
-
 }
