@@ -1,18 +1,14 @@
 package testGestionPokemon;
 import gestionPokemon.Pokedex;
 import gestionPokemon.Pokemon;
-import gestionPokemon.Espece;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.FileNotFoundException;
 
-import java.util.Arrays;
-
 import static org.junit.jupiter.api.Assertions.*;
 
-public class testPokemon {
+public class testCasSimplePokemon {
     private Pokemon pokeTest ;
     @BeforeEach
     public void createPokedex() throws FileNotFoundException {
@@ -21,7 +17,7 @@ public class testPokemon {
         Pokedex.createListeCapacite();
         Pokedex.createListeEspece();
         pokeTest = new Pokemon(Pokedex.listeEspece[3]);
-        System.out.println(pokeTest);
+
     }
     @Test
     public void createSimplePokemon() throws FileNotFoundException {
@@ -31,13 +27,7 @@ public class testPokemon {
         // On test si le pokémon possède la bonne espece et le bon niveau.
         assertEquals(florizarre.getEspece(),Pokedex.listeEspece[3]);
     }
-    @Test
-    public void maxCreatePokemon(){
-        // On test si le pokémon possède la bonne espece et le bon niveau.
-        Pokemon out = new Pokemon("maxValue",Pokedex.listeEspece[151]);
-        assertEquals(out.getEspece(),Pokedex.listeEspece[151]);
 
-    }
     @Test
     public void testStatsPokemon(){
         //On test si les stats sont correctes.
@@ -61,7 +51,7 @@ public class testPokemon {
         int pvAvantAttaque = pokeTest.getStat().getPV();
         pokeTest.subirDegats(5);
         assertNotEquals(pvAvantAttaque,pokeTest.getStat().getPV());
-        assertEquals(pokeTest.obtenirDeniersDegatsSubits(),5);
+        //assertEquals(pokeTest.obtenirDeniersDegatsSubits(),5);
     }
     @Test
     public void testGainNiveau(){
@@ -96,4 +86,5 @@ public class testPokemon {
         pokeTest.getCapacitesApprises()[1].utilise();
         assertNotEquals(nbPPBeforeUse,pokeTest.getCapacitesApprises()[1].getPP());
     }
+
 }
