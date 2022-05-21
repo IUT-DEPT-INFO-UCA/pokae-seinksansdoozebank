@@ -217,7 +217,7 @@ public class Pokemon implements IPokemon {
 
     }
 
-    public void remplaceCapacite(int i, ICapacite cap) throws Exception {
+    public void remplaceCapacite(int i, ICapacite cap) {
         if(this.espPoke.capaciteSelonNiveau.containsKey(cap)){
             this.listeCapacite[i] = (Capacite) cap;
         }
@@ -230,14 +230,24 @@ public class Pokemon implements IPokemon {
         double gainXp = (1.5 * pok.getNiveau() * pok.getEspece().getBaseExp()) / 7;
         double xpTemporaire = this.getExperience() + gainXp;
         double seuil = (Math.pow(this.niv, 3) * 0.8);
+        gainXp(gainXp,xpTemporaire,seuil);
+    }
+    /**
+     * > Si l'XP temporaire est supérieure au seuil, augmentez le niveau et soustrayez le seuil de l'XP temporaire. Sinon,
+     * ajoutez l'XP à gagner à l'XP en cours
+     *
+     * @param expAGagner la quantité d'xp à ajouter au joueur
+     * @param xpTemporaire la quantité d'xp que le joueur a
+     * @param seuil la quantité d'xp nécessaire pour monter de niveau
+     */
+    public void gainXp(double expAGagner,double xpTemporaire,double seuil) {
         if (xpTemporaire >= seuil) {
             augmenterNiveau();
             this.xp = xpTemporaire - seuil;
         } else {
-            this.xp += gainXp;
+            this.xp += expAGagner;
         }
     }
-
     @Override
     public void subitAttaqueDe(IPokemon pok, IAttaque attaque) {
         this.getStat().setPV(attaque.calculeDommage(pok, this));
@@ -258,7 +268,7 @@ public class Pokemon implements IPokemon {
 
     public void soigne() {
         this.getStat().setPV(this.pvMax);
-        ;
+
         this.resetPp();
     }
 
