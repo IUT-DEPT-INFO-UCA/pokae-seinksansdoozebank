@@ -9,37 +9,57 @@ import org.junit.jupiter.api.Test;
 import java.io.FileNotFoundException;
 import java.util.Arrays;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 public class testPokemon {
-    /*@BeforeAll
-    public void createPokedex() throws FileNotFoundException {
-        Pokedex pokedex = new Pokedex();
-        Pokedex.createListeCapacite();
-        Pokedex.createListeEspece();
-    }*/
+    private Pokemon pokeTest ;
     @BeforeEach
     public void createPokedex() throws FileNotFoundException {
         Pokedex pokedex = new Pokedex();
         Pokedex.createListeCapacite();
         Pokedex.createListeEspece();
+        pokeTest = new Pokemon(Pokedex.listeEspece[3]);
+        System.out.println(pokeTest);
     }
     @Test
     public void createSimplePokemon() throws FileNotFoundException {
 
+       //On créé le pokémon
         Pokemon florizarre = new Pokemon("Flofloriri",Pokedex.listeEspece[3]);
-        System.out.println(florizarre);
+        // On test si le pokémon possède la bonne espece et le bon niveau.
+        assertEquals(florizarre.getEspece(),Pokedex.listeEspece[3]);
+        assertEquals(florizarre.getNiveau(),0);
     }
-//    @Test
-//    public void FailCreatePokemon(){
-//
-//        Pokemon out = new Pokemon("outOfRange",Pokedex.listeEspece[152]);
-//        System.out.println(out);
-//    }
     @Test
-    public void simplePokemon() throws FileNotFoundException {
-
-
-
-
+    public void maxCreatePokemon(){
+        // On test si le pokémon possède la bonne espece et le bon niveau.
+        Pokemon out = new Pokemon("maxValue",Pokedex.listeEspece[151]);
+        assertEquals(out.getEspece(),Pokedex.listeEspece[151]);
+        assertEquals(out.getNiveau(),0);
+    }
+    @Test
+    public void testStatsPokemon(){
+        //On test si les stats sont correctes.
+        assertNotNull(pokeTest.getStatsDV());
+        assertNotNull(pokeTest.getStatsEV());
+    }
+    @Test
+    public void testCapactiePokemon(){
+        //On test si les capacités sont bien instanciées
+        assertNotNull(pokeTest.getCapacitesApprises());
+    }
+    //On test les cas limite du remplacement d'une capacite
+    @Test
+    public void testRemplacementCapacite() throws Exception {
+       pokeTest.remplaceCapacite(3,Pokedex.listeCapacite[73]);
+    }
+    @Test
+    public void testSubirDegats(){
+        pokeTest.subirDegats(5);
+        // Le pokemon a 80 Pv de base
+        System.out.println(pokeTest.getStat().getPV());
+        //assertEquals(pokeTest.getStat().getPV(), 75);
     }
 
 }
