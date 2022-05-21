@@ -52,7 +52,7 @@ public class Pokedex {
      * @param nomEspece le nom de l'espèce
      * @return Les informations de l'espèce.
      */
-    public IEspece getInfo(String nomEspece) {
+    public static IEspece getInfo(String nomEspece) {
         int i = 0;
         boolean trouve = false;
         IEspece info = null;
@@ -74,7 +74,7 @@ public class Pokedex {
      * @param defense Le type du Pokémon défenseur
      * @return Le coefficient de dégâts de l'attaque sur la défense.
      */
-    public Double getEfficacite(Type attaque, Type defense) {
+    public static Double getEfficacite(Type attaque, Type defense) {
         return attaque.getCoeffDamageOn(defense);
     }
 
@@ -86,7 +86,7 @@ public class Pokedex {
      * @return La méthode renvoie l'objet ICapacite qui porte le même nom que la
      *         chaîne nomCapacite.
      */
-    public ICapacite getCapacite(String nomCapacite) {
+    public static ICapacite getCapacite(String nomCapacite) {
         int i = 1;
         boolean trouve = false;
         ICapacite capacite = null;
@@ -106,7 +106,7 @@ public class Pokedex {
      * @param numCapacite Le numéro de la capacité que vous souhaitez obtenir.
      * @return La méthode renvoie la capacité du pokémon.
      */
-    public ICapacite getCapacite(int numCapacite) {
+    public static ICapacite getCapacite(int numCapacite) {
         return listeCapacite[numCapacite];
     }
 
@@ -254,7 +254,7 @@ public class Pokedex {
      * @param id l'identifiant de l'espèce
      * @return L'espèce avec le numéro d'identification.
      */
-    public Espece especeParId(int id) {
+    public static Espece especeParId(int id) {
         return listeEspece[id];
     }
 
@@ -282,7 +282,7 @@ public class Pokedex {
      * @param id L'identifiant du déplacement.
      * @return La capacité avec l'identifiant donné.
      */
-    public Capacite capaciteParId(int id) {
+    public static Capacite capaciteParId(int id) {
         return listeCapacite[id];
     }
 
@@ -293,7 +293,7 @@ public class Pokedex {
      * @param nom le nom de la capacité
      * @return La méthode retourne la capacité avec le nom donné en paramètre.
      */
-    public Capacite capaciteParNom(String nom) {
+    public static Capacite capaciteParNom(String nom) {
         int i = 1;
         boolean tester = false;
         while (i < listeCapacite.length && !tester) {

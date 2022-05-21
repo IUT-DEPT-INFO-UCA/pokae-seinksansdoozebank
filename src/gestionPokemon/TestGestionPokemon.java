@@ -7,11 +7,22 @@ import java.util.Arrays;
 public class TestGestionPokemon {
 
         public static void main(String[] args) throws FileNotFoundException {
-                Pokedex pokedex = new Pokedex();
                 Pokedex.createListeCapacite();
                 Pokedex.createListeEspece();
-//                System.out.println(new Pokemon(Pokedex.listeEspece[3]));
+                ///////////////////////  Pokedex /////////////////////////////
+                //Ranch
                 System.out.println(Arrays.toString(Pokedex.engendreRanch()));
+                //Espece
+                System.out.println("Espece n°3  = "+Pokedex.especeParId(3));
+                System.out.println("Espece qui a pour nom Pikachu :"+Pokedex.especeParNom("Pikachu"));
+                //Capacite
+                System.out.println("Capacite n°18 = "+Pokedex.capaciteParId(18));
+                System.out.println("Capacite qui a pour nom Coupe :"+Pokedex.capaciteParNom("Coupe"));
+
+                ///////////////////////  Espece /////////////////////////////
+                Espece espece = Pokedex.especeParId(4);
+                System.out.println(Arrays.toString(espece.getCapSet()));
+
         }
 
         /*
