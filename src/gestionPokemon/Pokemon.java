@@ -200,7 +200,10 @@ public class Pokemon implements IPokemon {
     }
 
     public void remplaceCapacite(int i, ICapacite cap) throws Exception {
-        this.listeCapacite[i] = (Capacite) cap;
+        if(this.espPoke.capaciteSelonNiveau.containsKey(cap)){
+            this.listeCapacite[i] = (Capacite) cap;
+        }
+
     }
 
     @Override
