@@ -10,8 +10,8 @@ public class TestGestionPokemon {
                 Pokedex pokedex = new Pokedex();
                 Pokedex.createListeCapacite();
                 Pokedex.createListeEspece();
-
-                System.out.println(Arrays.toString(Pokedex.engendreRanch()));
+                System.out.println(new Pokemon(Pokedex.listeEspece[3]));
+//                System.out.println(Arrays.toString(Pokedex.engendreRanch()));
         }
 
         /*
