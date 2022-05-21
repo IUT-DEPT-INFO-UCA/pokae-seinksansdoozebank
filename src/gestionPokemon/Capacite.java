@@ -53,15 +53,14 @@ public class Capacite implements ICapacite {
      */
     public int ppBase;
 
-    /**
-     * Creer un objet Type avec son identifiant comme seul parametre
-     *
-     * @param id Un itn qui initialise l'id du pokémon
-     *           Les autres attributs sont initialisés grâce a des méthodes.
-     */
-    public Capacite(int id) {
-        this.id = id;
-    }
+	/**
+	 * Creer un objet Type avec son identifiant comme seul parametre
+	 * 
+	 * @param id Un int qui initialise l'id du pokémon,  les autres attributs sont initialisés grâce a des méthodes.
+	 */
+	public Capacite(int id) {
+		this.id = id;
+	}
 
     /**
      * La méthode toString() renvoie la représentation sous forme de chaîne de
@@ -174,33 +173,33 @@ public class Capacite implements ICapacite {
         return Math.random() <= this.precision;
     }
 
-    /**
-     * Cette fonction calcule le coefficient multiplicateur d'une attaque
-     *
-     * @param attaquant Le Pokémon attaquant
-     * @param defenseur Le Pokémon attaqué
-     * @return Le coefficient multiplicateur que l'attaque fera.
-     */
-    public double calculerCM(Pokemon attaquant, Pokemon defenseur) {
-        double stab = 0;
-        double efficacite;
-        if (attaquant.possedeLeType(this.type)) {
-            stab = 1.5;
-        }
-        efficacite = this.getEfficiencyOn(defenseur);
-        return stab * efficacite * (0.85 * (Math.random() * 0.15));
-    }
+	/**
+	 * Cette fonction calcule le coefficient multiplicateur d'une attaque
+	 * 
+	 * @param attaquant Le Pokémon attaquant
+	 * @param defenseur Le Pokémon attaqué
+	 * @return Le coefficient multiplicateur que l'attaque fera.
+	 */
+	public double calculerCM(Pokemon attaquant, Pokemon defenseur) {
+		double stab = 0;
+		double efficacite;
+		if (attaquant.possedeLeType(this.type)) {
+			stab = 1.5;
+		}
+		efficacite = attaquant.getAttaqueChoisie().getEfficiencyOn(defenseur);
+		return stab * efficacite * (0.85 * (Math.random() * 0.15));
+	}
 
-    /**
-     * Cette fonction renvoie le multiplicateur de dégâts en fonction du type de
-     * l'attaque sur le défenseur
-     *
-     * @param defenseur Le Pokémon attaqué
-     * @return L'efficacité de l'attaque sur le défenseur.
-     */
-    public double getEfficiencyOn(Pokemon defenseur) {
-        return this.type.getCoeffDamageOn(defenseur.getEspece().getTypes()[0])
-                * this.type.getCoeffDamageOn(defenseur.getEspece().getTypes()[1]);
-    }
+	
+	/**
+	 * Cette fonction renvoie le multiplicateur de dégâts en fonction du type de
+	 * l'attaque sur le défenseur
+	 * 
+	 * @param defenseur Le Pokémon attaqué
+	 * @return L'efficacité de l'attaque sur le défenseur.
+	 */
+	public double getEfficiencyOn(Pokemon defenseur) {
+		return ((Type)getType()).getCoeffTotal(defenseur.getType1(), defenseur.getType2());
+	}
 
 }

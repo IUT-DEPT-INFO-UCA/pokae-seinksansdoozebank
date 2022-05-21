@@ -57,10 +57,12 @@ public class Pokemon implements IPokemon {
      */
     public Stats statsEV = new Stats();
 
-    /**
-     * L'ensemble de stats des EV du Pokemon
-     */
-    public Stats statsDV = new Stats();
+	/**
+	 * L'ensemble de stats des EV du Pokemon
+	 */
+	public Stats statsDV = new Stats();
+	
+	private Capacite attaqueChoisie;
 
     /**
      * La capacité que le pokemon à utiliser en dernier
@@ -107,6 +109,7 @@ public class Pokemon implements IPokemon {
         this.apprendCapacites(this.espPoke.capaciteDispo(this));
         this.niv=espPoke.nivDepart;
         calculPV();
+        calculPVMax();
         calculDefense();
         calculSpecial();
         calculForce();
@@ -137,6 +140,7 @@ public class Pokemon implements IPokemon {
         this.apprendCapacites(this.espPoke.capaciteDispo(this));
         this.niv=espPoke.nivDepart;
         calculPV();
+        calculPVMax();
         calculDefense();
         calculSpecial();
         calculForce();
@@ -289,7 +293,23 @@ public class Pokemon implements IPokemon {
     public IStat getStatsDV() {
         return statsDV;
     }
+    
+    public Type getType1() {
+    	return this.espPoke.type1;
+    }
 
+    public Type getType2() {
+    	return this.espPoke.type2;
+    }
+    
+    public Capacite getAttaqueChoisie() {
+    	return this.attaqueChoisie;
+    }
+    
+	public void setAttaqueChoisie(Capacite actionChoisie) {
+		this.attaqueChoisie = actionChoisie;
+	}
+	
     /**
      * Cette fonction renvoie la derniere capacite utilisee par le joueur
      *
@@ -353,6 +373,7 @@ public class Pokemon implements IPokemon {
     public void subirDegats(int degats) {
 
         this.getStat().setPV(this.getStat().getPV() - degats);
+        //TODO ajouter le set de dernier degat subit
     }
 
     /**
@@ -369,9 +390,13 @@ public class Pokemon implements IPokemon {
         this.getStatsEV().setSpecial(this.getStatsEV().getSpecial() + vaincu.getEspece().getGainsStat().getSpecial());
         this.getStatsEV().setPV(this.getStatsEV().getPV() + vaincu.getEspece().getGainsStat().getPV());
     }
-    public void calculPV(){
+    public void calculPVMax(){
         this.pvMax = (((2 * (this.espPoke.getBaseStat().getPV() + this.getStatsDV().getPV())
                 + this.getStatsEV().getPV() / 4) * this.getNiveau()) / 100) + this.getNiveau() + 10;
+    }
+    public void calculPV(){
+        this.getStat().setPV((((2 * (this.espPoke.getBaseStat().getPV() + this.getStatsDV().getPV())
+                + this.getStatsEV().getPV() / 4) * this.getNiveau()) / 100) + this.getNiveau() + 10);
     }
     public void calculForce(){
         this.getStat().setForce((2 * (this.getEspece().getBaseStat().getForce() + this.getStatsDV().getForce())

@@ -125,6 +125,7 @@ public class Dresseur implements IEchange{
 		try (Scanner sc = new Scanner(System.in)) {
 			int input = sc.nextInt();
 			this.actionChoisie = p.listeCapacite[input+1];
+			this.pokemon.setAttaqueChoisie(this.actionChoisie);
 		}
 	}
 

@@ -12,7 +12,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Arrays;
+//import java.util.Arrays;
 import java.util.Scanner;
 
 /**
@@ -138,8 +138,8 @@ public class Pokedex {
                     espece.getGainsStat().setDefense(Integer.parseInt(scannerCSV.next()));
                     espece.getGainsStat().setSpecial(Integer.parseInt(scannerCSV.next()));
                     espece.getGainsStat().setVitesse(Integer.parseInt(scannerCSV.next()));
-                    espece.type1 = new Type(scannerCSV.next());
-                    espece.type2 = new Type(scannerCSV.next());
+                    espece.type1 = espece.setType(scannerCSV.next());
+                    espece.type2 = espece.setType(scannerCSV.next());
                     espece.nivDepart = Integer.parseInt(scannerCSV.next());
                     String nivEvolutionTemp = scannerCSV.next();
                     if (nivEvolutionTemp != null) {
@@ -265,15 +265,15 @@ public class Pokedex {
      * @return L'espèce avec le nom donné en paramètre.
      */
     public static Espece especeParNom(String nom) {
-        int i = 0;
+        int i = 1;
         boolean tester = false;
-        while (i < listeEspece.length && !tester) {
+        while (i < listeEspece.length-1 && !tester) {
             if (listeEspece[i].nom.equals(nom)) {
                 tester = true;
             }
             i++;
         }
-        return listeEspece[i];
+        return listeEspece[i-1];
     }
 
     /**
