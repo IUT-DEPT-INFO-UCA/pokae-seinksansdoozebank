@@ -72,12 +72,12 @@ public class Pokemon implements IPokemon {
     /**
      * La quantité de degat que le pokemon a subit lors du dernier tour
      */
-    private double deniersDegatsSubits;
+    private double derniersDegatsSubits;
 
     /**
      * La quantité de degat que le pokemon a subit lors de l'avant-dernier tour
      */
-    private double avantDeniersDegatsSubits;
+    private double avantDerniersDegatsSubits;
 
     /**
      * Le nombre de tours avat que le Pokemon puisse à nouveau attaquer
@@ -103,6 +103,7 @@ public class Pokemon implements IPokemon {
         this.statsDV.setVitesse((int) (Math.random() * ((15) + 1)));
         this.statsDV.setSpecial((int) (Math.random() * ((15) + 1)));
         this.statsDV.setPV((int) (Math.random() * ((15) + 1)));
+
         this.espPoke = espPoke;
         this.statsSpecifiques=this.espPoke.statsDeBase;
         this.espPoke.initCapaciteSelonNiveau();
@@ -217,7 +218,7 @@ public class Pokemon implements IPokemon {
 
     }
 
-    public void remplaceCapacite(int i, ICapacite cap) {
+    public void remplaceCapacite(int i, ICapacite cap) throws Exception {
         if(this.espPoke.capaciteSelonNiveau.containsKey(cap)){
             this.listeCapacite[i] = (Capacite) cap;
         }
@@ -248,6 +249,7 @@ public class Pokemon implements IPokemon {
             this.xp += expAGagner;
         }
     }
+
     @Override
     public void subitAttaqueDe(IPokemon pok, IAttaque attaque) {
         this.getStat().setPV(attaque.calculeDommage(pok, this));
@@ -268,7 +270,7 @@ public class Pokemon implements IPokemon {
 
     public void soigne() {
         this.getStat().setPV(this.pvMax);
-
+        ;
         this.resetPp();
     }
 
@@ -335,7 +337,7 @@ public class Pokemon implements IPokemon {
      * @return Le montant des degâts subis par le joueur.
      */
     public double obtenirDeniersDegatsSubits() {
-        return this.deniersDegatsSubits;
+        return this.derniersDegatsSubits;
     }
 
     /**
@@ -344,7 +346,7 @@ public class Pokemon implements IPokemon {
      * @return La valeur de la variable avantDeniersDegatsSubits.
      */
     public double obtenirAvantDeniersDegatsSubits() {
-        return this.avantDeniersDegatsSubits;
+        return this.avantDerniersDegatsSubits;
     }
 
     /**
@@ -381,25 +383,11 @@ public class Pokemon implements IPokemon {
      * @param degats les degâts a faire
      */
     public void subirDegats(int degats) {
-
         this.getStat().setPV(this.getStat().getPV() - degats);
-        //TODO ajouter le set de dernier degat subit
+        this.avantDerniersDegatsSubits = this.derniersDegatsSubits;
+        this.derniersDegatsSubits = degats;
     }
-
-    /**
-     * Cette fonction est utilisee pour augmenter les statistiques d'un pokemon
-     * lorsqu'il bat un autre
-     * pokemon
-     *
-     * @param vaincu Le pokemon qui a ete vaincu
-     */
-    public void augmenterEV(IPokemon vaincu) {
-        this.getStatsEV().setForce(this.getStatsEV().getForce() + vaincu.getEspece().getGainsStat().getForce());
-        this.getStatsEV().setDefense(this.getStatsEV().getDefense() + vaincu.getEspece().getGainsStat().getDefense());
-        this.getStatsEV().setVitesse(this.getStatsEV().getVitesse() + vaincu.getEspece().getGainsStat().getVitesse());
-        this.getStatsEV().setSpecial(this.getStatsEV().getSpecial() + vaincu.getEspece().getGainsStat().getSpecial());
-        this.getStatsEV().setPV(this.getStatsEV().getPV() + vaincu.getEspece().getGainsStat().getPV());
-    }
+    
     public void calculPVMax(){
         this.pvMax = (((2 * (this.espPoke.getBaseStat().getPV() + this.getStatsDV().getPV())
                 + this.getStatsEV().getPV() / 4) * this.getNiveau()) / 100) + this.getNiveau() + 10;
@@ -421,9 +409,23 @@ public class Pokemon implements IPokemon {
                 + (this.getStatsEV().getVitesse() / 4) / 100) + 5);
     }
     public void calculSpecial(){
-
         this.getStat().setSpecial((2 * (this.getEspece().getBaseStat().getSpecial() + this.getStatsDV().getSpecial())
                 + (this.getStatsEV().getSpecial() / 4) / 100) + 5);
+    }
+
+    /**
+     * Cette fonction est utilisee pour augmenter les statistiques d'un pokemon
+     * lorsqu'il bat un autre
+     * pokemon
+     *
+     * @param vaincu Le pokemon qui a ete vaincu
+     */
+    public void augmenterEV(IPokemon vaincu) {
+        this.getStatsEV().setForce(this.getStatsEV().getForce() + vaincu.getEspece().getGainsStat().getForce());
+        this.getStatsEV().setDefense(this.getStatsEV().getDefense() + vaincu.getEspece().getGainsStat().getDefense());
+        this.getStatsEV().setVitesse(this.getStatsEV().getVitesse() + vaincu.getEspece().getGainsStat().getVitesse());
+        this.getStatsEV().setSpecial(this.getStatsEV().getSpecial() + vaincu.getEspece().getGainsStat().getSpecial());
+        this.getStatsEV().setPV(this.getStatsEV().getPV() + vaincu.getEspece().getGainsStat().getPV());
     }
 
     /**
