@@ -116,7 +116,7 @@ public class Pokedex {
      * @return L'objet espèce concerné
      * @throws FileNotFoundException Exception lancée si le fichier csv n'est pas trouvé
      */
-    public Espece createEspece(int id) throws FileNotFoundException {
+    public static Espece createEspece(int id) throws FileNotFoundException {
         Espece espece = new Espece(id);
         File fichierCSV = new File("./csv/listePokemon1G_new.csv");
         try (Scanner scannerCSV = new Scanner(fichierCSV)) {
@@ -161,7 +161,7 @@ public class Pokedex {
      * 
      * @throws FileNotFoundException Exception lancée si le fichier csv n'est pas trouvé
      */
-    public void createListeEspece() throws FileNotFoundException {
+    public static void createListeEspece() throws FileNotFoundException {
         for (int i = 1; i < 152; i++) {
             listeEspece[i] = createEspece(i);
         }
@@ -175,7 +175,7 @@ public class Pokedex {
      * @return Un objet Capacite
      * @throws FileNotFoundException Exception lancée si le fichier csv n'est pas trouvé
      */
-    public Capacite createCapacite(int id) throws FileNotFoundException {
+    public static Capacite createCapacite(int id) throws FileNotFoundException {
         Capacite capacite = new Capacite(id);
         File fichierCSV = new File("./csv/listeCapacites.csv");
         try {
@@ -240,7 +240,7 @@ public class Pokedex {
      * Il crée une liste de toutes les capacités du jeu
      * @throws FileNotFoundException Exception lancée si le fichier csv n'est pas trouvé
      */
-    public void createListeCapacite() throws FileNotFoundException {
+    public static void createListeCapacite() throws FileNotFoundException {
         for (int i = 1; i < 110; i++) {
             listeCapacite[i] = createCapacite(i);
         }
