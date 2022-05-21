@@ -65,7 +65,7 @@ public class Espece implements IEspece {
 	 * Une Hashmap qui contient le niveau auquel un pokemon apprend un certain mouvement.
  	 */
 
-	private static HashMap<Capacite,Integer> capaciteSelonNiveau= new HashMap<>();
+	private HashMap<Capacite,Integer> capaciteSelonNiveau= new HashMap<>();
 
 	/**
 	 * Constructeur de espece qui l'instancie avec son id
@@ -74,8 +74,29 @@ public class Espece implements IEspece {
 	 */
 	public Espece(int id) {
 		this.setId(id);
+
 	}
 
+	/**
+	 * Il renvoie une représentation sous forme de chaîne de caractère de l'objet
+	 *
+	 * @return La méthode toString est renvoyée.
+	 */
+	@Override
+	public String toString() {
+		return "Espece{" +
+				"\n\t\tid=" + id +
+				"\n\t\tnom='" + nom + '\'' +
+				"\n\t\ttype1=" + type1 +
+				"\n\t\ttype2=" + type2 +
+				"\n\t\tnivDepart=" + nivDepart +
+				"\n\t\tnivEvolution=" + nivEvolution +
+				"\n\t\tevolution='" + evolution + '\'' +
+				"\n\t\texpDeBase=" + expDeBase +
+				"\n\t\tstatsDeBase=" + statsDeBase +
+				"\n\t\tstatsGain=" + statsGain +
+				'}';
+	}
 	/////////////// methode de IEspece/////////////////////////////////
 
 	/**
@@ -138,7 +159,6 @@ public class Espece implements IEspece {
 		JSONObject jsonCapacite = Pokedex.getJSONfromURL("https://pokeapi.co/api/v2/pokemon/" + this.id);
 		assert jsonCapacite != null;
 		JSONArray listeMoves = (JSONArray) jsonCapacite.get("moves");
-		System.out.println(this.nom);
 		Pokedex pokedex = new Pokedex();
 		for (Object listeMove : listeMoves) {
 			JSONObject jsonNomsMoves = Pokedex
@@ -163,9 +183,9 @@ public class Espece implements IEspece {
 	 */
 	@Override
 	public ICapacite[] getCapSet() {
-		Capacite[] liste = new Capacite[Espece.capaciteSelonNiveau.size()];
+		Capacite[] liste = new Capacite[this.capaciteSelonNiveau.size()];
 		int i = 0;
-		for (Entry<Capacite, Integer> c : Espece.capaciteSelonNiveau.entrySet()) {
+		for (Entry<Capacite, Integer> c : this.capaciteSelonNiveau.entrySet()) {
 			liste[i] = c.getKey();
 			i++;
 		}
@@ -237,13 +257,17 @@ public class Espece implements IEspece {
 	 * @return La methode renvoie le premier objet Capacite disponible pour l'objet
 	 *         Pokemon.
 	 */
-	public Capacite capaciteDispo(Pokemon pokemon) {
-		for (Entry<Capacite, Integer> c : Espece.capaciteSelonNiveau.entrySet()) {
-			if (Integer.parseInt(c.getKey().toString()) <= pokemon.niv) {
-				return ((Capacite) c);
+	public Capacite[] capaciteDispo(Pokemon pokemon) {
+		Capacite[] tabCapaciteDispo=new Capacite[20];
+		int i=0;
+		for (Entry<Capacite, Integer> c : this.capaciteSelonNiveau.entrySet()) {
+			if (Integer.parseInt(c.getValue().toString()) <= pokemon.niv) {
+
+				tabCapaciteDispo[i]= c.getKey();
+				i++;
 			}
 		}
-		return null;
+		return tabCapaciteDispo;
 	}
 
 }

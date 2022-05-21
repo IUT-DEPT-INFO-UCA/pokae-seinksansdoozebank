@@ -40,6 +40,22 @@ public class Stats implements IStat {
 	}
 
 	/**
+	 * Il renvoie une représentation sous forme de chaîne de caractère de l'objet
+	 *
+	 * @return Les statistiques du pokémon
+	 */
+	@Override
+	public String toString() {
+		return "Stats{" +
+				"force=" + force +
+				", defense=" + defense +
+				", vitesse=" + vitesse +
+				", special=" + special +
+				", pv=" + pv +
+				'}';
+	}
+
+	/**
 	 * Cette fonction renvoie la force du Pokémon
 	 * 
 	 * @return La variable de force est renvoyée.

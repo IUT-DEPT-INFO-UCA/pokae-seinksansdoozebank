@@ -9,6 +9,8 @@ import interfaces.IEspece;
 import interfaces.IPokemon;
 import interfaces.IStat;
 
+import java.util.Arrays;
+
 /**
  * Une classe qui represente un Pokemon.
  */
@@ -121,6 +123,29 @@ public class Pokemon implements IPokemon {
 		this.statsDV.setSpecial((int) (Math.random() * ((15) + 1)));
 		this.statsDV.setPV((int) (Math.random() * ((15) + 1)));
 		this.espPoke = espPoke;
+		this.espPoke.initCapaciteSelonNiveau();
+		this.apprendCapacites(this.espPoke.capaciteDispo(this));
+	}
+
+	/**
+	 * Il renvoie une représentation sous forme de chaîne de caractère de l'objet
+	 *
+	 * @return La méthode toString est renvoyée.
+	 */
+	@Override
+	public String toString() {
+		return "\nPokemon{" +
+				"id=" + id +
+				", nom='" + nom + '\'' +
+				", niv=" + niv +
+				", xp=" + xp +
+				", espPoke=\n\t" + espPoke +
+				", \nlisteCapacite=" + Arrays.toString(listeCapacite) +
+				", statsSpecifiques=" + statsSpecifiques +
+				", pvMax=" + pvMax +
+				", statsEV=" + statsEV +
+				", statsDV=" + statsDV +
+				'}';
 	}
 
 	//////////////// methodes de IPokemon ///////////////////////

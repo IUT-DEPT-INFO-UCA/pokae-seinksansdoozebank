@@ -1,6 +1,7 @@
 package gestionPokemon;
 
 import java.io.FileNotFoundException;
+import java.util.Arrays;
 //import java.util.Arrays;
 
 public class TestGestionPokemon {
@@ -9,9 +10,10 @@ public class TestGestionPokemon {
                 Pokedex pokedex = new Pokedex();
                 pokedex.createListeCapacite();
                 pokedex.createListeEspece();
-                Espece espece = Pokedex.listeEspece[2];
-                espece.initCapaciteSelonNiveau();
-                // System.out.println(Arrays.toString(espece.getCapSet()));
+//                Espece espece = Pokedex.listeEspece[2];
+//                espece.initCapaciteSelonNiveau();
+//                System.out.println(Arrays.toString(espece.getCapSet()));
+                System.out.println(Arrays.toString(Pokedex.engendreRanch()));
         }
 
         /*

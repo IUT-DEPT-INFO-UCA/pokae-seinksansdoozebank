@@ -36,10 +36,10 @@ public class Pokedex {
      *
      * @return Une liste de 6 Pokémon aléatoires.
      */
-    public IPokemon[] engendreRanch() {
+    public static IPokemon[] engendreRanch() {
         IPokemon[] listePokeAleatoire = new Pokemon[6];
         for (int i = 0; i < 6; i++) {
-            listePokeAleatoire[i] = new Pokemon(listeEspece[(int) (Math.random() * ((151) + 1))]);
+            listePokeAleatoire[i] = new Pokemon(listeEspece[(int) (Math.random() * ((150) + 1))]);
         }
         return listePokeAleatoire;
     }

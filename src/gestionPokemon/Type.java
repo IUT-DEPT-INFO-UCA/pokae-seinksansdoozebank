@@ -47,6 +47,19 @@ public class Type implements IType {
 	}
 
 	/**
+	 * La méthode toString() renvoie une représentation sous forme de chaîne de caractère de l'objet
+	 *
+	 * @return L'identifiant et le nom du type.
+	 */
+	@Override
+	public String toString() {
+		return "Type{" +
+				"id=" + id +
+				", nom='" + nom + '\'' +
+				'}';
+	}
+
+	/**
 	 * La methode getNom() renvoie le nom d'un Type
 	 * 
 	 * @return le nom du type
