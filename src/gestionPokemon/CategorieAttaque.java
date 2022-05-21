@@ -8,11 +8,11 @@ import interfaces.ICategorie;
  */
 public enum CategorieAttaque implements ICategorie {
 	/**
-	 * Construction de la Categorie PHYSIQUE avec son
+	 * Construction de la Categorie PHYSIQUE avec son nom
 	 */
 	PHYSIQUE("physique"),
 	/**
-	 * Construction de la Categorie SPECIALE avec son
+	 * Construction de la Categorie SPECIALE avec son nom
 	 */
 	SPECIALE("special");
 
