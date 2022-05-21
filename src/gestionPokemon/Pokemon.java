@@ -101,11 +101,16 @@ public class Pokemon implements IPokemon {
         this.statsDV.setVitesse((int) (Math.random() * ((15) + 1)));
         this.statsDV.setSpecial((int) (Math.random() * ((15) + 1)));
         this.statsDV.setPV((int) (Math.random() * ((15) + 1)));
-
         this.espPoke = espPoke;
         this.statsSpecifiques=this.espPoke.statsDeBase;
         this.espPoke.initCapaciteSelonNiveau();
         this.apprendCapacites(this.espPoke.capaciteDispo(this));
+        this.niv=espPoke.nivDepart;
+        calculPV();
+        calculDefense();
+        calculSpecial();
+        calculForce();
+        calculVitesse();
     }
 
     /**
@@ -130,6 +135,12 @@ public class Pokemon implements IPokemon {
         this.statsSpecifiques=this.espPoke.statsDeBase;
         this.espPoke.initCapaciteSelonNiveau();
         this.apprendCapacites(this.espPoke.capaciteDispo(this));
+        this.niv=espPoke.nivDepart;
+        calculPV();
+        calculDefense();
+        calculSpecial();
+        calculForce();
+        calculVitesse();
     }
 
     /**
@@ -357,6 +368,27 @@ public class Pokemon implements IPokemon {
         this.getStatsEV().setSpecial(this.getStatsEV().getSpecial() + vaincu.getEspece().getGainsStat().getSpecial());
         this.getStatsEV().setPV(this.getStatsEV().getPV() + vaincu.getEspece().getGainsStat().getPV());
     }
+    public void calculPV(){
+        this.pvMax = (((2 * (this.espPoke.getBaseStat().getPV() + this.getStatsDV().getPV())
+                + this.getStatsEV().getPV() / 4) * this.getNiveau()) / 100) + this.getNiveau() + 10;
+    }
+    public void calculForce(){
+        this.getStat().setForce((2 * (this.getEspece().getBaseStat().getForce() + this.getStatsDV().getForce())
+                + (this.getStatsEV().getPV() / 4) / 100) + 5);
+    }
+    public void calculDefense(){
+        this.getStat().setDefense((2 * (this.getEspece().getBaseStat().getDefense() + this.getStatsDV().getDefense())
+                + (this.getStatsEV().getDefense() / 4) / 100) + 5);
+    }
+    public void calculVitesse(){
+        this.getStat().setVitesse((2 * (this.getEspece().getBaseStat().getVitesse() + this.getStatsDV().getVitesse())
+                + (this.getStatsEV().getVitesse() / 4) / 100) + 5);
+    }
+    public void calculSpecial(){
+
+        this.getStat().setSpecial((2 * (this.getEspece().getBaseStat().getSpecial() + this.getStatsDV().getSpecial())
+                + (this.getStatsEV().getSpecial() / 4) / 100) + 5);
+    }
 
     /**
      * La fonction est appelee lorsqu'un pokemon monte de niveau. Il verifie si le
@@ -372,16 +404,11 @@ public class Pokemon implements IPokemon {
         // Les stats de base sont celles de l'espece actuelle du pokemon.
         // Ainsi, si le pokemon a evolue, son espece a change juste avant donc les stats
         // sont calculees sur les nouvelles stat de base.
-        this.pvMax = (((2 * (this.espPoke.getBaseStat().getPV() + this.getStatsDV().getPV())
-                + this.getStatsEV().getPV() / 4) * this.getNiveau()) / 100) + this.getNiveau() + 10;
-        this.getStat().setForce((2 * (this.getEspece().getBaseStat().getForce() + this.getStatsDV().getForce())
-                + (this.getStatsEV().getPV() / 4) / 100) + 5);
-        this.getStat().setDefense((2 * (this.getEspece().getBaseStat().getDefense() + this.getStatsDV().getDefense())
-                + (this.getStatsEV().getDefense() / 4) / 100) + 5);
-        this.getStat().setVitesse((2 * (this.getEspece().getBaseStat().getVitesse() + this.getStatsDV().getVitesse())
-                + (this.getStatsEV().getVitesse() / 4) / 100) + 5);
-        this.getStat().setSpecial((2 * (this.getEspece().getBaseStat().getSpecial() + this.getStatsDV().getSpecial())
-                + (this.getStatsEV().getSpecial() / 4) / 100) + 5);
+        calculPV();
+        calculForce();
+        calculDefense();
+        calculVitesse();
+        calculSpecial();
     }
 
     /**

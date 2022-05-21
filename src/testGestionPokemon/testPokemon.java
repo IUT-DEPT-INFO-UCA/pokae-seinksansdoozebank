@@ -5,9 +5,9 @@ import gestionPokemon.Espece;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.*;
+
 import java.io.FileNotFoundException;
-import org.junit.rules.Timeout;
+
 import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -30,14 +30,13 @@ public class testPokemon {
         Pokemon florizarre = new Pokemon("Flofloriri",Pokedex.listeEspece[3]);
         // On test si le pokémon possède la bonne espece et le bon niveau.
         assertEquals(florizarre.getEspece(),Pokedex.listeEspece[3]);
-        assertEquals(florizarre.getNiveau(),0);
     }
     @Test
     public void maxCreatePokemon(){
         // On test si le pokémon possède la bonne espece et le bon niveau.
         Pokemon out = new Pokemon("maxValue",Pokedex.listeEspece[151]);
         assertEquals(out.getEspece(),Pokedex.listeEspece[151]);
-        assertEquals(out.getNiveau(),0);
+
     }
     @Test
     public void testStatsPokemon(){
