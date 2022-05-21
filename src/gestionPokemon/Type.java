@@ -7,19 +7,7 @@ import java.util.Objects;
 
 import interfaces.IType;
 
-<<<<<<< Updated upstream
-/**
- * Un objet représentant un Type d'un Pokemon ou d'une Attaque
- */
-public class Type implements IType {
-	/**
-	 * Liste statique des Types existant dans notre version du jeu
-	 */
-	public static String[] listeTypes = { "Combat", "Dragon", "Eau", "Électrik", "Feu", "Glace", "Insecte", "Normal",
-			"Plante", "Poison", "Psy", "Roche", "Sol", "Spectre", "Vol" };
-
-=======
-public enum Type  implements IType {
+public enum Type implements IType {
 	COMBAT("Combat",0),
 	DRAGON("Dragon",1),
 	EAU("Eau",2),
@@ -36,8 +24,11 @@ public enum Type  implements IType {
 	SPECTRE("Spectre",13),
 	VOL("Vol",14);
 	
+	 /**
+	 * Liste statique des Types existant dans notre version du jeu
+	 */
+	public static Type[] listeTypes = {COMBAT, DRAGON, EAU,	ELECTRIK, FEU, GLACE, INSECTE, NORMAL, PLANTE, POISON, PSY, ROCHE, SOL, SPECTRE, VOL};
 	
->>>>>>> Stashed changes
 	/**
 	 * L'id unique du type, correspondant à l'index du nom du type dans la liste
 	 * statique
@@ -56,20 +47,10 @@ public enum Type  implements IType {
 	private double[] tabCoeffEfficacite = new double[15];
 	
 	/**
-<<<<<<< Updated upstream
-	 * Créé un objet Type pour seul paramètre son nom
-	 * 
-	 * @param nom qui initialise le nom du pokémon
-	 *            Les autres attributs sont initialisés grâce a des méthodes.
-	 *            On affecte un id qui est égal au résultat de la méthode
-	 *            getIndexOfType()
-	 *            On affecte a initCoeff la position du fichier effecacites.csv
-=======
 	 * Constructeur d'un type à partir de son nom et de son id
 	 * 
 	 * @param nom Le nom du Type
 	 * @param id le numero du type dans le tableau des types
->>>>>>> Stashed changes
 	 */
 	Type(String nom, int id) {
 		this.nom=nom;
@@ -78,40 +59,28 @@ public enum Type  implements IType {
 	}
 
 	/**
-	 * La methode getNom() renvoie le nom d'un Type
+	 * Renvoie le nom d'un Type
 	 * 
-	 * @return un string étant le nom du type
+	 * @return le nom du type
 	 */
 	public String getNom() {
 		return this.nom;
 	}
-
+	
 	/**
-<<<<<<< Updated upstream
-	 * methode utilisee a la construction des types pour leur attribuer le bon id
+	 * Retourne la liste des types disponibles dans le jeu
 	 * 
-	 * @return un entier i si le type est trouvé ou -1 s'il ne l'est pas
+	 * @return la liste des types
 	 */
-	private int getIndexOfType() { // il faut throws une exeception si le pokémon n'est pas trouvé (si la méthode
-									// return -1)
-		int i = 0;
-		while (i < listeTypes.length && !listeTypes[i].equals(this.nom)) {
-			i++;
-		}
-		if (i == listeTypes.length) {
-			return -1;
-		}
-		return i;
+	public static Type[] getListe() {
+		return listeTypes;
 	}
 
 	/**
-	 * La methode getCoeffTotal renvoie le coefficient total en fonction du type
-=======
 	 * La methode getCoeffTotal renvoie le coefficient multiplicateur total de l'attaque en fonction des types du Pokemon
->>>>>>> Stashed changes
 	 * 
-	 * @param type1 est de type Type et correspond au premier type
-	 * @param type2 est de type Type et correspond au second type
+	 * @param type1 le premier type du Pokemon
+	 * @param type2 le deuxieme type du Pokemon
 	 * @return un double correspondant aux coefficient avec lesquels les degats
 	 *         seront calcules.
 	 */
@@ -121,27 +90,24 @@ public enum Type  implements IType {
 	}
 
 	/**
-	 * La methode getCoeffDamageOn() renvoie ???
+	 * Calcule le coefficient multipicateur correspondant aux force du type de l'attaque sur les types du Pokemon
 	 * 
 	 * @param cible est de type IType representant le type sur lequel on souhaite
 	 *              determiner le coeff de l'attaque
-	 * @return ?????
+	 * @return Le tableau regroupant l'efficacité des attques de type this sur chacun des
+	 * types
 	 */
-	public double getCoeffDamageOn(IType cible) {
+	private double getCoeffDamageOn(IType cible) {
 		System.out.println(this.getNom()+" -> "+cible.getNom()+" = "+((Type) cible).tabCoeffEfficacite[this.id]);
 		return ((Type) cible).tabCoeffEfficacite[this.id];
 	}
 
-<<<<<<< Updated upstream
-	public void initCoeff(String fileName) {
-=======
 	/**
 	 * Methode qui initialise le tableau des coefficients d'efficacités
 	 * 
 	 * @param fileName fichier csv stockant les coefficiants d'efficacité
 	 */
 	private void initCoeff(String fileName) {
->>>>>>> Stashed changes
 		try {
 			FileReader fichier = new FileReader(fileName);
 			BufferedReader reader = new BufferedReader(fichier);
@@ -165,29 +131,4 @@ public enum Type  implements IType {
 			e.printStackTrace();
 		}
 	}
-<<<<<<< Updated upstream
-
-	///////////////// Methodes de debug /////////////////
-
-	public static Type[] creerTypes(String fileName) {
-		Type[] tab = new Type[15];
-		for (int i = 0; i < 15; i++) {
-			tab[i] = new Type(Type.listeTypes[i]);
-			tab[i].initCoeff(fileName);
-		}
-		return tab;
-	}
-
-	public void afficherTab() {
-		StringBuilder s = new StringBuilder();
-		s.append(this.nom).append(" :");
-		for (double d : this.tabCoeffEfficacite) {
-			s.append(" ").append(d).append(",");
-		}
-		System.out.println(s);
-	}
-
 }
-=======
-}
->>>>>>> Stashed changes

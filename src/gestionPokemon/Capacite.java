@@ -56,8 +56,7 @@ public class Capacite implements ICapacite {
 	/**
 	 * Creer un objet Type avec son identifiant comme seul parametre
 	 * 
-	 * @param id Un itn qui initialise l'id du pokémon
-	 *           Les autres attributs sont initialisés grâce a des méthodes.
+	 * @param id Un int qui initialise l'id du pokémon,  les autres attributs sont initialisés grâce a des méthodes.
 	 */
 	public Capacite(int id) {
 		this.id = id;
@@ -187,10 +186,11 @@ public class Capacite implements ICapacite {
 		if (attaquant.possedeLeType(this.type)) {
 			stab = 1.5;
 		}
-		efficacite = this.getEfficiencyOn(defenseur);
+		efficacite = attaquant.getAttaqueChoisie().getEfficiencyOn(defenseur);
 		return stab * efficacite * (0.85 * (Math.random() * 0.15));
 	}
 
+	
 	/**
 	 * Cette fonction renvoie le multiplicateur de dégâts en fonction du type de
 	 * l'attaque sur le défenseur
@@ -199,8 +199,7 @@ public class Capacite implements ICapacite {
 	 * @return L'efficacité de l'attaque sur le défenseur.
 	 */
 	public double getEfficiencyOn(Pokemon defenseur) {
-		return this.type.getCoeffDamageOn(defenseur.getEspece().getTypes()[0])
-				* this.type.getCoeffDamageOn(defenseur.getEspece().getTypes()[1]);
+		return ((Type)getType()).getCoeffTotal(defenseur.getType1(), defenseur.getType2());
 	}
 
 }

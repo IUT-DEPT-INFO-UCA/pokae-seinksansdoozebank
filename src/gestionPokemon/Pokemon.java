@@ -10,7 +10,7 @@ import interfaces.IPokemon;
 import interfaces.IStat;
 
 /**
- * Une classe qui représente un Pokémon.
+ * Une classe qui represente un Pokemon.
  */
 public class Pokemon implements IPokemon {
 
@@ -59,6 +59,8 @@ public class Pokemon implements IPokemon {
 	 * L'ensemble de stats des EV du Pokemon
 	 */
 	public Stats statsDV = new Stats();
+	
+	private Capacite attaqueChoisie;
 
 	/**
 	 * La capacité que le pokemon à utiliser en dernier
@@ -217,21 +219,20 @@ public class Pokemon implements IPokemon {
 	//////////////////////////////////////////////////////////
 
 	/**
-	 * Cette fonction définit l'id du pokémon à la valeur du paramètre cptId et
-	 * incrémente la variable
+	 * Cette fonction definit l'id du pokemon a la valeur du parametre cptId et
+	 * incremente la variable
 	 * statique cptId de 1
 	 * 
-	 * @param cptId le nombre de Pokémon créés
+	 * @param cptId le nombre de Pokemon crees
 	 */
 	private void setId(int cptId) {
 		this.id = cptId;
 		Pokemon.cptId++;
 	}
-
 	/**
 	 * Cette fonction renvoie la variable statsEV
 	 * 
-	 * @return La variable statsEV est renvoyée.
+	 * @return La variable statsEV est renvoyee.
 	 */
 	public IStat getStatsEV() {
 		return statsEV;
@@ -245,20 +246,36 @@ public class Pokemon implements IPokemon {
 	public IStat getStatsDV() {
 		return statsDV;
 	}
+	
+	public Type getType1() {
+		return this.espPoke.type1;
+	}
+	
+	public Type getType2() {
+		return this.espPoke.type2;
+	}
+	
+	public Capacite getAttaqueChoisie() {
+		return this.attaqueChoisie;
+	}
+	
+	public void setAttaqueChoisie(Capacite c) {
+		this.attaqueChoisie = c;
+	}
 
 	/**
-	 * Cette fonction renvoie la dernière capacité utilisée par le joueur
+	 * Cette fonction renvoie la derniere capacite utilisee par le joueur
 	 * 
-	 * @return La dernière capacité utilisée.
+	 * @return La derniere capacite utilisee.
 	 */
 	public Capacite obtenirDerniereCapaUtilisee() {
 		return this.derniereCapciteUtilisee;
 	}
 
 	/**
-	 * Cette fonction renvoie le montant des dégâts subis par le joueur.
+	 * Cette fonction renvoie le montant des degâts subis par le joueur.
 	 * 
-	 * @return Le montant des dégâts subis par le joueur.
+	 * @return Le montant des degâts subis par le joueur.
 	 */
 	public double obtenirDeniersDegatsSubits() {
 		return this.deniersDegatsSubits;
@@ -292,7 +309,7 @@ public class Pokemon implements IPokemon {
 	}
 
 	/**
-	 * Cette fonction définit le nombre de tours avant l'attaque
+	 * Cette fonction definit le nombre de tours avant l'attaque
 	 * 
 	 * @param nombreDeToursAvantAttaque Le nombre de tours avant l'attaque
 	 */
@@ -301,21 +318,21 @@ public class Pokemon implements IPokemon {
 	}
 
 	/**
-	 * Cette fonction est utilisée pour réduire la vie du joueur par la quantité de
-	 * dégâts reçus
+	 * Cette fonction est utilisee pour reduire la vie du joueur par la quantite de
+	 * degâts reçus
 	 * 
-	 * @param degats les dégâts à faire
+	 * @param degats les degâts a faire
 	 */
 	public void subirDegats(int degats) {
 		this.getStat().setPV(this.getStat().getPV() - degats);
 	}
 
 	/**
-	 * Cette fonction est utilisée pour augmenter les statistiques d'un pokémon
+	 * Cette fonction est utilisee pour augmenter les statistiques d'un pokemon
 	 * lorsqu'il bat un autre
-	 * pokémon
+	 * pokemon
 	 * 
-	 * @param vaincu Le pokémon qui a été vaincu
+	 * @param vaincu Le pokemon qui a ete vaincu
 	 */
 	public void augmenterEV(IPokemon vaincu) {
 		this.getStatsEV().setForce(this.getStatsEV().getForce() + vaincu.getEspece().getGainsStat().getForce());
@@ -326,10 +343,10 @@ public class Pokemon implements IPokemon {
 	}
 
 	/**
-	 * La fonction est appelée lorsqu'un pokémon monte de niveau. Il vérifie si le
-	 * pokémon peut
-	 * évoluer, et s'il le peut, il le fait évoluer. Puis il calcule les nouvelles
-	 * stats du pokémon
+	 * La fonction est appelee lorsqu'un pokemon monte de niveau. Il verifie si le
+	 * pokemon peut
+	 * evoluer, et s'il le peut, il le fait evoluer. Puis il calcule les nouvelles
+	 * stats du pokemon
 	 */
 	public void augmenterNiveau() {
 		this.niv++;
@@ -352,10 +369,10 @@ public class Pokemon implements IPokemon {
 	}
 
 	/**
-	 * "Si le niveau du pokémon est suffisamment élevé, il évoluera vers une
-	 * nouvelle espèce."
+	 * "Si le niveau du pokemon est suffisamment eleve, il evoluera vers une
+	 * nouvelle espece."
 	 * 
-	 * La fonction s'appelle "evoluer" qui signifie "évoluer" en français
+	 * La fonction s'appelle "evoluer" qui signifie "evoluer" en français
 	 */
 	public void evoluer() {
 		// On modifie uniquement l'espece du pokemon. Le calcul des nouvelles stat se
@@ -364,12 +381,12 @@ public class Pokemon implements IPokemon {
 	}
 
 	/**
-	 * > Cette fonction renvoie la stat de défense du pokémon si l'attaque n'est pas
-	 * spéciale, sinon elle
-	 * renvoie la stat spéciale
+	 * > Cette fonction renvoie la stat de defense du pokemon si l'attaque n'est pas
+	 * speciale, sinon elle
+	 * renvoie la stat speciale
 	 * 
-	 * @param capacite Le coup utilisé
-	 * @return La défense ou la statistique spéciale du pokémon.
+	 * @param capacite Le coup utilise
+	 * @return La defense ou la statistique speciale du pokemon.
 	 */
 	public float obtenirDefSur(Capacite capacite) {
 		if (!capacite.getCategorie().isSpecial()) {
@@ -380,11 +397,11 @@ public class Pokemon implements IPokemon {
 	}
 
 	/**
-	 * > Cette fonction renvoie la statistique d'attaque du Pokémon, en fonction du
+	 * > Cette fonction renvoie la statistique d'attaque du Pokemon, en fonction du
 	 * type d'attaque
 	 * 
-	 * @param capacite La capacité que le Pokémon utilise
-	 * @return La statistique d'attaque du Pokémon.
+	 * @param capacite La capacite que le Pokemon utilise
+	 * @return La statistique d'attaque du Pokemon.
 	 */
 	public float obtenirAtqSur(Capacite capacite) {
 		if (!capacite.getCategorie().isSpecial()) {
@@ -395,16 +412,17 @@ public class Pokemon implements IPokemon {
 	}
 
 	/**
-	 * > Cette fonction retourne vrai si le pokémon a le type passé en paramètre
+	 * > Cette fonction retourne vrai si le pokemon a le type passe en parametre
 	 * 
 	 * @param type Le type cherché
+	 * @return un boolean indiquant la présence type parmis ceux du Pokemon
 	 */
 	public boolean possedeLeType(Type type) {
 		return this.espPoke.type1.equals(type) || this.espPoke.type2.equals(type);
 	}
 
 	/**
-	 * Cette fonction réinitialise les PP de tous les mouvements du Pokémon
+	 * Cette fonction reinitialise les PP de tous les mouvements du Pokemon
 	 */
 	public void resetPp() {
 		for (Capacite c : this.listeCapacite) {
@@ -413,12 +431,14 @@ public class Pokemon implements IPokemon {
 	}
 
 	/**
-	 * Si les vitesses des deux pokémons sont égales, alors retournez un booléen
-	 * aléatoire. Sinon, renvoie
-	 * vrai si la vitesse du pokémon actuel est supérieure à la vitesse de l'autre
-	 * pokémon
+	 * Si les vitesses des deux pokemons sont egales, alors retournez un booleen
+	 * aleatoire. Sinon, renvoie
+	 * vrai si la vitesse du pokemon actuel est superieure a la vitesse de l'autre
+	 * pokemon
 	 * 
-	 * @param other Le Pokémon auquel comparer
+	 * @param other Le Pokemon auquel comparer
+	 * @return un booleen indiquant si le Pokemon this est plus rapide que le
+	 *         Pokemon en parametre
 	 */
 	public boolean estPlusRapideQue(Pokemon other) {
 		if (this.getStat().getVitesse() == other.getStat().getVitesse()) {
@@ -429,7 +449,7 @@ public class Pokemon implements IPokemon {
 	}
 
 	/**
-	 * Cette fonction est utilisée pour utiliser une capacité spécifique
+	 * Cette fonction est utilisee pour utiliser une capacite specifique
 	 * 
 	 * @param actionChoisie L'action que le joueur veut utiliser
 	 */
