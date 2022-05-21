@@ -64,7 +64,7 @@ public class Espece implements IEspece {
 	 * Une Hashmap qui contient le niveau auquel un pokemon apprend un certain mouvement.
  	 */
 
-	private static HashMap<Capacite,Integer> capaciteSelonNiveau= new HashMap<>();
+	public HashMap<Capacite,Integer> capaciteSelonNiveau= new HashMap<>();
 
 	/**
 	 * Constructeur de espece qui l'instancie avec son id
@@ -138,13 +138,13 @@ public class Espece implements IEspece {
 		assert jsonCapacite != null;
 		JSONArray listeMoves = (JSONArray) jsonCapacite.get("moves");
 		System.out.println(this.nom);
-		Pokedex pokedex = new Pokedex();
+		//Pokedex pokedex = new Pokedex();
 		for (Object listeMove : listeMoves) {
 			JSONObject jsonNomsMoves = Pokedex
 					.getJSONfromURL(((JSONObject) ((JSONObject) listeMove).get("move")).get("url").toString());
 			assert jsonNomsMoves != null;
 			String nomCapaTemp = ((JSONObject) ((JSONArray) jsonNomsMoves.get("names")).get(3)).get("name").toString();
-			Capacite capaTemp = pokedex.capaciteParNom(nomCapaTemp);
+			Capacite capaTemp = Pokedex.capaciteParNom(nomCapaTemp);
 			if (capaTemp != null) {
 				JSONArray listeVersionGroupDetail = (JSONArray) ((JSONObject) listeMove).get("version_group_details");
 				for (Object o : listeVersionGroupDetail) {
@@ -162,9 +162,9 @@ public class Espece implements IEspece {
 	 */
 	@Override
 	public ICapacite[] getCapSet() {
-		Capacite[] liste = new Capacite[Espece.capaciteSelonNiveau.size()];
+		Capacite[] liste = new Capacite[this.capaciteSelonNiveau.size()];
 		int i = 0;
-		for (Entry<Capacite, Integer> c : Espece.capaciteSelonNiveau.entrySet()) {
+		for (Entry<Capacite, Integer> c : this.capaciteSelonNiveau.entrySet()) {
 			liste[i] = c.getKey();
 			i++;
 		}
@@ -253,13 +253,17 @@ public class Espece implements IEspece {
 	 * @return La methode renvoie le premier objet Capacite disponible pour l'objet
 	 *         Pokemon.
 	 */
-	public Capacite capaciteDispo(Pokemon pokemon) {
-		for (Entry<Capacite, Integer> c : Espece.capaciteSelonNiveau.entrySet()) {
-			if (Integer.parseInt(c.getKey().toString()) <= pokemon.niv) {
-				return ((Capacite) c);
-			}
-		}
-		return null;
-	}
+	public Capacite[] capaciteDispo(Pokemon pokemon) {
+        Capacite[] tabCapaciteDispo = new Capacite[50];
 
+        int i = 0;
+        for (Entry<Capacite, Integer> c : this.capaciteSelonNiveau.entrySet()) {
+            if (Integer.parseInt(c.getValue().toString()) <= pokemon.niv) {
+
+                tabCapaciteDispo[i] = c.getKey();
+                i++;
+            }
+        }
+        return tabCapaciteDispo;
+    }
 }

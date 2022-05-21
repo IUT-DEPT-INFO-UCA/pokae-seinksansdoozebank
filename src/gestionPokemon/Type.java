@@ -36,10 +36,9 @@ public enum Type implements IType {
 	public int id;
 
     /**
-     * L'id unique du type, correspondant à l'index du nom du type dans la liste
-     * statique
+     * Le nom de du type
      */
-    public int id;
+	public String nom;
 
 	/**
 	 * Le tableau regroupant l'efficacité des attque de type this sur chacun des
@@ -98,7 +97,7 @@ public enum Type implements IType {
 	 * @return Le tableau regroupant l'efficacité des attques de type this sur chacun des
 	 * types
 	 */
-	private double getCoeffDamageOn(IType cible) {
+	public double getCoeffDamageOn(IType cible) {
 		System.out.println(this.getNom()+" -> "+cible.getNom()+" = "+((Type) cible).tabCoeffEfficacite[this.id]);
 		return ((Type) cible).tabCoeffEfficacite[this.id];
 	}
