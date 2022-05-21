@@ -65,7 +65,7 @@ public class Espece implements IEspece {
      * Une Hashmap qui contient le niveau auquel un pokemon apprend un certain mouvement.
      */
 
-    private HashMap<Capacite, Integer> capaciteSelonNiveau = new HashMap<>();
+    public HashMap<Capacite, Integer> capaciteSelonNiveau = new HashMap<>();
 
     /**
      * Constructeur de espece qui l'instancie avec son id
@@ -159,13 +159,12 @@ public class Espece implements IEspece {
         JSONObject jsonCapacite = Pokedex.getJSONfromURL("https://pokeapi.co/api/v2/pokemon/" + this.id);
         assert jsonCapacite != null;
         JSONArray listeMoves = (JSONArray) jsonCapacite.get("moves");
-        Pokedex pokedex = new Pokedex();
         for (Object listeMove : listeMoves) {
             JSONObject jsonNomsMoves = Pokedex
                     .getJSONfromURL(((JSONObject) ((JSONObject) listeMove).get("move")).get("url").toString());
             assert jsonNomsMoves != null;
             String nomCapaTemp = ((JSONObject) ((JSONArray) jsonNomsMoves.get("names")).get(3)).get("name").toString();
-            Capacite capaTemp = pokedex.capaciteParNom(nomCapaTemp);
+            Capacite capaTemp = Pokedex.capaciteParNom(nomCapaTemp);
             if (capaTemp != null) {
                 JSONArray listeVersionGroupDetail = (JSONArray) ((JSONObject) listeMove).get("version_group_details");
                 for (Object o : listeVersionGroupDetail) {

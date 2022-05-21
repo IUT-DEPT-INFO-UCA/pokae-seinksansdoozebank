@@ -101,7 +101,9 @@ public class Pokemon implements IPokemon {
         this.statsDV.setVitesse((int) (Math.random() * ((15) + 1)));
         this.statsDV.setSpecial((int) (Math.random() * ((15) + 1)));
         this.statsDV.setPV((int) (Math.random() * ((15) + 1)));
+
         this.espPoke = espPoke;
+        this.statsSpecifiques=this.espPoke.statsDeBase;
         this.espPoke.initCapaciteSelonNiveau();
         this.apprendCapacites(this.espPoke.capaciteDispo(this));
     }
@@ -125,6 +127,7 @@ public class Pokemon implements IPokemon {
         this.statsDV.setSpecial((int) (Math.random() * ((15) + 1)));
         this.statsDV.setPV((int) (Math.random() * ((15) + 1)));
         this.espPoke = espPoke;
+        this.statsSpecifiques=this.espPoke.statsDeBase;
         this.espPoke.initCapaciteSelonNiveau();
         this.apprendCapacites(this.espPoke.capaciteDispo(this));
     }
@@ -200,7 +203,10 @@ public class Pokemon implements IPokemon {
     }
 
     public void remplaceCapacite(int i, ICapacite cap) throws Exception {
-        this.listeCapacite[i] = (Capacite) cap;
+        if(this.espPoke.capaciteSelonNiveau.containsKey(cap)){
+            this.listeCapacite[i] = (Capacite) cap;
+        }
+
     }
 
     @Override

@@ -5,8 +5,9 @@ import gestionPokemon.Espece;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
+import org.junit.*;
 import java.io.FileNotFoundException;
+import org.junit.rules.Timeout;
 import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
