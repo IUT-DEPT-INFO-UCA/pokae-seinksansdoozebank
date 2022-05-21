@@ -102,6 +102,8 @@ public class Pokemon implements IPokemon {
         this.statsDV.setSpecial((int) (Math.random() * ((15) + 1)));
         this.statsDV.setPV((int) (Math.random() * ((15) + 1)));
         this.espPoke = espPoke;
+        this.espPoke.initCapaciteSelonNiveau();
+        this.apprendCapacites(this.espPoke.capaciteDispo(this));
     }
 
     /**
