@@ -27,11 +27,14 @@ public class TestGestionPokemon {
             ///////////////////////  Pokemon /////////////////////////////
             Pokemon pokemon=new Pokemon("Bulbi",Pokedex.listeEspece[1]);
             System.out.println(pokemon);
-            for(int i=0; i<16;i++){
+            // Test d'évolution
+            /*for(int i=0; i<16;i++){
                     pokemon.augmenterNiveau();
             }
+            System.out.println(pokemon); // Print du pokemon*/
+            System.out.println(Arrays.toString(pokemon.espPoke.getCapSet())); //Renvoie les capacités de l'espèce du pokemon
+            pokemon.remplaceCapacite(0,Pokedex.listeCapacite[31]);
             System.out.println(pokemon); // Print du pokemon
-            System.out.println(Arrays.toString(pokemon.espPoke.getCapSet()));
         }
 
         /*
