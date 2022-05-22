@@ -143,9 +143,11 @@ public class Pokemon implements IPokemon {
         this.espPoke = espPoke;
         this.statsSpecifiques=new Stats(this.espPoke.statsDeBase);
         this.espPoke.initCapaciteSelonNiveau();
-        this.apprendCapacites(this.espPoke.capaciteDispo(this));
+
         this.niv=espPoke.nivDepart;
         gainXp(this.espPoke.getExpDeBase());
+        this.apprendCapacites(this.espPoke.capaciteDispo(this));
+
         calculPV();
         calculPVMax();
         calculDefense();
@@ -222,7 +224,9 @@ public class Pokemon implements IPokemon {
 
         for (int i = 0; i < Math.min(caps.length, 4); i++) {
             try {
-                this.remplaceCapacite(i, new Capacite((Capacite)caps[i]));
+                if(caps[i] != null) {
+                    this.remplaceCapacite(i,new Capacite((Capacite)caps[i]));
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }

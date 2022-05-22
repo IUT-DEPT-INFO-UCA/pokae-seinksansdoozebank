@@ -43,13 +43,10 @@ public class TestGestionPokemon {
             System.out.println(Arrays.toString(pokemon.espPoke.getCapSet()));*/
 
             // Initialisation du pokedex et du pokemon Test.
-            /*
-            Pokemon pokeTest = new Pokemon(Pokedex.listeEspece[3]);
+
+            Pokemon pokeTest = new Pokemon(Pokedex.listeEspece[146]);
             System.out.println(pokeTest);
-            System.out.println(pokeTest.getCapacitesApprises()[1]);*/
-            Pokemon out=new Pokemon("maxValue",Pokedex.listeEspece[1]);
-            System.out.println( out.espPoke.getNom());
-            System.out.println(Pokedex.listeEspece[1].getNom());
+            System.out.println(Arrays.toString(pokeTest.getEspece().getCapSet()));
         }
 
         /*
