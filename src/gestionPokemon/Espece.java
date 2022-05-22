@@ -2,6 +2,7 @@ package gestionPokemon;
 
 import java.util.HashMap;
 import java.util.Map.Entry;
+import java.util.Objects;
 
 import interfaces.ICapacite;
 import interfaces.IEspece;
@@ -149,7 +150,7 @@ public class Espece implements IEspece {
 	 * hashmap
 	 */
 	public void initCapaciteSelonNiveau() {
-		JSONObject jsonCapacite = Pokedex.getJSONfromURL("https://pokeapi.co/api/v2/pokemon/" + this.id);
+		JSONObject jsonCapacite = Pokedex.getJSONfromURL("https://pokeapi.co/api/v2/pokemon/" + (this.id));
 		assert jsonCapacite != null;
 		JSONArray listeMoves = (JSONArray) jsonCapacite.get("moves");
 		for (Object listeMove : listeMoves) {
@@ -161,8 +162,12 @@ public class Espece implements IEspece {
 			if (capaTemp != null) {
 				JSONArray listeVersionGroupDetail = (JSONArray) ((JSONObject) listeMove).get("version_group_details");
 				for (Object o : listeVersionGroupDetail) {
-					capaciteSelonNiveau.put(capaTemp,
-							Integer.parseInt((((JSONObject) o).get("level_learned_at")).toString()));
+					if((Objects.equals((String) (((JSONObject) ((JSONObject) o).get("version_group")).get("name")), "red-blue"))){
+						capaciteSelonNiveau.put(capaTemp,
+								Integer.parseInt((((JSONObject) o).get("level_learned_at")).toString()));
+						System.out.println(capaTemp+" lvl learned at ="+Integer.parseInt((((JSONObject) o).get("level_learned_at")).toString()));
+					}
+
 				}
 			}
 		}
@@ -235,14 +240,11 @@ public class Espece implements IEspece {
 	 * @return l'objet type qui va être attribuer au Pokemon
 	 */
 	public Type setType(String t) {
-		System.out.println("recherche du type "+t);
 		int i=0;
 		while(i<Type.getListe().length && !Type.getListe()[i].getNom().equals(t)) {
-			System.out.println("pas de type "+Type.getListe()[i].getNom());
 			i++;
 		}
 		if(i!=15) {
-			System.out.println("ajout du type "+Type.getListe()[i].getNom());
 			return Type.getListe()[i];
 		}
 		return null;
@@ -280,7 +282,6 @@ public class Espece implements IEspece {
         int i = 0;
         for (Entry<Capacite, Integer> c : this.capaciteSelonNiveau.entrySet()) {
             if (Integer.parseInt(c.getValue().toString()) <= pokemon.niv) {
-
                 tabCapaciteDispo[i] = c.getKey();
                 i++;
             }
