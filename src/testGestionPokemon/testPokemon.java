@@ -1,14 +1,18 @@
 package testGestionPokemon;
 import gestionPokemon.Pokedex;
 import gestionPokemon.Pokemon;
+import gestionPokemon.Espece;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.FileNotFoundException;
 
+import java.util.Arrays;
+
 import static org.junit.jupiter.api.Assertions.*;
 
-public class testCasSimplePokemon {
+public class testPokemon {
     private Pokemon pokeTest ;
     @BeforeEach
     public void createPokedex() throws FileNotFoundException {
@@ -16,7 +20,7 @@ public class testCasSimplePokemon {
         Pokedex.createListeCapacite();
         Pokedex.createListeEspece();
         pokeTest = new Pokemon(Pokedex.listeEspece[3]);
-
+        System.out.println(pokeTest);
     }
     @Test
     public void createSimplePokemon() throws FileNotFoundException {
@@ -25,7 +29,13 @@ public class testCasSimplePokemon {
         // On test si le pokémon possède la bonne espece et le bon niveau.
         assertEquals(florizarre.getEspece(),Pokedex.listeEspece[3]);
     }
+    @Test
+    public void maxCreatePokemon(){
+        // On test si le pokémon possède la bonne espece et le bon niveau.
+        Pokemon out = new Pokemon("maxValue",Pokedex.listeEspece[151]);
+        assertEquals(out.getEspece(),Pokedex.listeEspece[151]);
 
+    }
     @Test
     public void testStatsPokemon(){
         //On test si les stats sont correctes.
@@ -84,39 +94,4 @@ public class testCasSimplePokemon {
         pokeTest.getCapacitesApprises()[1].utilise();
         assertNotEquals(nbPPBeforeUse,pokeTest.getCapacitesApprises()[1].getPP());
     }
-    @Test
-    public void testAugmenterEV(){
-        //On créé un pokemon qui fait gagner des stats de Spe
-        Pokemon florizarre = new Pokemon("Flofloriri",Pokedex.listeEspece[3]);
-
-        //On récup les anciens EV de notre pokeTest
-        int ancienEV = pokeTest.getStatsEV().getSpecial();
-
-        //Suite au gain du combat le pokemon doit gagner 3de special
-
-        pokeTest.augmenterEV(florizarre);
-
-        assertNotEquals(ancienEV, pokeTest.getStatsEV().getSpecial());
-
-    }
-    @Test
-    public void testEstplusRapideQue(){
-        // On test grace a deux pokemons lequel est le plus rapide
-        Pokemon florizarre = new Pokemon("Flofloriri",Pokedex.listeEspece[3]);
-        florizarre.getStat().setVitesse(270);
-
-
-        System.out.println(pokeTest.getStat());
-
-        System.out.println(florizarre.getStat());
-
-
-        System.out.println(pokeTest.getStatsDV());
-
-        System.out.println(florizarre.getStatsDV());
-
-        assertFalse(pokeTest.estPlusRapideQue(florizarre));
-    }
-
-
 }

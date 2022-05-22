@@ -90,7 +90,7 @@ public class Espece implements IEspece {
 				", statsGain=" + statsGain +
 				'}';
 	}
-	/////////////// methode de IEspece/////////////////////////////////
+	//////////////////////// methode de IEspece/////////////////////////////////
 
 	/**
 	 * Il renvoie les statistiques de base du Pokemon
@@ -157,7 +157,7 @@ public class Espece implements IEspece {
 					.getJSONfromURL(((JSONObject) ((JSONObject) listeMove).get("move")).get("url").toString());
 			assert jsonNomsMoves != null;
 			String nomCapaTemp = ((JSONObject) ((JSONArray) jsonNomsMoves.get("names")).get(3)).get("name").toString();
-			Capacite capaTemp = Pokedex.capaciteParNom(nomCapaTemp);
+			Capacite capaTemp = (Capacite) Pokedex.getCapaciteStatic(nomCapaTemp);
 			if (capaTemp != null) {
 				JSONArray listeVersionGroupDetail = (JSONArray) ((JSONObject) listeMove).get("version_group_details");
 				for (Object o : listeVersionGroupDetail) {
@@ -191,8 +191,8 @@ public class Espece implements IEspece {
 	 * @return L'evolution du pokemon
 	 */
 	public IEspece getEvolution(int niveau) {
-		if (niveau>=this.nivEvolution){
-			return Pokedex.especeParNom(this.evolution);
+		if (niveau>this.nivEvolution){
+			return Pokedex.getEspeceParNom(this.evolution);
 		}
 		else{
 			return null;
@@ -236,10 +236,10 @@ public class Espece implements IEspece {
 	 */
 	public Type setType(String t) {
 		int i=0;
-		while(i<Type.getListe().length && Type.getListe()[i].getNom().equals(t)) {
+		while(i<Type.getListe().length && !Type.getListe()[i].getNom().equals(t)) {
 			i++;
 		}
-		if( Type.getListe()[i].getNom().equals(t)) {
+		if(i!=15) {
 			return Type.getListe()[i];
 		}
 		return null;

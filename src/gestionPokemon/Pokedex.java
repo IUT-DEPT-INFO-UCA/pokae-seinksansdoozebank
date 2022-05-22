@@ -2,7 +2,10 @@ package gestionPokemon;
 
 import interfaces.ICapacite;
 import interfaces.IEspece;
+import interfaces.IPokedex;
 import interfaces.IPokemon;
+import interfaces.IType;
+
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -21,7 +24,7 @@ import java.util.Scanner;
  * Elle permet aussi de generer le ranch d'un dresseur
  */
 
-public class Pokedex {
+public class Pokedex implements IPokedex{
     /**
      * Création d'un tableau d'objets Espece.
      */
@@ -32,13 +35,61 @@ public class Pokedex {
      * Creation d'un tableau de 110 objets Capacite.
      */
     public static Capacite[] listeCapacite = new Capacite[nbCapacite];
+    
+	//////////////////////// methode de IPokedex/////////////////////////////////
+
+    /**
+     * @deprecated Il faut préférer utiliser la version static de cette méthode
+     */
+	@Override
+	public IPokemon[] engendreRanch() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+    /**
+     * @deprecated Il faut préférer utiliser la version static de cette méthode
+     */
+	@Override
+	public IEspece getInfo(String nomEspece) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+    /**
+     * @deprecated Il faut préférer utiliser la version static de cette méthode
+     */
+	@Override
+	public Double getEfficacite(IType attaque, IType defense) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+    /**
+     * @deprecated Il faut préférer utiliser la version static de cette méthode
+     */
+	@Override
+	public ICapacite getCapacite(String nomCapacite) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+    /**
+     * @deprecated Il faut préférer utiliser la version static de cette méthode
+     */
+	@Override
+	public ICapacite getCapacite(int numCapacite) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+    //////////////////////////////////////////////////////////////////
 
     /**
      * Il crée une liste de 6 Pokémon aléatoires
      *
      * @return Une liste de 6 Pokémon aléatoires.
      */
-    public static IPokemon[] engendreRanch() {
+    public static IPokemon[] engendreRanchStatic() {
         IPokemon[] listePokeAleatoire = new Pokemon[6];
         for (int i = 0; i < 6; i++) {
             listePokeAleatoire[i] = new Pokemon(listeEspece[(int) (Math.random() * ((nbPokemon) + 1))]);
@@ -52,7 +103,7 @@ public class Pokedex {
      * @param nomEspece le nom de l'espèce
      * @return Les informations de l'espèce.
      */
-    public static IEspece getInfo(String nomEspece) {
+    public static IEspece getInfoStatic(String nomEspece) {
         int i = 0;
         boolean trouve = false;
         IEspece info = null;
@@ -86,7 +137,81 @@ public class Pokedex {
      * @return La méthode renvoie l'objet ICapacite qui porte le même nom que la
      *         chaîne nomCapacite.
      */
-    public static ICapacite getCapacite(String nomCapacite) {
+    public static ICapacite getCapaciteStatic(String nomCapacite) {
+        int i = 1;
+        boolean tester = false;
+        while (i < listeCapacite.length && !tester) {
+            if (listeCapacite[i].nom.equals(nomCapacite)) {
+                tester = true;
+            }
+            i++;
+        }
+        if (!tester) {
+            return null;
+        } else {
+            return listeCapacite[i - 1];
+        }
+    }
+
+    /**
+     * Il renvoie la capacité à l'indice donné
+     *
+     * @param numCapacite Le numéro de la capacité que vous souhaitez obtenir.
+     * @return La méthode renvoie la capacité du pokémon.
+     */
+    public static ICapacite getCapaciteStatic(int numCapacite) {
+        return listeCapacite[numCapacite];
+    }
+    
+
+    
+    /**
+     * Il renvoie l'espèce avec l'identifiant donné
+     *
+     * @param id l'identifiant de l'espèce
+     * @return L'espèce avec le numéro d'identification.
+     */
+    public static Espece getEspeceParId(int id) {
+        return listeEspece[id];
+    }
+
+    /**
+     * Il renvoie l'espèce avec le nom donné
+     *
+     * @param nom le nom de l'espèce
+     * @return L'espèce avec le nom donné en paramètre.
+     */
+    public static Espece getEspeceParNom(String nom) {
+        int i = 1;
+        boolean tester = false;
+        while (i < listeEspece.length-1 && !tester) {
+            if (listeEspece[i].nom.equals(nom)) {
+                tester = true;
+            }
+            i++;
+        }
+        return listeEspece[i-1];
+    }
+    
+    /*
+    /**
+     * Il renvoie la capacité avec l'identifiant donné
+     *
+     * @param id L'identifiant du déplacement.
+     * @return La capacité avec l'identifiant donné.
+     
+    public static Capacite capaciteParId(int id) {
+        return listeCapacite[id];
+    }
+    //
+    /**
+     * Il renvoie le premier objet `Capacite` du tableau `listeCapacite` dont
+     * l'attribut `nom` est égal au paramètre `nom`
+     *
+     * @param nom le nom de la capacité
+     * @return La méthode retourne la capacité avec le nom donné en paramètre.
+     //
+    public static Capacite capaciteParNom(String nom) {
         int i = 1;
         boolean trouve = false;
         ICapacite capacite = null;
@@ -99,17 +224,18 @@ public class Pokedex {
         }
         return capacite;
     }
+    */
 
-    /**
-     * Il renvoie la capacité à l'indice donné
-     *
-     * @param numCapacite Le numéro de la capacité que vous souhaitez obtenir.
-     * @return La méthode renvoie la capacité du pokémon.
-     */
-    public static ICapacite getCapacite(int numCapacite) {
-        return listeCapacite[numCapacite];
+    public static void initisaliser() {
+        try {
+			Pokedex.createListeCapacite();
+	        Pokedex.createListeEspece();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
     }
-
+    
+    
     /**
      * Il lit un fichier CSV et crée un objet Espece à partir des données qu'il
      * trouve dans le fichier
@@ -207,6 +333,16 @@ public class Pokedex {
     }
 
     /**
+     * Il crée une liste de toutes les capacités du jeu
+     * @throws FileNotFoundException Exception lancée si le fichier csv n'est pas trouvé
+     */
+    public static void createListeCapacite() throws FileNotFoundException {
+        for (int i = 1; i < nbCapacite; i++) {
+            listeCapacite[i] = createCapacite(i);
+        }
+    }
+
+    /**
      * Il prend une URL sous forme de chaîne, ouvre une connexion à cette URL, lit
      * la réponse et renvoie un JSONObject
      *
@@ -236,76 +372,5 @@ public class Pokedex {
             e.printStackTrace();
         }
         return null;
-    }
-
-    /**
-     * Il crée une liste de toutes les capacités du jeu
-     * @throws FileNotFoundException Exception lancée si le fichier csv n'est pas trouvé
-     */
-    public static void createListeCapacite() throws FileNotFoundException {
-        for (int i = 1; i < nbCapacite; i++) {
-            listeCapacite[i] = createCapacite(i);
-        }
-    }
-
-    /**
-     * Il renvoie l'espèce avec l'identifiant donné
-     *
-     * @param id l'identifiant de l'espèce
-     * @return L'espèce avec le numéro d'identification.
-     */
-    public static Espece especeParId(int id) {
-        return listeEspece[id];
-    }
-
-    /**
-     * Il renvoie l'espèce avec le nom donné
-     *
-     * @param nom le nom de l'espèce
-     * @return L'espèce avec le nom donné en paramètre.
-     */
-    public static Espece especeParNom(String nom) {
-        int i = 1;
-        boolean tester = false;
-        while (i < listeEspece.length-1 && !tester) {
-            if (listeEspece[i].nom.equals(nom)) {
-                tester = true;
-            }
-            i++;
-        }
-        return listeEspece[i-1];
-    }
-
-    /**
-     * Il renvoie la capacité avec l'identifiant donné
-     *
-     * @param id L'identifiant du déplacement.
-     * @return La capacité avec l'identifiant donné.
-     */
-    public static Capacite capaciteParId(int id) {
-        return listeCapacite[id];
-    }
-
-    /**
-     * Il renvoie le premier objet `Capacite` du tableau `listeCapacite` dont
-     * l'attribut `nom` est égal au paramètre `nom`
-     *
-     * @param nom le nom de la capacité
-     * @return La méthode retourne la capacité avec le nom donné en paramètre.
-     */
-    public static Capacite capaciteParNom(String nom) {
-        int i = 1;
-        boolean tester = false;
-        while (i < listeCapacite.length && !tester) {
-            if (listeCapacite[i].nom.equals(nom)) {
-                tester = true;
-            }
-            i++;
-        }
-        if (!tester) {
-            return null;
-        } else {
-            return listeCapacite[i - 1];
-        }
     }
 }
