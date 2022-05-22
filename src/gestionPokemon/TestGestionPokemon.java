@@ -11,7 +11,7 @@ public class TestGestionPokemon {
                 Pokedex.createListeEspece();
                 ///////////////////////  Pokedex /////////////////////////////
                 //Ranch
-//                System.out.println(Arrays.toString(Pokedex.engendreRanch()));
+                //System.out.println(Arrays.toString(Pokedex.engendreRanch()));
                 //Espece
                 /*
                 System.out.println("Espece n°3  = "+Pokedex.especeParId(3));

@@ -17,7 +17,6 @@ public class testPokemon {
     @BeforeEach
     public void createPokedex() throws FileNotFoundException {
         // Initialisation du pokedex et du pokemon Test.
-        Pokedex pokedex = new Pokedex();
         Pokedex.createListeCapacite();
         Pokedex.createListeEspece();
         pokeTest = new Pokemon(Pokedex.listeEspece[3]);
@@ -25,7 +24,6 @@ public class testPokemon {
     }
     @Test
     public void createSimplePokemon() throws FileNotFoundException {
-
        //On créé le pokémon
         Pokemon florizarre = new Pokemon("Flofloriri",Pokedex.listeEspece[3]);
         // On test si le pokémon possède la bonne espece et le bon niveau.

@@ -90,7 +90,7 @@ public class Espece implements IEspece {
 				", statsGain=" + statsGain +
 				'}';
 	}
-	/////////////// methode de IEspece/////////////////////////////////
+	//////////////////////// methode de IEspece/////////////////////////////////
 
 	/**
 	 * Il renvoie les statistiques de base du Pokemon
@@ -153,13 +153,12 @@ public class Espece implements IEspece {
 		assert jsonCapacite != null;
 		JSONArray listeMoves = (JSONArray) jsonCapacite.get("moves");
 		System.out.println(this.nom);
-		//Pokedex pokedex = new Pokedex();
 		for (Object listeMove : listeMoves) {
 			JSONObject jsonNomsMoves = Pokedex
 					.getJSONfromURL(((JSONObject) ((JSONObject) listeMove).get("move")).get("url").toString());
 			assert jsonNomsMoves != null;
 			String nomCapaTemp = ((JSONObject) ((JSONArray) jsonNomsMoves.get("names")).get(3)).get("name").toString();
-			Capacite capaTemp = Pokedex.capaciteParNom(nomCapaTemp);
+			Capacite capaTemp = (Capacite) Pokedex.getCapaciteStatic(nomCapaTemp);
 			if (capaTemp != null) {
 				JSONArray listeVersionGroupDetail = (JSONArray) ((JSONObject) listeMove).get("version_group_details");
 				for (Object o : listeVersionGroupDetail) {
@@ -194,7 +193,7 @@ public class Espece implements IEspece {
 	 */
 	public IEspece getEvolution(int niveau) {
 		if (niveau>this.nivEvolution){
-			return Pokedex.especeParNom(this.evolution);
+			return Pokedex.getEspeceParNom(this.evolution);
 		}
 		else{
 			return null;
