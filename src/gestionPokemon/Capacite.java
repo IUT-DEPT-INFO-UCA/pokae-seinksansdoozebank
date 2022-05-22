@@ -61,8 +61,25 @@ public class Capacite implements ICapacite {
 	public Capacite(int id) {
 		this.id = id;
 	}
+	
 
     /**
+	 * @param capacite La capacite à copier
+	 */
+	public Capacite(Capacite capacite) {
+		this.id = capacite.id;
+		this.nom = capacite.nom;
+		this.type = capacite.type;
+		this.categorie = capacite.categorie;
+		this.puissance = capacite.puissance;
+		this.precision = capacite.precision;
+		this.pp = capacite.pp;
+		this.ppBase = capacite.ppBase;
+	}
+
+
+
+	/**
      * La méthode toString() renvoie la représentation sous forme de chaîne de
      * l'objet
      *
@@ -199,7 +216,9 @@ public class Capacite implements ICapacite {
 	 * @return L'efficacité de l'attaque sur le défenseur.
 	 */
 	public double getEfficiencyOn(Pokemon defenseur) {
-		return ((Type) this.getType()).getCoeffTotal(defenseur.getType1(), defenseur.getType2());
+
+		return ((Type)this.getType()).getCoeffTotal(defenseur.getType1(), defenseur.getType2());
+
 	}
 
 }

@@ -8,15 +8,28 @@ import org.junit.jupiter.api.Test;
 import java.io.FileNotFoundException;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class testCasSimplePokemon {
     private Pokemon pokeTest ;
+    private int nbCapacite = 4;
     @BeforeEach
     public void createPokedex() throws FileNotFoundException {
         // Initialisation du pokedex et du pokemon Test.
         Pokedex.createListeCapacite();
         Pokedex.createListeEspece();
         pokeTest = new Pokemon(Pokedex.listeEspece[3]);
+
+        Capacite[] listeC = new Capacite[nbCapacite];
+        for(int i=0; i<nbCapacite;i++)
+        {
+
+            listeC[i] = Pokedex.listeCapacite[i];
+            System.out.println(listeC[i]);
+        }
+
+
+        pokeTest.apprendCapacites(listeC);
 
     }
     @Test
@@ -50,7 +63,7 @@ public class testCasSimplePokemon {
         int pvAvantAttaque = pokeTest.getStat().getPV();
         pokeTest.subirDegats(5);
         assertNotEquals(pvAvantAttaque,pokeTest.getStat().getPV());
-        assertEquals(pokeTest.obtenirDeniersDegatsSubits(),5);
+        //assertEquals(pokeTest.obtenirDeniersDegatsSubits(),5);
     }
     @Test
     public void testGainNiveau(){
@@ -85,6 +98,7 @@ public class testCasSimplePokemon {
         pokeTest.getCapacitesApprises()[1].utilise();
         assertNotEquals(nbPPBeforeUse,pokeTest.getCapacitesApprises()[1].getPP());
     }
+
     @Test
     public void testAugmenterEV(){
         //On créé un pokemon qui fait gagner des stats de Spe
@@ -110,10 +124,14 @@ public class testCasSimplePokemon {
     }
     @Test
     public void testCoef(){
-        Capacite c1 = Pokedex.listeCapacite[51];
-        System.out.println(c1);
-        System.out.println(c1.getEfficiencyOn(pokeTest));
+        Capacite glace = Pokedex.listeCapacite[51];
+        //Glace sur Herbe == 2
+        Capacite neutre = Pokedex.listeCapacite[1];
+        //neutre sur Herbe == 1
+        assertEquals(glace.getEfficiencyOn(pokeTest),2.0);
+        assertEquals(neutre.getEfficiencyOn(pokeTest),1.0);
     }
+
 
 
 }

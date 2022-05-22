@@ -2,7 +2,6 @@ package testGestionPokemon;
 
 import gestionPokemon.Pokedex;
 import gestionPokemon.Pokemon;
-import gestionPokemon.Stats;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -11,7 +10,8 @@ import java.io.FileNotFoundException;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class testCasComplexePokemon {
-    private Pokemon pokeTest ;
+    private Pokemon pokeTest;
+
     @BeforeEach
     public void createPokedex() throws FileNotFoundException {
         // Initialisation du pokedex et du pokemon Test.
@@ -20,38 +20,41 @@ public class testCasComplexePokemon {
         Pokedex.createListeEspece();
         pokeTest = new Pokemon(Pokedex.listeEspece[1]);
     }
-    @Test // De la derniere valeur
-    public void testMaxCreatePokemon(){
 
-        Pokemon out = new Pokemon("maxValue",Pokedex.listeEspece[151]);
-        assertEquals(out.getEspece(),Pokedex.listeEspece[151]);
+    @Test // De la derniere valeur
+    public void testMaxCreatePokemon() {
+
+        Pokemon out = new Pokemon("maxValue", Pokedex.listeEspece[151]);
+        assertEquals(out.getEspece(), Pokedex.listeEspece[151]);
     }
+
     @Test
-    public void testEvolutionParAugmenterNiveau(){
-        for(int i=2; i<=17;i++){
+    public void testEvolutionParAugmenterNiveau() {
+        for (int i = 2; i <= 17; i++) {
             pokeTest.augmenterNiveau();
+            System.out.println(pokeTest.getId());
         }
-        // On test si l'id du pokemon est bien passe a l'id de son evolution
-        assertEquals(pokeTest.espPoke.getId(),2);
+        System.out.println(pokeTest.getId());
     }
+
     @Test
-    public void testSubir0Degats(){
+    public void testSubir0Degats() {
         //On test si le pokemon peut subir 0 degats
         int pvAvantAttaque = pokeTest.getStat().getPV();
         pokeTest.subirDegats(0);
-        assertEquals(pvAvantAttaque,pokeTest.getStat().getPV());
-        assertEquals(pokeTest.obtenirDeniersDegatsSubits(),0);
+        assertEquals(pvAvantAttaque, pokeTest.getStat().getPV());
+        assertEquals(pokeTest.obtenirDeniersDegatsSubits(), 0);
     }
+
     @Test
-    public void testEstplusRapideQueSameSpeed(){
+    public void testEstplusRapideQueSameSpeed() {
         // On test grace a deux pokemons lequel est le plus rapide (ils ont la meme vitesse)
-        Pokemon florizarre = new Pokemon("Flofloriri",Pokedex.listeEspece[3]);
+        Pokemon florizarre = new Pokemon("Flofloriri", Pokedex.listeEspece[3]);
         florizarre.getStat().setVitesse(100);
         pokeTest.getStat().setVitesse(100);
         //On ne peux pas tester cette méthode puisqu'elle renvoie une chance sur deux
         //Ainsi, on test seulement si le resultat est définit.
         assertNotNull(pokeTest.estPlusRapideQue(florizarre));
     }
-
-
 }
+
