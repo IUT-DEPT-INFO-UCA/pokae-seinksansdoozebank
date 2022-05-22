@@ -264,8 +264,8 @@ public class Pokedex implements IPokedex{
                     espece.getGainsStat().setDefense(Integer.parseInt(scannerCSV.next()));
                     espece.getGainsStat().setSpecial(Integer.parseInt(scannerCSV.next()));
                     espece.getGainsStat().setVitesse(Integer.parseInt(scannerCSV.next()));
-                    espece.type1 = espece.setType(scannerCSV.next());
-                    espece.type2 = espece.setType(scannerCSV.next());
+                    espece.type1 = Pokedex.setType(scannerCSV.next());
+                    espece.type2 = Pokedex.setType(scannerCSV.next());
                     espece.nivDepart = Integer.parseInt(scannerCSV.next());
                     String nivEvolutionTemp = scannerCSV.next();
                     if (nivEvolutionTemp != null) {
@@ -320,6 +320,9 @@ public class Pokedex implements IPokedex{
                         capacite.precision = Double.parseDouble(tabLigneTemp[2]);
                         capacite.ppBase = Integer.parseInt(tabLigneTemp[3]);
                         capacite.pp = capacite.ppBase;
+                        capacite.id = Integer.parseInt(tabLigneTemp[4]);
+                        capacite.categorie = Pokedex.setCategorie(tabLigneTemp[5]);
+                        capacite.type=Pokedex.setType(tabLigneTemp[6]);
                     }
                 } catch (NumberFormatException e) {
                     throw new RuntimeException(e);
@@ -342,6 +345,31 @@ public class Pokedex implements IPokedex{
         }
     }
 
+	/**
+	 * Retourne l'objet type correspondant au nom du type passé en paramètre
+	 * 
+	 * @param t nom du type qui doit être ajouté au Pokemon
+	 * @return l'objet type qui va être attribuer au Pokemon
+	 */
+	public static Type setType(String t) {
+		int i=0;
+		while(i<Type.getListe().length && !Type.getListe()[i].getNom().equals(t)) {
+			i++;
+		}
+		if(i!=15) {
+			return Type.getListe()[i];
+		}
+		return null;
+	}
+	
+	
+	public static CategorieAttaque setCategorie(String t) {
+		if(t.equals("Special")) {
+			return CategorieAttaque.SPECIALE;
+		}
+		return CategorieAttaque.PHYSIQUE;
+	}
+	
     /**
      * Il prend une URL sous forme de chaîne, ouvre une connexion à cette URL, lit
      * la réponse et renvoie un JSONObject

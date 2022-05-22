@@ -86,7 +86,7 @@ public enum Type implements IType {
 	 */
 	public double getCoeffTotal(IType type1, IType type2) {
 		System.out.println(this.getNom()+" -> "+type1.getNom()+" et "+type2.getNom());
-		return getCoeffDamageOn(type1) * getCoeffDamageOn(type2);
+		return this.getCoeffDamageOn(type1) * this.getCoeffDamageOn(type2);
 	}
 
 	/**
