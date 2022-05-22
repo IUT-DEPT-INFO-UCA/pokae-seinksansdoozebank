@@ -29,7 +29,7 @@ public class Stats implements IStat {
     public int pv;
 
     /**
-     * Creer un objet Stat avec chachue de ses valeurs initilisée à 0
+     * Creer un objet Stat avec chacune de ses valeurs initilisée à 0
      */
     public Stats() {
         this.force = 0;
@@ -38,8 +38,11 @@ public class Stats implements IStat {
         this.special = 0;
         this.pv = 0;
     }
-    
 
+
+    /**
+     * Creer un objet Stat en copiant l'argument de type stats passe en parametre
+     */
     public Stats(Stats s) {
         this.force = s.getForce();
         this.defense = s.getDefense();

@@ -92,6 +92,7 @@ public class Pokemon implements IPokemon {
      * @param espPoke l'espece du Pokemon
      */
     public Pokemon(String nom, Espece espPoke) {
+
         this.setId(cptId);
         this.nom = nom;
         this.statsEV.setForce(0);
@@ -104,19 +105,20 @@ public class Pokemon implements IPokemon {
         this.statsDV.setVitesse((int) (Math.random() * ((15) + 1)));
         this.statsDV.setSpecial((int) (Math.random() * ((15) + 1)));
         this.statsDV.setPV((int) (Math.random() * ((15) + 1)));
-
         this.espPoke = espPoke;
         this.statsSpecifiques=new Stats(this.espPoke.statsDeBase);
         this.espPoke.initCapaciteSelonNiveau();
         this.apprendCapacites(this.espPoke.capaciteDispo(this));
         this.niv=espPoke.nivDepart;
         gainXp(this.espPoke.getExpDeBase());
+
         calculPV();
         calculPVMax();
         calculDefense();
         calculSpecial();
         calculForce();
         calculVitesse();
+        System.out.println(this.espPoke);
     }
 
     /**
@@ -219,7 +221,6 @@ public class Pokemon implements IPokemon {
     public void apprendCapacites(ICapacite[] caps) {
 
         for (int i = 0; i < Math.min(caps.length, 4); i++) {
-        	System.out.println(caps[i]);
             try {
                 this.remplaceCapacite(i, new Capacite((Capacite)caps[i]));
             } catch (Exception e) {
@@ -230,7 +231,6 @@ public class Pokemon implements IPokemon {
     }
 
     public void remplaceCapacite(int i, ICapacite cap) throws Exception {
-
         this.listeCapacite[i] = (Capacite) cap;
 
     }
@@ -323,10 +323,20 @@ public class Pokemon implements IPokemon {
         return statsDV;
     }
     
+    /**
+     * Cette fonction renvoie le type1 du Pokemon.
+     *
+     * @return Le type1 du pokémon
+     */
     public Type getType1() {
     	return this.espPoke.type1;
     }
 
+    /**
+     * Cette fonction renvoie le deuxième type de Pokémon.
+     *
+     * @return Le deuxième type de Pokémon.
+     */
     public Type getType2() {
     	return this.espPoke.type2;
     }
@@ -335,6 +345,11 @@ public class Pokemon implements IPokemon {
     	return this.attaqueChoisie;
     }
     
+	/**
+	 * > Cette fonction fixe la valeur de la variable `attaqueChoisie` à la valeur du paramètre `actionChoisie`
+	 *
+	 * @param actionChoisie L'action choisie par le joueur.
+	 */
 	public void setAttaqueChoisie(Capacite actionChoisie) {
 		this.attaqueChoisie = actionChoisie;
 	}
@@ -405,26 +420,44 @@ public class Pokemon implements IPokemon {
         this.derniersDegatsSubits = degats;
     }
     
+    /**
+     * Il calcule le PV maximum d'un Pokémon en fonction de sa vitesse de base, de ses statistiques DV et EV et de son niveau
+     */
     public void calculPVMax(){
         this.pvMax = (((2 * (this.espPoke.getBaseStat().getPV() + this.getStatsDV().getPV())
                 + this.getStatsEV().getPV() / 4) * this.getNiveau()) / 100) + this.getNiveau() + 10;
     }
+    /**
+     * Il calcule le PV d'un Pokémon en fonction de sa vitesse de base, de ses statistiques DV et EV et de son niveau
+     */
     public void calculPV(){
         this.getStat().setPV((((2 * (this.espPoke.getBaseStat().getPV() + this.getStatsDV().getPV())
                 + this.getStatsEV().getPV() / 4) * this.getNiveau()) / 100) + this.getNiveau() + 10);
     }
+    /**
+     * Cette fonction calcule la force d'un pokémon en fonction de sa vitesse de base, de ses statistiques DV et EV et de son niveau
+     */
     public void calculForce(){
         this.getStat().setForce((2 * (this.getEspece().getBaseStat().getForce() + this.getStatsDV().getForce())
                 + (this.getStatsEV().getPV() / 4) / 100) + 5);
     }
+    /**
+     * > Cette fonction calcule la stat de défense d'un pokémon en fonction de sa vitesse de base, de ses statistiques DV et EV et de son niveau
+     */
     public void calculDefense(){
         this.getStat().setDefense((2 * (this.getEspece().getBaseStat().getDefense() + this.getStatsDV().getDefense())
                 + (this.getStatsEV().getDefense() / 4) / 100) + 5);
     }
+    /**
+     * > Calcule la vitesse du pokémon en fonction de sa vitesse de base, de ses statistiques DV et EV et de son niveau
+     */
     public void calculVitesse(){
         this.getStat().setVitesse((2 * (this.getEspece().getBaseStat().getVitesse() + this.getStatsDV().getVitesse())
                 + (this.getStatsEV().getVitesse() / 4) / 100) + 5);
     }
+    /**
+     * > Cette fonction calcule la stat spéciale d'un pokémon en fonction de sa vitesse de base, de ses statistiques DV et EV et de son niveau
+     */
     public void calculSpecial(){
         this.getStat().setSpecial((2 * (this.getEspece().getBaseStat().getSpecial() + this.getStatsDV().getSpecial())
                 + (this.getStatsEV().getSpecial() / 4) / 100) + 5);
@@ -454,7 +487,7 @@ public class Pokemon implements IPokemon {
     public void augmenterNiveau() {
         this.niv++;
 
-        if (this.niv >= espPoke.nivEvolution && this.getEspece().getEvolution(this.niv) != null) {
+        if (this.niv >= espPoke.nivEvolution && this.getEspece().getEvolution(this.niv) != null&&this.espPoke.nivEvolution!=0) {
             evoluer();
         }
         // Les stats de base sont celles de l'espece actuelle du pokemon. Ainsi, si le pokemon a evolue, son espece a change juste avant donc les stats sont calculees sur les nouvelles stat de base.
@@ -468,8 +501,6 @@ public class Pokemon implements IPokemon {
     /**
      * "Si le niveau du pokemon est suffisamment eleve, il evoluera vers une
      * nouvelle espece."
-     *
-     * La fonction s'appelle "evoluer" qui signifie "evoluer" en français
      */
     public void evoluer() {
         // On modifie uniquement l'espece du pokemon. Le calcul des nouvelles stat se

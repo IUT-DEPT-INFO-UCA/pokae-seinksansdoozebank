@@ -26,10 +26,16 @@ import java.util.Scanner;
 
 public class Pokedex implements IPokedex{
     /**
-     * Création d'un tableau d'objets Espece.
+     * Instanciation du nombre de pokemon
      */
     private static int nbPokemon = 152;
-    private static int nbCapacite = 110;
+    /**
+     * Instanciation
+     */
+    private static int nbCapacite = 111;
+    /**
+     * Création d'un tableau d'objets Espece.
+     */
     public static Espece[] listeEspece = new Espece[nbPokemon];
     /**
      * Creation d'un tableau de 110 objets Capacite.
@@ -226,6 +232,9 @@ public class Pokedex implements IPokedex{
     }
     */
 
+    /**
+     * Il crée la liste des espèces et la liste des capacités
+     */
     public static void initialiser() {
         try {
 			Pokedex.createListeCapacite();
@@ -272,6 +281,7 @@ public class Pokedex implements IPokedex{
                         espece.nivEvolution = Integer.parseInt(nivEvolutionTemp);
                         espece.evolution = scannerCSV.next();
                     } else {
+
                         espece.nivEvolution = 0;
                         espece.evolution = null;
                     }
@@ -363,6 +373,12 @@ public class Pokedex implements IPokedex{
 	}
 	
 	
+	/**
+	 * Il renvoie un objet CategorieAttaque basé sur le paramètre String
+	 *
+	 * @param t Le type d'attaque.
+	 * @return La méthode renvoie un objet CategorieAttaque.
+	 */
 	public static CategorieAttaque setCategorie(String t) {
 		if(t.equals("Special")) {
 			return CategorieAttaque.SPECIALE;

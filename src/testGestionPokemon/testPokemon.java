@@ -12,6 +12,9 @@ import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Il crée une classe appelée testPokemon qui nous permet d'effectuer nos tests
+ */
 public class testPokemon {
     private Pokemon pokeTest ;
     @BeforeEach

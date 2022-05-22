@@ -7,21 +7,69 @@ import java.util.Objects;
 
 import interfaces.IType;
 
+/**
+ * Enumeration Type qui implemente IType qui sert a definir tout les types et leurs coefficients
+ */
 public enum Type implements IType {
+	/**
+	 * Enum Combat : Type
+	 */
 	COMBAT("Combat",0),
+	/**
+	 * Enum Dragon : Type
+	 */
 	DRAGON("Dragon",1),
+	/**
+	 * Enum Eau : Type
+	 */
 	EAU("Eau",2),
+	/**
+	 * Enum Électrik : Type
+	 */
 	ELECTRIK("Électrik",3),
+	/**
+	 * Enum Feu : Type
+	 */
 	FEU("Feu",4),
+	/**
+	 * Enum Glace : Type
+	 */
 	GLACE("Glace",5),
+	/**
+	 * Enum Insecte : Type
+	 */
 	INSECTE("Insecte",6),
+	/**
+	 * Enum Normal : Type
+	 */
 	NORMAL("Normal",7),
+	/**
+	 * Enum Plante : Type
+	 */
 	PLANTE("Plante",8),
+	/**
+	 * Enum Poison : Type
+	 */
 	POISON("Poison",9),
+	/**
+	 * Enum Psy : Type
+	 */
 	PSY("Psy",10),
+	/**
+	 * Enum Roche : Type
+	 */
 	ROCHE("Roche",11),
+	/**
+	 * Enum Sol : Type
+	 */
 	SOL("Sol",12),
+	/**
+	 * Enum Spectre : Type
+	 */
 	SPECTRE("Spectre",13),
+	/**
+	 * Enum Vol : Type
+	 */
 	VOL("Vol",14);
 	
 	 /**

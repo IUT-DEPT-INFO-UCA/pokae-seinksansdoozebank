@@ -143,11 +143,10 @@ public class Espece implements IEspece {
 		return this.statsGain;
 	}
 
+
 	/**
-	 * Il prend l'objet JSON du pokemon, obtient les mouvements, obtient les noms
-	 * des mouvements, obtient le niveau auquel le
-	 * pokemon apprend le mouvement et place le mouvement et le niveau dans un
-	 * hashmap
+	 * Il obtient les moves du pokemon de l'API, puis il obtient les noms des moves de l'API, puis il obtient le
+	 * niveau des moves de l'API
 	 */
 	public void initCapaciteSelonNiveau() {
 		JSONObject jsonCapacite = Pokedex.getJSONfromURL("https://pokeapi.co/api/v2/pokemon/" + this.id);
@@ -162,14 +161,10 @@ public class Espece implements IEspece {
 			if (capaTemp != null) {
 				JSONArray listeVersionGroupDetail = (JSONArray) ((JSONObject) listeMove).get("version_group_details");
 				for (Object o : listeVersionGroupDetail) {
-
 					if((Objects.equals((String) (((JSONObject) ((JSONObject) o).get("version_group")).get("name")), "red-blue"))){
 						capaciteSelonNiveau.put(capaTemp,
 								Integer.parseInt((((JSONObject) o).get("level_learned_at")).toString()));
-
 					}
-
-
 				}
 			}
 		}
