@@ -216,6 +216,7 @@ public class Pokemon implements IPokemon {
 
     @Override
     public void apprendCapacites(ICapacite[] caps) {
+
         for (int i = 0; i < Math.min(caps.length, 4); i++) {
             try {
                 this.remplaceCapacite(i, new Capacite((Capacite)caps[i]));
@@ -227,9 +228,11 @@ public class Pokemon implements IPokemon {
     }
 
     public void remplaceCapacite(int i, ICapacite cap) throws Exception {
-        if(this.espPoke.capaciteSelonNiveau.containsKey(cap)&&(0<=i&&i<4)){
+
             this.listeCapacite[i] = (Capacite) cap;
-        }
+
+
+
 
     }
 

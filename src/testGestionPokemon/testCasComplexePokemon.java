@@ -25,16 +25,18 @@ public class testCasComplexePokemon {
     public void testMaxCreatePokemon() {
 
         Pokemon out = new Pokemon("maxValue", Pokedex.listeEspece[151]);
-        assertEquals(out.getEspece(), Pokedex.listeEspece[151]);
+        assertEquals(out.getEspece().getNom(), Pokedex.listeEspece[151].getNom());
     }
 
     @Test
     public void testEvolutionParAugmenterNiveau() {
+        int ancienID = pokeTest.espPoke.getId();
         for (int i = 2; i <= 17; i++) {
             pokeTest.augmenterNiveau();
-            System.out.println(pokeTest.getId());
+
         }
-        System.out.println(pokeTest.getId());
+
+        assertNotEquals(pokeTest.espPoke.getId(),ancienID);
     }
 
     @Test

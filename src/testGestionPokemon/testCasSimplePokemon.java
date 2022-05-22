@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class testCasSimplePokemon {
     private Pokemon pokeTest ;
-    private int nbCapacite = 4;
+
     @BeforeEach
     public void createPokedex() throws FileNotFoundException {
         // Initialisation du pokedex et du pokemon Test.
@@ -20,18 +20,8 @@ public class testCasSimplePokemon {
         Pokedex.createListeEspece();
         pokeTest = new Pokemon(Pokedex.listeEspece[3]);
 
-        Capacite[] listeC = new Capacite[nbCapacite];
-        for(int i=0; i<nbCapacite;i++)
-        {
-
-            listeC[i] = Pokedex.listeCapacite[i];
-            System.out.println(listeC[i]);
-        }
-
-
-        pokeTest.apprendCapacites(listeC);
-
     }
+
     @Test
     public void createSimplePokemon() throws FileNotFoundException {
        //On créé le pokémon
@@ -133,5 +123,10 @@ public class testCasSimplePokemon {
     }
 
 
+    @Test
+    public void test(){
+        Pokemon florizarre = new Pokemon("Flofloriri",Pokedex.listeEspece[3]);
+
+    }
 
 }
