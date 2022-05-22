@@ -431,7 +431,7 @@ public class Pokemon implements IPokemon {
      */
     public void calculForce(){
         this.getStat().setForce((2 * (this.getEspece().getBaseStat().getForce() + this.getStatsDV().getForce())
-                + (this.getStatsEV().getPV() / 4) / 100) + 5);
+                + (this.getStatsEV().getForce() / 4) / 100) + 5);
     }
     /**
      * > Cette fonction calcule la stat de défense d'un pokémon en fonction de sa defense de base, de ses statistiques DV et EV et de son niveau
@@ -577,11 +577,6 @@ public class Pokemon implements IPokemon {
      * @param actionChoisie L'action que le joueur veut utiliser
      */
     public void utilise(Capacite actionChoisie) {
-        /*for (ICapacite c : this.getCapacitesApprises()) {
-            if (c.equals(actionChoisie)) {
-                c.utilise();
-            }
-        }*/
         actionChoisie.utilise();
     }
 

@@ -46,7 +46,7 @@ public class TestGestionPokemon {
             /*Pokemon pokeTest = new Pokemon(Pokedex.listeEspece[3]);
             System.out.println(pokeTest);
             System.out.println(pokeTest.getCapacitesApprises()[1]);*/
-            Pokemon pokeTest = new Pokemon(Pokedex.listeEspece[3]);
+            Pokemon pokeTest = new Pokemon(Pokedex.listeEspece[7]);
             System.out.println(pokeTest);
             System.out.println(Arrays.toString(pokeTest.getEspece().getCapSet()));
             /*Pokemon out=new Pokemon("maxValue",Pokedex.listeEspece[1]);
