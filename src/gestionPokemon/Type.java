@@ -146,8 +146,11 @@ public enum Type implements IType {
 	 * types
 	 */
 	public double getCoeffDamageOn(IType cible) {
-		//System.out.println(this.getNom()+" -> "+cible.getNom()+" = "+((Type) cible).tabCoeffEfficacite[this.id]);
-		return ((Type) cible).tabCoeffEfficacite[this.id];
+		if(cible!=null) {
+			//System.out.println(this.getNom()+" -> "+cible.getNom()+" = "+((Type) cible).tabCoeffEfficacite[this.id]);
+			return ((Type) cible).tabCoeffEfficacite[this.id];
+		}
+		return 1;
 	}
 
 	/**

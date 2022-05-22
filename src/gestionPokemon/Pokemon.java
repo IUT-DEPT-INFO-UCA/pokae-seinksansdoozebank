@@ -266,8 +266,9 @@ public class Pokemon implements IPokemon {
     }
 
     @Override
-    public void subitAttaqueDe(IPokemon pok, IAttaque attaque) {
-        this.getStat().setPV(attaque.calculeDommage(pok, this));
+    public void subitAttaqueDe(IPokemon attaquant, IAttaque attaque) {
+    	System.out.println(attaquant.getNom()+" utilise "+((Capacite)attaque).getNom()+" !");
+    	this.subirDegats(attaque.calculeDommage(attaquant, this));
     }
 
     public boolean estEvanoui() {
@@ -412,7 +413,9 @@ public class Pokemon implements IPokemon {
      * @param degats les degâts a faire
      */
     public void subirDegats(int degats) {
+    	System.out.println(this.getNom()+" subit "+degats+" degats.");
         this.getStat().setPV(this.getStat().getPV() - degats);
+    	System.out.println("Il reste "+this.getStat().getPV()+" PV a "+this.getNom()+".");
         this.avantDerniersDegatsSubits = this.derniersDegatsSubits;
         this.derniersDegatsSubits = degats;
     }
@@ -439,21 +442,21 @@ public class Pokemon implements IPokemon {
                 + (this.getStatsEV().getPV() / 4) / 100) + 5);
     }
     /**
-     * > Cette fonction calcule la stat de défense d'un pokémon en fonction de sa vitesse de base, de ses statistiques DV et EV et de son niveau
+     * Cette fonction calcule la stat de défense d'un pokémon en fonction de sa vitesse de base, de ses statistiques DV et EV et de son niveau
      */
     public void calculDefense(){
         this.getStat().setDefense((2 * (this.getEspece().getBaseStat().getDefense() + this.getStatsDV().getDefense())
                 + (this.getStatsEV().getDefense() / 4) / 100) + 5);
     }
     /**
-     * > Calcule la vitesse du pokémon en fonction de sa vitesse de base, de ses statistiques DV et EV et de son niveau
+     * Calcule la vitesse du pokémon en fonction de sa vitesse de base, de ses statistiques DV et EV et de son niveau
      */
     public void calculVitesse(){
         this.getStat().setVitesse((2 * (this.getEspece().getBaseStat().getVitesse() + this.getStatsDV().getVitesse())
                 + (this.getStatsEV().getVitesse() / 4) / 100) + 5);
     }
     /**
-     * > Cette fonction calcule la stat spéciale d'un pokémon en fonction de sa vitesse de base, de ses statistiques DV et EV et de son niveau
+     * Cette fonction calcule la stat spéciale d'un pokémon en fonction de sa vitesse de base, de ses statistiques DV et EV et de son niveau
      */
     public void calculSpecial(){
         this.getStat().setSpecial((2 * (this.getEspece().getBaseStat().getSpecial() + this.getStatsDV().getSpecial())
@@ -579,11 +582,6 @@ public class Pokemon implements IPokemon {
      * @param actionChoisie L'action que le joueur veut utiliser
      */
     public void utilise(Capacite actionChoisie) {
-        /*for (ICapacite c : this.getCapacitesApprises()) {
-            if (c.equals(actionChoisie)) {
-                c.utilise();
-            }
-        }*/
         actionChoisie.utilise();
     }
 

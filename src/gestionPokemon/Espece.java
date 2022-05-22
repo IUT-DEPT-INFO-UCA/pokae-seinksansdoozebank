@@ -164,7 +164,7 @@ public class Espece implements IEspece {
 					if((Objects.equals((String) (((JSONObject) ((JSONObject) o).get("version_group")).get("name")), "red-blue"))&&(Objects.equals((String) (((JSONObject) ((JSONObject) o).get("move_learn_method")).get("name")), "level-up"))){
 						capaciteSelonNiveau.put(capaTemp,
 								Integer.parseInt((((JSONObject) o).get("level_learned_at")).toString()));
-						System.out.println(capaTemp+"  "+Integer.parseInt((((JSONObject) o).get("level_learned_at")).toString()));
+						//System.out.println(capaTemp+"  "+Integer.parseInt((((JSONObject) o).get("level_learned_at")).toString()));
 					}
 				}
 			}

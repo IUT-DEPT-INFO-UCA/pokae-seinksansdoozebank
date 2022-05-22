@@ -156,6 +156,9 @@ public class Stats implements IStat {
      */
     public void setPV(int pv) {
         this.pv = pv;
+        if(this.pv<0) {
+        	this.pv=0;
+        }
     }
 
 }

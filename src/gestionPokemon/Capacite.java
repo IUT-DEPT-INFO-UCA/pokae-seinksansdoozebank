@@ -91,11 +91,12 @@ public class Capacite implements ICapacite {
 
     /////////////////////// methodes de IAttaque ///////////////////////
     public int calculeDommage(IPokemon lanceur, IPokemon receveur) {
+    	//System.out.println(receveur);
         double degats = 0;
         if (this.touche()) {
             if (this.puissance > 0) {
-                degats = ((lanceur.getNiveau() * 0.4 + 2) * ((Pokemon) lanceur).obtenirAtqSur(this) * this.puissance
-                        / (((Pokemon) receveur).obtenirDefSur(this) * 50))
+                degats = (( (lanceur.getNiveau() * 0.4 + 2) * ((Pokemon) lanceur).obtenirAtqSur(this) * this.puissance)
+                        / (((Pokemon) receveur).obtenirDefSur(this) * 50)+2)
                         * calculerCM((Pokemon) lanceur, (Pokemon) receveur);
             } else {
                 switch (this.puissance) {
@@ -130,6 +131,9 @@ public class Capacite implements ICapacite {
                         }
                 }
             }
+            //System.out.println(degats);
+        }else {
+        	System.out.println(receveur.getNom()+" esquive !");
         }
         return (int) degats;
     }
@@ -186,7 +190,7 @@ public class Capacite implements ICapacite {
      */
     public boolean touche() {
         double r = Math.random();
-        System.out.println("" + r + "><" + this.precision);
+        //System.out.println("" + r + "><" + this.precision);
         return Math.random() <= this.precision;
     }
 
@@ -198,13 +202,16 @@ public class Capacite implements ICapacite {
 	 * @return Le coefficient multiplicateur que l'attaque fera.
 	 */
 	public double calculerCM(Pokemon attaquant, Pokemon defenseur) {
-		double stab = 0;
+		//System.out.println(defenseur.getType1().getNom()+" "+defenseur.getType2().getNom());
+		double stab = 1;
 		double efficacite;
 		if (attaquant.possedeLeType(this.type)) {
 			stab = 1.5;
 		}
 		efficacite = attaquant.getAttaqueChoisie().getEfficiencyOn(defenseur);
-		return stab * efficacite * (0.85 * (Math.random() * 0.15));
+		double coeff =stab * efficacite * (Math.random() * ((0.15)) + 0.85);
+		//System.out.println("Le CM vaut "+coeff);
+		return coeff;
 	}
 
 	
@@ -216,8 +223,13 @@ public class Capacite implements ICapacite {
 	 * @return L'efficacité de l'attaque sur le défenseur.
 	 */
 	public double getEfficiencyOn(Pokemon defenseur) {
-
-		return ((Type)this.getType()).getCoeffTotal(defenseur.getType1(), defenseur.getType2());
+		double efficacite = ((Type)this.getType()).getCoeffTotal(defenseur.getType1(), defenseur.getType2());
+		if(efficacite>1) {
+			System.out.println("C'est super efficace !");
+		}else if(efficacite<1) {
+			System.out.println("Ce n'est pas très efficace ...");
+		}
+		return efficacite;
 
 	}
 
