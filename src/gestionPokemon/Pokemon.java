@@ -92,7 +92,6 @@ public class Pokemon implements IPokemon {
      * @param espPoke l'espece du Pokemon
      */
     public Pokemon(String nom, Espece espPoke) {
-
         this.setId(cptId);
         this.nom = nom;
         this.statsEV.setForce(0);
@@ -216,7 +215,6 @@ public class Pokemon implements IPokemon {
 
     @Override
     public void apprendCapacites(ICapacite[] caps) {
-
         for (int i = 0; i < Math.min(caps.length, 4); i++) {
             try {
                 if(caps[i] != null) {
