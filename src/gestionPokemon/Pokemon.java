@@ -452,7 +452,7 @@ public class Pokemon implements IPokemon {
     public void augmenterNiveau() {
         this.niv++;
 
-        if (this.niv >= espPoke.nivEvolution) {
+        if (this.niv >= espPoke.nivEvolution && this.getEspece().getEvolution(this.niv) != null) {
             evoluer();
         }
         // Les stats de base sont celles de l'espece actuelle du pokemon.

@@ -7,32 +7,32 @@ import java.util.Arrays;
 public class TestGestionPokemon {
 
         public static void main(String[] args) throws FileNotFoundException {
-                Pokedex.createListeCapacite();
-                Pokedex.createListeEspece();
-                ///////////////////////  Pokedex /////////////////////////////
-                //Ranch
-                //System.out.println(Arrays.toString(Pokedex.engendreRanch()));
-                //Espece
-                /*
-                System.out.println("Espece n°3  = "+Pokedex.especeParId(3));
-                System.out.println("Espece qui a pour nom Pikachu :"+Pokedex.especeParNom("Pikachu"));
-                //Capacite
-                System.out.println("Capacite n°18 = "+Pokedex.capaciteParId(18));
-                System.out.println("Capacite qui a pour nom Coupe :"+Pokedex.capaciteParNom("Coupe"));
+        	System.out.println("test");
+            Pokedex.initisaliser();
+            ///////////////////////  Pokedex /////////////////////////////
+            //Ranch
+            //System.out.println(Arrays.toString(Pokedex.engendreRanch()));
+            //Espece
+            /*
+            System.out.println("Espece n°3  = "+Pokedex.especeParId(3));
+            System.out.println("Espece qui a pour nom Pikachu :"+Pokedex.especeParNom("Pikachu"));
+            //Capacite
+            System.out.println("Capacite n°18 = "+Pokedex.capaciteParId(18));
+            System.out.println("Capacite qui a pour nom Coupe :"+Pokedex.capaciteParNom("Coupe"));
 
-                ///////////////////////  Espece /////////////////////////////
-                Espece espece = Pokedex.especeParId(4);
-                espece.initCapaciteSelonNiveau();
-                System.out.println(Arrays.toString(espece.getCapSet()));*/
+            ///////////////////////  Espece /////////////////////////////
+            Espece espece = Pokedex.especeParId(4);
+            espece.initCapaciteSelonNiveau();
+            System.out.println(Arrays.toString(espece.getCapSet()));*/
 
-                ///////////////////////  Pokemon /////////////////////////////
-                Pokemon pokemon=new Pokemon("Primplouf",Pokedex.listeEspece[1]);
-                System.out.println(pokemon);
-                for(int i=0; i<16;i++){
-                        pokemon.augmenterNiveau();
-                }
-                System.out.println(pokemon); // Print du pokemon
-                System.out.println(Arrays.toString(pokemon.espPoke.getCapSet()));
+            ///////////////////////  Pokemon /////////////////////////////
+            Pokemon pokemon=new Pokemon("Primplouf",Pokedex.listeEspece[1]);
+            System.out.println(pokemon);
+            for(int i=0; i<16;i++){
+                    pokemon.augmenterNiveau();
+            }
+            System.out.println(pokemon); // Print du pokemon
+            System.out.println(Arrays.toString(pokemon.espPoke.getCapSet()));
         }
 
         /*

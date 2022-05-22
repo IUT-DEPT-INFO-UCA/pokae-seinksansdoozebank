@@ -231,7 +231,6 @@ public class Pokedex implements IPokedex{
 			Pokedex.createListeCapacite();
 	        Pokedex.createListeEspece();
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     }
