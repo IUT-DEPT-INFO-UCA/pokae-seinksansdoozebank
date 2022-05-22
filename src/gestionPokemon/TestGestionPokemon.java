@@ -31,7 +31,7 @@ public class TestGestionPokemon {
                 for(int i=0; i<16;i++){
                         pokemon.augmenterNiveau();
                 }
-                System.out.println(pokemon);
+                System.out.println(pokemon); // Print du pokemon
                 System.out.println(Arrays.toString(pokemon.espPoke.getCapSet()));
         }
 
