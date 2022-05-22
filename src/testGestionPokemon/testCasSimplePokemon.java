@@ -1,4 +1,5 @@
 package testGestionPokemon;
+import gestionPokemon.Capacite;
 import gestionPokemon.Pokedex;
 import gestionPokemon.Pokemon;
 import org.junit.jupiter.api.BeforeEach;
@@ -104,18 +105,14 @@ public class testCasSimplePokemon {
         // On test grace a deux pokemons lequel est le plus rapide
         Pokemon florizarre = new Pokemon("Flofloriri",Pokedex.listeEspece[3]);
         florizarre.getStat().setVitesse(270);
-
-
-        System.out.println(pokeTest.getStat());
-
-        System.out.println(florizarre.getStat());
-
-
-        System.out.println(pokeTest.getStatsDV());
-
-        System.out.println(florizarre.getStatsDV());
-
+        pokeTest.getStat().setVitesse(100);
         assertFalse(pokeTest.estPlusRapideQue(florizarre));
+    }
+    @Test
+    public void testCoef(){
+        Capacite c1 = Pokedex.listeCapacite[51];
+        System.out.println(c1);
+        System.out.println(c1.getEfficiencyOn(pokeTest));
     }
 
 

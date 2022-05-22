@@ -69,7 +69,7 @@ public class Capacite implements ICapacite {
      * @return Un texte contenant l'identifiant et le nom de la capacité.
      */
     public String toString() {
-        return "Capacite [id=" + id + "  nom :" + nom + "]";
+        return "Capacite [id=" + id + "  nom :" + nom + " type : " + this.getType().getNom() + "]";
     }
 
     /////////////////////// methodes de IAttaque ///////////////////////
@@ -199,7 +199,7 @@ public class Capacite implements ICapacite {
 	 * @return L'efficacité de l'attaque sur le défenseur.
 	 */
 	public double getEfficiencyOn(Pokemon defenseur) {
-		return ((Type)getType()).getCoeffTotal(defenseur.getType1(), defenseur.getType2());
+		return ((Type) this.getType()).getCoeffTotal(defenseur.getType1(), defenseur.getType2());
 	}
 
 }

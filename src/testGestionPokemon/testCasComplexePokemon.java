@@ -42,6 +42,16 @@ public class testCasComplexePokemon {
         assertEquals(pvAvantAttaque,pokeTest.getStat().getPV());
         assertEquals(pokeTest.obtenirDeniersDegatsSubits(),0);
     }
+    @Test
+    public void testEstplusRapideQueSameSpeed(){
+        // On test grace a deux pokemons lequel est le plus rapide (ils ont la meme vitesse)
+        Pokemon florizarre = new Pokemon("Flofloriri",Pokedex.listeEspece[3]);
+        florizarre.getStat().setVitesse(100);
+        pokeTest.getStat().setVitesse(100);
+        //On ne peux pas tester cette méthode puisqu'elle renvoie une chance sur deux
+        //Ainsi, on test seulement si le resultat est définit.
+        assertNotNull(pokeTest.estPlusRapideQue(florizarre));
+    }
 
 
 }
