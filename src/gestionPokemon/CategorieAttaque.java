@@ -19,7 +19,7 @@ public enum CategorieAttaque implements ICategorie {
 	/**
 	 * Nom de la catégorie
 	 */
-	private String nom;
+	private final String nom;
 
 	/**
 	 * Constructeur d'une catégorie à partir de son nom
