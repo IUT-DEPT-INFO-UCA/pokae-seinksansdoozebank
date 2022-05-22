@@ -51,7 +51,7 @@ public class testCasSimplePokemon {
         int pvAvantAttaque = pokeTest.getStat().getPV();
         pokeTest.subirDegats(5);
         assertNotEquals(pvAvantAttaque,pokeTest.getStat().getPV());
-        //assertEquals(pokeTest.obtenirDeniersDegatsSubits(),5);
+        assertEquals(pokeTest.obtenirDeniersDegatsSubits(),5);
     }
     @Test
     public void testGainNiveau(){
@@ -85,6 +85,27 @@ public class testCasSimplePokemon {
         int nbPPBeforeUse = pokeTest.getCapacitesApprises()[1].getPP();
         pokeTest.getCapacitesApprises()[1].utilise();
         assertNotEquals(nbPPBeforeUse,pokeTest.getCapacitesApprises()[1].getPP());
+    }
+    @Test
+    public void testAugmenterEV(){
+        //On créé un pokemon qui fait gagner des stats de Spe
+        Pokemon florizarre = new Pokemon("Flofloriri",Pokedex.listeEspece[3]);
+
+        //On récup les anciens EV de notre pokeTest
+        int ancienEV = pokeTest.getStatsEV().getSpecial();
+
+        //Suite au gain du combat le pokemon doit gagner 3de special
+
+        pokeTest.augmenterEV(florizarre);
+
+        assertNotEquals(ancienEV, pokeTest.getStatsEV().getSpecial());
+
+    }
+
+    @Test
+    public void testEstplusRapideQue(){
+        // On test grace a deux pokemons lequel est le plus rapide
+
     }
 
 }
