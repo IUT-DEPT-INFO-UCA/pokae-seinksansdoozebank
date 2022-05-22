@@ -101,11 +101,24 @@ public class testCasSimplePokemon {
         assertNotEquals(ancienEV, pokeTest.getStatsEV().getSpecial());
 
     }
-
     @Test
     public void testEstplusRapideQue(){
         // On test grace a deux pokemons lequel est le plus rapide
+        Pokemon florizarre = new Pokemon("Flofloriri",Pokedex.listeEspece[3]);
+        florizarre.getStat().setVitesse(270);
 
+
+        System.out.println(pokeTest.getStat());
+
+        System.out.println(florizarre.getStat());
+
+
+        System.out.println(pokeTest.getStatsDV());
+
+        System.out.println(florizarre.getStatsDV());
+
+        assertFalse(pokeTest.estPlusRapideQue(florizarre));
     }
+
 
 }
