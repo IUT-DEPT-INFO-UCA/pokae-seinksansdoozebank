@@ -2,6 +2,7 @@ package testGestionPokemon;
 
 import gestionPokemon.Pokedex;
 import gestionPokemon.Pokemon;
+import gestionPokemon.Stats;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -29,8 +30,18 @@ public class testCasComplexePokemon {
     public void testEvolutionParAugmenterNiveau(){
         for(int i=2; i<=17;i++){
             pokeTest.augmenterNiveau();
-            System.out.println(pokeTest.getId());
         }
-        System.out.println(pokeTest.getId());
+        // On test si l'id du pokemon est bien passe a l'id de son evolution
+        assertEquals(pokeTest.espPoke.getId(),2);
     }
+    @Test
+    public void testSubir0Degats(){
+        //On test si le pokemon peut subir 0 degats
+        int pvAvantAttaque = pokeTest.getStat().getPV();
+        pokeTest.subirDegats(0);
+        assertEquals(pvAvantAttaque,pokeTest.getStat().getPV());
+        assertEquals(pokeTest.obtenirDeniersDegatsSubits(),0);
+    }
+
+
 }

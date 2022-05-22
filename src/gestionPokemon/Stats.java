@@ -38,6 +38,15 @@ public class Stats implements IStat {
         this.special = 0;
         this.pv = 0;
     }
+    
+
+    public Stats(Stats s) {
+        this.force = s.getForce();
+        this.defense = s.getDefense();
+        this.vitesse = s.getVitesse();
+        this.special = s.getSpecial();
+        this.pv = s.getPV();
+    }
 
     /**
      * Il renvoie une représentation sous forme de chaîne de caractère de l'objet
