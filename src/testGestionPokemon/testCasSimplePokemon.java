@@ -14,10 +14,9 @@ public class testCasSimplePokemon {
     private Pokemon pokeTest ;
 
     @BeforeEach
-    public void createPokedex() throws FileNotFoundException {
+    public void instanciationObjets() throws FileNotFoundException {
         // Initialisation du pokedex et du pokemon Test.
-        Pokedex.createListeCapacite();
-        Pokedex.createListeEspece();
+        Pokedex.initialiser();
         pokeTest = new Pokemon(Pokedex.listeEspece[3]);
 
     }
@@ -122,11 +121,5 @@ public class testCasSimplePokemon {
         assertEquals(neutre.getEfficiencyOn(pokeTest),1.0);
     }
 
-
-    @Test
-    public void test(){
-        Pokemon florizarre = new Pokemon("Flofloriri",Pokedex.listeEspece[3]);
-
-    }
 
 }

@@ -43,32 +43,15 @@ public class TestGestionPokemon {
             System.out.println(Arrays.toString(pokemon.espPoke.getCapSet()));*/
 
             // Initialisation du pokedex et du pokemon Test.
-            /*
-            Pokemon pokeTest = new Pokemon(Pokedex.listeEspece[3]);
+            /*Pokemon pokeTest = new Pokemon(Pokedex.listeEspece[3]);
             System.out.println(pokeTest);
             System.out.println(pokeTest.getCapacitesApprises()[1]);*/
-            Pokemon out=new Pokemon("maxValue",Pokedex.listeEspece[1]);
+            Pokemon pokeTest = new Pokemon(Pokedex.listeEspece[3]);
+            System.out.println(pokeTest);
+            System.out.println(Arrays.toString(pokeTest.getEspece().getCapSet()));
+            /*Pokemon out=new Pokemon("maxValue",Pokedex.listeEspece[1]);
             System.out.println( out.espPoke.getNom());
-            System.out.println(Pokedex.listeEspece[1].getNom());
+            System.out.println(Pokedex.listeEspece[1].getNom());*/
         }
-
-        /*
-         * public static Type[] creerTypes(String fileName) {
-         * Type[] tab = new Type[15];
-         * for (int i = 0; i < 15; i++) {
-         * tab[i] = new Type(Type.listeTypes[i]);
-         * tab[i].initCoeff(fileName);
-         * }
-         * return tab;
-         * }
-         * 
-         * public void afficherTab() {
-         * StringBuilder s = new StringBuilder();
-         * s.append(this.nom).append(" :");
-         * for (double d : this.tabCoeffEfficacite) {
-         * s.append(" ").append(d).append(",");
-         * }
-         * System.out.println(s);    */
-
 
 }
