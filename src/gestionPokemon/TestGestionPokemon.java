@@ -13,6 +13,7 @@ public class TestGestionPokemon {
                 //Ranch
 //                System.out.println(Arrays.toString(Pokedex.engendreRanch()));
                 //Espece
+                /*
                 System.out.println("Espece n°3  = "+Pokedex.especeParId(3));
                 System.out.println("Espece qui a pour nom Pikachu :"+Pokedex.especeParNom("Pikachu"));
                 //Capacite
@@ -22,8 +23,15 @@ public class TestGestionPokemon {
                 ///////////////////////  Espece /////////////////////////////
                 Espece espece = Pokedex.especeParId(4);
                 espece.initCapaciteSelonNiveau();
-                System.out.println(Arrays.toString(espece.getCapSet()));
+                System.out.println(Arrays.toString(espece.getCapSet()));*/
 
+                ///////////////////////  Pokemon /////////////////////////////
+                Pokemon pokemon=new Pokemon(Pokedex.listeEspece[1]);
+                System.out.println(pokemon);
+                for(int i=0; i<16;i++){
+                        pokemon.augmenterNiveau();
+                }
+                System.out.println(pokemon);
         }
 
         /*
