@@ -21,13 +21,6 @@ public class testCasComplexePokemon {
         pokeTest = new Pokemon(Pokedex.listeEspece[1]);
     }
 
-    @Test // De la derniere valeur
-    public void testMaxCreatePokemon() {
-
-        Pokemon out = new Pokemon("maxValue", Pokedex.listeEspece[151]);
-        assertEquals(out.getEspece().getNom(), Pokedex.listeEspece[151].getNom());
-    }
-
     @Test
     public void testEvolutionParAugmenterNiveau() {
         int ancienID = pokeTest.espPoke.getId();
