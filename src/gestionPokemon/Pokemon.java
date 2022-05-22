@@ -218,7 +218,7 @@ public class Pokemon implements IPokemon {
     public void apprendCapacites(ICapacite[] caps) {
         for (int i = 0; i < Math.min(caps.length, 4); i++) {
             try {
-                this.remplaceCapacite(i, caps[i]);
+                this.remplaceCapacite(i, new Capacite((Capacite)caps[i]));
             } catch (Exception e) {
                 e.printStackTrace();
             }
