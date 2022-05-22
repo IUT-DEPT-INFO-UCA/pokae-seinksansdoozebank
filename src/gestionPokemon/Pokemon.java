@@ -10,6 +10,7 @@ import interfaces.IPokemon;
 import interfaces.IStat;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * Une classe qui represente un Pokemon.
@@ -201,7 +202,11 @@ public class Pokemon implements IPokemon {
     }
 
     public void vaMuterEn(IEspece esp) {
+        if (Objects.equals(this.nom, this.espPoke.getNom())){
+            this.nom=((Espece) esp).getNom();
+        }
         this.espPoke = (Espece) esp;
+        this.espPoke.initCapaciteSelonNiveau();
         this.niv--;
     }
 
@@ -222,7 +227,7 @@ public class Pokemon implements IPokemon {
     }
 
     public void remplaceCapacite(int i, ICapacite cap) throws Exception {
-        if(this.espPoke.capaciteSelonNiveau.containsKey(cap)){
+        if(this.espPoke.capaciteSelonNiveau.containsKey(cap)&&(0<=i&&i<4)){
             this.listeCapacite[i] = (Capacite) cap;
         }
 

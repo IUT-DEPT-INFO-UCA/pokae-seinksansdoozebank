@@ -152,7 +152,6 @@ public class Espece implements IEspece {
 		JSONObject jsonCapacite = Pokedex.getJSONfromURL("https://pokeapi.co/api/v2/pokemon/" + this.id);
 		assert jsonCapacite != null;
 		JSONArray listeMoves = (JSONArray) jsonCapacite.get("moves");
-		System.out.println(this.nom);
 		for (Object listeMove : listeMoves) {
 			JSONObject jsonNomsMoves = Pokedex
 					.getJSONfromURL(((JSONObject) ((JSONObject) listeMove).get("move")).get("url").toString());
