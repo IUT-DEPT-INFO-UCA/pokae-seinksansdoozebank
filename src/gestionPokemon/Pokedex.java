@@ -226,7 +226,7 @@ public class Pokedex implements IPokedex{
     }
     */
 
-    public static void initisaliser() {
+    public static void initialiser() {
         try {
 			Pokedex.createListeCapacite();
 	        Pokedex.createListeEspece();

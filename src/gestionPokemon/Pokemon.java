@@ -137,6 +137,7 @@ public class Pokemon implements IPokemon {
         this.statsDV.setVitesse((int) (Math.random() * ((15) + 1)));
         this.statsDV.setSpecial((int) (Math.random() * ((15) + 1)));
         this.statsDV.setPV((int) (Math.random() * ((15) + 1)));
+        
         this.espPoke = espPoke;
         this.statsSpecifiques=new Stats(this.espPoke.statsDeBase);
         this.espPoke.initCapaciteSelonNiveau();
@@ -218,6 +219,7 @@ public class Pokemon implements IPokemon {
     public void apprendCapacites(ICapacite[] caps) {
 
         for (int i = 0; i < Math.min(caps.length, 4); i++) {
+        	System.out.println(caps[i]);
             try {
                 this.remplaceCapacite(i, new Capacite((Capacite)caps[i]));
             } catch (Exception e) {
@@ -229,12 +231,10 @@ public class Pokemon implements IPokemon {
 
     public void remplaceCapacite(int i, ICapacite cap) throws Exception {
 
-            this.listeCapacite[i] = (Capacite) cap;
-
-
-
+        this.listeCapacite[i] = (Capacite) cap;
 
     }
+
 
     @Override
     public void gagneExperienceDe(IPokemon pok) {
@@ -288,8 +288,7 @@ public class Pokemon implements IPokemon {
 
     public void soigne() {
         this.getStat().setPV(this.pvMax);
-
-        this.resetPp();
+        this.resetAllPp();
     }
 
     //////////////////////////////////////////////////////////
@@ -522,7 +521,7 @@ public class Pokemon implements IPokemon {
     /**
      * Cette fonction reinitialise les PP de tous les mouvements du Pokemon
      */
-    public void resetPp() {
+    public void resetAllPp() {
         for (Capacite c : this.listeCapacite) {
             c.resetPP();
         }
@@ -552,11 +551,12 @@ public class Pokemon implements IPokemon {
      * @param actionChoisie L'action que le joueur veut utiliser
      */
     public void utilise(Capacite actionChoisie) {
-        for (ICapacite c : this.getCapacitesApprises()) {
+        /*for (ICapacite c : this.getCapacitesApprises()) {
             if (c.equals(actionChoisie)) {
                 c.utilise();
             }
-        }
+        }*/
+        actionChoisie.utilise();
     }
 
 }
