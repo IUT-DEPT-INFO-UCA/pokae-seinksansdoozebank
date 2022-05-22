@@ -46,6 +46,7 @@ public class testCasSimplePokemon {
     public void testRemplacementCapacite() throws Exception {
         //On test s'il on peut changer une capacité
        pokeTest.remplaceCapacite(3,Pokedex.listeCapacite[73]);
+       assertEquals(pokeTest.getCapacitesApprises()[3] , Pokedex.listeCapacite[73]);
     }
     @Test
     public void testSubirDegats(){
@@ -53,10 +54,10 @@ public class testCasSimplePokemon {
         int pvAvantAttaque = pokeTest.getStat().getPV();
         pokeTest.subirDegats(5);
         assertNotEquals(pvAvantAttaque,pokeTest.getStat().getPV());
-        //assertEquals(pokeTest.obtenirDeniersDegatsSubits(),5);
+        assertEquals(pokeTest.obtenirDeniersDegatsSubits(),5);
     }
     @Test
-    public void testGainNiveau(){
+    public void testGainXP(){
         // On test si le pokemon peut gagner des niveaux
         double xpBefore= pokeTest.getExperience();
         Pokemon pokeBattu = new Pokemon(Pokedex.listeEspece[33]);
@@ -73,20 +74,20 @@ public class testCasSimplePokemon {
     @Test
     public void testSoigne(){
         // On test si le pokemon peut etre soigne
-
         pokeTest.subirDegats(200);
         assertTrue(pokeTest.estEvanoui());
         assertNotEquals(pokeTest.getStat().getPV(),pokeTest.pvMax);
         pokeTest.soigne();
         assertFalse(pokeTest.estEvanoui());
         assertEquals(pokeTest.getStat().getPV(), pokeTest.pvMax);
-
     }
     @Test
     public void testResetPP(){
         int nbPPBeforeUse = pokeTest.getCapacitesApprises()[1].getPP();
         pokeTest.getCapacitesApprises()[1].utilise();
         assertNotEquals(nbPPBeforeUse,pokeTest.getCapacitesApprises()[1].getPP());
+        pokeTest.getCapacitesApprises()[1].resetPP();
+        assertEquals(nbPPBeforeUse,pokeTest.getCapacitesApprises()[1].getPP());
     }
 
     @Test
