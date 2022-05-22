@@ -2,7 +2,6 @@ package gestionPokemon;
 
 import java.util.HashMap;
 import java.util.Map.Entry;
-import java.util.Objects;
 
 import interfaces.ICapacite;
 import interfaces.IEspece;
@@ -150,7 +149,7 @@ public class Espece implements IEspece {
 	 * hashmap
 	 */
 	public void initCapaciteSelonNiveau() {
-		JSONObject jsonCapacite = Pokedex.getJSONfromURL("https://pokeapi.co/api/v2/pokemon/" + (this.id));
+		JSONObject jsonCapacite = Pokedex.getJSONfromURL("https://pokeapi.co/api/v2/pokemon/" + this.id);
 		assert jsonCapacite != null;
 		JSONArray listeMoves = (JSONArray) jsonCapacite.get("moves");
 		for (Object listeMove : listeMoves) {
@@ -162,12 +161,8 @@ public class Espece implements IEspece {
 			if (capaTemp != null) {
 				JSONArray listeVersionGroupDetail = (JSONArray) ((JSONObject) listeMove).get("version_group_details");
 				for (Object o : listeVersionGroupDetail) {
-					if((Objects.equals((String) (((JSONObject) ((JSONObject) o).get("version_group")).get("name")), "red-blue"))){
-						capaciteSelonNiveau.put(capaTemp,
-								Integer.parseInt((((JSONObject) o).get("level_learned_at")).toString()));
-						System.out.println(capaTemp+" lvl learned at ="+Integer.parseInt((((JSONObject) o).get("level_learned_at")).toString()));
-					}
-
+					capaciteSelonNiveau.put(capaTemp,
+							Integer.parseInt((((JSONObject) o).get("level_learned_at")).toString()));
 				}
 			}
 		}
@@ -231,23 +226,6 @@ public class Espece implements IEspece {
 	 */
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	/**
-	 * Retourne l'objet type correspondant au nom du type passé en paramètre
-	 * 
-	 * @param t nom du type qui doit être ajouté au Pokemon
-	 * @return l'objet type qui va être attribuer au Pokemon
-	 */
-	public Type setType(String t) {
-		int i=0;
-		while(i<Type.getListe().length && !Type.getListe()[i].getNom().equals(t)) {
-			i++;
-		}
-		if(i!=15) {
-			return Type.getListe()[i];
-		}
-		return null;
 	}
 
 	/**

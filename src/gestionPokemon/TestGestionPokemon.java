@@ -7,7 +7,7 @@ import java.util.Arrays;
 public class TestGestionPokemon {
 
         public static void main(String[] args) throws FileNotFoundException {
-            Pokedex.initisaliser();
+            Pokedex.initialiser();
             ///////////////////////  Pokedex /////////////////////////////
             //Ranch
             //System.out.println(Arrays.toString(Pokedex.engendreRanch()));
@@ -25,16 +25,18 @@ public class TestGestionPokemon {
             System.out.println(Arrays.toString(espece.getCapSet()));*/
 
             ///////////////////////  Pokemon /////////////////////////////
-            Pokemon pokemon=new Pokemon("Bulbi",Pokedex.listeEspece[1]);
+            /*Pokemon pokemon=new Pokemon("Bulbi",Pokedex.listeEspece[1]);
             System.out.println(pokemon);
-            // Test d'évolution
-            /*for(int i=0; i<16;i++){
+            for(int i=0; i<16;i++){
                     pokemon.augmenterNiveau();
             }
-            System.out.println(pokemon); // Print du pokemon*/
-            System.out.println(Arrays.toString(pokemon.espPoke.getCapSet())); //Renvoie les capacités de l'espèce du pokemon
-            pokemon.remplaceCapacite(0,Pokedex.listeCapacite[31]);
             System.out.println(pokemon); // Print du pokemon
+            System.out.println(Arrays.toString(pokemon.espPoke.getCapSet()));*/
+
+            // Initialisation du pokedex et du pokemon Test.
+            Pokemon pokeTest = new Pokemon(Pokedex.listeEspece[3]);
+            System.out.println(pokeTest);
+            System.out.println(pokeTest.getCapacitesApprises()[1]);
         }
 
         /*
