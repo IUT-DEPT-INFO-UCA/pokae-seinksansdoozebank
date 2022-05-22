@@ -21,7 +21,7 @@ public class testCasComplexePokemon {
     }
     @Test // De la derniere valeur
     public void testMaxCreatePokemon(){
-        // On test si le pokémon possède la bonne espece et le bon niveau.
+
         Pokemon out = new Pokemon("maxValue",Pokedex.listeEspece[151]);
         assertEquals(out.getEspece(),Pokedex.listeEspece[151]);
     }
@@ -29,8 +29,8 @@ public class testCasComplexePokemon {
     public void testEvolutionParAugmenterNiveau(){
         for(int i=2; i<=17;i++){
             pokeTest.augmenterNiveau();
-            assertEquals(pokeTest.getNiveau(), i);
+            System.out.println(pokeTest.getId());
         }
-        System.out.println(pokeTest.getStat());
+        System.out.println(pokeTest.getId());
     }
 }
