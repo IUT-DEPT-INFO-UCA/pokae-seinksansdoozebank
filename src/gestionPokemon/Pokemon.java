@@ -108,17 +108,15 @@ public class Pokemon implements IPokemon {
         this.espPoke = espPoke;
         this.statsSpecifiques=new Stats(this.espPoke.statsDeBase);
         this.espPoke.initCapaciteSelonNiveau();
-        this.apprendCapacites(this.espPoke.capaciteDispo(this));
         this.niv=espPoke.nivDepart;
         gainXp(this.espPoke.getExpDeBase());
-
+        this.apprendCapacites(this.espPoke.capaciteDispo(this));
         calculPV();
         calculPVMax();
         calculDefense();
         calculSpecial();
         calculForce();
         calculVitesse();
-        System.out.println(this.espPoke);
     }
 
     /**
@@ -139,15 +137,12 @@ public class Pokemon implements IPokemon {
         this.statsDV.setVitesse((int) (Math.random() * ((15) + 1)));
         this.statsDV.setSpecial((int) (Math.random() * ((15) + 1)));
         this.statsDV.setPV((int) (Math.random() * ((15) + 1)));
-        
         this.espPoke = espPoke;
         this.statsSpecifiques=new Stats(this.espPoke.statsDeBase);
         this.espPoke.initCapaciteSelonNiveau();
-
         this.niv=espPoke.nivDepart;
         gainXp(this.espPoke.getExpDeBase());
         this.apprendCapacites(this.espPoke.capaciteDispo(this));
-
         calculPV();
         calculPVMax();
         calculDefense();
