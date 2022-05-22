@@ -106,7 +106,7 @@ public class Pokemon implements IPokemon {
         this.statsDV.setPV((int) (Math.random() * ((15) + 1)));
 
         this.espPoke = espPoke;
-        this.statsSpecifiques=this.espPoke.statsDeBase;
+        this.statsSpecifiques=new Stats(this.espPoke.statsDeBase);
         this.espPoke.initCapaciteSelonNiveau();
         this.apprendCapacites(this.espPoke.capaciteDispo(this));
         this.niv=espPoke.nivDepart;
@@ -138,7 +138,7 @@ public class Pokemon implements IPokemon {
         this.statsDV.setSpecial((int) (Math.random() * ((15) + 1)));
         this.statsDV.setPV((int) (Math.random() * ((15) + 1)));
         this.espPoke = espPoke;
-        this.statsSpecifiques=this.espPoke.statsDeBase;
+        this.statsSpecifiques=new Stats(this.espPoke.statsDeBase);
         this.espPoke.initCapaciteSelonNiveau();
         this.apprendCapacites(this.espPoke.capaciteDispo(this));
         this.niv=espPoke.nivDepart;
@@ -226,7 +226,7 @@ public class Pokemon implements IPokemon {
 
     }
 
-    public void remplaceCapacite(int i, ICapacite cap) {
+    public void remplaceCapacite(int i, ICapacite cap) throws Exception {
         if(this.espPoke.capaciteSelonNiveau.containsKey(cap)&&(0<=i&&i<4)){
             this.listeCapacite[i] = (Capacite) cap;
         }
@@ -455,9 +455,7 @@ public class Pokemon implements IPokemon {
         if (this.niv >= espPoke.nivEvolution && this.getEspece().getEvolution(this.niv) != null) {
             evoluer();
         }
-        // Les stats de base sont celles de l'espece actuelle du pokemon.
-        // Ainsi, si le pokemon a evolue, son espece a change juste avant donc les stats
-        // sont calculees sur les nouvelles stat de base.
+        // Les stats de base sont celles de l'espece actuelle du pokemon. Ainsi, si le pokemon a evolue, son espece a change juste avant donc les stats sont calculees sur les nouvelles stat de base.
         calculPV();
         calculForce();
         calculDefense();

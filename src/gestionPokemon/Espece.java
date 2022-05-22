@@ -235,14 +235,11 @@ public class Espece implements IEspece {
 	 * @return l'objet type qui va être attribuer au Pokemon
 	 */
 	public Type setType(String t) {
-		System.out.println("recherche du type "+t);
 		int i=0;
 		while(i<Type.getListe().length && !Type.getListe()[i].getNom().equals(t)) {
-			System.out.println("pas de type "+Type.getListe()[i].getNom());
 			i++;
 		}
 		if(i!=15) {
-			System.out.println("ajout du type "+Type.getListe()[i].getNom());
 			return Type.getListe()[i];
 		}
 		return null;
