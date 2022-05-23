@@ -2,12 +2,14 @@ package testGestionPokemon;
 import gestionPokemon.Pokedex;
 import gestionPokemon.Pokemon;
 import gestionPokemon.Espece;
+import org.json.simple.parser.ParseException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.FileNotFoundException;
 
+import java.io.IOException;
 import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -18,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class testPokemon {
     private Pokemon pokeTest ;
     @BeforeEach
-    public void createPokedex() throws FileNotFoundException {
+    public void createPokedex() throws IOException, ParseException {
         // Initialisation du pokedex et du pokemon Test.
         Pokedex.createListeCapacite();
         Pokedex.createListeEspece();
@@ -26,7 +28,7 @@ public class testPokemon {
         System.out.println(pokeTest);
     }
     @Test
-    public void createSimplePokemon() throws FileNotFoundException {
+    public void createSimplePokemon()  {
        //On créé le pokémon
         Pokemon florizarre = new Pokemon("Flofloriri",Pokedex.listeEspece[3]);
         // On test si le pokémon possède la bonne espece et le bon niveau.

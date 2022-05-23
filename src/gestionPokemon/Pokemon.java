@@ -8,7 +8,6 @@ import interfaces.ICapacite;
 import interfaces.IEspece;
 import interfaces.IPokemon;
 import interfaces.IStat;
-
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -485,7 +484,7 @@ public class Pokemon implements IPokemon {
      * evoluer, et s'il le peut, il le fait evoluer. Puis il calcule les nouvelles
      * stats du pokemon
      */
-    public void augmenterNiveau() {
+    public void augmenterNiveau()  {
         this.niv++;
 
         if (this.niv >= espPoke.nivEvolution && this.getEspece().getEvolution(this.niv) != null&&this.espPoke.nivEvolution!=0) {
@@ -503,7 +502,7 @@ public class Pokemon implements IPokemon {
      * "Si le niveau du pokemon est suffisamment eleve, il evoluera vers une
      * nouvelle espece."
      */
-    public void evoluer() {
+    public void evoluer()  {
         // On modifie uniquement l'espece du pokemon. Le calcul des nouvelles stat se
         // fait dans augmenterNiv
         this.vaMuterEn(this.getEspece().getEvolution(this.niv));

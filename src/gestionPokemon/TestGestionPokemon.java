@@ -1,12 +1,15 @@
 package gestionPokemon;
 
+import org.json.simple.parser.ParseException;
+
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Arrays;
 //import java.util.Arrays;
 
 public class TestGestionPokemon {
 
-        public static void main(String[] args) throws FileNotFoundException {
+        public static void main(String[] args) throws IOException, ParseException {
 
             Pokedex.initialiser();
 
@@ -46,7 +49,7 @@ public class TestGestionPokemon {
             /*Pokemon pokeTest = new Pokemon(Pokedex.listeEspece[3]);
             System.out.println(pokeTest);
             System.out.println(pokeTest.getCapacitesApprises()[1]);*/
-            Pokemon pokeTest = new Pokemon(Pokedex.listeEspece[3]);
+            Pokemon pokeTest = new Pokemon(Pokedex.listeEspece[151]);
             System.out.println(pokeTest);
             System.out.println(Arrays.toString(pokeTest.getEspece().getCapSet()));
             /*Pokemon out=new Pokemon("maxValue",Pokedex.listeEspece[1]);

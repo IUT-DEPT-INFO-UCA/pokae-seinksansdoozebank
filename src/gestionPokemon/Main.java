@@ -1,8 +1,12 @@
 package gestionPokemon;
 
+import org.json.simple.parser.ParseException;
+
+import java.io.IOException;
+
 public class Main {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException, ParseException {
 		Pokedex.initialiser();
 		System.out.println("Voici le premier pokemon et ses stats :");
 		Pokemon carapuce = new Pokemon (Pokedex.getEspeceParNom("Carapuce"));

@@ -7,6 +7,10 @@
  */
 package interfaces;
 
+import org.json.simple.parser.ParseException;
+
+import java.io.IOException;
+
 /**Présente les méthodes pour utiliser un pokemon.
  * @author Leo Donati
  *
@@ -50,7 +54,7 @@ public interface IPokemon {
 	/**Fait évoluer le pokemon en changeant son espèce.
 	 * @param esp Une Espece représentant la nouvelle espece en laquelle le pokemon évolue;
 	 */
-	public void vaMuterEn(IEspece esp);
+	public void vaMuterEn(IEspece esp) throws IOException, ParseException;
 	
 	/**Récupère le tableau des capacités que le pokemon connait.
 	 * @return Un tableau de Capacite que le pokemon connait.
@@ -72,7 +76,7 @@ public interface IPokemon {
 	/**Ajoute l'expérience gagnée au pokemonen  fonction des stats du pokemon qu'il a vaincu.
 	 * @param pok Un Pokemon représentant le pokemon vaincu.
 	 */
-	public void gagneExperienceDe(IPokemon pok); //Met à jour l'exprérience de this suite à la défaite de pok
+	public void gagneExperienceDe(IPokemon pok) throws IOException, ParseException; //Met à jour l'exprérience de this suite à la défaite de pok
 	
 	/**Met à jour les stats du  pokemon en fonction du pokemon attaquant et l'attaque qu'il a utilisé.
 	 * @param pok Un Pokemon représentant le pokemon attaquant.

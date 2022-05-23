@@ -2,10 +2,10 @@ package testGestionPokemon;
 
 import gestionPokemon.Pokedex;
 import gestionPokemon.Pokemon;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -13,7 +13,7 @@ public class testCasComplexePokemon {
     private Pokemon pokeTest;
 
     @BeforeEach
-    public void createPokedex() throws FileNotFoundException {
+    public void createPokedex() throws IOException{
         // Initialisation du pokedex et du pokemon Test.
         Pokedex pokedex = new Pokedex();
         Pokedex.createListeCapacite();
@@ -22,7 +22,7 @@ public class testCasComplexePokemon {
     }
 
     @Test
-    public void testEvolutionParAugmenterNiveau() {
+    public void testEvolutionParAugmenterNiveau(){
         int ancienID = pokeTest.espPoke.getId();
         for (int i = 2; i <= 17; i++) {
             pokeTest.augmenterNiveau();
@@ -33,7 +33,7 @@ public class testCasComplexePokemon {
     }
 
     @Test
-    public void testSubir0Degats() {
+    public void testSubir0Degats(){
         //On test si le pokemon peut subir 0 degats
         int pvAvantAttaque = pokeTest.getStat().getPV();
         pokeTest.subirDegats(0);

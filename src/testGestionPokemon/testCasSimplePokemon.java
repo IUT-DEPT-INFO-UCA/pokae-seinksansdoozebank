@@ -4,9 +4,6 @@ import gestionPokemon.Pokedex;
 import gestionPokemon.Pokemon;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.io.FileNotFoundException;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -14,7 +11,7 @@ public class testCasSimplePokemon {
     private Pokemon pokeTest ;
 
     @BeforeEach
-    public void instanciationObjets() throws FileNotFoundException {
+    public void instanciationObjets(){
         // Initialisation du pokedex et du pokemon Test.
         Pokedex.initialiser();
         pokeTest = new Pokemon(Pokedex.listeEspece[3]);
@@ -22,7 +19,7 @@ public class testCasSimplePokemon {
     }
 
     @Test
-    public void createSimplePokemon() throws FileNotFoundException {
+    public void createSimplePokemon(){
        //On créé le pokémon
         Pokemon florizarre = new Pokemon("Flofloriri",Pokedex.listeEspece[3]);
         // On test si le pokémon possède la bonne espece et le bon niveau.

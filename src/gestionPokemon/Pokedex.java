@@ -8,11 +8,9 @@ import interfaces.IType;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 //import java.util.Arrays;
@@ -95,7 +93,7 @@ public class Pokedex implements IPokedex{
      *
      * @return Une liste de 6 Pokémon aléatoires.
      */
-    public static IPokemon[] engendreRanchStatic() {
+    public static IPokemon[] engendreRanchStatic() throws IOException, ParseException {
         IPokemon[] listePokeAleatoire = new Pokemon[6];
         for (int i = 0; i < 6; i++) {
             listePokeAleatoire[i] = new Pokemon(listeEspece[(int) (Math.random() * ((nbPokemon) + 1))]);
@@ -393,7 +391,7 @@ public class Pokedex implements IPokedex{
      * @param url L'URL de l'API que vous souhaitez appeler.
      * @return Un objet JSON
      */
-    public static JSONObject getJSONfromURL(String url) {
+    public static JSONObject downloadJSONfromURL(String nomFichier,String url) {
         try {
             URL hp = new URL(url);
             HttpURLConnection hpCon = (HttpURLConnection) hp.openConnection();
@@ -408,7 +406,10 @@ public class Pokedex implements IPokedex{
                 // System.out.println(inputStr);
             }
             inputStr = responseStrBuilder.toString();
-
+            File newFile = new File("./JSON/"+nomFichier+".json");
+            FileWriter myWriter = new FileWriter("./JSON/"+nomFichier+".json");
+            myWriter.write(inputStr);
+            myWriter.close();
             streamReader.close();
 
             return (JSONObject) new JSONParser().parse(inputStr);
@@ -417,4 +418,5 @@ public class Pokedex implements IPokedex{
         }
         return null;
     }
+
 }

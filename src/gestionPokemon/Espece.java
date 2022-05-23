@@ -1,5 +1,6 @@
 package gestionPokemon;
 
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Objects;
@@ -10,6 +11,8 @@ import interfaces.IStat;
 import interfaces.IType;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 
 /**
@@ -149,11 +152,35 @@ public class Espece implements IEspece {
 	 * niveau des moves de l'API
 	 */
 	public void initCapaciteSelonNiveau() {
-		JSONObject jsonCapacite = Pokedex.getJSONfromURL("https://pokeapi.co/api/v2/pokemon/" + this.id);
-		assert jsonCapacite != null;
-		JSONArray listeMoves = (JSONArray) jsonCapacite.get("moves");
+		try {
+			boolean testPresencePoke = testPresence("Esp" + this.id + ".json");
+			if (testPresencePoke) {
+				JSONParser parser = new JSONParser();
+				JSONObject jsonPoke = (JSONObject) parser.parse(new BufferedReader(new FileReader("./JSON/Esp" + this.id + ".json")));
+				InitCapPokemon(jsonPoke);
+			} else {
+				JSONObject pokemon = Pokedex.downloadJSONfromURL(("Esp" + this.id), ("https://pokeapi.co/api/v2/pokemon/" + this.id));
+				assert pokemon != null;
+				InitCapPokemon(pokemon);
+			}
+		}catch(Exception e){
+			System.out.println(e.getMessage());
+		}
+	}
+
+	private void InitCapPokemon(JSONObject jsonPokemon) throws IOException, ParseException {
+		assert jsonPokemon != null;
+		JSONArray listeMoves = (JSONArray) jsonPokemon.get("moves");
 		for (Object listeMove : listeMoves) {
-			JSONObject jsonNomsMoves = Pokedex.getJSONfromURL(((JSONObject) ((JSONObject) listeMove).get("move")).get("url").toString());
+			boolean testPresenceCapacite=testPresence(((JSONObject)((JSONObject)listeMove).get("move")).get("name").toString()+".json");
+			JSONObject jsonNomsMoves;
+			if(testPresenceCapacite) {
+				JSONParser parser = new JSONParser();
+				jsonNomsMoves= (JSONObject) parser.parse(new FileReader("./JSON/"+ (((JSONObject)((JSONObject)listeMove).get("move")).get("name").toString())+".json"));
+			}
+			else{
+				jsonNomsMoves = Pokedex.downloadJSONfromURL(((JSONObject)((JSONObject)listeMove).get("move")).get("name").toString(),((JSONObject) ((JSONObject) listeMove).get("move")).get("url").toString());
+			}
 			assert jsonNomsMoves != null;
 			String nomCapaTemp = ((JSONObject) ((JSONArray) jsonNomsMoves.get("names")).get(3)).get("name").toString();
 			Capacite capaTemp = (Capacite) Pokedex.getCapaciteStatic(nomCapaTemp);
@@ -163,12 +190,29 @@ public class Espece implements IEspece {
 					if((Objects.equals((String) (((JSONObject) ((JSONObject) o).get("version_group")).get("name")), "red-blue"))&&(Objects.equals((String) (((JSONObject) ((JSONObject) o).get("move_learn_method")).get("name")), "level-up"))){
 						capaciteSelonNiveau.put(capaTemp,
 								Integer.parseInt((((JSONObject) o).get("level_learned_at")).toString()));
-						//System.out.println(capaTemp+"  "+Integer.parseInt((((JSONObject) o).get("level_learned_at")).toString()));
 					}
 				}
 			}
 		}
-		System.out.println(this.capaciteSelonNiveau);
+	}
+
+	private boolean testPresence(String file){
+		File repertoire = new File("./JSON/");
+		String[] listeFichiers = repertoire.list();
+		boolean testPresence = false;
+		if(listeFichiers==null){
+			System.out.println("Mauvais répertoire");
+		}
+		else{
+			int i=0;
+			while(!testPresence&&i<listeFichiers.length) {
+				if(listeFichiers[i].equals(file)){
+					testPresence = true;
+				}
+				i++;
+			}
+		}
+		return testPresence;
 	}
 
 	/**
