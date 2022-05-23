@@ -168,7 +168,11 @@ public class Espece implements IEspece {
 				}
 			}
 		}
+<<<<<<< Updated upstream
 		System.out.println(this.capaciteSelonNiveau);
+=======
+		//System.out.println(this.capaciteSelonNiveau);
+>>>>>>> Stashed changes
 	}
 
 	/**
@@ -185,6 +189,15 @@ public class Espece implements IEspece {
 			i++;
 		}
 		return liste;
+	}
+	
+	public Capacite getLearnableMove(int niv) {
+		for (Entry<Capacite, Integer> c : this.capaciteSelonNiveau.entrySet()) {
+			if(c.getValue()==niv) {
+				return c.getKey();
+			}
+		}
+		return null;
 	}
 
 	/**
@@ -262,11 +275,25 @@ public class Espece implements IEspece {
 
         int i = 0;
         for (Entry<Capacite, Integer> c : this.capaciteSelonNiveau.entrySet()) {
+<<<<<<< Updated upstream
             if (Integer.parseInt(c.getValue().toString()) <= pokemon.niv) {
+=======
+            if (Integer.parseInt(c.getValue().toString()) <= pokemon.getNiveau()) {
+>>>>>>> Stashed changes
                 tabCapaciteDispo[i] = c.getKey();
                 i++;
             }
         }
         return tabCapaciteDispo;
     }
+	
+	public void showCapSet() {
+		Capacite[] liste = new Capacite[this.capaciteSelonNiveau.size()];
+		int i = 0;
+		for (Entry<Capacite, Integer> c : this.capaciteSelonNiveau.entrySet()) {
+			System.out.println("\t"+c.getKey().getNom()+" : niv "+c.getValue());
+		}
+	}
+	
+	
 }

@@ -98,7 +98,7 @@ public class Pokedex implements IPokedex{
     public static IPokemon[] engendreRanchStatic() {
         IPokemon[] listePokeAleatoire = new Pokemon[6];
         for (int i = 0; i < 6; i++) {
-            listePokeAleatoire[i] = new Pokemon(listeEspece[(int) (Math.random() * ((nbPokemon) + 1))]);
+            listePokeAleatoire[i] = new Pokemon(listeEspece[(int) (Math.random() * (nbPokemon-1) + 1)]);
         }
         return listePokeAleatoire;
     }

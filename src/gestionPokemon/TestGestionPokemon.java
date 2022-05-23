@@ -2,6 +2,8 @@ package gestionPokemon;
 
 import java.io.FileNotFoundException;
 import java.util.Arrays;
+
+import gestionCombat.Dresseur;
 //import java.util.Arrays;
 
 public class TestGestionPokemon {
@@ -46,12 +48,47 @@ public class TestGestionPokemon {
             /*Pokemon pokeTest = new Pokemon(Pokedex.listeEspece[3]);
             System.out.println(pokeTest);
             System.out.println(pokeTest.getCapacitesApprises()[1]);*/
+<<<<<<< Updated upstream
             Pokemon pokeTest = new Pokemon(Pokedex.listeEspece[3]);
             System.out.println(pokeTest);
             System.out.println(Arrays.toString(pokeTest.getEspece().getCapSet()));
             /*Pokemon out=new Pokemon("maxValue",Pokedex.listeEspece[1]);
             System.out.println( out.espPoke.getNom());
             System.out.println(Pokedex.listeEspece[1].getNom());*/
+=======
+            /*Pokemon pokeTest = new Pokemon(Pokedex.listeEspece[3]);
+            System.out.println(pokeTest);
+            System.out.println(Arrays.toString(pokeTest.getEspece().getCapSet()));*/
+            /*Pokemon out=new Pokemon("maxValue",Pokedex.listeEspece[1]);
+            System.out.println( out.espPoke.getNom());
+            System.out.println(Pokedex.listeEspece[1].getNom());*/
+            
+            /*System.out.println("Creation de carapuce...");
+    		Pokemon carapuce = new Pokemon (Pokedex.getEspeceParNom("Carapuce"));
+    		//System.out.println(carapuce);
+    		System.out.println("Carapuce est cree !");
+    		while(carapuce.getNiveau()<10) {
+    			carapuce.augmenterNiveau();
+    		}*/
+            
+            Dresseur d1 = new Dresseur("arcsti","mdp","antoine");
+            d1.showTeam();
+            Dresseur d2 = new Dresseur("firlod","1234","clement");
+            d2.showTeam();
+            System.out.println(d1.getPokemon());
+            d1.getPokemon().espPoke.showCapSet();
+            int n = d1.getPokemon().getNiveau();
+            while(d1.getPokemon().getNiveau()<30) {
+            	boolean aChangeNiveau = d1.getPokemon().aChangeNiveau();
+				//System.out.println("aChangeNiveau = "+aChangeNiveau);
+				if(aChangeNiveau) {
+					//System.out.println("changement de niveau");
+					d1.enseigne(d1.getPokemon(), d1.getPokemon().getCapacitesApprises());
+				}
+            	d1.getPokemon().gagneExperienceDe(d2.getEquipe()[0]);
+            	System.out.println("");
+            }
+>>>>>>> Stashed changes
         }
 
 }
