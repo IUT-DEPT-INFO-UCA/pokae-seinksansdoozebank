@@ -28,11 +28,11 @@ public class Pokedex implements IPokedex{
     /**
      * Instanciation du nombre de pokemon
      */
-    private static final int nbPokemon = 152;
+    private static int nbPokemon = 152;
     /**
      * Instanciation
      */
-    private static final int nbCapacite = 111;
+    private static int nbCapacite = 111;
     /**
      * Création d'un tableau d'objets Espece.
      */

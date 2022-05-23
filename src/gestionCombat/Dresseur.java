@@ -2,11 +2,13 @@ package gestionCombat;
 import java.util.Scanner;
 
 import gestionPokemon.*;
+import interfaces.IAttaque;
 import interfaces.ICapacite;
+import interfaces.IDresseur;
 import interfaces.IEchange;
 import interfaces.IPokemon;
 
-public class Dresseur implements IEchange{
+public class Dresseur implements IDresseur,IEchange{
 	private String identifiant;
 	private String motDepasse;
 	private String nom;
@@ -24,7 +26,45 @@ public class Dresseur implements IEchange{
 	public Dresseur(String id, String mdp, String nom) {
 		//on cree un dresseur en l'ajoutant au stockage
 	}
+	/////////////////////// methode de IDresseur ///////////////////////
+	
 
+	public IPokemon getPokemon(int i) {
+		return this.equipe[i];
+	}
+	
+
+	@Override
+	public void enseigne(IPokemon pok, ICapacite[] caps) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void soigneRanch() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public IPokemon choisitCombattant() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public IPokemon choisitCombattantContre(IPokemon pok) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public IAttaque choisitAttaque(IPokemon attaquant, IPokemon defenseur) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	
 	/////////////////////// methode de IEchange ///////////////////////
 	public int calculeDommage(IPokemon lanceur, IPokemon receveur) {
 		// TODO Auto-generated method stub

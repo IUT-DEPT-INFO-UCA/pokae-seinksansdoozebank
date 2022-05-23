@@ -110,8 +110,8 @@ public class Pokemon implements IPokemon {
         this.niv=espPoke.nivDepart;
         gainXp(this.espPoke.getExpDeBase());
         this.apprendCapacites(this.espPoke.capaciteDispo(this));
+        calculPV();
         calculPVMax();
-        this.getStat().setPV(this.pvMax);
         calculDefense();
         calculSpecial();
         calculForce();
@@ -142,8 +142,8 @@ public class Pokemon implements IPokemon {
         this.niv=espPoke.nivDepart;
         gainXp(this.espPoke.getExpDeBase());
         this.apprendCapacites(this.espPoke.capaciteDispo(this));
+        calculPV();
         calculPVMax();
-        this.getStat().setPV(this.pvMax);
         calculDefense();
         calculSpecial();
         calculForce();
@@ -202,7 +202,7 @@ public class Pokemon implements IPokemon {
 
     public void vaMuterEn(IEspece esp) {
         if (Objects.equals(this.nom, this.espPoke.getNom())){
-            this.nom= esp.getNom();
+            this.nom=((Espece) esp).getNom();
         }
         this.espPoke = (Espece) esp;
         this.espPoke.initCapaciteSelonNiveau();
@@ -227,7 +227,7 @@ public class Pokemon implements IPokemon {
 
     }
 
-    public void remplaceCapacite(int i, ICapacite cap) {
+    public void remplaceCapacite(int i, ICapacite cap) throws Exception {
         this.listeCapacite[i] = (Capacite) cap;
 
     }
@@ -422,19 +422,25 @@ public class Pokemon implements IPokemon {
     }
     
     /**
-     * Il calcule le PV maximum d'un Pokémon en fonction de sa pv de base, de ses statistiques DV et EV et de son niveau
+     * Il calcule le PV maximum d'un Pokémon en fonction de sa vitesse de base, de ses statistiques DV et EV et de son niveau
      */
     public void calculPVMax(){
         this.pvMax = (((2 * (this.espPoke.getBaseStat().getPV() + this.getStatsDV().getPV())
                 + this.getStatsEV().getPV() / 4) * this.getNiveau()) / 100) + this.getNiveau() + 10;
     }
-
     /**
-     * Cette fonction calcule la force d'un pokémon en fonction de sa force de base, de ses statistiques DV et EV et de son niveau
+     * Il calcule le PV d'un Pokémon en fonction de sa vitesse de base, de ses statistiques DV et EV et de son niveau
+     */
+    public void calculPV(){
+        this.getStat().setPV((((2 * (this.espPoke.getBaseStat().getPV() + this.getStatsDV().getPV())
+                + this.getStatsEV().getPV() / 4) * this.getNiveau()) / 100) + this.getNiveau() + 10);
+    }
+    /**
+     * Cette fonction calcule la force d'un pokémon en fonction de sa vitesse de base, de ses statistiques DV et EV et de son niveau
      */
     public void calculForce(){
         this.getStat().setForce((2 * (this.getEspece().getBaseStat().getForce() + this.getStatsDV().getForce())
-                + (this.getStatsEV().getForce() / 4) / 100) + 5);
+                + (this.getStatsEV().getPV() / 4) / 100) + 5);
     }
     /**
      * Cette fonction calcule la stat de défense d'un pokémon en fonction de sa vitesse de base, de ses statistiques DV et EV et de son niveau
@@ -486,7 +492,7 @@ public class Pokemon implements IPokemon {
             evoluer();
         }
         // Les stats de base sont celles de l'espece actuelle du pokemon. Ainsi, si le pokemon a evolue, son espece a change juste avant donc les stats sont calculees sur les nouvelles stat de base.
-        calculPVMax();
+        calculPV();
         calculForce();
         calculDefense();
         calculVitesse();
@@ -549,10 +555,7 @@ public class Pokemon implements IPokemon {
      */
     public void resetAllPp() {
         for (Capacite c : this.listeCapacite) {
-            if(c!=null){
-                c.resetPP();
-            }
-
+            c.resetPP();
         }
     }
 

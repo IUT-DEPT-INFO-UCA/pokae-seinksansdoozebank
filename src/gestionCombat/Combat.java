@@ -1,12 +1,22 @@
 package gestionCombat;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
-public class Combat {
+import interfaces.IAttaque;
+import interfaces.ICombat;
+import interfaces.IDresseur;
+import interfaces.IPokemon;
+import interfaces.ITour;
+
+public class Combat implements ICombat {
 	@SuppressWarnings("unused")
 	private int nbTours;
 	private Dresseur dresseur1;
+	private int indexPokemonChoisi1;
 	private Dresseur dresseur2;
+	private int indexPokemonChoisi2;
+	private Arrays tours;
 	private Dresseur vainqueur;
 	
 	public Combat(Dresseur d1, Dresseur d2) {
@@ -14,23 +24,46 @@ public class Combat {
 		this.dresseur1 = d1;
 		this.dresseur2 = d2;
 	}
+	
+	///////////////////// Méthodes de ICombat /////////////////////
 
-	public Dresseur obtenirVainqueur () {
-		this.initialiser();
-		while (!this.estTermine()){
-			this.passerAuTourSuivant();
-			this.initialiserActions();
-			this.executerActions();
-		}
-		return this.vainqueur;
-	}
-
-	private void initialiser(){
+	public void commence(){
 		this.nbTours = 1;
 		this.dresseur1.choisirPokemon();
 		this.dresseur1.setPokemon(dresseur1.getEquipe()[0]);
 		this.dresseur2.choisirPokemon();
 		this.dresseur2.setPokemon(dresseur2.getEquipe()[0]);
+	}
+	
+
+	public IDresseur getDresseur1() {
+		return (IDresseur) this.dresseur1;
+	}
+	
+	public IDresseur getDresseur2() {
+		return (IDresseur) this.dresseur2;
+	}
+	
+	public ITour nouveauTour(IPokemon pok1, IAttaque atk1, IPokemon pok2, IAttaque atk2) {
+		this.nbTours++;
+		choisirAction(dresseur1);
+		choisirAction(dresseur2);
+	}
+
+	public void termine(){
+		dresseur1.soignerEquipe();
+		dresseur2.soignerEquipe();
+	}
+	
+	///////////////////////////////////////////////////////////////
+	
+	public Dresseur obtenirVainqueur () {
+		this.commence();
+		while (!this.estTermine()){
+			tours.add( this.nouveauTour(this.dresseur1.getPokemon(0), dresseur2, null, dresseur1));
+			this.executerActions();
+		}
+		return this.vainqueur;
 	}
 
 	private boolean estTermine(){
@@ -41,14 +74,10 @@ public class Combat {
 		}else if(!dresseur2.pouvoirSeBattre()){
 			this.vainqueur=dresseur1;
 		}
-		this.terminer();
+		this.termine();
 		return true;
 	}
 
-	private void initialiserActions(){
-		choisirAction(dresseur1);
-		choisirAction(dresseur2);
-	}
 
 	private void choisirAction(Dresseur d){
 		System.out.println("Entrez <0> pour attaquer ou <1> pour changer de pokemon : ");
@@ -111,14 +140,4 @@ public class Combat {
 			}
 		}
 	}
-	
-	private void passerAuTourSuivant(){
-		this.nbTours++;
-	}
-
-	private void terminer(){
-		dresseur1.soignerEquipe();
-		dresseur2.soignerEquipe();
-	}
-
 }

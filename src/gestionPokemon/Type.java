@@ -75,24 +75,24 @@ public enum Type implements IType {
 	 /**
 	 * Liste statique des Types existant dans notre version du jeu
 	 */
-	public static final Type[] listeTypes = {COMBAT, DRAGON, EAU,	ELECTRIK, FEU, GLACE, INSECTE, NORMAL, PLANTE, POISON, PSY, ROCHE, SOL, SPECTRE, VOL};
+	public static Type[] listeTypes = {COMBAT, DRAGON, EAU,	ELECTRIK, FEU, GLACE, INSECTE, NORMAL, PLANTE, POISON, PSY, ROCHE, SOL, SPECTRE, VOL};
 	
 	/**
 	 * L'id unique du type, correspondant à l'index du nom du type dans la liste
 	 * statique
 	 */
-	public final int id;
+	public int id;
 
     /**
      * Le nom de du type
      */
-	public final String nom;
+	public String nom;
 
 	/**
 	 * Le tableau regroupant l'efficacité des attque de type this sur chacun des
 	 * types
 	 */
-	private final double[] tabCoeffEfficacite = new double[15];
+	private double[] tabCoeffEfficacite = new double[15];
 	
 	/**
 	 * Constructeur d'un type à partir de son nom et de son id
@@ -163,6 +163,7 @@ public enum Type implements IType {
 			FileReader fichier = new FileReader(fileName);
 			BufferedReader reader = new BufferedReader(fichier);
 			reader.readLine();
+			// int i=0; unused askip
 			while (reader.ready()) {
 				String line = reader.readLine();
 				String[] tab = line.split(";");
@@ -171,7 +172,10 @@ public enum Type implements IType {
 						this.tabCoeffEfficacite[j] = Double.parseDouble(tab[j + 1]);
 					}
 				}
+				// i++;
 			}
+			// System.out.println(this.nom+" tab =
+			// "+Arrays.toString(this.tabCoeffEfficacite));
 			reader.close();
 			fichier.close();
 		} catch (IOException e) {
