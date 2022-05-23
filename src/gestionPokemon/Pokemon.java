@@ -45,7 +45,7 @@ public class Pokemon implements IPokemon {
     /**
      * Le tableau des capacites que le Pokemon peut utiliser
      */
-    public Capacite[] listeCapacite = new Capacite[4];
+    private Capacite[] listeCapacite = new Capacite[4];
 
     /** L'ensemble des stats spécique du Pokemon */
     public Stats statsSpecifiques = new Stats();

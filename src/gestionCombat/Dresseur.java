@@ -7,8 +7,9 @@ import interfaces.ICapacite;
 import interfaces.IDresseur;
 import interfaces.IEchange;
 import interfaces.IPokemon;
+import interfaces.IStrategy;
 
-public class Dresseur implements IDresseur,IEchange{
+public class Dresseur implements IDresseur,IEchange, IStrategy{
 	private String identifiant;
 	private String motDepasse;
 	private String nom;
@@ -16,7 +17,9 @@ public class Dresseur implements IDresseur,IEchange{
 	private int niveau;
 	private Pokemon pokemon;
 	private Pokemon pokemonChoisi;
+
 	private Capacite actionChoisie;
+
 	private String type; //joueur ou IA
 	
 	public Dresseur(String id, String mdp) {
@@ -36,38 +39,66 @@ public class Dresseur implements IDresseur,IEchange{
 
 	@Override
 	public void enseigne(IPokemon pok, ICapacite[] caps) {
-		// TODO Auto-generated method stub
-		
+		pok.apprendCapacites(caps);
 	}
 
 	@Override
 	public void soigneRanch() {
-		// TODO Auto-generated method stub
-		
+		for (Pokemon p : this.equipe) {
+			p.soigne();
+		}
 	}
 
 	@Override
 	public IPokemon choisitCombattant() {
-		// TODO Auto-generated method stub
-		return null;
+		System.out.println("Choisissez le pokemon à envoyer au combat : ");
+		for(Pokemon p: this.getEquipe()) {
+			System.out.print(p+"     ");
+		}
+		System.out.println("Choississez le numéro du pokemon à envoyer au combat : ");
+		try (Scanner sc = new Scanner(System.in)) {
+			int input = sc.nextInt();
+			Pokemon choosen = this.getEquipe()[input+1];
+			this.setPokemon(choosen);
+			return choosen;
+		}
 	}
 
 	@Override
 	public IPokemon choisitCombattantContre(IPokemon pok) {
-		// TODO Auto-generated method stub
-		return null;
+		System.out.println("Choisissez le pokemon à envoyer au combat : ");
+		for(Pokemon p: this.getEquipe()) {
+			System.out.print(p+"     ");
+		}
+		System.out.println("Choississez le numéro du pokemon à envoyer au combat : ");
+		try (Scanner sc = new Scanner(System.in)) {
+			int input = sc.nextInt();
+			Pokemon choosen = this.getEquipe()[input+1];
+			this.setPokemonChoisi(choosen);
+			return choosen;
+		}
 	}
 
 	@Override
 	public IAttaque choisitAttaque(IPokemon attaquant, IPokemon defenseur) {
-		// TODO Auto-generated method stub
-		return null;
+		for(ICapacite c : this.getPokemon().getCapacitesApprises()) {
+			System.out.print(c+"     ");
+		}
+		System.out.println("Choississez le numéro de l'attaque à utiliser : ");
+		try (Scanner sc = new Scanner(System.in)) {
+			int input = sc.nextInt();
+			this.actionChoisie = (Capacite) ((Pokemon)attaquant).getCapacitesApprises()[input+1];
+			this.pokemon.setAttaqueChoisie(this.actionChoisie);
+			return this.actionChoisie;
+		}
 	}
 
 	
 	/////////////////////// methode de IEchange ///////////////////////
+	
 	public int calculeDommage(IPokemon lanceur, IPokemon receveur) {
-		// TODO Auto-generated method stub
+		//On return 0 puisque echange ne fait aucun degat
+		// de toute facons on appelle jamais cette méthode puisque le calcul des dommage d'un dresseur n'a pas de sens
 		return 0;
 	}
 
@@ -79,6 +110,7 @@ public class Dresseur implements IDresseur,IEchange{
 	public void setPokemon(IPokemon pok) {
 		this.pokemonChoisi = (Pokemon) pok;
 	}
+	
 
 	public IPokemon echangeCombattant() {
 		Pokemon oldPokemonActif = this.pokemon;
@@ -93,6 +125,10 @@ public class Dresseur implements IDresseur,IEchange{
 
 	public Pokemon getPokemonChoisi() {
 		return pokemonChoisi;
+	}
+
+	public void setPokemonChoisi(IPokemon pokemonChoisi) {
+		this.pokemonChoisi = (Pokemon) pokemonChoisi;
 	}
 	
 	public Pokemon[] getEquipe() {
@@ -140,33 +176,12 @@ public class Dresseur implements IDresseur,IEchange{
 		this.type = type;
 	}
 
-	public void choisirPokemon() {
-		System.out.println("Choisissez le pokemon à envoyer au combat : ");
-		for(Pokemon p: this.getEquipe()) {
-			System.out.print(p+"     ");
-		}
-		System.out.println("Choississez le numéro du pokemon à envoyer au combat : ");
-		try (Scanner sc = new Scanner(System.in)) {
-			int input = sc.nextInt();
-			Pokemon choosen = this.getEquipe()[input+1];
-			this.setPokemon(choosen);
-		}
-	}
-
 	public Capacite getActionChoisie() {
 		return actionChoisie;
 	}
 
-	public void choisirAttaqueDe(Pokemon p) {
-		for(ICapacite c : this.getPokemon().getCapacitesApprises()) {
-			System.out.print(c+"     ");
-		}
-		System.out.println("Choississez le numéro de l'attaque à utiliser : ");
-		try (Scanner sc = new Scanner(System.in)) {
-			int input = sc.nextInt();
-			this.actionChoisie = p.listeCapacite[input+1];
-			this.pokemon.setAttaqueChoisie(this.actionChoisie);
-		}
+	public void setActionChoisie(Capacite actionChoisie) {
+		this.actionChoisie = actionChoisie;
 	}
 
 	public void enseignerCapacite(Pokemon p){
@@ -185,11 +200,5 @@ public class Dresseur implements IDresseur,IEchange{
 			rep = !this.equipe[i].estEvanoui();
 		}
 		return !rep;
-	}
-	
-	public void soignerEquipe() {
-		for (Pokemon p : this.equipe) {
-			p.soigne();
-		}
 	}
 }
