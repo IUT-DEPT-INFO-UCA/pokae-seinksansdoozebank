@@ -211,12 +211,15 @@ public class Pokemon implements IPokemon {
         return this.espPoke;
     }
 
-    public ICapacite[] getCapacitesApprises() {
+    public ICapacite[] getCapacitesApprises() { //TODO change to ICapacite[]
     	int nb = 0;
     	for (Capacite c : this.listeCapacite) {
+    		if(c!=null) {
     		nb++;
     	}
+    	}
     	Capacite[] rep = new Capacite[nb];
+    	System.out.println(nb);
     	for (int i=0;i<nb;i++) {
     		rep[i]=this.listeCapacite[i];
     	}
@@ -238,8 +241,10 @@ public class Pokemon implements IPokemon {
     }
 
     public void remplaceCapacite(int i, ICapacite cap) throws Exception {
+    	if(this.listeCapacite[i]!=null) {
+    		System.out.println(this.getNom()+" oublie "+this.listeCapacite[i].getNom()+" et apprend "+cap.getNom());
+    	}
         this.listeCapacite[i] = (Capacite) cap;
-
     }
 
 
@@ -457,7 +462,7 @@ public class Pokemon implements IPokemon {
     public void augmenterNiveau() {
         this.niv++;
         this.aChangeNiveau = true;
-        System.out.println(this.getNom()+" a atteint  le niveau "+this.getNiveau()+".");
+        System.out.println("\n"+this.getNom()+" a atteint  le niveau "+this.getNiveau()+".");
         if (this.niv >= espPoke.nivEvolution && this.getEspece().getEvolution(this.niv) != null && this.espPoke.nivEvolution!=0) {
         	System.out.println("appel de evoluer()");
             this.vaMuterEn(this.getEspece().getEvolution(this.niv));

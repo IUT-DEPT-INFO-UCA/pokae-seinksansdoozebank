@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 import gestionCombat.Dresseur;
+import interfaces.ICapacite;
 //import java.util.Arrays;
 
 public class TestGestionPokemon {
@@ -71,7 +72,8 @@ public class TestGestionPokemon {
             Dresseur d2 = new Dresseur("firlod","1234","clement");
             d2.showTeam();
             System.out.println(d1.getPokemon());
-            d1.getPokemon().espPoke.showCapSet();
+            //d1.getPokemon().espPoke.showCapSet();
+            
             int n = d1.getPokemon().getNiveau();
             while(d1.getPokemon().getNiveau()<35) {
             	boolean aChangeNiveau = d1.getPokemon().aChangeNiveau();
@@ -83,6 +85,13 @@ public class TestGestionPokemon {
             	d1.getPokemon().gagneExperienceDe(d2.getEquipe()[0]);
 //            	System.out.println("");
             }
+            /*test de getCapacite()
+            Capacite tab[] =  d1.getPokemon().getCapacitesApprises();
+            for(int i=0;i<tab.length;i++){
+            	//if(c!=null) {
+            		System.out.println(tab[i]);
+            	//}
+            }*/
         }
 
 }

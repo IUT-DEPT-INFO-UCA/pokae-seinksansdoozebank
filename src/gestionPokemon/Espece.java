@@ -168,7 +168,7 @@ public class Espece implements IEspece {
 		}
 	}
 
-	private void InitCapPokemon(JSONObject jsonPokemon) throws IOException, ParseException {
+	private void InitCapPokemon(JSONObject jsonPokemon) throws IOException, ParseException { //TODO reparer le type de la capacite qui a pas de type
 		assert jsonPokemon != null;
 		JSONArray listeMoves = (JSONArray) jsonPokemon.get("moves");
 		for (Object listeMove : listeMoves) {
@@ -188,6 +188,7 @@ public class Espece implements IEspece {
 				JSONArray listeVersionGroupDetail = (JSONArray) ((JSONObject) listeMove).get("version_group_details");
 				for (Object o : listeVersionGroupDetail) {
 					if((Objects.equals((String) (((JSONObject) ((JSONObject) o).get("version_group")).get("name")), "red-blue"))&&(Objects.equals((String) (((JSONObject) ((JSONObject) o).get("move_learn_method")).get("name")), "level-up"))){
+						capaTemp.nivNecessaire = Integer.parseInt((((JSONObject) o).get("level_learned_at")).toString());
 						capaciteSelonNiveau.put(capaTemp,
 								Integer.parseInt((((JSONObject) o).get("level_learned_at")).toString()));
 					}

@@ -42,6 +42,8 @@ public class Capacite implements ICapacite {
      * La précision de la capacite (entre 0 et 1)
      */
     public double precision;
+    
+    public int nivNecessaire;
 
     /**
      * Le nombre de points de pouvoir actuels de la capacite
@@ -87,7 +89,7 @@ public class Capacite implements ICapacite {
      */
     public String toString() {
     	//TODO trouver la capacite sans type pour trouver pq ca marche po tout le temps
-        return "["+nom + ", type : " + this.getType().getNom()+"]";
+        return "["+nom + ", " + this.getType().getNom()+","+this.nivNecessaire+"]";
     }
 
     /////////////////////// methodes de IAttaque ///////////////////////

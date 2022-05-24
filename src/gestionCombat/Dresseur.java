@@ -67,7 +67,7 @@ public class Dresseur implements IDresseur,IEchange, IStrategy{
 			
 		Capacite capaciteAApprendre = this.canTeachAMove();
 		if(capaciteAApprendre!=null) {
-			if(caps.length<4) {
+			if(caps.length<4) { //TODO reparer cette condition
 				System.out.println(pok.getNom()+" peut apprendre "+capaciteAApprendre.getNom()+" et il peut le faire seul.");
 				try {
 					this.getPokemon().remplaceCapacite(caps.length, capaciteAApprendre);
@@ -77,7 +77,7 @@ public class Dresseur implements IDresseur,IEchange, IStrategy{
 				System.out.println(pok.getNom()+" a appris "+capaciteAApprendre.getNom()+" !");
 			}else {
 				System.out.println(pok.getNom()+" veut apprendre "+capaciteAApprendre.getNom()+".");
-				System.out.println("Voulez vous lui faire oublier une des ses capacités (1) ou ne pas l'apprendre (2) ?");
+				System.out.println("Voulez vous lui faire oublier une des ses capacités (1) ou ne pas l'apprendre (0) ?");
 				try (Scanner scChoix = new Scanner(System.in)) {
 					int inputChoix = scChoix.nextInt();
 					if(inputChoix==1) {
@@ -87,13 +87,12 @@ public class Dresseur implements IDresseur,IEchange, IStrategy{
 						System.out.println("Entrer le numéro de la capacité à oublier (ou 0 pour annuler) :");
 						try (Scanner scCapacite = new Scanner(System.in)) {
 							int inputCapacite = scCapacite.nextInt()-1;
-							try {
+							try { //TODO reparer le scanner
 								pok.remplaceCapacite(inputCapacite, capaciteAApprendre);
 							} catch (Exception e) {
 								e.printStackTrace();
 							}
 						}
-
 					}else {
 						System.out.println(pok.getNom()+" n'a pas appris "+capaciteAApprendre.getNom()+".");
 					}
