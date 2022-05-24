@@ -11,10 +11,6 @@ import interfaces.IStat;
 import java.util.Arrays;
 import java.util.Objects;
 
-import gestionCombat.Dresseur;
-
-import java.util.Map.Entry;
-
 /**
  * Une classe qui represente un Pokemon.
  */
@@ -165,7 +161,7 @@ public class Pokemon implements IPokemon {
     	return "\nPokemon{" +
                 "nom='" + nom + '\'' +
                 ", niv=" + niv +
-                ",\n\tlisteCapacite=" + Arrays.toString(listeCapacite)+"}\n";
+                ", "+ Arrays.toString(listeCapacite)+"}\n";
     	/*
         return "\nPokemon{" +
                 "id=" + id +
@@ -210,17 +206,20 @@ public class Pokemon implements IPokemon {
     public IEspece getEspece() {
         return this.espPoke;
     }
-
-    public ICapacite[] getCapacitesApprises() { //TODO change to ICapacite[]
+    
+    public Capacite[] getCapacitesApprises() {//TODO chgande to ICapacite[]
+    	//System.out.println("\taffichage de listeCapacite :");
     	int nb = 0;
     	for (Capacite c : this.listeCapacite) {
     		if(c!=null) {
     		nb++;
+    		//System.out.println("\t\t"+c);
+    		}
     	}
-    	}
+    	//System.out.println("initialisation de rep : ");
     	Capacite[] rep = new Capacite[nb];
-    	System.out.println(nb);
     	for (int i=0;i<nb;i++) {
+			//System.out.println("\t\t"+this.listeCapacite[i]);
     		rep[i]=this.listeCapacite[i];
     	}
         return rep;
@@ -257,18 +256,23 @@ public class Pokemon implements IPokemon {
 
     public void vaMuterEn(IEspece especeEvolution) {
     	System.out.println(this.getNom()+" evolue !");
-    	//this.wait(500);
-		System.out.println("...");
-		//this.wait(400);
-		System.out.println("...");
-		//this.wait(300);
+    	try {
+			Thread.sleep(1000);
+			System.out.println("...");
+			Thread.sleep(900);
+			System.out.println("...");
+			Thread.sleep(700);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
     	System.out.println(this.getNom()+" a evolue en "+especeEvolution.getNom()+".");
         if (Objects.equals(this.nom, this.espPoke.getNom())){
             this.nom=((Espece) especeEvolution).getNom();
         }
         this.espPoke = (Espece) especeEvolution;
         this.espPoke.initCapaciteSelonNiveau();
-        this.niv--;
+        this.niv=especeEvolution.getNiveauDepart();
+        this.espPoke.showCapSet();
     }
 
     @Override
@@ -464,7 +468,6 @@ public class Pokemon implements IPokemon {
         this.aChangeNiveau = true;
         System.out.println("\n"+this.getNom()+" a atteint  le niveau "+this.getNiveau()+".");
         if (this.niv >= espPoke.nivEvolution && this.getEspece().getEvolution(this.niv) != null && this.espPoke.nivEvolution!=0) {
-        	System.out.println("appel de evoluer()");
             this.vaMuterEn(this.getEspece().getEvolution(this.niv));
         }
         // Les stats de base sont celles de l'espece actuelle du pokemon. Ainsi, si le pokemon a evolue, son espece a change juste avant donc les stats sont calculees sur les nouvelles stat de base.
@@ -475,15 +478,6 @@ public class Pokemon implements IPokemon {
         calculSpecial();
     }
 
-    /**
-     * Si le niveau du pokemon est suffisamment eleve, il evoluera vers une
-     * nouvelle espece.
-     */
-    public void evoluer() {
-        // On modifie uniquement l'espece du pokemon. Le calcul des nouvelles stat se
-        // fait dans augmenterNiv
-        this.vaMuterEn(this.getEspece().getEvolution(this.niv));
-    }
 
     
     /**
@@ -544,7 +538,7 @@ public class Pokemon implements IPokemon {
         this.getStatsEV().setPV(this.getStatsEV().getPV() + vaincu.getEspece().getGainsStat().getPV());
     }
     /**
-     * > Cette fonction renvoie la stat de defense du pokemon si l'attaque n'est pas
+     * Cette fonction renvoie la stat de defense du pokemon si l'attaque n'est pas
      * speciale, sinon elle
      * renvoie la stat speciale
      *
@@ -560,7 +554,7 @@ public class Pokemon implements IPokemon {
     }
 
     /**
-     * > Cette fonction renvoie la statistique d'attaque du Pokemon, en fonction du
+     * Cette fonction renvoie la statistique d'attaque du Pokemon, en fonction du
      * type d'attaque
      *
      * @param capacite La capacite que le Pokemon utilise
@@ -575,7 +569,7 @@ public class Pokemon implements IPokemon {
     }
 
     /**
-     * > Cette fonction retourne vrai si le pokemon a le type passe en parametre
+     * Cette fonction retourne vrai si le pokemon a le type passe en parametre
      *
      * @param type Le type cherché
      * @return un boolean indiquant la présence type parmis ceux du Pokemon

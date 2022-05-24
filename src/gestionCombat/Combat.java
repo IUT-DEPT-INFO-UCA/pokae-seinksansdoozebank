@@ -75,7 +75,7 @@ public class Combat implements ICombat {
 	
 	///////////////////////////////////////////////////////////////
 	
-	public Dresseur obtenirVainqueur () {
+	public Dresseur getVainqueur () {
 		this.commence();
 		while (!this.estTermine()){
 			tours.add( this.nouveauTour(this.dresseur1.getPokemon(0), dresseur2, null, dresseur1));

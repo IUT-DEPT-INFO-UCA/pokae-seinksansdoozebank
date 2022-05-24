@@ -189,12 +189,15 @@ public class Pokedex implements IPokedex{
         int i = 1;
         boolean tester = false;
         while (i < listeEspece.length-1 && !tester) {
-            if (listeEspece[i].nom.equals(nom)) {
-                tester = true;
-            }
+        	tester = listeEspece[i].nom.equals(nom);
             i++;
         }
-        return listeEspece[i-1];
+        if(tester) {
+            return listeEspece[i-1];
+        }else {
+        	System.out.println("Error : Espece not found");
+        	return null;
+        }
     }
     
     /*
@@ -279,7 +282,6 @@ public class Pokedex implements IPokedex{
                         espece.nivEvolution = Integer.parseInt(nivEvolutionTemp);
                         espece.evolution = scannerCSV.next();
                     } else {
-
                         espece.nivEvolution = 0;
                         espece.evolution = null;
                     }

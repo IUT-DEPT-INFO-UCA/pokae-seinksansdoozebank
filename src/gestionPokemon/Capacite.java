@@ -192,8 +192,6 @@ public class Capacite implements ICapacite {
      * @return Une valeur booléenne.
      */
     public boolean touche() {
-        double r = Math.random();
-        //System.out.println("" + r + "><" + this.precision);
         return Math.random() <= this.precision;
     }
 

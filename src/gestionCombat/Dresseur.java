@@ -15,9 +15,9 @@ public class Dresseur implements IDresseur,IEchange, IStrategy{
 	private String identifiant;
 	private String motDepasse;
 	private String nom;
-	private Pokemon[] equipe = new Pokemon[6];
+	public Pokemon[] equipe = new Pokemon[6]; //TODO set to private
 	private int niveau;
-	private Pokemon pokemon;
+	private Pokemon pokemon; //TODO set to private
 	private Pokemon pokemonChoisi;
 
 	private Capacite actionChoisie;
@@ -36,6 +36,10 @@ public class Dresseur implements IDresseur,IEchange, IStrategy{
 		this.equipe = (Pokemon[]) Pokedex.engendreRanchStatic();
 		this.setNiveau();
 		this.pokemon = this.equipe[0];
+	}
+	
+	public String toSring() {
+		return this.getNom();
 	}
 	/////////////////////// methode de IDresseur ///////////////////////
 	
@@ -67,8 +71,8 @@ public class Dresseur implements IDresseur,IEchange, IStrategy{
 			
 		Capacite capaciteAApprendre = this.canTeachAMove();
 		if(capaciteAApprendre!=null) {
-			if(caps.length<4) { //TODO reparer cette condition
-				System.out.println(pok.getNom()+" peut apprendre "+capaciteAApprendre.getNom()+" et il peut le faire seul.");
+			if(caps.length<4) {
+				//System.out.println(pok.getNom()+" peut apprendre "+capaciteAApprendre.getNom()+" et il peut le faire seul.");
 				try {
 					this.getPokemon().remplaceCapacite(caps.length, capaciteAApprendre);
 				} catch (Exception e) {
@@ -100,7 +104,7 @@ public class Dresseur implements IDresseur,IEchange, IStrategy{
 				}
 			}
 		}else {
-			System.out.println(pok.getNom()+" n'a aucune capacitea apprendre au niveau "+pok.getNiveau());
+			System.out.println(pok.getNom()+" n'a aucune capacite a apprendre au niveau "+pok.getNiveau());
 		}
 		
 	}
@@ -116,15 +120,15 @@ public class Dresseur implements IDresseur,IEchange, IStrategy{
 	public IPokemon choisitCombattant() {
 		System.out.println("Choisissez le pokemon à envoyer au combat : ");
 		for(int i=0;i<this.getEquipe().length;i++) {
-			System.out.println(1+" - "+this.getEquipe()[i]);
+			System.out.println(i+1+" - "+this.getEquipe()[i]);
 		}
 		System.out.println("Entrer le numéro du pokemon choisi : ");
-		try (Scanner sc = new Scanner(System.in)) {
-			int input = sc.nextInt();
-			Pokemon choosen = this.getEquipe()[input+1];
-			this.setPokemon(choosen);
-			return choosen;
-		}
+		Scanner sc = new Scanner(System.in);
+		int input = sc.nextInt();
+		sc.close();
+		Pokemon choosen = this.getEquipe()[input];
+		this.setPokemon(choosen);
+		return choosen;
 	}
 
 	@Override
@@ -262,7 +266,7 @@ public class Dresseur implements IDresseur,IEchange, IStrategy{
 	}
 	
 	public Capacite canTeachAMove() {
-		System.out.println("appel de getLearnableMove().");
+		//System.out.println("appel de getLearnableMove().");
 		return this.getPokemon().espPoke.getLearnableMove(this.getPokemon().getNiveau());
 	}
 	

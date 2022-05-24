@@ -168,7 +168,7 @@ public class Espece implements IEspece {
 		}
 	}
 
-	private void InitCapPokemon(JSONObject jsonPokemon) throws IOException, ParseException { //TODO reparer le type de la capacite qui a pas de type
+	private void InitCapPokemon(JSONObject jsonPokemon) throws IOException, ParseException {
 		assert jsonPokemon != null;
 		JSONArray listeMoves = (JSONArray) jsonPokemon.get("moves");
 		for (Object listeMove : listeMoves) {
@@ -231,19 +231,6 @@ public class Espece implements IEspece {
 		}
 		return liste;
 	}
-	
-	public Capacite getLearnableMove(int niv) {
-		for (Entry<Capacite, Integer> c : this.capaciteSelonNiveau.entrySet()) {
-			if(c.getValue()==niv) {
-				System.out.println("return de "+c.getKey()+ " parfait pour le niveau "+niv);
-				return c.getKey();
-			}else {
-				System.out.println(this.getNom()+" ne peut pas aprendre "+c.getKey()+" au niveau "+niv);
-			}
-		}
-		return null;
-	}
-
 	/**
 	 * Il renvoie l'espece dans laquelle cette espece evolue
 	 *
@@ -251,7 +238,7 @@ public class Espece implements IEspece {
 	 * @return L'evolution du pokemon
 	 */
 	public IEspece getEvolution(int niveau) {
-		if (niveau>this.nivEvolution){
+		if (niveau==this.nivEvolution){
 			return Pokedex.getEspeceParNom(this.evolution);
 		}
 		else{
@@ -326,6 +313,20 @@ public class Espece implements IEspece {
         }
         return tabCapaciteDispo;
     }
+
+	
+	public Capacite getLearnableMove(int niv) {
+		for (Entry<Capacite, Integer> c : this.capaciteSelonNiveau.entrySet()) {
+			if(c.getValue()==niv) {
+				//System.out.println("return de "+c.getKey()+ " parfait pour le niveau "+niv);
+				return c.getKey();
+			}else {
+				//System.out.println(this.getNom()+" ne peut pas aprendre "+c.getKey()+" au niveau "+niv);
+			}
+		}
+		return null;
+	}
+
 	
 	public void showCapSet() {
 		for (Entry<Capacite, Integer> c : this.capaciteSelonNiveau.entrySet()) {
