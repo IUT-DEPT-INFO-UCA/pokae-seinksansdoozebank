@@ -45,12 +45,28 @@ public class Dresseur implements IDresseur,IEchange, IStrategy{
 
 	@Override
 	public void enseigne(IPokemon pok, ICapacite[] caps) {
-		//pok.apprendCapacites(caps);
-		//TODO
+			////////////////TODO :
+			/*
+			En gros, on veux faire l'algo suivant :
+			On test si le niveau actuel nous donne une capacitée a apprendre :
+			SI NON : 
+				aucune capacitée a apprendre
+			SI OUI :
+				0--> On ne souhaite pas apprendre la capacitée
+				
+				1--> On souhaite l'apprendre
+				=> SI 0 Alors on abandonne la capacitée et on garde notre tableau de capacité comme il est.
+				=> SI 1 Alors, on parcours les capacitées. 
+					=> SI on trouve un null alors on le remplace par la nouvelle capacitée a apprendre
+					=> SI on ne trouve pas de null alors on demande a l'utilisateur de renseigner un entier compris entre 0 et 4 
+						=> SI >4 ou <0 erreur
+						=> SINON on remplace la capacitée de l'entier
+		*/
+			
 		Capacite capaciteAApprendre = this.canTeachAMove();
 		if(capaciteAApprendre!=null) {
 			if(caps.length<4) {
-				System.out.println(pok.getNom()+" peut apprendre "+capaciteAApprendre.getNom()+" et il peu le faire seul.");
+				System.out.println(pok.getNom()+" peut apprendre "+capaciteAApprendre.getNom()+" et il peut le faire seul.");
 				try {
 					this.getPokemon().remplaceCapacite(caps.length, capaciteAApprendre);
 				} catch (Exception e) {
