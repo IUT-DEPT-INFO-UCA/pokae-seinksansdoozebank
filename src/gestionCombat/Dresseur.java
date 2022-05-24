@@ -1,4 +1,5 @@
 package gestionCombat;
+import java.io.IOException;
 import java.util.Scanner;
 
 import gestionPokemon.*;
@@ -8,6 +9,7 @@ import interfaces.IDresseur;
 import interfaces.IEchange;
 import interfaces.IPokemon;
 import interfaces.IStrategy;
+import org.json.simple.parser.ParseException;
 
 public class Dresseur implements IDresseur,IEchange, IStrategy{
 	private String identifiant;
@@ -26,7 +28,7 @@ public class Dresseur implements IDresseur,IEchange, IStrategy{
 		//on cree un dresseur en le recuperant dans le stockage
 	}
 	
-	public Dresseur(String id, String mdp, String nom) {
+	public Dresseur(String id, String mdp, String nom) throws IOException, ParseException {
 		//on cree un dresseur en l'ajoutant au stockage
 		this.identifiant=id;
 		this.motDepasse = mdp;
@@ -91,9 +93,11 @@ public class Dresseur implements IDresseur,IEchange, IStrategy{
 								e.printStackTrace();
 							}
 						}
+
 					}else {
 						System.out.println(pok.getNom()+" n'a pas appris "+capaciteAApprendre.getNom()+".");
 					}
+
 				}
 			}
 		}else {

@@ -81,7 +81,7 @@ public class TestGestionPokemon {
 					d1.enseigne(d1.getPokemon(), d1.getPokemon().getCapacitesApprises());
 				}
             	d1.getPokemon().gagneExperienceDe(d2.getEquipe()[0]);
-            	System.out.println("");
+//            	System.out.println("");
             }
         }
 
