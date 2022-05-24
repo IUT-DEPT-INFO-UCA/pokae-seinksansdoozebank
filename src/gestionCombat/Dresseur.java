@@ -50,13 +50,13 @@ public class Dresseur implements IDresseur,IEchange, IStrategy{
 		Capacite capaciteAApprendre = this.canTeachAMove();
 		if(capaciteAApprendre!=null) {
 			if(caps.length<4) {
+				System.out.println(pok.getNom()+" peut apprendre "+capaciteAApprendre.getNom()+" et il peu le faire seul.");
 				try {
 					this.getPokemon().remplaceCapacite(caps.length, capaciteAApprendre);
 				} catch (Exception e) {
-					//Auto-generated catch block
 					e.printStackTrace();
 				}
-				System.out.println(pok.getNom()+" apprend "+capaciteAApprendre.getNom()+" !");
+				System.out.println(pok.getNom()+" a appris "+capaciteAApprendre.getNom()+" !");
 			}else {
 				System.out.println(pok.getNom()+" veut apprendre "+capaciteAApprendre.getNom()+".");
 				System.out.println("Voulez vous lui faire oublier une des ses capacités (1) ou ne pas l'apprendre (2) ?");
@@ -64,11 +64,11 @@ public class Dresseur implements IDresseur,IEchange, IStrategy{
 					int inputChoix = scChoix.nextInt();
 					if(inputChoix==1) {
 						for(int i=0;i<pok.getCapacitesApprises().length;i++) {
-							System.out.println(i+" - "+pok.getCapacitesApprises()[i]);
+							System.out.println(i+1+" - "+pok.getCapacitesApprises()[i]);
 						}
 						System.out.println("Entrer le numéro de la capacité à oublier (ou 0 pour annuler) :");
 						try (Scanner scCapacite = new Scanner(System.in)) {
-							int inputCapacite = scCapacite.nextInt();
+							int inputCapacite = scCapacite.nextInt()-1;
 							try {
 								pok.remplaceCapacite(inputCapacite, capaciteAApprendre);
 							} catch (Exception e) {
@@ -80,6 +80,8 @@ public class Dresseur implements IDresseur,IEchange, IStrategy{
 					}
 				}
 			}
+		}else {
+			System.out.println(pok.getNom()+" n'a aucune capacitea apprendre au niveau "+pok.getNiveau());
 		}
 		
 	}
@@ -98,69 +100,6 @@ public class Dresseur implements IDresseur,IEchange, IStrategy{
 			System.out.println(1+" - "+this.getEquipe()[i]);
 		}
 		System.out.println("Entrer le numéro du pokemon choisi : ");
-		try (Scanner sc = new Scanner(System.in)) {
-			int input = sc.nextInt();
-			Pokemon choosen = this.getEquipe()[input+1];
-			this.setPokemon(choosen);
-			return choosen;
-		}
-	}
-
-	@Override
-	public IPokemon choisitCombattantContre(IPokemon pok) {
-		System.out.println("Choisissez le pokemon à envoyer au combat : ");
-		for(Pokemon p: this.getEquipe()) {
-			System.out.print(p+"     ");
-		}
-		System.out.println("Choississez le numéro du pokemon à envoyer au combat : ");
-		try (Scanner sc = new Scanner(System.in)) {
-			int input = sc.nextInt();
-			Pokemon choosen = this.getEquipe()[input+1];
-			this.setPokemonChoisi(choosen);
-			return choosen;
-		}
-	}
-
-	@Override
-	public IAttaque choisitAttaque(IPokemon attaquant, IPokemon defenseur) {
-		for(ICapacite c : this.getPokemon().getCapacitesApprises()) {
-			System.out.print(c+"     ");
-		}
-		System.out.println("Choississez le numéro de l'attaque à utiliser : ");
-		try (Scanner sc = new Scanner(System.in)) {
-			int input = sc.nextInt();
-			this.actionChoisie = (Capacite) ((Pokemon)attaquant).getCapacitesApprises()[input+1];
-			this.pokemon.setAttaqueChoisie(this.actionChoisie);
-			return this.actionChoisie;
-		}
-	}
-	/////////////////////// methode de IDresseur ///////////////////////
-	
-
-	public IPokemon getPokemon(int i) {
-		return this.equipe[i];
-	}
-	
-
-	@Override
-	public void enseigne(IPokemon pok, ICapacite[] caps) {
-		pok.apprendCapacites(caps);
-	}
-
-	@Override
-	public void soigneRanch() {
-		for (Pokemon p : this.equipe) {
-			p.soigne();
-		}
-	}
-
-	@Override
-	public IPokemon choisitCombattant() {
-		System.out.println("Choisissez le pokemon à envoyer au combat : ");
-		for(Pokemon p: this.getEquipe()) {
-			System.out.print(p+"     ");
-		}
-		System.out.println("Choississez le numéro du pokemon à envoyer au combat : ");
 		try (Scanner sc = new Scanner(System.in)) {
 			int input = sc.nextInt();
 			Pokemon choosen = this.getEquipe()[input+1];
@@ -287,13 +226,6 @@ public class Dresseur implements IDresseur,IEchange, IStrategy{
 
 	public void setActionChoisie(Capacite actionChoisie) {
 		this.actionChoisie = actionChoisie;
-<<<<<<< Updated upstream
-	}
-
-	public void enseignerCapacite(Pokemon p){
-
-=======
->>>>>>> Stashed changes
 	}
 	
 	public void attaquer(Dresseur other) {
@@ -309,11 +241,10 @@ public class Dresseur implements IDresseur,IEchange, IStrategy{
 		}
 		return !rep;
 	}
-<<<<<<< Updated upstream
-=======
 	
 	public Capacite canTeachAMove() {
-		return this.getPokemon().espPoke.getLearnableMove(this.getNiveau());
+		System.out.println("appel de getLearnableMove().");
+		return this.getPokemon().espPoke.getLearnableMove(this.getPokemon().getNiveau());
 	}
 	
 	public void showTeam() {
@@ -321,5 +252,4 @@ public class Dresseur implements IDresseur,IEchange, IStrategy{
 			System.out.println(p);
 		}
 	}
->>>>>>> Stashed changes
 }

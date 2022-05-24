@@ -86,12 +86,8 @@ public class Capacite implements ICapacite {
      * @return Un texte contenant l'identifiant et le nom de la capacité.
      */
     public String toString() {
-<<<<<<< Updated upstream
-        return "Capacite [id=" + id + "  nom :" + nom + " type : " + this.getType().getNom() + "]";
-=======
     	//TODO trouver la capacite sans type pour trouver pq ca marche po tout le temps
         return "["+nom + ", type : " + this.getType().getNom()+"]";
->>>>>>> Stashed changes
     }
 
     /////////////////////// methodes de IAttaque ///////////////////////
@@ -214,11 +210,7 @@ public class Capacite implements ICapacite {
 			stab = 1.5;
 		}
 		efficacite = attaquant.getAttaqueChoisie().getEfficiencyOn(defenseur);
-<<<<<<< Updated upstream
-		double coeff =stab * efficacite * (Math.random() * ((0.15)) + 0.85);
-=======
 		double coeff =stab * efficacite * (Math.random() * (0.15) + 0.85);
->>>>>>> Stashed changes
 		//System.out.println("Le CM vaut "+coeff);
 		return coeff;
 	}

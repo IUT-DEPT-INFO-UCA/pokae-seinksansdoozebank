@@ -48,14 +48,6 @@ public class TestGestionPokemon {
             /*Pokemon pokeTest = new Pokemon(Pokedex.listeEspece[3]);
             System.out.println(pokeTest);
             System.out.println(pokeTest.getCapacitesApprises()[1]);*/
-<<<<<<< Updated upstream
-            Pokemon pokeTest = new Pokemon(Pokedex.listeEspece[3]);
-            System.out.println(pokeTest);
-            System.out.println(Arrays.toString(pokeTest.getEspece().getCapSet()));
-            /*Pokemon out=new Pokemon("maxValue",Pokedex.listeEspece[1]);
-            System.out.println( out.espPoke.getNom());
-            System.out.println(Pokedex.listeEspece[1].getNom());*/
-=======
             /*Pokemon pokeTest = new Pokemon(Pokedex.listeEspece[3]);
             System.out.println(pokeTest);
             System.out.println(Arrays.toString(pokeTest.getEspece().getCapSet()));*/
@@ -78,7 +70,7 @@ public class TestGestionPokemon {
             System.out.println(d1.getPokemon());
             d1.getPokemon().espPoke.showCapSet();
             int n = d1.getPokemon().getNiveau();
-            while(d1.getPokemon().getNiveau()<30) {
+            while(d1.getPokemon().getNiveau()<35) {
             	boolean aChangeNiveau = d1.getPokemon().aChangeNiveau();
 				//System.out.println("aChangeNiveau = "+aChangeNiveau);
 				if(aChangeNiveau) {
@@ -88,7 +80,6 @@ public class TestGestionPokemon {
             	d1.getPokemon().gagneExperienceDe(d2.getEquipe()[0]);
             	System.out.println("");
             }
->>>>>>> Stashed changes
         }
 
 }
