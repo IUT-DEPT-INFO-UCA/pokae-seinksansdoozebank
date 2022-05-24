@@ -230,6 +230,18 @@ public class Espece implements IEspece {
 		}
 		return liste;
 	}
+	
+	public Capacite getLearnableMove(int niv) {
+		for (Entry<Capacite, Integer> c : this.capaciteSelonNiveau.entrySet()) {
+			if(c.getValue()==niv) {
+				System.out.println("return de "+c.getKey()+ " parfait pour le niveau "+niv);
+				return c.getKey();
+			}else {
+				System.out.println(this.getNom()+" ne peut pas aprendre "+c.getKey()+" au niveau "+niv);
+			}
+		}
+		return null;
+	}
 
 	/**
 	 * Il renvoie l'espece dans laquelle cette espece evolue
@@ -306,11 +318,19 @@ public class Espece implements IEspece {
 
         int i = 0;
         for (Entry<Capacite, Integer> c : this.capaciteSelonNiveau.entrySet()) {
-            if (Integer.parseInt(c.getValue().toString()) <= pokemon.niv) {
+            if (Integer.parseInt(c.getValue().toString()) <= pokemon.getNiveau()) {
                 tabCapaciteDispo[i] = c.getKey();
                 i++;
             }
         }
         return tabCapaciteDispo;
     }
+	
+	public void showCapSet() {
+		for (Entry<Capacite, Integer> c : this.capaciteSelonNiveau.entrySet()) {
+			System.out.println("\t"+c.getKey().getNom()+" : niv "+c.getValue());
+		}
+	}
+	
+	
 }

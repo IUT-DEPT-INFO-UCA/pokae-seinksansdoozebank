@@ -11,6 +11,10 @@ import interfaces.IStat;
 import java.util.Arrays;
 import java.util.Objects;
 
+import gestionCombat.Dresseur;
+
+import java.util.Map.Entry;
+
 /**
  * Une classe qui represente un Pokemon.
  */
@@ -29,9 +33,11 @@ public class Pokemon implements IPokemon {
     public String nom;
 
     /**
-     * Le nivea uactuel du Pokémon
+     * Le niveau actuel du Pokémon
      */
-    public int niv;
+    private int niv;
+    
+    private boolean aChangeNiveau = false;
 
     /**
      * La quantité d'expérience du Pokémon
@@ -98,16 +104,16 @@ public class Pokemon implements IPokemon {
         this.statsEV.setVitesse(0);
         this.statsEV.setSpecial(0);
         this.statsEV.setPV(0);
-        this.statsDV.setForce((int) (Math.random() * ((15) + 1)));
-        this.statsDV.setDefense((int) (Math.random() * ((15) + 1)));
-        this.statsDV.setVitesse((int) (Math.random() * ((15) + 1)));
-        this.statsDV.setSpecial((int) (Math.random() * ((15) + 1)));
-        this.statsDV.setPV((int) (Math.random() * ((15) + 1)));
+        this.statsDV.setForce((int) (Math.random() * (15) + 1));
+        this.statsDV.setDefense((int) (Math.random() * (15) + 1));
+        this.statsDV.setVitesse((int) (Math.random() * (15) + 1));
+        this.statsDV.setSpecial((int) (Math.random() * (15) + 1));
+        this.statsDV.setPV((int) (Math.random() * (15) + 1));
         this.espPoke = espPoke;
         this.statsSpecifiques=new Stats(this.espPoke.statsDeBase);
         this.espPoke.initCapaciteSelonNiveau();
         this.niv=espPoke.nivDepart;
-        gainXp(this.espPoke.getExpDeBase());
+        gagnerXp(this.espPoke.getExpDeBase());
         this.apprendCapacites(this.espPoke.capaciteDispo(this));
         calculPV();
         calculPVMax();
@@ -130,16 +136,16 @@ public class Pokemon implements IPokemon {
         this.statsEV.setVitesse(0);
         this.statsEV.setSpecial(0);
         this.statsEV.setPV(0);
-        this.statsDV.setForce((int) (Math.random() * ((15) + 1)));
-        this.statsDV.setDefense((int) (Math.random() * ((15) + 1)));
-        this.statsDV.setVitesse((int) (Math.random() * ((15) + 1)));
-        this.statsDV.setSpecial((int) (Math.random() * ((15) + 1)));
-        this.statsDV.setPV((int) (Math.random() * ((15) + 1)));
+        this.statsDV.setForce((int) (Math.random() * (15) + 1));
+        this.statsDV.setDefense((int) (Math.random() * (15) + 1));
+        this.statsDV.setVitesse((int) (Math.random() * (15) + 1));
+        this.statsDV.setSpecial((int) (Math.random() * (15) + 1));
+        this.statsDV.setPV((int) (Math.random() * (15) + 1));
         this.espPoke = espPoke;
         this.statsSpecifiques=new Stats(this.espPoke.statsDeBase);
         this.espPoke.initCapaciteSelonNiveau();
         this.niv=espPoke.nivDepart;
-        gainXp(this.espPoke.getExpDeBase());
+        gagnerXp(this.espPoke.getExpDeBase());
         this.apprendCapacites(this.espPoke.capaciteDispo(this));
         calculPV();
         calculPVMax();
@@ -156,18 +162,24 @@ public class Pokemon implements IPokemon {
      */
     @Override
     public String toString() {
+    	return "\nPokemon{" +
+                "nom='" + nom + '\'' +
+                ", niv=" + niv +
+                ",\n\tlisteCapacite=" + Arrays.toString(listeCapacite)+"}\n";
+    	/*
         return "\nPokemon{" +
                 "id=" + id +
                 ", nom='" + nom + '\'' +
                 ", niv=" + niv +
                 ", xp=" + xp +
-                ", espPoke=\n\t" + espPoke +
-                ", \nlisteCapacite=" + Arrays.toString(listeCapacite) +
-                ", statsSpecifiques=" + statsSpecifiques +
-                ", pvMax=" + pvMax +
-                ", statsEV=" + statsEV +
-                ", statsDV=" + statsDV +
+                ",\n\tespPoke=" + espPoke +
+                ",\n\tlisteCapacite=" + Arrays.toString(listeCapacite) +
+                ",\n\tstatsSpecifiques=" + statsSpecifiques +
+                ",\n\tpvMax=" + pvMax +
+                ",\n\tstatsEV=" + statsEV +
+                ",\n\tstatsDV=" + statsDV +
                 '}';
+       */
     }
 
     //////////////// methodes de IPokemon ///////////////////////
@@ -199,17 +211,16 @@ public class Pokemon implements IPokemon {
         return this.espPoke;
     }
 
-    public void vaMuterEn(IEspece esp) {
-        if (Objects.equals(this.nom, this.espPoke.getNom())){
-            this.nom=((Espece) esp).getNom();
-        }
-        this.espPoke = (Espece) esp;
-        this.espPoke.initCapaciteSelonNiveau();
-        this.niv--;
-    }
-
     public ICapacite[] getCapacitesApprises() {
-        return this.listeCapacite;
+    	int nb = 0;
+    	for (Capacite c : this.listeCapacite) {
+    		nb++;
+    	}
+    	Capacite[] rep = new Capacite[nb];
+    	for (int i=0;i<nb;i++) {
+    		rep[i]=this.listeCapacite[i];
+    	}
+        return rep;
     }
 
     @Override
@@ -236,33 +247,23 @@ public class Pokemon implements IPokemon {
     public void gagneExperienceDe(IPokemon pok) {
         this.augmenterEV(pok);
         double gainXp = (1.5 * pok.getNiveau() * pok.getEspece().getBaseExp()) / 7;
-
-        gainXp(gainXp);
+        this.gagnerXp(gainXp);
     }
 
-    /**
-     * > Si l'expérience du joueur est supérieure au seuil, augmentez le niveau du joueur et soustrayez le seuil de
-     * l'expérience du joueur. Sinon, ajoutez simplement l'expérience à l'expérience du joueur
-     *
-     * @param expAGagner la quantité d'expérience à acquérir
-     */
-    public void gainXp(double expAGagner) {
-        double gainExp = expAGagner;
-        double xpTemporaire = this.getExperience() + expAGagner;
-        double seuil = (Math.pow(this.niv + 1, 3) * 0.8);
-        if (xpTemporaire >= seuil) {
-            while (xpTemporaire >= seuil) {
-                augmenterNiveau();
-                this.xp = gainExp - seuil;
-                this.xp=Math.round(this.xp*100.0)/100.0;
-                gainExp -= seuil;
-                seuil = (Math.pow(this.niv + 1, 3) * 0.8);
-                xpTemporaire = this.getExperience() + (gainExp-seuil);
-            }
-        } else {
-            this.xp += expAGagner;
+    public void vaMuterEn(IEspece especeEvolution) {
+    	System.out.println(this.getNom()+" evolue !");
+    	//this.wait(500);
+		System.out.println("...");
+		//this.wait(400);
+		System.out.println("...");
+		//this.wait(300);
+    	System.out.println(this.getNom()+" a evolue en "+especeEvolution.getNom()+".");
+        if (Objects.equals(this.nom, this.espPoke.getNom())){
+            this.nom=((Espece) especeEvolution).getNom();
         }
-
+        this.espPoke = (Espece) especeEvolution;
+        this.espPoke.initCapaciteSelonNiveau();
+        this.niv--;
     }
 
     @Override
@@ -277,7 +278,11 @@ public class Pokemon implements IPokemon {
 
     @Override
     public boolean aChangeNiveau() {
-        return this.getNiveau() != this.getEspece().getNiveauDepart();
+    	if(this.aChangeNiveau) {
+        	this.aChangeNiveau = !this.aChangeNiveau;
+        	return !this.aChangeNiveau;
+    	}
+    		return false;
     }
 
     public boolean peutMuter() {
@@ -419,6 +424,62 @@ public class Pokemon implements IPokemon {
         this.avantDerniersDegatsSubits = this.derniersDegatsSubits;
         this.derniersDegatsSubits = degats;
     }
+
+    /**
+     * Si l'expérience du joueur est supérieure au seuil, augmentez le niveau du joueur et soustrayez le seuil de
+     * l'expérience du joueur. Sinon, ajoutez simplement l'expérience à l'expérience du joueur
+     *
+     * @param expAGagner la quantité d'expérience à acquérir
+     */
+    public void gagnerXp(double expAGagner) {
+        double gainExp = expAGagner;
+        double xpTemporaire = this.getExperience() + expAGagner;
+        double seuil = (Math.pow(this.niv + 1, 3) * 0.8);
+        //System.out.println((this.getNom()+" a gagne "+(int)expAGagner+" point d'experience."));
+        if (xpTemporaire >= seuil) {
+            while (xpTemporaire >= seuil) {
+                augmenterNiveau();
+                this.xp = gainExp - seuil;
+                this.xp=Math.round(this.xp*100.0)/100.0;
+                gainExp -= seuil;
+                seuil = (Math.pow(this.niv + 1, 3) * 0.8);
+                xpTemporaire = this.getExperience() + (gainExp-seuil);
+            }
+        } else {
+            this.xp += expAGagner;
+        }
+    }
+
+    /**
+     * La fonction est appelee lorsqu'un pokemon monte de niveau. Il verifie si le pokemon peut
+     * evoluer, et s'il le peut, il le fait evoluer. Puis il calcule les nouvelles stats du pokemon
+     */
+    public void augmenterNiveau() {
+        this.niv++;
+        this.aChangeNiveau = true;
+        System.out.println(this.getNom()+" a atteint  le niveau "+this.getNiveau()+".");
+        if (this.niv >= espPoke.nivEvolution && this.getEspece().getEvolution(this.niv) != null && this.espPoke.nivEvolution!=0) {
+        	System.out.println("appel de evoluer()");
+            this.vaMuterEn(this.getEspece().getEvolution(this.niv));
+        }
+        // Les stats de base sont celles de l'espece actuelle du pokemon. Ainsi, si le pokemon a evolue, son espece a change juste avant donc les stats sont calculees sur les nouvelles stat de base.
+        calculPV();
+        calculForce();
+        calculDefense();
+        calculVitesse();
+        calculSpecial();
+    }
+
+    /**
+     * Si le niveau du pokemon est suffisamment eleve, il evoluera vers une
+     * nouvelle espece.
+     */
+    public void evoluer() {
+        // On modifie uniquement l'espece du pokemon. Le calcul des nouvelles stat se
+        // fait dans augmenterNiv
+        this.vaMuterEn(this.getEspece().getEvolution(this.niv));
+    }
+
     
     /**
      * Il calcule le PV maximum d'un Pokémon en fonction de sa vitesse de base, de ses statistiques DV et EV et de son niveau
@@ -477,37 +538,6 @@ public class Pokemon implements IPokemon {
         this.getStatsEV().setSpecial(this.getStatsEV().getSpecial() + vaincu.getEspece().getGainsStat().getSpecial());
         this.getStatsEV().setPV(this.getStatsEV().getPV() + vaincu.getEspece().getGainsStat().getPV());
     }
-
-    /**
-     * La fonction est appelee lorsqu'un pokemon monte de niveau. Il verifie si le
-     * pokemon peut
-     * evoluer, et s'il le peut, il le fait evoluer. Puis il calcule les nouvelles
-     * stats du pokemon
-     */
-    public void augmenterNiveau()  {
-        this.niv++;
-
-        if (this.niv >= espPoke.nivEvolution && this.getEspece().getEvolution(this.niv) != null&&this.espPoke.nivEvolution!=0) {
-            evoluer();
-        }
-        // Les stats de base sont celles de l'espece actuelle du pokemon. Ainsi, si le pokemon a evolue, son espece a change juste avant donc les stats sont calculees sur les nouvelles stat de base.
-        calculPV();
-        calculForce();
-        calculDefense();
-        calculVitesse();
-        calculSpecial();
-    }
-
-    /**
-     * "Si le niveau du pokemon est suffisamment eleve, il evoluera vers une
-     * nouvelle espece."
-     */
-    public void evoluer()  {
-        // On modifie uniquement l'espece du pokemon. Le calcul des nouvelles stat se
-        // fait dans augmenterNiv
-        this.vaMuterEn(this.getEspece().getEvolution(this.niv));
-    }
-
     /**
      * > Cette fonction renvoie la stat de defense du pokemon si l'attaque n'est pas
      * speciale, sinon elle

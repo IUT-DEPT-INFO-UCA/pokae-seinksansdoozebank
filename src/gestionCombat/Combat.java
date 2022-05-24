@@ -118,6 +118,9 @@ public class Combat implements ICombat {
 				dresseur2.attaquer(dresseur1);
 				if(dresseur1.getPokemon().estEvanoui()){
 					if(!this.estTermine()){
+						if(this.pokemon2.aChangeNiveau()) {
+							this.dresseur2.enseigne(this.pokemon2, this.pokemon2.getCapacitesApprises());
+						}
 						dresseur1.choisitCombattantContre(pokemon2); //TODO faire un truc bien la
 						dresseur1.echangeCombattant();
 					}
@@ -129,6 +132,9 @@ public class Combat implements ICombat {
 				dresseur1.attaquer(dresseur2);
 				if(dresseur2.getPokemon().estEvanoui()){
 					if(!this.estTermine()){
+						if(this.pokemon1.aChangeNiveau()) {
+							this.dresseur1.enseigne(this.pokemon1, this.pokemon1.getCapacitesApprises());
+						}
 						dresseur2.choisitCombattantContre(pokemon1); //TODO faire un truc bien la
 						dresseur2.echangeCombattant();
 					}
@@ -138,6 +144,9 @@ public class Combat implements ICombat {
 					dresseur1.attaquer(dresseur2);
 					if(dresseur2.getPokemon().estEvanoui()){
 						if(!this.estTermine()){
+							if(this.pokemon1.aChangeNiveau()) {
+								this.dresseur1.enseigne(this.pokemon1, this.pokemon1.getCapacitesApprises());
+							}
 							dresseur2.choisitCombattantContre(pokemon1); //TODO faire un truc bien la
 							dresseur2.echangeCombattant();
 						}
@@ -148,6 +157,9 @@ public class Combat implements ICombat {
 					dresseur2.attaquer(dresseur1);
 					if(dresseur1.getPokemon().estEvanoui()){
 						if(!this.estTermine()){
+							if(this.pokemon2.aChangeNiveau()) {
+								this.dresseur2.enseigne(this.pokemon2, this.pokemon2.getCapacitesApprises());
+							}
 							dresseur1.choisitCombattantContre(pokemon2); //TODO faire un truc bien la
 							dresseur1.echangeCombattant();
 						}
