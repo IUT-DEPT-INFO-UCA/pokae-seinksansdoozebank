@@ -14,7 +14,7 @@ import interfaces.ICapacite;
 public class TestGestionPokemon {
 
         public static void main(String[] args) throws IOException, ParseException {
-            Pokedex.initialiser();
+            Pokedex.initialiser(); 
 
             ///////////////////////  Pokedex /////////////////////////////
             //Ranch
@@ -87,13 +87,13 @@ public class TestGestionPokemon {
 //            	System.out.println("");
             }
             */
-            /*
+            
             for(Espece p : Pokedex.listeEspece) {
             	if(p!=null) {
-            	System.out.println(p);
+            	System.out.println(new Pokemon(p));
             	}
             	
-            }*/
+            }
             /*
             Pokemon magicarpe = new Pokemon(Pokedex.getEspeceParNom("Magicarpe"));
             System.out.println("Les capacites de magicarpe sont :");
@@ -120,11 +120,11 @@ public class TestGestionPokemon {
             
             /*
             Dresseur d1 = new Dresseur("arcsti","mdp","antoine");
-            d1.showTeam();
+            //d1.showTeam();
             Dresseur d2 = new Dresseur("firlod","1234","clement");
-            d2.showTeam();
+            //d2.showTeam();
             Combat combat = new Combat(d1,d2);
-            System.out.println(combat.getVainqueur());
+            System.out.println(combat.getVainqueur().getNom());
             */
             
         }

@@ -18,7 +18,7 @@ public class Dresseur implements IDresseur,IEchange, IStrategy{
 	public Pokemon[] equipe = new Pokemon[6]; //TODO set to private
 	private int niveau;
 	private Pokemon pokemon; //TODO set to private
-	private Pokemon pokemonChoisi;
+	private Pokemon pokemonChoisi; 
 
 	private Capacite actionChoisie;
 
@@ -118,16 +118,25 @@ public class Dresseur implements IDresseur,IEchange, IStrategy{
 
 	@Override
 	public IPokemon choisitCombattant() {
-		System.out.println("Choisissez le pokemon à envoyer au combat : ");
+		System.out.println("\nChoisissez le pokemon à envoyer au combat : ");
 		for(int i=0;i<this.getEquipe().length;i++) {
 			System.out.println(i+1+" - "+this.getEquipe()[i]);
 		}
 		System.out.println("Entrer le numéro du pokemon choisi : ");
 		Scanner sc = new Scanner(System.in);
-		int input = sc.nextInt();
-		sc.close();
-		Pokemon choosen = this.getEquipe()[input];
+		int input=1;
+		if(sc.hasNextInt() ) {
+			input = sc.nextInt();
+		}
+		while (input<1 && input>=7){
+			System.out.println("Erreur : nuémro de pokémon invalide.");
+			if(sc.hasNextInt() ) {
+				input = sc.nextInt();
+			}
+		}
+		Pokemon choosen = this.getEquipe()[input-1];
 		this.setPokemon(choosen);
+		sc.close();
 		return choosen;
 	}
 
@@ -142,6 +151,7 @@ public class Dresseur implements IDresseur,IEchange, IStrategy{
 			int input = sc.nextInt();
 			Pokemon choosen = this.getEquipe()[input+1];
 			this.setPokemonChoisi(choosen);
+			sc.close();
 			return choosen;
 		}
 	}

@@ -158,10 +158,10 @@ public class Pokemon implements IPokemon {
      */
     @Override
     public String toString() {
-    	return "\nPokemon{" +
+    	return "Pokemon{" +
                 "nom='" + nom + '\'' +
                 ", niv=" + niv +
-                ", "+ Arrays.toString(listeCapacite)+"}\n";
+                ", "+ Arrays.toString(listeCapacite)+"}";
     	/*
         return "\nPokemon{" +
                 "id=" + id +
@@ -300,7 +300,6 @@ public class Pokemon implements IPokemon {
 
     public void soigne() {
         this.getStat().setPV(this.pvMax);
-        this.resetAllPp();
     }
 
     //////////////////////////////////////////////////////////
@@ -582,7 +581,7 @@ public class Pokemon implements IPokemon {
      * Cette fonction reinitialise les PP de tous les mouvements du Pokemon
      */
     public void resetAllPp() {
-        for (Capacite c : this.listeCapacite) {
+        for (Capacite c : this.getCapacitesApprises()) {
             c.resetPP();
         }
     }

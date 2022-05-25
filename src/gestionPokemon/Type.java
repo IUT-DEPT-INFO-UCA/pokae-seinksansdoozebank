@@ -26,7 +26,7 @@ public enum Type implements IType {
 	/**
 	 * Enum Électrik : Type
 	 */
-	ELECTRIK("Electrik",3),
+	ELECTRIK("Électrik",3),
 	/**
 	 * Enum Feu : Type
 	 */

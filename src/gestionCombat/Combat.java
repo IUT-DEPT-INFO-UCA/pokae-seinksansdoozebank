@@ -30,9 +30,10 @@ public class Combat implements ICombat {
 	public void commence(){
 		this.nbTours = 1;
 		this.pokemon1 =this.dresseur1.choisitCombattant();
-		this.dresseur1.setPokemon(dresseur1.getEquipe()[0]);
+		this.dresseur1.setPokemon(this.pokemon1);
 		this.pokemon2 = this.dresseur2.choisitCombattant();
-		this.dresseur2.setPokemon(dresseur2.getEquipe()[0]);
+		this.dresseur2.setPokemon(this.pokemon2);
+		System.out.println("\nQue le combat commence !");
 	}
 	
 
@@ -95,6 +96,7 @@ public class Combat implements ICombat {
 		this.termine();
 		return true;
 	}
+	
 
 	/*
 	private void choisirAction(Dresseur d){
