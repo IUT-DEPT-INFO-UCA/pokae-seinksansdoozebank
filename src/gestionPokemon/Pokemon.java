@@ -158,10 +158,13 @@ public class Pokemon implements IPokemon {
      */
     @Override
     public String toString() {
+    	return this.getNom()+" Niv "+this.getNiveau()+"  PV "+this.getPourcentagePV()+"%";
+    	/*
     	return "Pokemon{" +
                 "nom='" + nom + '\'' +
                 ", niv=" + niv +
                 ", "+ Arrays.toString(listeCapacite)+"}";
+        */
     	/*
         return "\nPokemon{" +
                 "id=" + id +
@@ -200,14 +203,14 @@ public class Pokemon implements IPokemon {
     }
 
     public double getPourcentagePV() {
-        return this.getStat().getPV() * 100 * this.pvMax;
+        return this.getStat().getPV() * 100 / this.pvMax;
     }
 
     public IEspece getEspece() {
         return this.espPoke;
     }
     
-    public Capacite[] getCapacitesApprises() {//TODO chgande to ICapacite[]
+    public ICapacite[] getCapacitesApprises() {
     	//System.out.println("\taffichage de listeCapacite :");
     	int nb = 0;
     	for (Capacite c : this.listeCapacite) {
@@ -277,7 +280,7 @@ public class Pokemon implements IPokemon {
 
     @Override
     public void subitAttaqueDe(IPokemon attaquant, IAttaque attaque) {
-    	System.out.println(attaquant.getNom()+" utilise "+((Capacite)attaque).getNom()+" !");
+    	System.out.println(attaquant.getNom()+" utilise "+((ICapacite)attaque).getNom()+" !");
     	this.subirDegats(attaque.calculeDommage(attaquant, this));
     }
 
@@ -428,7 +431,8 @@ public class Pokemon implements IPokemon {
     public void subirDegats(int degats) {
     	System.out.println(this.getNom()+" subit "+degats+" degats.");
         this.getStat().setPV(this.getStat().getPV() - degats);
-    	System.out.println("Il reste "+this.getStat().getPV()+" PV a "+this.getNom()+".");
+        System.out.println(this.getNom()+" : "+this.getPourcentagePV()+"% de PV");
+    	System.out.println("Il reste "+this.getStat().getPV()+"/"+this.pvMax+" PV a "+this.getNom()+".");
         this.avantDerniersDegatsSubits = this.derniersDegatsSubits;
         this.derniersDegatsSubits = degats;
     }
@@ -581,7 +585,7 @@ public class Pokemon implements IPokemon {
      * Cette fonction reinitialise les PP de tous les mouvements du Pokemon
      */
     public void resetAllPp() {
-        for (Capacite c : this.getCapacitesApprises()) {
+        for (ICapacite c : this.getCapacitesApprises()) {
             c.resetPP();
         }
     }
@@ -612,5 +616,10 @@ public class Pokemon implements IPokemon {
     public void utilise(Capacite actionChoisie) {
         actionChoisie.utilise();
     }
-
+    
+    public void showCapaciteApprise() {
+		for(int i=0;i<this.getCapacitesApprises().length;i++) {
+			System.out.println(i+1+" - "+this.getCapacitesApprises()[i]);
+		}
+	}
 }

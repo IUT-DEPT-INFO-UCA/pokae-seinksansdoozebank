@@ -1,4 +1,5 @@
 package gestionCombat;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
 
@@ -81,26 +82,20 @@ public class Dresseur implements IDresseur,IEchange, IStrategy{
 				System.out.println(pok.getNom()+" a appris "+capaciteAApprendre.getNom()+" !");
 			}else {
 				System.out.println(pok.getNom()+" veut apprendre "+capaciteAApprendre.getNom()+".");
-				System.out.println("Voulez vous lui faire oublier une des ses capacités (1) ou ne pas l'apprendre (0) ?");
-				try (Scanner scChoix = new Scanner(System.in)) {
-					int inputChoix = scChoix.nextInt();
-					if(inputChoix==1) {
-						for(int i=0;i<pok.getCapacitesApprises().length;i++) {
-							System.out.println(i+1+" - "+pok.getCapacitesApprises()[i]);
+				System.out.println("Voulez vous lui faire oublier une des ses capacités (1) ou ne pas l'apprendre (2) ?");
+				int inputChoix = InputViaScanner.getInputInt(1, 2);
+				if(inputChoix==1) {
+					((Pokemon)pok).showCapaciteApprise();
+					System.out.println("Entrer le numéro de la capacité à oublier (ou 0 pour annuler) :");
+					int inputCapacite = InputViaScanner.getInputInt(1, this.getPokemon().getCapacitesApprises().length);
+						try {
+							pok.remplaceCapacite(inputCapacite-1, capaciteAApprendre);
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
 						}
-						System.out.println("Entrer le numéro de la capacité à oublier (ou 0 pour annuler) :");
-						try (Scanner scCapacite = new Scanner(System.in)) {
-							int inputCapacite = scCapacite.nextInt()-1;
-							try { //TODO reparer le scanner
-								pok.remplaceCapacite(inputCapacite, capaciteAApprendre);
-							} catch (Exception e) {
-								e.printStackTrace();
-							}
-						}
-					}else {
-						System.out.println(pok.getNom()+" n'a pas appris "+capaciteAApprendre.getNom()+".");
-					}
-
+				}else {
+					System.out.println(pok.getNom()+" n'a pas appris "+capaciteAApprendre.getNom()+".");
 				}
 			}
 		}else {
@@ -123,51 +118,51 @@ public class Dresseur implements IDresseur,IEchange, IStrategy{
 			System.out.println(i+1+" - "+this.getEquipe()[i]);
 		}
 		System.out.println("Entrer le numéro du pokemon choisi : ");
-		Scanner sc = new Scanner(System.in);
-		int input=1;
-		if(sc.hasNextInt() ) {
-			input = sc.nextInt();
-		}
-		while (input<1 && input>=7){
-			System.out.println("Erreur : nuémro de pokémon invalide.");
-			if(sc.hasNextInt() ) {
-				input = sc.nextInt();
-			}
-		}
+		int input=InputViaScanner.getInputInt(1, 6);
 		Pokemon choosen = this.getEquipe()[input-1];
 		this.setPokemon(choosen);
-		sc.close();
 		return choosen;
 	}
 
 	@Override
 	public IPokemon choisitCombattantContre(IPokemon pok) {
 		System.out.println("Choisissez le pokemon à envoyer au combat : ");
-		for(Pokemon p: this.getEquipe()) {
-			System.out.print(p+"     ");
+		for(int i=0;i<this.getEquipe().length;i++) {
+			if(!this.getEquipe()[i].estEvanoui())
+				System.out.println(i+1+" - "+this.getEquipe()[i]);
+			else {
+				System.out.println(i+1+" - KO - "+this.getEquipe()[i]);
+			}
 		}
 		System.out.println("Choississez le numéro du pokemon à envoyer au combat : ");
-		try (Scanner sc = new Scanner(System.in)) {
-			int input = sc.nextInt();
-			Pokemon choosen = this.getEquipe()[input+1];
-			this.setPokemonChoisi(choosen);
-			sc.close();
-			return choosen;
-		}
+		int input = InputViaScanner.getInputInt(1, 6);
+		//TODO bloquer les input pour les pokemon KO
+		Pokemon choosen = this.getEquipe()[input-1];
+		this.setPokemonChoisi(choosen);
+		return choosen;
 	}
 
 	@Override
 	public IAttaque choisitAttaque(IPokemon attaquant, IPokemon defenseur) {
-		for(ICapacite c : this.getPokemon().getCapacitesApprises()) {
-			System.out.print(c+"     ");
+		//TODO si attaquant.getCapacitesApprises() est vide on utilise lutte
+		if(attaquant.getCapacitesApprises().length>0) {
+			for(ICapacite c : attaquant.getCapacitesApprises()) {
+				System.out.println(c+" PP : "+c.getPP()+"/"+((Capacite)c).getPPBase());
+			}
+			System.out.println("Choississez le numéro de l'attaque à utiliser : ");
+			int input = InputViaScanner.getInputInt(1, attaquant.getCapacitesApprises().length);
+			this.actionChoisie = (Capacite) ((Pokemon)attaquant).getCapacitesApprises()[input-1];
+		}else {
+			try {
+				this.actionChoisie = Pokedex.createCapacite(((Capacite)Pokedex.getCapaciteStatic("Lutte")).id);
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-		System.out.println("Choississez le numéro de l'attaque à utiliser : ");
-		try (Scanner sc = new Scanner(System.in)) {
-			int input = sc.nextInt();
-			this.actionChoisie = (Capacite) ((Pokemon)attaquant).getCapacitesApprises()[input+1];
-			this.pokemon.setAttaqueChoisie(this.actionChoisie);
-			return this.actionChoisie;
-		}
+		System.out.println(attaquant.getNom()+" va utiliser "+this.actionChoisie);
+		((Pokemon) attaquant).setAttaqueChoisie(this.actionChoisie);
+		return this.actionChoisie;
 	}
 
 	
@@ -184,6 +179,7 @@ public class Dresseur implements IDresseur,IEchange, IStrategy{
 	}
 
 	public void setPokemon(IPokemon pok) {
+		System.out.println(this.getNom()+" envoie "+pok.getNom()+" au combat.");
 		this.pokemonChoisi = (Pokemon) pok;
 	}
 	
@@ -194,6 +190,7 @@ public class Dresseur implements IDresseur,IEchange, IStrategy{
 		return oldPokemonActif;
 	}
 	/////////////////////////////////////////////////////////////////////
+	
 	
 	public Pokemon getPokemon() {
 		return this.pokemon;
@@ -260,19 +257,20 @@ public class Dresseur implements IDresseur,IEchange, IStrategy{
 	public void setActionChoisie(Capacite actionChoisie) {
 		this.actionChoisie = actionChoisie;
 	}
-	
+	/*
 	public void attaquer(Dresseur other) {
 		other.getPokemon().subitAttaqueDe(this.getPokemon(), this.actionChoisie);
 		this.utilise();
 	}
-	
+	*/
 	public boolean pouvoirSeBattre() {
-		boolean rep = false;
+		boolean peutSeBattre = false;
 		int i=0;
-		while (!rep && i<6) {
-			rep = !this.equipe[i].estEvanoui();
+		while (!peutSeBattre && i<6) {
+			peutSeBattre = !this.equipe[i].estEvanoui();
+			i++;
 		}
-		return !rep;
+		return peutSeBattre;
 	}
 	
 	public Capacite canTeachAMove() {

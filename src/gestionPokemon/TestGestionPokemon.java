@@ -87,13 +87,14 @@ public class TestGestionPokemon {
 //            	System.out.println("");
             }
             */
-            
+            /*
             for(Espece p : Pokedex.listeEspece) {
             	if(p!=null) {
             	System.out.println(new Pokemon(p));
             	}
             	
             }
+            */
             /*
             Pokemon magicarpe = new Pokemon(Pokedex.getEspeceParNom("Magicarpe"));
             System.out.println("Les capacites de magicarpe sont :");
@@ -118,14 +119,20 @@ public class TestGestionPokemon {
             	System.out.println(c);
             }*/
             
-            /*
+            
             Dresseur d1 = new Dresseur("arcsti","mdp","antoine");
             //d1.showTeam();
-            Dresseur d2 = new Dresseur("firlod","1234","clement");
+            Dresseur d2 = new Dresseur("firelods","1234","clement");
             //d2.showTeam();
             Combat combat = new Combat(d1,d2);
             System.out.println(combat.getVainqueur().getNom());
-            */
+            
+            /*
+            System.out.println("Choisir un nb entre 1 et 6");
+            System.out.println(d1.getInputInt(1, 6));
+            System.out.println("Choisir un nb entre 1 et 4");
+            System.out.println(d1.getInputInt(1, 4));*/
+            
             
         }
 

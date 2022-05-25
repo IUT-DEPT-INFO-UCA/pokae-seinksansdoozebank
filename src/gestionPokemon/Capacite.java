@@ -89,18 +89,23 @@ public class Capacite implements ICapacite {
      */
     public String toString() {
     	//TODO trouver la capacite sans type pour trouver pq ca marche po tout le temps
-        return "["+nom + ", " + this.getType().getNom()+","+this.nivNecessaire+"]";
+        return "["+nom + ", " + this.getType().getNom()+"]";
+        //return "["+nom + ", " + this.getType().getNom()+","+this.nivNecessaire+"]";
     }
 
     /////////////////////// methodes de IAttaque ///////////////////////
     public int calculeDommage(IPokemon lanceur, IPokemon receveur) {
     	//System.out.println(receveur);
+		this.utilise();
         double degats = 0;
         if (this.touche()) {
             if (this.puissance > 0) {
                 degats = (( (lanceur.getNiveau() * 0.4 + 2) * ((Pokemon) lanceur).obtenirAtqSur(this) * this.puissance)
                         / (((Pokemon) receveur).obtenirDefSur(this) * 50)+2)
                         * calculerCM((Pokemon) lanceur, (Pokemon) receveur);
+                if(this.id==110) { //gestion de Lutte qui fait perdre la moitié des dégâts qu'elle a infligés
+                	((Pokemon)lanceur).subirDegats((int) (degats/2));
+                }
             } else {
                 switch (this.puissance) {
                     case -1: // one shot
