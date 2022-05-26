@@ -428,16 +428,30 @@ public class Pokemon implements IPokemon {
      * @param degats les degâts a faire
      */
     public void subirDegats(int degats) {
+    	/*
     	if(degats!=0) {
     		System.out.println(this.getNom()+" subit "+degats+" degats.");
     	}
+    	*/
         this.getStat().setPV(this.getStat().getPV() - degats);
-        System.out.println(this.getNom()+" PV "+(int)this.getPourcentagePV()+"%");
-    	System.out.println("Il reste "+this.getStat().getPV()+"/"+this.pvMax+" PV a "+this.getNom()+".");
+        System.out.println(this.getPVBar());
+        //System.out.println(this.getNom()+" PV "+(int)this.getPourcentagePV()+"%");
+    	//System.out.println("Il reste "+this.getStat().getPV()+"/"+this.pvMax+" PV a "+this.getNom()+".");
         this.avantDerniersDegatsSubits = this.derniersDegatsSubits;
         this.derniersDegatsSubits = degats;
     }
-
+    
+    public String getPVBar() {
+        String rep = this.getNom()+" [";
+        for(int i=0;i<this.getPourcentagePV()/10;i++) {
+        	rep+="#";
+        }
+        for(int i=0;i<10-(this.getPourcentagePV()/10);i++) {
+        	rep+="-";
+        }
+        return rep+"] "+this.getStat().getPV()+"/"+this.pvMax;
+    }
+    
     /**
      * Si l'expérience du joueur est supérieure au seuil, augmentez le niveau du joueur et soustrayez le seuil de
      * l'expérience du joueur. Sinon, ajoutez simplement l'expérience à l'expérience du joueur
@@ -475,6 +489,7 @@ public class Pokemon implements IPokemon {
             this.vaMuterEn(this.getEspece().getEvolution(this.niv));
         }
         // Les stats de base sont celles de l'espece actuelle du pokemon. Ainsi, si le pokemon a evolue, son espece a change juste avant donc les stats sont calculees sur les nouvelles stat de base.
+        calculPVMax();
         calculPV();
         calculForce();
         calculDefense();

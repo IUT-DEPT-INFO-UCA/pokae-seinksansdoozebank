@@ -95,9 +95,18 @@ public class Pokedex implements IPokedex{
      */
     public static IPokemon[] engendreRanchStatic() throws IOException, ParseException {
         IPokemon[] listePokeAleatoire = new Pokemon[nbPokemonParRanch];
+        int i = 0;
+        while(i<nbPokemonParRanch) {
+        	int index = (int) (Math.random() * (Pokedex.nbPokemon-1) + 1);
+        	if(listeEspece[index].nivDepart<=1) {
+        		listePokeAleatoire[i] = new Pokemon(listeEspece[index]);
+        		i++;
+        	}
+        }
+        /*
         for (int i = 0; i < nbPokemonParRanch; i++) {
             listePokeAleatoire[i] = new Pokemon(listeEspece[(int) (Math.random() * (Pokedex.nbPokemon-1) + 1)]);
-        }
+        }*/
         return listePokeAleatoire;
     }
 

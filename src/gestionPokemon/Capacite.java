@@ -100,42 +100,48 @@ public class Capacite implements ICapacite {
         if (this.touche()) {
             if (this.puissance > 0) {
                 degats = (( (lanceur.getNiveau() * 0.4 + 2) * ((Pokemon) lanceur).obtenirAtqSur(this) * this.puissance)
-                        / (((Pokemon) receveur).obtenirDefSur(this) * 50)+2)
-                        * calculerCM((Pokemon) lanceur, (Pokemon) receveur);
+                        / (((Pokemon) receveur).obtenirDefSur(this) * 50)+2) * calculerCM((Pokemon) lanceur, (Pokemon) receveur);
                 if(this.id==110) { //gestion de Lutte qui fait perdre la moitié des dégâts qu'elle a infligés
-                	((Pokemon)lanceur).subirDegats((int) (degats/2));
+                	((Pokemon)lanceur).subirDegats((int) Math.ceil(((Pokemon)lanceur).pvMax/2));
                 }
             } else {
+            	System.out.println("Calcul des degats pour une capacite particuliere");
                 switch (this.puissance) {
                     case -1: // one shot
                         if (this.getEfficiencyOn((Pokemon) receveur) != 0) {
                             degats = ((Pokemon) receveur).pvMax;
                         }
-                    case -2: // -20 sur les non spectre
+                    case -2: // Sonic-Boom -20 sur les non spectre
                         if (this.getEfficiencyOn((Pokemon) receveur) != 0) {
                             degats = 20;
                         }
                     case -3: // degat subit au tours precedent * 2 si capacite physique
                         if (!((Pokemon) lanceur).obtenirDerniereCapaUtilisee().getCategorie().isSpecial()) {
+                        	//TODO faut fixe un truc la pcq lastCapa est pas set et donc same pour les degats jpense
                             degats = ((Pokemon) lanceur).obtenirDeniersDegatsSubits() * 2;
                         }
-                    case -4: // degat = nivLanceur si la cible n'est pas imunise au type de l'attaque
+                    case -4: // Frappe-Atlas / Ombre Nocturne : degat = nivLanceur si la cible n'est pas imunise au type de l'attaque
                         if (this.getEfficiencyOn((Pokemon) receveur) != 0) {
                             degats = lanceur.getNiveau();
                         }
-                    case -5: // 40 degat sur type acier ou dragon sans prendre en compte les stat de la cible
-                        return 40;
+                    case -5: // Draco-Rage : 40 degat sur type acier ou dragon sans prendre en compte les stat de la cible
+                    	degats = 40;
                     case -6: // degat = nivLanceur si la cible n'est pas imunise au type de l'attaque
                         if (this.getEfficiencyOn((Pokemon) receveur) != 0) {
                             degats = lanceur.getNiveau();
                         }
-                    case -7: // impossible d' attaquer pendant 2 tours puis degat infligés = (2*les degat
-                        // encaissé pendant les 2 tours) sans tenir compte des types
-                        ((Pokemon) lanceur).mettreNombreDeToursAvantAttaqueA(2);
+                    case -7: // Patience : impossible d' attaquer pendant 2 tours puis degat infligés = (2*les degats encaissé pendant les 2 tours) sans tenir compte des types
+                        //TODO le faire marcher
+                    	((Pokemon) lanceur).mettreNombreDeToursAvantAttaqueA(2);
                         if (((Pokemon) lanceur).obtenirNombreDeToursAvantAttaque() == 0) {
                             degats = (((Pokemon) lanceur).obtenirAvantDeniersDegatsSubits()
                                     + ((Pokemon) lanceur).obtenirDeniersDegatsSubits()) * 2;
                         }
+                    case -8:
+                    	degats = lanceur.getNiveau() * (Math.random() * + 0.5);
+                    case -9 :
+                    	degats = Math.ceil(receveur.getStat().getPV()/2);
+                    	///Meteores n'est pas géré ici, nous n'avons aucune capacité qui modifie ce par quoi Meteores n'est pas sensible, donc elle n'est pas dans les cas particuliers
                 }
             }
             //System.out.println(degats);
@@ -209,11 +215,13 @@ public class Capacite implements ICapacite {
 	public double calculerCM(Pokemon attaquant, Pokemon defenseur) {
 		//System.out.println(defenseur.getType1().getNom()+" "+defenseur.getType2().getNom());
 		double stab = 1;
-		double efficacite;
-		if (attaquant.possedeLeType(this.type)) {
-			stab = 1.5;
+		double efficacite = 1;
+		if( this.id!=110) {
+			if (attaquant.possedeLeType(this.type)) {
+				stab = 1.5;
+			}
+			efficacite = attaquant.getAttaqueChoisie().getEfficiencyOn(defenseur);
 		}
-		efficacite = attaquant.getAttaqueChoisie().getEfficiencyOn(defenseur);
 		double coeff =stab * efficacite * (Math.random() * (0.15) + 0.85);
 		//System.out.println("Le CM vaut "+coeff);
 		return coeff;
@@ -231,7 +239,9 @@ public class Capacite implements ICapacite {
 		double efficacite = ((Type)this.getType()).getCoeffTotal(defenseur.getType1(), defenseur.getType2());
 		if(efficacite>1) {
 			System.out.println("C'est super efficace !");
-		}else if(efficacite<1) {
+		}else if(efficacite==0) {
+			System.out.println("Cela n'a aucun effet.");
+		}else if (efficacite<1) {
 			System.out.println("Ce n'est pas très efficace ...");
 		}
 		return efficacite;

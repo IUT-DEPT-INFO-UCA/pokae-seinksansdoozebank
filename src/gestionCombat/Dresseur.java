@@ -1,5 +1,4 @@
 package gestionCombat;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import gestionPokemon.*;
@@ -11,11 +10,11 @@ import interfaces.IPokemon;
 import interfaces.IStrategy;
 import org.json.simple.parser.ParseException;
 
-public class Dresseur implements IDresseur,IEchange, IStrategy{
+public abstract class Dresseur implements IDresseur,IEchange, IStrategy{
 	private String identifiant;
 	private String motDepasse;
 	private String nom;
-	private Pokemon[] equipe = new Pokemon[6]; //TODO remettre a 6
+	private Pokemon[] equipe = new Pokemon[6];
 	private int niveau;
 	private Pokemon pokemon;
 	private Pokemon pokemonChoisi; 
@@ -24,16 +23,32 @@ public class Dresseur implements IDresseur,IEchange, IStrategy{
 
 	private String type; //joueur ou sIA
 	
+	public Dresseur(String nom) {
+		//constructeur pour les ia car pas besoin d'id ou de mdp
+		this.nom = nom;
+		try {
+			this.equipe = (Pokemon[]) Pokedex.engendreRanchStatic();
+		} catch (IOException | ParseException e) {
+			e.printStackTrace();
+		}
+		this.setNiveau();
+		this.pokemon = this.equipe[0];
+	}
+	
 	public Dresseur(String id, String mdp) {
 		//on cree un dresseur en le recuperant dans le stockage
 	}
 	
-	public Dresseur(String id, String mdp, String nom) throws IOException, ParseException {
+	public Dresseur(String id, String mdp, String nom){
 		//on cree un dresseur en l'ajoutant au stockage
 		this.identifiant=id;
 		this.motDepasse = mdp;
 		this.nom = nom;
-		this.equipe = (Pokemon[]) Pokedex.engendreRanchStatic();
+		try {
+			this.equipe = (Pokemon[]) Pokedex.engendreRanchStatic();
+		} catch (IOException | ParseException e) {
+			e.printStackTrace();
+		}
 		this.setNiveau();
 		this.pokemon = this.equipe[0];
 	}
@@ -108,59 +123,11 @@ public class Dresseur implements IDresseur,IEchange, IStrategy{
 		}
 	}
 
-	@Override
-	public IPokemon choisitCombattant() {
-		System.out.println(this.getNom()+"\n\tChoisissez le pokemon à envoyer au combat : ");
-		for(int i=0;i<this.getEquipe().length;i++) {
-			System.out.println("\t\t"+(i+1)+" - "+this.getEquipe()[i]);
-		}
-		System.out.println("\tEntrer le numéro du pokemon choisi : ");
-		int input=InputViaScanner.getInputInt(1, 6);
-		Pokemon choosen = this.getEquipe()[input-1];
-		this.setPokemon(choosen);
-		return choosen;
-	}
+	public abstract	IPokemon choisitCombattant();
 
-	@Override
-	public IPokemon choisitCombattantContre(IPokemon pok) {
-		System.out.println(this.getNom()+"\n\tChoisissez le pokemon à envoyer au combat : ");
-		for(int i=0;i<this.getEquipe().length;i++) {
-			if(!this.getEquipe()[i].estEvanoui())
-				System.out.println("\t\t"+(i+1)+"- "+this.getEquipe()[i]);
-			else {
-				System.out.println("\t\t"+"KO- "+this.getEquipe()[i]);
-			}
-		}
-		System.out.println("\tChoississez le numéro du pokemon à envoyer au combat : ");
-		int input = InputViaScanner.getInputIntPokemon(1, 6, this.getEquipe());
-		//TODO bloquer les input pour les pokemon KO
-		Pokemon choosen = this.getEquipe()[input-1];
-		this.setPokemonChoisi(choosen);
-		return choosen;
-	}
+	public abstract IPokemon choisitCombattantContre(IPokemon pok);
 
-	@Override
-	public IAttaque choisitAttaque(IPokemon attaquant, IPokemon defenseur) {
-		if(attaquant.getCapacitesApprises().length>0) { //TODO ajouter le test des PP a 0 pour utiliser lutte
-			ICapacite[] caps = attaquant.getCapacitesApprises();
-			for(int i=0; i<caps.length; i++) {
-				System.out.println("\t\t"+(i+1)+"- "+caps[i]+" PP : "+caps[i].getPP()+"/"+((Capacite)caps[i]).getPPBase());
-			}
-			System.out.println("\t\tChoississez le numéro de l'attaque à utiliser : ");
-			int input = InputViaScanner.getInputIntCapacite(1, attaquant.getCapacitesApprises().length,attaquant.getCapacitesApprises());
-			this.actionChoisie = (Capacite) ((Pokemon)attaquant).getCapacitesApprises()[input-1];
-		}else {
-			//utsilisation de Lutte si aucune capacite n'est dispo
-			try {
-				this.actionChoisie = Pokedex.createCapacite(((Capacite)Pokedex.getCapaciteStatic("Lutte")).id);
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			}
-		}
-		//System.out.println(attaquant.getNom()+" va utiliser "+this.actionChoisie);
-		((Pokemon) attaquant).setAttaqueChoisie(this.actionChoisie);
-		return this.actionChoisie;
-	}
+	public abstract IAttaque choisitAttaque(IPokemon attaquant, IPokemon defenseur);
 
 	
 	/////////////////////// methode de IEchange ///////////////////////
@@ -189,6 +156,8 @@ public class Dresseur implements IDresseur,IEchange, IStrategy{
 		return oldPokemonActif;
 	}
 	/////////////////////////////////////////////////////////////////////
+	
+	public abstract void selectAction(IPokemon p, IPokemon pAdv);
 	
 	
 	public Pokemon getPokemon() {

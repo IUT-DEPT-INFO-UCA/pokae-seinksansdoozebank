@@ -14,7 +14,7 @@ import interfaces.IPokemon;
 import interfaces.ITour;
 
 public class Combat implements ICombat {
-	private static final String msgChoixAction = "Entrez 1 pour attaquer ou 2 pour changer de pokemon : ";
+	static final String msgChoixAction = "Entrez 1 pour attaquer ou 2 pour changer de pokemon : ";
 	private int nbTours;
 	private Dresseur dresseur1;
 	private IPokemon pokemon1;
@@ -34,6 +34,7 @@ public class Combat implements ICombat {
 	public void commence(){
 		this.nbTours = 1;
 		this.pokemon1 =this.dresseur1.choisitCombattant();
+		System.out.println("");
 		this.pokemon2 = this.dresseur2.choisitCombattant();
 		System.out.println("\nQue le combat commence !");
 	}
@@ -64,12 +65,8 @@ public class Combat implements ICombat {
 		while (!this.estTermine()){
 			this.startTour();
 			tours.add( this.nouveauTour(this.pokemon1, this.dresseur1.getActionChoisie(), this.pokemon2, this.dresseur2.getActionChoisie()));
+			System.out.println("");
 			this.executerActions();
-			try {
-				Thread.sleep(1500);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
 		}
 		this.termine();
 		return this.vainqueur;
@@ -90,51 +87,22 @@ public class Combat implements ICombat {
 	
 	private void startTour() {
 		System.out.println("\n\n=============== Début du tour "+this.nbTours+" ===============\n");
+		System.out.println(dresseur1.getNom()+"\n\t"+((Pokemon)pokemon1).getPVBar());
+		System.out.println(dresseur2.getNom()+"\n\t"+((Pokemon)pokemon2).getPVBar());
+		System.out.println("");
 		//recuperation du choix d'action du dresseur1
-		System.out.println(this.dresseur1.getNom());
-		System.out.println("\t"+this.pokemon1.getNom()+" est sur le terrain. Que voulez vous faire ?");
-		System.out.println("\t"+msgChoixAction);
-		int input = InputViaScanner.getInputInt(1, 2);
-		if(input == 2){
-			this.pokemon1 = this.dresseur1.choisitCombattantContre(this.pokemon2);
-			this.dresseur1.setActionChoisie(null);
-		}else{
-			this.dresseur1.choisitAttaque(this.pokemon1,this.pokemon2);
-		}
+		dresseur1.selectAction(pokemon1, pokemon2);
+		System.out.println("");
 		//recuperation du choix d'action du dresseur2
-		System.out.println("");
-		System.out.println(this.dresseur2.getNom());
-		System.out.println("\t"+this.pokemon2.getNom()+" est sur le terrain. Que voulez vous faire ?");
-		System.out.println("\t"+msgChoixAction);
-		input = InputViaScanner.getInputInt(1, 2);
-		if(input == 2){
-			this.pokemon2 = this.dresseur2.choisitCombattantContre(this.pokemon1);
-			this.dresseur2.setActionChoisie(null);
-		}else{
-			this.dresseur2.choisitAttaque(this.pokemon2,this.pokemon1);
-		}
-		System.out.println("");
+		dresseur2.selectAction(pokemon2, pokemon1);
 	}
-	
-
-	/*
-	private void choisirAction(Dresseur d){
-		System.out.println("Entrez <0> pour attaquer ou <1> pour changer de pokemon : ");
-		try (Scanner sc = new Scanner(System.in)) {
-			int input = sc.nextInt();
-			if(input == 0){
-				this.pokemonChoisi1 = d.choisitCombattantContre()
-			}else{
-				d.choisirAttaqueDe(d.getPokemon());
-			}
-		}
-	}*/
 	
 	private void executerActions(){
 		//d1 echange
 		if (this.dresseur1.getActionChoisie()==null){ //d1 echange
-				dresseur1.echangeCombattant();
-				pokemon1=dresseur1.getPokemon();
+			dresseur1.echangeCombattant();
+			pokemon1=dresseur1.getPokemon();
+			System.out.println("");
 			// et d2 echange
 			if(this.dresseur2.getActionChoisie()==null){
 				dresseur2.echangeCombattant();
@@ -157,6 +125,7 @@ public class Combat implements ICombat {
 			if(this.dresseur2.getActionChoisie()==null){ //d2 echange
 				dresseur2.echangeCombattant();
 				pokemon2=dresseur2.getPokemon();
+				System.out.println("");
 				pokemon2.subitAttaqueDe(pokemon1, dresseur1.getActionChoisie());
 				if(dresseur2.getPokemon().estEvanoui()){
 					if(!this.estTermine()){
@@ -172,6 +141,7 @@ public class Combat implements ICombat {
 				//d1 attaque avant
 				if(((Pokemon) pokemon1).estPlusRapideQue((Pokemon) pokemon2)){
 					pokemon2.subitAttaqueDe(pokemon1, dresseur1.getActionChoisie());
+					System.out.println("");
 					//dresseur1.attaquer(dresseur2);
 					if(pokemon2.estEvanoui()){
 						try {
@@ -207,6 +177,7 @@ public class Combat implements ICombat {
 				//d2 attaque avant
 				}else{
 					pokemon1.subitAttaqueDe(pokemon2, dresseur2.getActionChoisie());
+					System.out.println("");
 					if(pokemon1.estEvanoui()){
 						try {
 							pokemon2.gagneExperienceDe(pokemon1);
