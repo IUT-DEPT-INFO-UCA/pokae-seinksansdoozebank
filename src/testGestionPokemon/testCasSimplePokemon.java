@@ -117,6 +117,26 @@ public class testCasSimplePokemon {
         assertEquals(glace.getEfficiencyOn(pokeTest),2.0);
         assertEquals(neutre.getEfficiencyOn(pokeTest),1.0);
     }
-
+    @Test
+    public void testPokemonOutOfRange(){
+        // Test si le pokemon numéro 152 n'est pas definit
+        Throwable excep = assertThrows(java.lang.ArrayIndexOutOfBoundsException.class, ()->{
+            Pokemon d = new Pokemon(Pokedex.listeEspece[152]);
+        });
+    }
+    @Test
+    public void testRemplaceCapaciteOutOfRange() {
+        //Test si le pokemon peux remplacer sa 5eme capacité (il n'en possède que 4max)
+        Throwable excep = assertThrows(java.lang.ArrayIndexOutOfBoundsException.class,()->{
+            pokeTest.remplaceCapacite(5,Pokedex.listeCapacite[2]);
+        });
+    }
+    @Test
+    public void testApprendsCapaciteOutOfRange(){
+        // Test si le pokémon peux apprendre la capacité 112 qui n'existe pas
+        Throwable excep = assertThrows(java.lang.ArrayIndexOutOfBoundsException.class,()->{
+            pokeTest.remplaceCapacite(3,Pokedex.listeCapacite[112]);
+        });
+    }
 
 }

@@ -1,5 +1,6 @@
 package gestionCombat;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 
@@ -37,8 +38,29 @@ public class Dresseur implements IDresseur,IEchange, IStrategy{
 		this.equipe = (Pokemon[]) Pokedex.engendreRanchStatic();
 		this.setNiveau();
 		this.pokemon = this.equipe[0];
+		saveData(identifiant, motDepasse);
+
 	}
-	
+	public void saveData(String id, String mdp){
+		//FileWriter fichier = new FileWriter("")
+	}
+	public void connection(String nom, String mdp){
+/*
+Ecrire un systeme de sauvegarde de données
+Algo :
+Parcours le fichier Excel ou JSON ou une base de donnée
+On recherche l'identifiant de l'utilisateur.
+	Si non trouvé => erreur
+	Sinon :
+		On compare avec le mot de passe saisi :
+			Si incorrect => erreur
+			Sinon connected = true et dans tous nos getters de pokémon on met :
+				Si connected alors tu peux return sinon return null
+ */
+		if(this.nom == nom && this.identifiant == mdp){
+			System.out.println("Vous etes connecté");
+		}
+	}
 	public String toSring() {
 		return this.getNom();
 	}
