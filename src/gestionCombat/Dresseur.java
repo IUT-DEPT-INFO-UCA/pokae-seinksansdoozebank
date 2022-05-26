@@ -1,7 +1,5 @@
 package gestionCombat;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.Scanner;
 
 import gestionPokemon.*;
@@ -35,17 +33,30 @@ public class Dresseur implements IDresseur,IEchange, IStrategy{
 		this.identifiant=id;
 		this.motDepasse = mdp;
 		this.nom = nom;
-		this.equipe = (Pokemon[]) Pokedex.engendreRanchStatic();
-		this.setNiveau();
-		this.pokemon = this.equipe[0];
+		//this.equipe = (Pokemon[]) Pokedex.engendreRanchStatic();
+	//this.setNiveau();
+	//	this.pokemon = this.equipe[0];
 		saveData(identifiant, motDepasse);
 
 	}
-	public void saveData(String id, String mdp){
-		//FileWriter fichier = new FileWriter("")
+	public void saveData(String id, String mdp) throws IOException {
+		try {
+			FileWriter fichier = new FileWriter("csv/DataFile.csv");
+			//BufferedWriter writer = new BufferedWriter(fichier);
+			PrintWriter writer = new PrintWriter(fichier);
+			writer.write(id);
+			writer.write(";");
+			writer.write(mdp);
+			writer.flush();
+			writer.close();
+
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+
 	}
 	public void connection(String nom, String mdp){
-/*
+/* TODO:
 Ecrire un systeme de sauvegarde de données
 Algo :
 Parcours le fichier Excel ou JSON ou une base de donnée
