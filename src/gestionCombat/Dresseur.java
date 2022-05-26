@@ -1,8 +1,5 @@
 package gestionCombat;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Scanner;
+import java.io.*;
 
 import gestionPokemon.*;
 import interfaces.IAttaque;
@@ -11,6 +8,9 @@ import interfaces.IDresseur;
 import interfaces.IEchange;
 import interfaces.IPokemon;
 import interfaces.IStrategy;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 public class Dresseur implements IDresseur,IEchange, IStrategy{
@@ -20,16 +20,16 @@ public class Dresseur implements IDresseur,IEchange, IStrategy{
 	public Pokemon[] equipe = new Pokemon[6]; //TODO set to private
 	private int niveau;
 	private Pokemon pokemon; //TODO set to private
-	private Pokemon pokemonChoisi; 
+	private Pokemon pokemonChoisi;
 
 	private Capacite actionChoisie;
 
 	private String type; //joueur ou IA
-	
+
 	public Dresseur(String id, String mdp) {
 		//on cree un dresseur en le recuperant dans le stockage
 	}
-	
+
 	public Dresseur(String id, String mdp, String nom) throws IOException, ParseException {
 		//on cree un dresseur en l'ajoutant au stockage
 		this.identifiant=id;
@@ -41,9 +41,76 @@ public class Dresseur implements IDresseur,IEchange, IStrategy{
 		saveData(identifiant, motDepasse);
 
 	}
-	public void saveData(String id, String mdp){
-		//FileWriter fichier = new FileWriter("")
+	public void saveData(String id, String mdp) throws IOException, ParseException {
+		if (testPresence()){
+			JSONParser parser = new JSONParser();
+			JSONObject datafile = (JSONObject) parser.parse(new BufferedReader(new FileReader("./dataSave/DataFile.json")));
+
+			JSONArray dresseurs = (JSONArray) datafile.get("user");
+			if(!testUserDejaAjoute(dresseurs, id)) {
+				assert (dresseurs.size() > 0);
+				JSONObject dresseur = new JSONObject();
+				dresseur.put("id", id);
+				dresseur.put("mdp", mdp);
+				dresseurs.add(dresseur);
+				System.out.println(datafile);
+				FileWriter myWriter = new FileWriter("./dataSave/DataFile.json");
+				myWriter.write(datafile.toJSONString());
+				myWriter.close();
+			}
+			else{
+				System.out.println("Ce dresseur existe deja");
+			}
+		}
+		else{
+			String JSONComplet;
+			File newFile = new File("./dataSave/DataFile.json");
+			FileWriter myWriter = new FileWriter("./dataSave/DataFile.json");
+			JSONObject jsonNewData = new JSONObject();
+			JSONObject infoUser = new JSONObject();
+			JSONArray newUserData = new JSONArray();
+			infoUser.put("id",id);
+			infoUser.put("mdp",mdp);
+			newUserData.add(infoUser);
+			jsonNewData.put("user",newUserData);
+			JSONComplet = jsonNewData.toJSONString();
+			myWriter.write(JSONComplet);
+			myWriter.close();
+
+		}
+
 	}
+	public boolean testUserDejaAjoute(JSONArray dresseurs, String id) {
+		boolean test = false;
+		int i=0;
+		while(!test&&i<dresseurs.size()) {
+			JSONObject dresseur = (JSONObject) dresseurs.get(i);
+			if (dresseur.get("id").equals(id)) {
+				test = true;
+			}
+			i++;
+		}
+		return test;
+	}
+	private boolean testPresence(){
+		File repertoire = new File("./dataSave/");
+		String[] listeFichiers = repertoire.list();
+		boolean testPresence = false;
+		if(listeFichiers==null){
+			System.out.println("Mauvais répertoire");
+		}
+		else{
+			int i=0;
+			while(!testPresence&&i<listeFichiers.length) {
+				if(listeFichiers[i].equals("DataFile.json")){
+					testPresence = true;
+				}
+				i++;
+			}
+		}
+		return testPresence;
+	}
+
 	public void connection(String nom, String mdp){
 /*
 Ecrire un systeme de sauvegarde de données
@@ -65,12 +132,12 @@ On recherche l'identifiant de l'utilisateur.
 		return this.getNom();
 	}
 	/////////////////////// methode de IDresseur ///////////////////////
-	
+
 
 	public IPokemon getPokemon(int i) {
 		return this.equipe[i];
 	}
-	
+
 
 	@Override
 	public void enseigne(IPokemon pok, ICapacite[] caps) {
@@ -91,7 +158,7 @@ On recherche l'identifiant de l'utilisateur.
 						=> SI >4 ou <0 erreur
 						=> SINON on remplace la capacitée de l'entier
 		*/
-			
+
 		Capacite capaciteAApprendre = this.canTeachAMove();
 		if(capaciteAApprendre!=null) {
 			if(caps.length<4) {
@@ -123,7 +190,7 @@ On recherche l'identifiant de l'utilisateur.
 		}else {
 			System.out.println(pok.getNom()+" n'a aucune capacite a apprendre au niveau "+pok.getNiveau());
 		}
-		
+
 	}
 
 	@Override
@@ -187,9 +254,9 @@ On recherche l'identifiant de l'utilisateur.
 		return this.actionChoisie;
 	}
 
-	
+
 	/////////////////////// methode de IEchange ///////////////////////
-	
+
 	public int calculeDommage(IPokemon lanceur, IPokemon receveur) {
 		//On return 0 puisque echange ne fait aucun degat
 		// de toute facons on appelle jamais cette méthode puisque le calcul des dommage d'un dresseur n'a pas de sens
@@ -204,7 +271,7 @@ On recherche l'identifiant de l'utilisateur.
 		System.out.println(this.getNom()+" envoie "+pok.getNom()+" au combat.");
 		this.pokemonChoisi = (Pokemon) pok;
 	}
-	
+
 
 	public IPokemon echangeCombattant() {
 		Pokemon oldPokemonActif = this.pokemon;
@@ -212,8 +279,8 @@ On recherche l'identifiant de l'utilisateur.
 		return oldPokemonActif;
 	}
 	/////////////////////////////////////////////////////////////////////
-	
-	
+
+
 	public Pokemon getPokemon() {
 		return this.pokemon;
 	}
@@ -225,11 +292,11 @@ On recherche l'identifiant de l'utilisateur.
 	public void setPokemonChoisi(IPokemon pokemonChoisi) {
 		this.pokemonChoisi = (Pokemon) pokemonChoisi;
 	}
-	
+
 	public Pokemon[] getEquipe() {
 		return this.equipe;
 	}
-	
+
 	public String getIdentifiant() {
 		return identifiant;
 	}
@@ -294,12 +361,12 @@ On recherche l'identifiant de l'utilisateur.
 		}
 		return peutSeBattre;
 	}
-	
+
 	public Capacite canTeachAMove() {
 		//System.out.println("appel de getLearnableMove().");
 		return this.getPokemon().espPoke.getLearnableMove(this.getPokemon().getNiveau());
 	}
-	
+
 	public void showTeam() {
 		for(Pokemon p : this.getEquipe()) {
 			System.out.println(p);

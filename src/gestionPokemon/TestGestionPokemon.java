@@ -124,8 +124,8 @@ public class TestGestionPokemon {
             //d1.showTeam();
             Dresseur d2 = new Dresseur("firelods","1234","clement");
             //d2.showTeam();
-            Combat combat = new Combat(d1,d2);
-            System.out.println(combat.getVainqueur().getNom());
+//            Combat combat = new Combat(d1,d2);
+//            System.out.println(combat.getVainqueur().getNom());
             
             /*
             System.out.println("Choisir un nb entre 1 et 6");
