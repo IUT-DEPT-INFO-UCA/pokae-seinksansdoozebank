@@ -8,7 +8,6 @@ import interfaces.ICapacite;
 import interfaces.IEspece;
 import interfaces.IPokemon;
 import interfaces.IStat;
-import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -242,7 +241,7 @@ public class Pokemon implements IPokemon {
 
     }
 
-    public void remplaceCapacite(int i, ICapacite cap) throws Exception {
+    public void remplaceCapacite(int i, ICapacite cap) {
     	if(this.listeCapacite[i]!=null) {
     		System.out.println(this.getNom()+" oublie "+this.listeCapacite[i].getNom()+" et apprend "+cap.getNom());
     	}
@@ -429,9 +428,11 @@ public class Pokemon implements IPokemon {
      * @param degats les degâts a faire
      */
     public void subirDegats(int degats) {
-    	System.out.println(this.getNom()+" subit "+degats+" degats.");
+    	if(degats!=0) {
+    		System.out.println(this.getNom()+" subit "+degats+" degats.");
+    	}
         this.getStat().setPV(this.getStat().getPV() - degats);
-        System.out.println(this.getNom()+" : "+this.getPourcentagePV()+"% de PV");
+        System.out.println(this.getNom()+" PV "+(int)this.getPourcentagePV()+"%");
     	System.out.println("Il reste "+this.getStat().getPV()+"/"+this.pvMax+" PV a "+this.getNom()+".");
         this.avantDerniersDegatsSubits = this.derniersDegatsSubits;
         this.derniersDegatsSubits = degats;
@@ -444,18 +445,18 @@ public class Pokemon implements IPokemon {
      * @param expAGagner la quantité d'expérience à acquérir
      */
     public void gagnerXp(double expAGagner) {
-        double gainExp = expAGagner;
+        //double gainExp = expAGagner;
         double xpTemporaire = this.getExperience() + expAGagner;
         double seuil = (Math.pow(this.niv + 1, 3) * 0.8);
-        //System.out.println((this.getNom()+" a gagne "+(int)expAGagner+" point d'experience."));
+        System.out.println((this.getNom()+" a gagne "+(int)expAGagner+" points d'experience.\n"));
         if (xpTemporaire >= seuil) {
             while (xpTemporaire >= seuil) {
                 augmenterNiveau();
-                this.xp = gainExp - seuil;
+                this.xp = expAGagner - seuil;
                 this.xp=Math.round(this.xp*100.0)/100.0;
-                gainExp -= seuil;
+                expAGagner -= seuil;
                 seuil = (Math.pow(this.niv + 1, 3) * 0.8);
-                xpTemporaire = this.getExperience() + (gainExp-seuil);
+                xpTemporaire = this.getExperience() + (expAGagner-seuil);
             }
         } else {
             this.xp += expAGagner;
@@ -469,7 +470,7 @@ public class Pokemon implements IPokemon {
     public void augmenterNiveau() {
         this.niv++;
         this.aChangeNiveau = true;
-        System.out.println("\n"+this.getNom()+" a atteint  le niveau "+this.getNiveau()+".");
+        System.out.println(""+this.getNom()+" a atteint  le niveau "+this.getNiveau()+".\n");
         if (this.niv >= espPoke.nivEvolution && this.getEspece().getEvolution(this.niv) != null && this.espPoke.nivEvolution!=0) {
             this.vaMuterEn(this.getEspece().getEvolution(this.niv));
         }

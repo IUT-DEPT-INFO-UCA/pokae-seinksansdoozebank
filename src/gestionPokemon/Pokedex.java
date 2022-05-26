@@ -27,6 +27,11 @@ public class Pokedex implements IPokedex{
      * Instanciation du nombre de pokemon
      */
     private static int nbPokemon = 152;
+
+    /**
+     * Instanciation du nombre de pokemon par ranch
+     */
+    private static int nbPokemonParRanch = 6; //TODO remettre a 6
     /**
      * Instanciation
      */
@@ -47,7 +52,6 @@ public class Pokedex implements IPokedex{
      */
 	@Override
 	public IPokemon[] engendreRanch() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -56,7 +60,6 @@ public class Pokedex implements IPokedex{
      */
 	@Override
 	public IEspece getInfo(String nomEspece) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -65,7 +68,6 @@ public class Pokedex implements IPokedex{
      */
 	@Override
 	public Double getEfficacite(IType attaque, IType defense) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -74,7 +76,6 @@ public class Pokedex implements IPokedex{
      */
 	@Override
 	public ICapacite getCapacite(String nomCapacite) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -83,20 +84,19 @@ public class Pokedex implements IPokedex{
      */
 	@Override
 	public ICapacite getCapacite(int numCapacite) {
-		// TODO Auto-generated method stub
 		return null;
 	}
     //////////////////////////////////////////////////////////////////
 
     /**
-     * Il crée une liste de 6 Pokémon aléatoires
+     * Il crée une liste de 6 Pokémon aléatoires;
      *
      * @return Une liste de 6 Pokémon aléatoires.
      */
     public static IPokemon[] engendreRanchStatic() throws IOException, ParseException {
-        IPokemon[] listePokeAleatoire = new Pokemon[6];
-        for (int i = 0; i < 6; i++) {
-            listePokeAleatoire[i] = new Pokemon(listeEspece[(int) (Math.random() * (nbPokemon-1) + 1)]);
+        IPokemon[] listePokeAleatoire = new Pokemon[nbPokemonParRanch];
+        for (int i = 0; i < nbPokemonParRanch; i++) {
+            listePokeAleatoire[i] = new Pokemon(listeEspece[(int) (Math.random() * (Pokedex.nbPokemon-1) + 1)]);
         }
         return listePokeAleatoire;
     }
@@ -317,28 +317,29 @@ public class Pokedex implements IPokedex{
         Capacite capacite = new Capacite(id);
         File fichierCSV = new File("./csv/listeCapacites.csv");
         try {
-            Scanner scannerCSV = new Scanner(fichierCSV);
-            scannerCSV.useDelimiter(";");
-            scannerCSV.nextLine();
-            while (scannerCSV.hasNext()) {
-                try {
-                    String ligneTemp = scannerCSV.nextLine();
-                    String[] tabLigneTemp = ligneTemp.split(";");
-                    if (Integer.parseInt(tabLigneTemp[4]) == id) {
-                        capacite.nom = tabLigneTemp[0];
-                        capacite.puissance = Integer.parseInt(tabLigneTemp[1]);
-                        capacite.precision = Double.parseDouble(tabLigneTemp[2]);
-                        capacite.ppBase = Integer.parseInt(tabLigneTemp[3]);
-                        capacite.pp = capacite.ppBase;
-                        capacite.id = Integer.parseInt(tabLigneTemp[4]);
-                        capacite.categorie = Pokedex.setCategorie(tabLigneTemp[5]);
-                        capacite.type=Pokedex.setType(tabLigneTemp[6]);
-                    }
-                } catch (NumberFormatException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            scannerCSV.close();
+            try (Scanner scannerCSV = new Scanner(fichierCSV)) {
+				scannerCSV.useDelimiter(";");
+				scannerCSV.nextLine();
+				while (scannerCSV.hasNext()) {
+				    try {
+				        String ligneTemp = scannerCSV.nextLine();
+				        String[] tabLigneTemp = ligneTemp.split(";");
+				        if (Integer.parseInt(tabLigneTemp[4]) == id) {
+				            capacite.nom = tabLigneTemp[0];
+				            capacite.puissance = Integer.parseInt(tabLigneTemp[1]);
+				            capacite.precision = Double.parseDouble(tabLigneTemp[2]);
+				            capacite.ppBase = Integer.parseInt(tabLigneTemp[3]);
+				            capacite.pp = capacite.ppBase;
+				            capacite.id = Integer.parseInt(tabLigneTemp[4]);
+				            capacite.categorie = Pokedex.setCategorie(tabLigneTemp[5]);
+				            capacite.type=Pokedex.setType(tabLigneTemp[6]);
+				        }
+				    } catch (NumberFormatException e) {
+				        throw new RuntimeException(e);
+				    }
+				}
+				scannerCSV.close();
+			}
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
@@ -408,7 +409,7 @@ public class Pokedex implements IPokedex{
                 // System.out.println(inputStr);
             }
             inputStr = responseStrBuilder.toString();
-            File newFile = new File("./JSON/"+nomFichier+".json");
+            //File newFile = new File("./JSON/"+nomFichier+".json");
             FileWriter myWriter = new FileWriter("./JSON/"+nomFichier+".json");
             myWriter.write(inputStr);
             myWriter.close();
@@ -420,5 +421,9 @@ public class Pokedex implements IPokedex{
         }
         return null;
     }
+
+	public static int getNbPokemonParRanch() {
+		return nbPokemonParRanch;
+	}
 
 }

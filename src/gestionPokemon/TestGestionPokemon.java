@@ -2,13 +2,11 @@ package gestionPokemon;
 
 import org.json.simple.parser.ParseException;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Arrays;
+
 
 import gestionCombat.Combat;
 import gestionCombat.Dresseur;
-import interfaces.ICapacite;
 //import java.util.Arrays;
 
 public class TestGestionPokemon {
@@ -120,9 +118,9 @@ public class TestGestionPokemon {
             }*/
             
             
-            Dresseur d1 = new Dresseur("arcsti","mdp","antoine");
+            Dresseur d1 = new Dresseur("arcsti","mdp","Antoine");
             //d1.showTeam();
-            Dresseur d2 = new Dresseur("firelods","1234","clement");
+            Dresseur d2 = new Dresseur("firelods","1234","Thais");
             //d2.showTeam();
             Combat combat = new Combat(d1,d2);
             System.out.println(combat.getVainqueur().getNom());

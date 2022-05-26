@@ -15,9 +15,7 @@ public class testCasComplexePokemon {
     @BeforeEach
     public void createPokedex() throws IOException{
         // Initialisation du pokedex et du pokemon Test.
-        Pokedex pokedex = new Pokedex();
-        Pokedex.createListeCapacite();
-        Pokedex.createListeEspece();
+        Pokedex.initialiser();
         pokeTest = new Pokemon(Pokedex.listeEspece[1]);
     }
 

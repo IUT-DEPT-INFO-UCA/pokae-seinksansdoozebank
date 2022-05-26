@@ -88,7 +88,6 @@ public class Capacite implements ICapacite {
      * @return Un texte contenant l'identifiant et le nom de la capacité.
      */
     public String toString() {
-    	//TODO trouver la capacite sans type pour trouver pq ca marche po tout le temps
         return "["+nom + ", " + this.getType().getNom()+"]";
         //return "["+nom + ", " + this.getType().getNom()+","+this.nivNecessaire+"]";
     }
@@ -222,7 +221,7 @@ public class Capacite implements ICapacite {
 
 	
 	/**
-	 * Cette fonction renvoie le multiplicateur de dégâts en fonction du type de
+	 * Cette fonction renvoie le multiplicateur de dégâts en fonctio1n du type de
 	 * l'attaque sur le défenseur
 	 * 
 	 * @param defenseur Le Pokémon attaqué
