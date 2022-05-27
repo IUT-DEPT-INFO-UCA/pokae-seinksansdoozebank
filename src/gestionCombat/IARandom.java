@@ -21,7 +21,7 @@ public class IARandom extends Dresseur {
 
 	@Override
 	public IPokemon choisitCombattant() {
-		System.out.println(this.getNom()+"\n\tchoisi un pokemon a envoyer au combat...");
+		System.out.println(this.getNom()+"\tchoisi un pokemon a envoyer au combat...");
 		try {
 			Thread.sleep(delai);
 		} catch (InterruptedException e) {
@@ -35,7 +35,7 @@ public class IARandom extends Dresseur {
 	
 	@Override
 	public IPokemon choisitCombattantContre(IPokemon pok) {
-		System.out.println(this.getNom()+"\n\tchoisi un pokemon a envoyer au combat...");
+		System.out.println(this.getNom()+"\tchoisi un pokemon a envoyer au combat...");
 		try {
 			Thread.sleep(delai);
 		} catch (InterruptedException e) {
@@ -54,7 +54,7 @@ public class IARandom extends Dresseur {
 	public IAttaque choisitAttaque(IPokemon attaquant, IPokemon defenseur) {
 		if(((Pokemon)attaquant).getNombreDeToursAvantAttaque()==0) { //dans le cas ou patience a ete utilisee
 			if(((Pokemon)attaquant).getCapacitesUtilisables().length>0) {
-				System.out.println(this.getNom()+"\n\tchoisi une attaque a utiliser...");
+				System.out.println(this.getNom()+"\tchoisi une attaque a utiliser...");
 				try {
 					Thread.sleep(delai);
 				} catch (InterruptedException e) {
@@ -86,7 +86,7 @@ public class IARandom extends Dresseur {
 
 	@Override
 	public void selectAction(IPokemon p, IPokemon pAdv) {
-		System.out.println(this.getNom()+"\n\ta "+p.getNom()+" sur le terrain. Il choisi quoi faire...");
+		System.out.println(this.getNom()+"\ta "+p.getNom()+" sur le terrain. Il choisi quoi faire...");
 		try {
 			Thread.sleep(delai);
 		} catch (InterruptedException e) {

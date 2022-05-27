@@ -88,7 +88,8 @@ public class Capacite implements ICapacite {
      * @return Un texte contenant l'identifiant et le nom de la capacité.
      */
     public String toString() {
-        return "["+nom + ", " + this.getType().getNom()+"]";
+    	return Pokedex.createCase(new String[] {this.nom,this.type.getNom(),this.pp+"/"+this.ppBase});
+        //return "["+nom + ", " + this.getType().getNom()+"]";
         //return "["+nom + ", " + this.getType().getNom()+","+this.nivNecessaire+"]";
     }
 
@@ -105,32 +106,41 @@ public class Capacite implements ICapacite {
                 	((Pokemon)lanceur).subirDegats((int) Math.ceil(((Pokemon)lanceur).pvMax/4));
                 }
             } else {
-            	System.out.println("Calcul des degats pour une capacite particuliere");
+            	System.out.println("Calcul des degats pour une capacite particuliere : "+this.puissance);
                 switch (this.puissance) {
                     case -1: // one shot
                         if (this.getEfficiencyOn((Pokemon) receveur) != 0) {
+                        	System.out.println("pvmax de la cible = "+((Pokemon) receveur).pvMax);
                             degats = ((Pokemon) receveur).pvMax;
                         }
+                        break;
                     case -2: // Sonic-Boom -20 sur les non spectre
                         if (this.getEfficiencyOn((Pokemon) receveur) != 0) {
                             degats = 20;
                         }
+                        break;
                     case -3: // Riposte : degat subits au tours precedent * 2 si capacite physique
                     	if(((Pokemon) receveur).getDerniereCapaciteEncaissee()!=null){
                     		if (!((Pokemon) receveur).getDerniereCapaciteEncaissee().getCategorie().isSpecial()) {
-                            degats = ((Pokemon) lanceur).getDerniersDegatsSubits() * 2;
+                    			System.out.println("dernier degat subits = "+((Pokemon) lanceur).getDerniersDegatsSubits());
+                    			degats = ((Pokemon) lanceur).getDerniersDegatsSubits() * 2;
                         	}
                     	}
-                    case -4: // Frappe-Atlas / Ombre Nocturne : degat = nivLanceur si la cible n'est pas imunise au type de l'attaque
+                        break;
+                    case -4: // Frappe-Atlas : degat = nivLanceur si la cible n'est pas imunise au type de l'attaque
                         if (this.getEfficiencyOn((Pokemon) receveur) != 0) {
+                        	System.out.println("niv de la cible = "+lanceur.getNiveau());
                             degats = lanceur.getNiveau();
                         }
+                        break;
                     case -5: // Draco-Rage : 40 degat sur type acier ou dragon sans prendre en compte les stat de la cible
                     	degats = 40;
-                    case -6: // degat = nivLanceur si la cible n'est pas imunise au type de l'attaque
+                        break;
+                    case -6: // Ombre Nocturne : degat = nivLanceur si la cible n'est pas imunise au type de l'attaque
                         if (this.getEfficiencyOn((Pokemon) receveur) != 0) {
                             degats = lanceur.getNiveau();
                         }
+                        break;
                     case -7: // Patience : impossible d' attaquer pendant 2 tours puis degat infligés = (2*les degats encaissé pendant les 2 tours) sans tenir compte des types
                         //TODO tester si Patience marche
                         if (((Pokemon) lanceur).getNombreDeToursAvantAttaque() == 0) {//si la capa chois est Patience et que le nombre de tour avant la fin est a 0
@@ -139,10 +149,13 @@ public class Capacite implements ICapacite {
                             degats = (((Pokemon) lanceur).getAvantDerniersDegatsSubits()+ ((Pokemon) lanceur).getDerniersDegatsSubits()) * 2;
                             ((Pokemon)lanceur).setNombreDeToursAvantAttaque(0); //reset du nombre pour reprendre un cycle de choix normal
                         }
+                        break;
                     case -8:
                     	degats = lanceur.getNiveau() * (Math.random() * + 0.5);
-                    case -9 :
+                        break;
+                    case -9 :// Croc-Fatale : degat = moitie des pv restant de la cible
                     	degats = Math.ceil(receveur.getStat().getPV()/2);
+                        break;
                     ///Meteores n'est pas géré ici, nous n'avons aucune capacité qui modifie ce à quoi Meteores n'est pas sensible, donc elle n'est pas dans les cas particuliers
                 }
             }

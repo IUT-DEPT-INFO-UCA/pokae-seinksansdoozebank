@@ -86,9 +86,9 @@ public class Combat implements ICombat {
 	}
 	
 	private void startTour() {
-		System.out.println("\n\n=============== Début du tour "+this.nbTours+" ===============\n");
-		System.out.println(dresseur1.getNom()+"\n\t"+this.pokemon1.getNom()+" "+((Pokemon)pokemon1).getPVBar());
-		System.out.println(dresseur2.getNom()+"\n\t"+this.pokemon2.getNom()+" "+((Pokemon)pokemon2).getPVBar());
+		System.out.println("\n\n======================= Début du tour "+this.nbTours+" =======================\n");
+		System.out.println(dresseur1.getNom()+"\t"+this.pokemon1/*.getNom()+" "+((Pokemon)pokemon1).getPVBar()*/);
+		System.out.println(dresseur2.getNom()+"\t"+this.pokemon2/*.getNom()+" "+((Pokemon)pokemon2).getPVBar()*/);
 		System.out.println("");
 		//recuperation du choix d'action du dresseur1
 		dresseur1.selectAction(pokemon1, pokemon2);

@@ -434,5 +434,32 @@ public class Pokedex implements IPokedex{
 	public static int getNbPokemonParRanch() {
 		return nbPokemonParRanch;
 	}
-
+	
+	public static String createCase(String[] data ) {
+    	int largeur = 20 -2;
+    	String rep ="+";
+    	for (int i=0;i<largeur;i++) {
+    		rep+="-";
+    	}
+    	rep += "+\n\t\t";
+    	for(int j=0;j<data.length;j++) {
+    		int lenData = (largeur-data[j].length());
+    		rep += "   |";
+    		for (int i=0;i<lenData/2;i++) {
+        		rep+=" ";
+        	}
+        	rep += data[j];
+        	for (int i=0;i<lenData/2-((lenData+1)%2)+1;i++) {
+        		rep+=" ";
+        	}
+        	rep += "|\n\t\t";
+    	}
+    	rep += "   +";
+    	for (int i=0;i<largeur;i++) {
+    		rep+="-";
+    	}
+    	rep += "+";    	
+		return rep;
+	}
+	
 }

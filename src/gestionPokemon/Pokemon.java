@@ -157,7 +157,7 @@ public class Pokemon implements IPokemon {
      */
     @Override
     public String toString() {
-    	return this.getNom()+" Niv "+this.getNiveau()+" "+this.getPVBar();
+    	return this.getNom()+" niv."+this.getNiveau()+" PV "+this.getPVBar();
     	/*
     	return "Pokemon{" +
                 "nom='" + nom + '\'' +
@@ -279,8 +279,8 @@ public class Pokemon implements IPokemon {
 
     @Override
     public void subitAttaqueDe(IPokemon attaquant, IAttaque attaque) {
-    	System.out.println(attaquant.getNom()+" utilise "+((ICapacite)attaque).getNom()+" !");
     	if(((Pokemon)attaquant).getNombreDeToursAvantAttaque()<=0){//si le lanceur n'a pas Patience en cours
+        	System.out.println(attaquant.getNom()+" utilise "+((ICapacite)attaque).getNom()+" !");
     		this.subirDegats(attaque.calculeDommage(attaquant, this));
         	this.derniereCapaciteEncaissee = (Capacite) attaque;
     	}else { //si le lanceur a Patience en cours d'utilisation
