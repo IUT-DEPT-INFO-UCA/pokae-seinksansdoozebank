@@ -36,7 +36,7 @@ public class testCasComplexePokemon {
         int pvAvantAttaque = pokeTest.getStat().getPV();
         pokeTest.subirDegats(0);
         assertEquals(pvAvantAttaque, pokeTest.getStat().getPV());
-        assertEquals(pokeTest.obtenirDeniersDegatsSubits(), 0);
+        assertEquals(pokeTest.getDerniersDegatsSubits(), 0);
     }
 
     @Test

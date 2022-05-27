@@ -68,12 +68,12 @@ public class Pokemon implements IPokemon {
     /**
      * La capacité que le pokemon à utiliser en dernier
      */
-    private Capacite derniereCapciteUtilisee;
+    private Capacite derniereCapaciteEncaissee;
 
     /**
      * La quantité de degat que le pokemon a subit lors du dernier tour
      */
-    private double derniersDegatsSubits;
+    private double derniersDegatsSubits=0;
 
     /**
      * La quantité de degat que le pokemon a subit lors de l'avant-dernier tour
@@ -83,7 +83,7 @@ public class Pokemon implements IPokemon {
     /**
      * Le nombre de tours avat que le Pokemon puisse à nouveau attaquer
      */
-    private int nombreDeToursAvantAttaque;
+    private int nombreDeToursAvantAttaque=0;
 
     /**
      * Creer un objet Pokemon avec 2 parametres
@@ -157,7 +157,7 @@ public class Pokemon implements IPokemon {
      */
     @Override
     public String toString() {
-    	return this.getNom()+" Niv "+this.getNiveau()+"  PV "+this.getPourcentagePV()+"%";
+    	return this.getNom()+" Niv "+this.getNiveau()+" "+this.getPVBar();
     	/*
     	return "Pokemon{" +
                 "nom='" + nom + '\'' +
@@ -243,7 +243,7 @@ public class Pokemon implements IPokemon {
 
     public void remplaceCapacite(int i, ICapacite cap) {
     	if(this.listeCapacite[i]!=null) {
-    		System.out.println(this.getNom()+" oublie "+this.listeCapacite[i].getNom()+" et apprend "+cap.getNom());
+    		System.out.println(this.getNom()+" oublie "+this.listeCapacite[i].getNom()+" et apprend "+cap.getNom()+" !");
     	}
         this.listeCapacite[i] = (Capacite) cap;
     }
@@ -280,11 +280,16 @@ public class Pokemon implements IPokemon {
     @Override
     public void subitAttaqueDe(IPokemon attaquant, IAttaque attaque) {
     	System.out.println(attaquant.getNom()+" utilise "+((ICapacite)attaque).getNom()+" !");
-    	this.subirDegats(attaque.calculeDommage(attaquant, this));
+    	if(((Pokemon)attaquant).getNombreDeToursAvantAttaque()<=0){//si le lanceur n'a pas Patience en cours
+    		this.subirDegats(attaque.calculeDommage(attaquant, this));
+        	this.derniereCapaciteEncaissee = (Capacite) attaque;
+    	}else { //si le lanceur a Patience en cours d'utilisation
+        	System.out.println(attaquant.getNom()+" se concentre ...");
+        }
     }
 
     public boolean estEvanoui() {
-        return this.getStat().getPV() <= 0;
+    	return this.getStat().getPV() <= 0;
     }
 
     @Override
@@ -372,8 +377,8 @@ public class Pokemon implements IPokemon {
      *
      * @return La derniere capacite utilisee.
      */
-    public Capacite obtenirDerniereCapaUtilisee() {
-        return this.derniereCapciteUtilisee;
+    public Capacite getDerniereCapaciteEncaissee() {
+        return this.derniereCapaciteEncaissee;
     }
 
     /**
@@ -381,7 +386,7 @@ public class Pokemon implements IPokemon {
      *
      * @return Le montant des degâts subis par le joueur.
      */
-    public double obtenirDeniersDegatsSubits() {
+    public double getDerniersDegatsSubits() {
         return this.derniersDegatsSubits;
     }
 
@@ -390,7 +395,7 @@ public class Pokemon implements IPokemon {
      *
      * @return La valeur de la variable avantDeniersDegatsSubits.
      */
-    public double obtenirAvantDeniersDegatsSubits() {
+    public double getAvantDerniersDegatsSubits() {
         return this.avantDerniersDegatsSubits;
     }
 
@@ -399,7 +404,7 @@ public class Pokemon implements IPokemon {
      *
      * @return Le nombre de tours avant l'attaque.
      */
-    public int obtenirNombreDeToursAvantAttaque() {
+    public int getNombreDeToursAvantAttaque() {
         return nombreDeToursAvantAttaque;
     }
 
@@ -417,7 +422,7 @@ public class Pokemon implements IPokemon {
      *
      * @param nombreDeToursAvantAttaque Le nombre de tours avant l'attaque
      */
-    public void mettreNombreDeToursAvantAttaqueA(int nombreDeToursAvantAttaque) {
+    public void setNombreDeToursAvantAttaque(int nombreDeToursAvantAttaque) {
         this.nombreDeToursAvantAttaque = nombreDeToursAvantAttaque;
     }
 
@@ -434,7 +439,7 @@ public class Pokemon implements IPokemon {
     	}
     	*/
         this.getStat().setPV(this.getStat().getPV() - degats);
-        System.out.println(this.getPVBar());
+        System.out.println(this.getNom()+" "+this.getPVBar());
         //System.out.println(this.getNom()+" PV "+(int)this.getPourcentagePV()+"%");
     	//System.out.println("Il reste "+this.getStat().getPV()+"/"+this.pvMax+" PV a "+this.getNom()+".");
         this.avantDerniersDegatsSubits = this.derniersDegatsSubits;
@@ -442,14 +447,14 @@ public class Pokemon implements IPokemon {
     }
     
     public String getPVBar() {
-        String rep = this.getNom()+" [";
+        String rep = /*this.getNom()+*/"[";
         for(int i=0;i<this.getPourcentagePV()/10;i++) {
         	rep+="#";
         }
         for(int i=0;i<10-(this.getPourcentagePV()/10);i++) {
         	rep+="-";
         }
-        return rep+"] "+this.getStat().getPV()+"/"+this.pvMax;
+        return rep+"] "+this.getStat().getPV()+"/"+this.pvMax+"";
     }
     
     /**
@@ -462,8 +467,8 @@ public class Pokemon implements IPokemon {
         //double gainExp = expAGagner;
         double xpTemporaire = this.getExperience() + expAGagner;
         double seuil = (Math.pow(this.niv + 1, 3) * 0.8);
-        System.out.println((this.getNom()+" a gagne "+(int)expAGagner+" points d'experience.\n"));
         if (xpTemporaire >= seuil) {
+            System.out.println((this.getNom()+" a gagne "+(int)expAGagner+" points d'experience."));
             while (xpTemporaire >= seuil) {
                 augmenterNiveau();
                 this.xp = expAGagner - seuil;
@@ -473,6 +478,7 @@ public class Pokemon implements IPokemon {
                 xpTemporaire = this.getExperience() + (expAGagner-seuil);
             }
         } else {
+            System.out.println((this.getNom()+" a gagne "+(int)expAGagner+" points d'experience.\n"));
             this.xp += expAGagner;
         }
     }
@@ -484,13 +490,13 @@ public class Pokemon implements IPokemon {
     public void augmenterNiveau() {
         this.niv++;
         this.aChangeNiveau = true;
-        System.out.println(""+this.getNom()+" a atteint  le niveau "+this.getNiveau()+".\n");
+        System.out.println(""+this.getNom()+" a atteint le niveau "+this.getNiveau()+".\n");
         if (this.niv >= espPoke.nivEvolution && this.getEspece().getEvolution(this.niv) != null && this.espPoke.nivEvolution!=0) {
             this.vaMuterEn(this.getEspece().getEvolution(this.niv));
         }
         // Les stats de base sont celles de l'espece actuelle du pokemon. Ainsi, si le pokemon a evolue, son espece a change juste avant donc les stats sont calculees sur les nouvelles stat de base.
         calculPVMax();
-        calculPV();
+        //calculPV(); //TODO ca doit pas heal quand il level up
         calculForce();
         calculDefense();
         calculVitesse();
@@ -564,7 +570,7 @@ public class Pokemon implements IPokemon {
      * @param capacite Le coup utilise
      * @return La defense ou la statistique speciale du pokemon.
      */
-    public float obtenirDefSur(Capacite capacite) {
+    public float getDefSur(Capacite capacite) {
         if (!capacite.getCategorie().isSpecial()) {
             return this.getStat().getDefense();
         } else {
@@ -579,7 +585,7 @@ public class Pokemon implements IPokemon {
      * @param capacite La capacite que le Pokemon utilise
      * @return La statistique d'attaque du Pokemon.
      */
-    public float obtenirAtqSur(Capacite capacite) {
+    public float getAtqSur(Capacite capacite) {
         if (!capacite.getCategorie().isSpecial()) {
             return this.getStat().getForce();
         } else {
@@ -637,5 +643,23 @@ public class Pokemon implements IPokemon {
 		for(int i=0;i<this.getCapacitesApprises().length;i++) {
 			System.out.println(i+1+" - "+this.getCapacitesApprises()[i]);
 		}
+	}
+
+	public ICapacite[] getCapacitesUtilisables() {
+		ICapacite[] tmp = this.getCapacitesApprises();
+    	int nb = 0;
+    	for (ICapacite c : tmp) {
+    		if(c.getPP()!=0) {
+    			nb++;
+    		}
+    	}
+    	//System.out.println("initialisation de rep : ");
+    	Capacite[] rep = new Capacite[nb];
+    	for (int i=0;i<nb;i++) {
+			//System.out.println("\t\t"+this.listeCapacite[i]);
+    		rep[i]=(Capacite) tmp[i];
+    	}
+        return rep;
+		
 	}
 }

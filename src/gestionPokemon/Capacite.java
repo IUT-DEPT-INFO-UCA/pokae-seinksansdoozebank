@@ -99,10 +99,10 @@ public class Capacite implements ICapacite {
         double degats = 0;
         if (this.touche()) {
             if (this.puissance > 0) {
-                degats = (( (lanceur.getNiveau() * 0.4 + 2) * ((Pokemon) lanceur).obtenirAtqSur(this) * this.puissance)
-                        / (((Pokemon) receveur).obtenirDefSur(this) * 50)+2) * calculerCM((Pokemon) lanceur, (Pokemon) receveur);
+                degats = (( (lanceur.getNiveau() * 0.4 + 2) * ((Pokemon) lanceur).getAtqSur(this) * this.puissance)
+                        / (((Pokemon) receveur).getDefSur(this) * 50)+2) * calculerCM((Pokemon) lanceur, (Pokemon) receveur);
                 if(this.id==110) { //gestion de Lutte qui fait perdre la moitié des dégâts qu'elle a infligés
-                	((Pokemon)lanceur).subirDegats((int) Math.ceil(((Pokemon)lanceur).pvMax/2));
+                	((Pokemon)lanceur).subirDegats((int) Math.ceil(((Pokemon)lanceur).pvMax/4));
                 }
             } else {
             	System.out.println("Calcul des degats pour une capacite particuliere");
@@ -115,11 +115,12 @@ public class Capacite implements ICapacite {
                         if (this.getEfficiencyOn((Pokemon) receveur) != 0) {
                             degats = 20;
                         }
-                    case -3: // degat subit au tours precedent * 2 si capacite physique
-                        if (!((Pokemon) lanceur).obtenirDerniereCapaUtilisee().getCategorie().isSpecial()) {
-                        	//TODO faut fixe un truc la pcq lastCapa est pas set et donc same pour les degats jpense
-                            degats = ((Pokemon) lanceur).obtenirDeniersDegatsSubits() * 2;
-                        }
+                    case -3: // Riposte : degat subits au tours precedent * 2 si capacite physique
+                    	if(((Pokemon) receveur).getDerniereCapaciteEncaissee()!=null){
+                    		if (!((Pokemon) receveur).getDerniereCapaciteEncaissee().getCategorie().isSpecial()) {
+                            degats = ((Pokemon) lanceur).getDerniersDegatsSubits() * 2;
+                        	}
+                    	}
                     case -4: // Frappe-Atlas / Ombre Nocturne : degat = nivLanceur si la cible n'est pas imunise au type de l'attaque
                         if (this.getEfficiencyOn((Pokemon) receveur) != 0) {
                             degats = lanceur.getNiveau();
@@ -131,17 +132,18 @@ public class Capacite implements ICapacite {
                             degats = lanceur.getNiveau();
                         }
                     case -7: // Patience : impossible d' attaquer pendant 2 tours puis degat infligés = (2*les degats encaissé pendant les 2 tours) sans tenir compte des types
-                        //TODO le faire marcher
-                    	((Pokemon) lanceur).mettreNombreDeToursAvantAttaqueA(2);
-                        if (((Pokemon) lanceur).obtenirNombreDeToursAvantAttaque() == 0) {
-                            degats = (((Pokemon) lanceur).obtenirAvantDeniersDegatsSubits()
-                                    + ((Pokemon) lanceur).obtenirDeniersDegatsSubits()) * 2;
+                        //TODO tester si Patience marche
+                        if (((Pokemon) lanceur).getNombreDeToursAvantAttaque() == 0) {//si la capa chois est Patience et que le nombre de tour avant la fin est a 0
+                        	((Pokemon) lanceur).setNombreDeToursAvantAttaque(2); // on met la duree a 2 tout
+                        }else  if (((Pokemon) lanceur).getNombreDeToursAvantAttaque() == -1) { //-1 => Patience finie
+                            degats = (((Pokemon) lanceur).getAvantDerniersDegatsSubits()+ ((Pokemon) lanceur).getDerniersDegatsSubits()) * 2;
+                            ((Pokemon)lanceur).setNombreDeToursAvantAttaque(0); //reset du nombre pour reprendre un cycle de choix normal
                         }
                     case -8:
                     	degats = lanceur.getNiveau() * (Math.random() * + 0.5);
                     case -9 :
                     	degats = Math.ceil(receveur.getStat().getPV()/2);
-                    	///Meteores n'est pas géré ici, nous n'avons aucune capacité qui modifie ce par quoi Meteores n'est pas sensible, donc elle n'est pas dans les cas particuliers
+                    ///Meteores n'est pas géré ici, nous n'avons aucune capacité qui modifie ce à quoi Meteores n'est pas sensible, donc elle n'est pas dans les cas particuliers
                 }
             }
             //System.out.println(degats);

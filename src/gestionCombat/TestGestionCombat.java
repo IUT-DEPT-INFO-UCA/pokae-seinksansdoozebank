@@ -32,13 +32,13 @@ public class TestGestionCombat {
         
         
         //Joueur d1 = new Joueur("arcsti","mdp","Antoine");
-		//Joueur d2 = new Joueur("arcsti","mdp","Thomas");
+		//Joueur d2 = new Joueur("arcsti","mdp","Thomas");_
         //d1.showTeam();
 		IARandom d1 = new IARandom("Clement");
 		IARandom d2 = new IARandom("Thomas");
         //d2.showTeam();
         Combat combat = new Combat(d1,d2);
-        System.out.println(combat.getVainqueur().getNom() + "a gagne le combat !");
+        System.out.println(combat.getVainqueur().getNom() + " a gagne le combat !");
         /*
         System.out.println("Choisir un nb entre 1 et 6");
         System.out.println(d1.getInputInt(1, 6));

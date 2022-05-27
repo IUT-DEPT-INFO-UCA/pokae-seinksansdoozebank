@@ -21,11 +21,10 @@ public class IARandom extends Dresseur {
 
 	@Override
 	public IPokemon choisitCombattant() {
-		System.out.println(this.getNom()+"\n\tChoisi un pokemon a envoyer au combat...");
+		System.out.println(this.getNom()+"\n\tchoisi un pokemon a envoyer au combat...");
 		try {
 			Thread.sleep(delai);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		int i = (int)(Math.random() * Pokedex.getNbPokemonParRanch());
@@ -36,11 +35,10 @@ public class IARandom extends Dresseur {
 	
 	@Override
 	public IPokemon choisitCombattantContre(IPokemon pok) {
-		System.out.println(this.getNom()+"\n\tChoisi un pokemon a envoyer au combat...");
+		System.out.println(this.getNom()+"\n\tchoisi un pokemon a envoyer au combat...");
 		try {
 			Thread.sleep(delai);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		int i = (int)(Math.random() * Pokedex.getNbPokemonParRanch());
@@ -54,26 +52,33 @@ public class IARandom extends Dresseur {
 
 	@Override
 	public IAttaque choisitAttaque(IPokemon attaquant, IPokemon defenseur) {
-		if(attaquant.getCapacitesApprises().length>0) { //TODO ajouter le test des PP a 0 pour utiliser lutte
-			System.out.println(this.getNom()+"\n\tChoisi une attaque a utiliser...");
-			try {
-				Thread.sleep(delai);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+		if(((Pokemon)attaquant).getNombreDeToursAvantAttaque()==0) { //dans le cas ou patience a ete utilisee
+			if(((Pokemon)attaquant).getCapacitesUtilisables().length>0) {
+				System.out.println(this.getNom()+"\n\tchoisi une attaque a utiliser...");
+				try {
+					Thread.sleep(delai);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				int i = (int)(Math.random() * attaquant.getCapacitesApprises().length);
+				while(attaquant.getCapacitesApprises()[i].getPP()==0){ //re-génération de l'input si la capacite choisi n'aa plus de PP
+					i = (int)(Math.random() * attaquant.getCapacitesApprises().length);
+				}
+				this.setActionChoisie((Capacite) ((Pokemon)attaquant).getCapacitesApprises()[i]);
+			}else {
+				//utilisation de Lutte si aucune capacite n'est dispo
+				try {
+					this.setActionChoisie( Pokedex.createCapacite(((Capacite)Pokedex.getCapaciteStatic("Lutte")).id));
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				}
 			}
-			int i = (int)(Math.random() * attaquant.getCapacitesApprises().length);
-			while(attaquant.getCapacitesApprises()[i].getPP()==0){ //verification que la capacite choisie a encore des PP
-				i = (int)(Math.random() * attaquant.getCapacitesApprises().length);
-			}
-			this.setActionChoisie((Capacite) ((Pokemon)attaquant).getCapacitesApprises()[i]);
-		}else {
-			//utilisation de Lutte si aucune capacite n'est dispo
-			try {
-				this.setActionChoisie( Pokedex.createCapacite(((Capacite)Pokedex.getCapaciteStatic("Lutte")).id));
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			}
+		}else {//utilisation de patience
+        	((Pokemon) attaquant).updateNombreDeToursAvantAttaque();//on decremente la duree avant la fin de Patience
+        	if(((Pokemon)attaquant).getNombreDeToursAvantAttaque()==0) {//si Patiece est prete
+        		((Pokemon)attaquant).setNombreDeToursAvantAttaque(-1); //on met le nb de tour a -1 pour que dans calculDommage() le nb nne soit pas remis a 2
+        	}
+			
 		}
 		this.getPokemon().setAttaqueChoisie(this.getActionChoisie());
 		return this.getActionChoisie();
@@ -85,7 +90,6 @@ public class IARandom extends Dresseur {
 		try {
 			Thread.sleep(delai);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		boolean echange = (int)(Math.random() * 10)<1;

@@ -59,7 +59,7 @@ public class testPokemon {
         int pvAvantAttaque = pokeTest.getStat().getPV();
         pokeTest.subirDegats(5);
         assertNotEquals(pvAvantAttaque,pokeTest.getStat().getPV());
-        assertEquals(pokeTest.obtenirDeniersDegatsSubits(),5);
+        assertEquals(pokeTest.getDerniersDegatsSubits(),5);
     }
     @Test
     public void testGainNiveau(){

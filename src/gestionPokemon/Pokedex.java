@@ -31,7 +31,7 @@ public class Pokedex implements IPokedex{
     /**
      * Instanciation du nombre de pokemon par ranch
      */
-    private static int nbPokemonParRanch = 6; //TODO remettre a 6
+    private static int nbPokemonParRanch = 6;
     /**
      * Instanciation
      */
