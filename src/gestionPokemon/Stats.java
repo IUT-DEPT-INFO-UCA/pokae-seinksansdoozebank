@@ -39,9 +39,10 @@ public class Stats implements IStat {
         this.pv = 0;
     }
 
-
     /**
      * Creer un objet Stat en copiant l'argument de type stats passe en parametre
+     * 
+     * @param s l'objet stat à copier
      */
     public Stats(Stats s) {
         this.force = s.getForce();
@@ -156,8 +157,8 @@ public class Stats implements IStat {
      */
     public void setPV(int pv) {
         this.pv = pv;
-        if(this.pv<0) {
-        	this.pv=0;
+        if (this.pv < 0) {
+            this.pv = 0;
         }
     }
 

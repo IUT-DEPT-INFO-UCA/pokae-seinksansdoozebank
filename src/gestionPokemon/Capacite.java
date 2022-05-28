@@ -42,8 +42,6 @@ public class Capacite implements ICapacite {
      * La précision de la capacite (entre 0 et 1)
      */
     public double precision;
-    
-    public int nivNecessaire;
 
     /**
      * Le nombre de points de pouvoir actuels de la capacite
@@ -54,6 +52,10 @@ public class Capacite implements ICapacite {
      * Le nombre de points de pouvoir maximum de la capacite
      */
     public int ppBase;
+    /**
+     * le niveau necessaire pour apprendre cette capacite
+     */
+	public int nivNecessaire;
 
 	/**
 	 * Creer un objet Type avec son identifiant comme seul parametre
@@ -65,7 +67,7 @@ public class Capacite implements ICapacite {
 	}
 	
 
-    /**
+    /**Un constructeur de capacite en en copiant une autre
 	 * @param capacite La capacite à copier
 	 */
 	public Capacite(Capacite capacite) {

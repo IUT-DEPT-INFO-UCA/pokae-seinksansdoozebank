@@ -14,7 +14,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-
 /**
  * Cette classe est utilisée pour créer une espèce de Pokémon
  * Elle est utilisee pour generer les capacites disponible selon les niveaux
@@ -65,10 +64,11 @@ public class Espece implements IEspece {
 	public Stats statsGain = new Stats();
 
 	/**
-	 * Une Hashmap qui contient le niveau auquel un pokemon apprend un certain mouvement.
- 	 */
+	 * Une Hashmap qui contient le niveau auquel un pokemon apprend un certain
+	 * mouvement.
+	 */
 
-	public HashMap<Capacite,Integer> capaciteSelonNiveau= new HashMap<>();
+	public HashMap<Capacite, Integer> capaciteSelonNiveau = new HashMap<>();
 
 	/**
 	 * Constructeur de espece qui l'instancie avec son id
@@ -107,7 +107,7 @@ public class Espece implements IEspece {
 	}
 
 	/**
-	 * > Cette fonction renvoie le nom de la personne
+	 * Cette fonction renvoie le nom de la personne
 	 *
 	 * @return Le nom de la personne.
 	 */
@@ -117,7 +117,7 @@ public class Espece implements IEspece {
 	}
 
 	/**
-	 * > Cette fonction renvoie le niveau auquel le joueur commence la partie
+	 * Cette fonction renvoie le niveau auquel le joueur commence la partie
 	 *
 	 * @return Le niveau du joueur.
 	 */
@@ -146,9 +146,9 @@ public class Espece implements IEspece {
 		return this.statsGain;
 	}
 
-
 	/**
-	 * Il obtient les moves du pokemon de l'API, puis il obtient les noms des moves de l'API, puis il obtient le
+	 * Il obtient les moves du pokemon de l'API, puis il obtient les noms des moves
+	 * de l'API, puis il obtient le
 	 * niveau des moves de l'API
 	 */
 	public void initCapaciteSelonNiveau() {
@@ -156,30 +156,42 @@ public class Espece implements IEspece {
 			boolean testPresencePoke = testPresence("Esp" + this.id + ".json");
 			if (testPresencePoke) {
 				JSONParser parser = new JSONParser();
-				JSONObject jsonPoke = (JSONObject) parser.parse(new BufferedReader(new FileReader("./JSON/Esp" + this.id + ".json")));
+				JSONObject jsonPoke = (JSONObject) parser
+						.parse(new BufferedReader(new FileReader("./JSON/Esp" + this.id + ".json")));
 				InitCapPokemon(jsonPoke);
 			} else {
-				JSONObject pokemon = Pokedex.downloadJSONfromURL(("Esp" + this.id), ("https://pokeapi.co/api/v2/pokemon/" + this.id));
+				JSONObject pokemon = Pokedex.downloadJSONfromURL(("Esp" + this.id),
+						("https://pokeapi.co/api/v2/pokemon/" + this.id));
 				assert pokemon != null;
 				InitCapPokemon(pokemon);
 			}
-		}catch(Exception e){
+		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
 	}
 
+	/**
+	 * Initialise les capacites d'une espece de Pokemon en lisant un JSON
+	 * 
+	 * @param jsonPokemon Le JSONObject du Pokémon
+	 * @throws IOException    une exception
+	 * @throws ParseException une autre exception
+	 */
 	private void InitCapPokemon(JSONObject jsonPokemon) throws IOException, ParseException {
 		assert jsonPokemon != null;
 		JSONArray listeMoves = (JSONArray) jsonPokemon.get("moves");
 		for (Object listeMove : listeMoves) {
-			boolean testPresenceCapacite=testPresence(((JSONObject)((JSONObject)listeMove).get("move")).get("name").toString()+".json");
+			boolean testPresenceCapacite = testPresence(
+					((JSONObject) ((JSONObject) listeMove).get("move")).get("name").toString() + ".json");
 			JSONObject jsonNomsMoves;
-			if(testPresenceCapacite) {
+			if (testPresenceCapacite) {
 				JSONParser parser = new JSONParser();
-				jsonNomsMoves= (JSONObject) parser.parse(new FileReader("./JSON/"+ (((JSONObject)((JSONObject)listeMove).get("move")).get("name").toString())+".json"));
-			}
-			else{
-				jsonNomsMoves = Pokedex.downloadJSONfromURL(((JSONObject)((JSONObject)listeMove).get("move")).get("name").toString(),((JSONObject) ((JSONObject) listeMove).get("move")).get("url").toString());
+				jsonNomsMoves = (JSONObject) parser.parse(new FileReader("./JSON/"
+						+ (((JSONObject) ((JSONObject) listeMove).get("move")).get("name").toString()) + ".json"));
+			} else {
+				jsonNomsMoves = Pokedex.downloadJSONfromURL(
+						((JSONObject) ((JSONObject) listeMove).get("move")).get("name").toString(),
+						((JSONObject) ((JSONObject) listeMove).get("move")).get("url").toString());
 			}
 			assert jsonNomsMoves != null;
 			String nomCapaTemp = ((JSONObject) ((JSONArray) jsonNomsMoves.get("names")).get(3)).get("name").toString();
@@ -187,8 +199,13 @@ public class Espece implements IEspece {
 			if (capaTemp != null) {
 				JSONArray listeVersionGroupDetail = (JSONArray) ((JSONObject) listeMove).get("version_group_details");
 				for (Object o : listeVersionGroupDetail) {
-					if((Objects.equals((String) (((JSONObject) ((JSONObject) o).get("version_group")).get("name")), "red-blue"))&&(Objects.equals((String) (((JSONObject) ((JSONObject) o).get("move_learn_method")).get("name")), "level-up"))){
-						capaTemp.nivNecessaire = Integer.parseInt((((JSONObject) o).get("level_learned_at")).toString());
+					if ((Objects.equals((String) (((JSONObject) ((JSONObject) o).get("version_group")).get("name")),
+							"red-blue"))
+							&& (Objects.equals(
+									(String) (((JSONObject) ((JSONObject) o).get("move_learn_method")).get("name")),
+									"level-up"))) {
+						capaTemp.nivNecessaire = Integer
+								.parseInt((((JSONObject) o).get("level_learned_at")).toString());
 						capaciteSelonNiveau.put(capaTemp,
 								Integer.parseInt((((JSONObject) o).get("level_learned_at")).toString()));
 					}
@@ -197,17 +214,22 @@ public class Espece implements IEspece {
 		}
 	}
 
-	private boolean testPresence(String file){
+	/**
+	 * Il vérifie si un fichier existe dans un répertoire
+	 * 
+	 * @param file le nom du fichier à tester
+	 * @return Une valeur booléenne.
+	 */
+	private boolean testPresence(String file) {
 		File repertoire = new File("./JSON/");
 		String[] listeFichiers = repertoire.list();
 		boolean testPresence = false;
-		if(listeFichiers==null){
+		if (listeFichiers == null) {
 			System.out.println("Mauvais répertoire");
-		}
-		else{
-			int i=0;
-			while(!testPresence&&i<listeFichiers.length) {
-				if(listeFichiers[i].equals(file)){
+		} else {
+			int i = 0;
+			while (!testPresence && i < listeFichiers.length) {
+				if (listeFichiers[i].equals(file)) {
 					testPresence = true;
 				}
 				i++;
@@ -231,6 +253,7 @@ public class Espece implements IEspece {
 		}
 		return liste;
 	}
+
 	/**
 	 * Il renvoie l'espece dans laquelle cette espece evolue
 	 *
@@ -238,10 +261,9 @@ public class Espece implements IEspece {
 	 * @return L'evolution du pokemon
 	 */
 	public IEspece getEvolution(int niveau) {
-		if (niveau==this.nivEvolution){
+		if (niveau == this.nivEvolution) {
 			return Pokedex.getEspeceParNom(this.evolution);
-		}
-		else{
+		} else {
 			return null;
 		}
 	}
@@ -302,37 +324,45 @@ public class Espece implements IEspece {
 	 *         Pokemon.
 	 */
 	public Capacite[] capaciteDispo(Pokemon pokemon) {
-        Capacite[] tabCapaciteDispo = new Capacite[50];
+		Capacite[] tabCapaciteDispo = new Capacite[50];
 
-        int i = 0;
-        for (Entry<Capacite, Integer> c : this.capaciteSelonNiveau.entrySet()) {
-            if (Integer.parseInt(c.getValue().toString()) <= pokemon.getNiveau()) {
-                tabCapaciteDispo[i] = c.getKey();
-                i++;
-            }
-        }
-        return tabCapaciteDispo;
-    }
+		int i = 0;
+		for (Entry<Capacite, Integer> c : this.capaciteSelonNiveau.entrySet()) {
+			if (Integer.parseInt(c.getValue().toString()) <= pokemon.getNiveau()) {
+				tabCapaciteDispo[i] = c.getKey();
+				i++;
+			}
+		}
+		return tabCapaciteDispo;
+	}
 
-	
+	/**
+	 * Il renvoie un mouvement que le pokémon peut apprendre au niveau donné
+	 * 
+	 * @param niv le niveau du pokémon
+	 * @return La méthode renvoie un objet Capacite.
+	 */
 	public Capacite getLearnableMove(int niv) {
 		for (Entry<Capacite, Integer> c : this.capaciteSelonNiveau.entrySet()) {
-			if(c.getValue()==niv) {
-				//System.out.println("return de "+c.getKey()+ " parfait pour le niveau "+niv);
+			if (c.getValue() == niv) {
+				// System.out.println("return de "+c.getKey()+ " parfait pour le niveau "+niv);
 				return c.getKey();
-			}else {
-				//System.out.println(this.getNom()+" ne peut pas aprendre "+c.getKey()+" au niveau "+niv);
+			} else {
+				// System.out.println(this.getNom()+" ne peut pas aprendre "+c.getKey()+" au
+				// niveau "+niv);
 			}
 		}
 		return null;
 	}
 
-	
+	/**
+	 * Il imprime le nom de la capacité et le niveau de la capacité pour chaque
+	 * element de la liste que le pokemon peut apprendre
+	 */
 	public void showCapSet() {
 		for (Entry<Capacite, Integer> c : this.capaciteSelonNiveau.entrySet()) {
-			System.out.println("\t"+c.getKey().getNom()+" : niv "+c.getValue());
+			System.out.println("\t" + c.getKey().getNom() + " : niv " + c.getValue());
 		}
 	}
-	
-	
+
 }
