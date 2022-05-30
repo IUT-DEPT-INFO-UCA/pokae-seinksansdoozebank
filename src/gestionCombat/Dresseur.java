@@ -335,14 +335,19 @@ public abstract class Dresseur implements IDresseur, IEchange, IStrategy {
 	 * @return Une valeur booléenne.
 	 */
 	public boolean pouvoirSeBattre() {
-		boolean peutSeBattre = false;
-		int i = 0;
-		while (!peutSeBattre && i < Pokedex.getNbPokemonParRanch()) {
-			peutSeBattre = !this.equipe[i].estEvanoui();
-			i++;
-		}
-		return peutSeBattre;
+		return this.getNbPokemonAlive()>0;
 	}
+	
+	public int getNbPokemonAlive() {
+		int nb=0;
+		for(Pokemon p : this.getEquipe()) {
+			if(!p.estEvanoui()) {
+				nb++;
+			}
+		}
+		return nb;
+	}
+		
 
 	/**
 	 * Il renvoie le mouvement que le pokémon peut apprendre à son niveau actuel

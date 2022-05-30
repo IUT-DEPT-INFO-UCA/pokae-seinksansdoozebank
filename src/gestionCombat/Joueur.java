@@ -114,17 +114,19 @@ public class Joueur extends Dresseur {
 	@Override
 	public void selectAction(IPokemon p, IPokemon pAdv) {
 		System.out.println(this.getNom() + "\t" + p.getNom() + " est sur le terrain. Que voulez vous faire ?");
-		// System.out.println("nb tours avant attaque :
-		// "+((Pokemon)p).getNombreDeToursAvantAttaque());
-		System.out.println("\t" + msgChoixAction);
-		int input = InputViaScanner.getInputInt(1, 2);
-		if (input == 1) {
+		if(this.getNbPokemonAlive()>1) {
+			System.out.println("\t" + msgChoixAction);
+			int input = InputViaScanner.getInputInt(1, 2);
+			if (input == 1) {
+				this.choisitAttaque(p, pAdv);
+			} else {
+				p = this.choisitCombattantContre(pAdv);
+				this.setActionChoisie(null);
+			}
+		}else {
+			System.out.println(this.getNom() + "\t"+p.getNom()+" est votre dernier pokemon, vous devez attaquer !");
 			this.choisitAttaque(p, pAdv);
-		} else {
-			p = this.choisitCombattantContre(pAdv);
-			this.setActionChoisie(null);
 		}
-
 	}
 
 }

@@ -51,7 +51,7 @@ public class IARandom extends Dresseur {
 			e.printStackTrace();
 		}
 		int i = (int) (Math.random() * Pokedex.getNbPokemonParRanch());
-		while (this.getEquipe()[i].estEvanoui()) { // verification que le pokemon n'est pas KO
+		while (this.getEquipe()[i].estEvanoui() || this.getPokemon()==this.getEquipe()[i]) { // verification que le pokemon n'est pas KO
 			i = (int) (Math.random() * Pokedex.getNbPokemonParRanch());
 		}
 		Pokemon choosen = this.getEquipe()[i];
@@ -104,7 +104,7 @@ public class IARandom extends Dresseur {
 			e.printStackTrace();
 		}
 		boolean echange = (int) (Math.random() * 10) < 1;
-		if (echange) {
+		if (echange && this.getNbPokemonAlive()>1) {
 			p = this.choisitCombattantContre(pAdv);
 			this.setActionChoisie(null);
 		} else {
