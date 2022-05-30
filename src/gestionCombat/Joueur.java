@@ -128,5 +128,43 @@ public class Joueur extends Dresseur {
 			this.choisitAttaque(p, pAdv);
 		}
 	}
+	
+	@Override
+	public void enseigne(IPokemon pok, ICapacite[] caps) {
+		Capacite capaciteAApprendre = this.canTeachAMove();
+		if (capaciteAApprendre != null) {
+			if (caps.length < 4) {
+				// System.out.println(pok.getNom()+" peut apprendre
+				// "+capaciteAApprendre.getNom()+" et il peut le faire seul.");
+				try {
+					this.getPokemon().remplaceCapacite(caps.length, capaciteAApprendre);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				System.out.println("\t" + pok.getNom() + " a appris " + capaciteAApprendre.getNom() + " !");
+			} else {
+				System.out.println("\t" + pok.getNom() + " veut apprendre " + capaciteAApprendre.getNom() + ".");
+				System.out.println(
+						"\tVoulez vous lui faire oublier une des ses capacités (1) ou ne pas l'apprendre (2) ?");
+				int inputChoix = InputViaScanner.getInputInt(1, 2);
+				if (inputChoix == 1) {
+					((Pokemon) pok).showCapaciteApprise();
+					System.out.println("\tEntrer le numéro de la capacité à oublier (ou 0 pour annuler) :");
+					int inputCapacite = InputViaScanner.getInputInt(1, this.getPokemon().getCapacitesApprises().length);
+					try {
+						pok.remplaceCapacite(inputCapacite - 1, capaciteAApprendre);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				} else {
+					System.out.println("\t" + pok.getNom() + " n'a pas appris " + capaciteAApprendre.getNom() + ".");
+				}
+			}
+		} else {
+			// System.out.println(pok.getNom()+" n'a aucune capacite a apprendre au niveau
+			// "+pok.getNiveau());
+		}
+	}
 
+	
 }

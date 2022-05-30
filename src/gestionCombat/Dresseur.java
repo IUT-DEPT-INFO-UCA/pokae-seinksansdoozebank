@@ -30,7 +30,7 @@ public abstract class Dresseur implements IDresseur, IEchange, IStrategy {
 	/**
 	 * le ranch de 6 pokemons du dresseur
 	 */
-	private Pokemon[] equipe = new Pokemon[6];
+	private Pokemon[] equipe = new Pokemon[Pokedex.getNbPokemonParRanch()];
 	/**
 	 * le niveau du dresseur, soit la somme des niveaux des pokemons de son ranch
 	 */
@@ -101,49 +101,14 @@ public abstract class Dresseur implements IDresseur, IEchange, IStrategy {
 	public String toString() {
 		return this.nom;
 	}
-	/////////////////////// methode de IDresseur ///////////////////////
+	/////////////////////// methode de IDresseur (et IStrategy) ///////////////////////
 
 	public IPokemon getPokemon(int i) {
 		return this.equipe[i];
 	}
 
 	@Override
-	public void enseigne(IPokemon pok, ICapacite[] caps) {
-		Capacite capaciteAApprendre = this.canTeachAMove();
-		if (capaciteAApprendre != null) {
-			if (caps.length < 4) {
-				// System.out.println(pok.getNom()+" peut apprendre
-				// "+capaciteAApprendre.getNom()+" et il peut le faire seul.");
-				try {
-					this.getPokemon().remplaceCapacite(caps.length, capaciteAApprendre);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				System.out.println("\t" + pok.getNom() + " a appris " + capaciteAApprendre.getNom() + " !");
-			} else {
-				System.out.println("\t" + pok.getNom() + " veut apprendre " + capaciteAApprendre.getNom() + ".");
-				System.out.println(
-						"\tVoulez vous lui faire oublier une des ses capacités (1) ou ne pas l'apprendre (2) ?");
-				int inputChoix = InputViaScanner.getInputInt(1, 2);
-				if (inputChoix == 1) {
-					((Pokemon) pok).showCapaciteApprise();
-					System.out.println("\tEntrer le numéro de la capacité à oublier (ou 0 pour annuler) :");
-					int inputCapacite = InputViaScanner.getInputInt(1, this.getPokemon().getCapacitesApprises().length);
-					try {
-						pok.remplaceCapacite(inputCapacite - 1, capaciteAApprendre);
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				} else {
-					System.out.println("\t" + pok.getNom() + " n'a pas appris " + capaciteAApprendre.getNom() + ".");
-				}
-			}
-		} else {
-			// System.out.println(pok.getNom()+" n'a aucune capacite a apprendre au niveau
-			// "+pok.getNiveau());
-		}
-
-	}
+	public abstract void enseigne(IPokemon pok, ICapacite[] caps);
 
 	@Override
 	public void soigneRanch() {
@@ -267,7 +232,7 @@ public abstract class Dresseur implements IDresseur, IEchange, IStrategy {
 	 * 
 	 * @return La valeur de la variable niveau.
 	 */
-	public int getNiveau() { // TODO update ca
+	public int getNiveau() {
 		return niveau;
 	}
 
@@ -305,9 +270,11 @@ public abstract class Dresseur implements IDresseur, IEchange, IStrategy {
 	 * pokemons de son ranch
 	 */
 	public void updateNiveau() {
+		int s=0;
 		for (Pokemon p : this.getEquipe()) {
-			this.niveau += p.getNiveau();
+			s += p.getNiveau();
 		}
+		this.niveau = s;
 	}
 
 	/**

@@ -98,6 +98,7 @@ public abstract class Pokedex implements IPokedex {
      * @throws ParseException Une autre exception
      */
     public static IPokemon[] engendreRanchStatic() throws IOException, ParseException {
+    	System.out.println("Chargement en cours...");
         IPokemon[] listePokeAleatoire = new Pokemon[nbPokemonParRanch];
         int i = 0;
         while (i < nbPokemonParRanch) {
