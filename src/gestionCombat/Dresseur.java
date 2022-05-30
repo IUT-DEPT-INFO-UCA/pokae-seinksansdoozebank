@@ -1,8 +1,10 @@
 package gestionCombat;
+
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
+
+
 import java.io.IOException;
-import java.util.Scanner;
 
 import gestionPokemon.*;
 import interfaces.IAttaque;
@@ -12,31 +14,57 @@ import interfaces.IEchange;
 import interfaces.IPokemon;
 import interfaces.IStrategy;
 import org.json.simple.parser.ParseException;
-
-public class Dresseur implements IDresseur,IEchange, IStrategy{
+/**
+ * Un objet représenant un dresseur
+ *
+ */
+public abstract class Dresseur implements IDresseur, IEchange, IStrategy {
+	/**
+	 * L'identifiat unique du dresseur
+	 */
 	private String identifiant;
+	/**
+	 * le mot de passe du dresseur
+	 */
 	private String motDepasse;
+	/**
+	 * le nom du dresseur
+	 */
 	private String nom;
-	public Pokemon[] equipe = new Pokemon[6]; //TODO set to private
+	/**
+	 * le ranch de 6 pokemons du dresseur
+	 */
+	private Pokemon[] equipe = new Pokemon[6];
+	/**
+	 * le niveau du dresseur, soit la somme des niveaux des pokemons de son ranch
+	 */
 	private int niveau;
-	private Pokemon pokemon; //TODO set to private
-	private Pokemon pokemonChoisi; 
-
+	/**
+	 * le pokemon actif du dresseur
+	 */
+	private Pokemon pokemon;
+	/**
+	 * le pokemon choisi par le dresseur, celui qui va etre envoyé au combat
+	 */
+	private Pokemon pokemonChoisi;
+	/**
+	 * l'action choisi par le dresseur pour le tour actuel
+	 */
 	private Capacite actionChoisie;
 
-	private String type; //joueur ou IA
-	
-	public Dresseur(String id, String mdp) {
-		//on cree un dresseur en le recuperant dans le stockage
-	}
-	
-	public Dresseur(String id, String mdp, String nom) throws IOException, ParseException {
-		//on cree un dresseur en l'ajoutant au stockage
-		this.identifiant=id;
-		this.motDepasse = mdp;
+	/**
+	 * le constructeur d'un dresseur pour une IARandom
+	 * 
+	 * @param nom le nom du dresseur
+	 */
+	public Dresseur(String nom) {
 		this.nom = nom;
-		this.equipe = (Pokemon[]) Pokedex.engendreRanchStatic();
-		this.setNiveau();
+		try {
+			this.equipe = (Pokemon[]) Pokedex.engendreRanchStatic();
+		} catch (IOException | ParseException e) {
+			e.printStackTrace();
+		}
+		this.updateNiveau();
 		this.pokemon = this.equipe[0];
 		saveData(identifiant, motDepasse);
 
@@ -61,69 +89,91 @@ On recherche l'identifiant de l'utilisateur.
 			System.out.println("Vous etes connecté");
 		}
 	}
+
 	public String toSring() {
 		return this.getNom();
+
+
+	/**
+	 * le constructeur du Dresseur lorsqu'un joueur se connecte
+	 * 
+	 * @param id  identifiant unqiue de l'utilisateur
+	 * @param mdp le mot de passe de l'utilisateur
+	 */
+	public Dresseur(String id, String mdp) {
+		// on cree un dresseur en le recuperant dans le stockage
+	}
+
+	/**
+	 * le constructeur du Dresseur lorsqu'un joueur s'inscrit
+	 * 
+	 * @param id  identifiant unqiue de l'utilisateur
+	 * @param mdp le mot de passe de l'utilisateur
+	 * @param nom le nom du dresseur que l'utilisateur créé sint dresseur
+	 */
+	public Dresseur(String id, String mdp, String nom) {
+		// on cree un dresseur en l'ajoutant au stockage
+		this.identifiant = id;
+		this.motDepasse = mdp;
+		this.nom = nom;
+		try {
+			this.equipe = (Pokemon[]) Pokedex.engendreRanchStatic();
+		} catch (IOException | ParseException e) {
+			e.printStackTrace();
+		}
+		this.updateNiveau();
+		this.pokemon = this.equipe[0];
+	}
+
+	/**
+	 * Definition de l'affichage d'un dresseur par son nom
+	 */
+	public String toString() {
+		return this.nom;
+
 	}
 	/////////////////////// methode de IDresseur ///////////////////////
-	
 
 	public IPokemon getPokemon(int i) {
 		return this.equipe[i];
 	}
-	
 
 	@Override
 	public void enseigne(IPokemon pok, ICapacite[] caps) {
-			////////////////TODO :
-			/*
-			En gros, on veux faire l'algo suivant :
-			On test si le niveau actuel nous donne une capacitée a apprendre :
-			SI NON : 
-				aucune capacitée a apprendre
-			SI OUI :
-				0--> On ne souhaite pas apprendre la capacitée
-				
-				1--> On souhaite l'apprendre
-				=> SI 0 Alors on abandonne la capacitée et on garde notre tableau de capacité comme il est.
-				=> SI 1 Alors, on parcours les capacitées. 
-					=> SI on trouve un null alors on le remplace par la nouvelle capacitée a apprendre
-					=> SI on ne trouve pas de null alors on demande a l'utilisateur de renseigner un entier compris entre 0 et 4 
-						=> SI >4 ou <0 erreur
-						=> SINON on remplace la capacitée de l'entier
-		*/
-			
 		Capacite capaciteAApprendre = this.canTeachAMove();
-		if(capaciteAApprendre!=null) {
-			if(caps.length<4) {
-				//System.out.println(pok.getNom()+" peut apprendre "+capaciteAApprendre.getNom()+" et il peut le faire seul.");
+		if (capaciteAApprendre != null) {
+			if (caps.length < 4) {
+				// System.out.println(pok.getNom()+" peut apprendre
+				// "+capaciteAApprendre.getNom()+" et il peut le faire seul.");
 				try {
 					this.getPokemon().remplaceCapacite(caps.length, capaciteAApprendre);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-				System.out.println(pok.getNom()+" a appris "+capaciteAApprendre.getNom()+" !");
-			}else {
-				System.out.println(pok.getNom()+" veut apprendre "+capaciteAApprendre.getNom()+".");
-				System.out.println("Voulez vous lui faire oublier une des ses capacités (1) ou ne pas l'apprendre (2) ?");
+				System.out.println("\t" + pok.getNom() + " a appris " + capaciteAApprendre.getNom() + " !");
+			} else {
+				System.out.println("\t" + pok.getNom() + " veut apprendre " + capaciteAApprendre.getNom() + ".");
+				System.out.println(
+						"\tVoulez vous lui faire oublier une des ses capacités (1) ou ne pas l'apprendre (2) ?");
 				int inputChoix = InputViaScanner.getInputInt(1, 2);
-				if(inputChoix==1) {
-					((Pokemon)pok).showCapaciteApprise();
-					System.out.println("Entrer le numéro de la capacité à oublier (ou 0 pour annuler) :");
+				if (inputChoix == 1) {
+					((Pokemon) pok).showCapaciteApprise();
+					System.out.println("\tEntrer le numéro de la capacité à oublier (ou 0 pour annuler) :");
 					int inputCapacite = InputViaScanner.getInputInt(1, this.getPokemon().getCapacitesApprises().length);
-						try {
-							pok.remplaceCapacite(inputCapacite-1, capaciteAApprendre);
-						} catch (Exception e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-				}else {
-					System.out.println(pok.getNom()+" n'a pas appris "+capaciteAApprendre.getNom()+".");
+					try {
+						pok.remplaceCapacite(inputCapacite - 1, capaciteAApprendre);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				} else {
+					System.out.println("\t" + pok.getNom() + " n'a pas appris " + capaciteAApprendre.getNom() + ".");
 				}
 			}
-		}else {
-			System.out.println(pok.getNom()+" n'a aucune capacite a apprendre au niveau "+pok.getNiveau());
+		} else {
+			// System.out.println(pok.getNom()+" n'a aucune capacite a apprendre au niveau
+			// "+pok.getNiveau());
 		}
-		
+
 	}
 
 	@Override
@@ -133,66 +183,18 @@ On recherche l'identifiant de l'utilisateur.
 		}
 	}
 
-	@Override
-	public IPokemon choisitCombattant() {
-		System.out.println("\nChoisissez le pokemon à envoyer au combat : ");
-		for(int i=0;i<this.getEquipe().length;i++) {
-			System.out.println(i+1+" - "+this.getEquipe()[i]);
-		}
-		System.out.println("Entrer le numéro du pokemon choisi : ");
-		int input=InputViaScanner.getInputInt(1, 6);
-		Pokemon choosen = this.getEquipe()[input-1];
-		this.setPokemon(choosen);
-		return choosen;
-	}
+	public abstract IPokemon choisitCombattant();
 
-	@Override
-	public IPokemon choisitCombattantContre(IPokemon pok) {
-		System.out.println("Choisissez le pokemon à envoyer au combat : ");
-		for(int i=0;i<this.getEquipe().length;i++) {
-			if(!this.getEquipe()[i].estEvanoui())
-				System.out.println(i+1+" - "+this.getEquipe()[i]);
-			else {
-				System.out.println(i+1+" - KO - "+this.getEquipe()[i]);
-			}
-		}
-		System.out.println("Choississez le numéro du pokemon à envoyer au combat : ");
-		int input = InputViaScanner.getInputInt(1, 6);
-		//TODO bloquer les input pour les pokemon KO
-		Pokemon choosen = this.getEquipe()[input-1];
-		this.setPokemonChoisi(choosen);
-		return choosen;
-	}
+	public abstract IPokemon choisitCombattantContre(IPokemon pok);
 
-	@Override
-	public IAttaque choisitAttaque(IPokemon attaquant, IPokemon defenseur) {
-		//TODO si attaquant.getCapacitesApprises() est vide on utilise lutte
-		if(attaquant.getCapacitesApprises().length>0) {
-			for(ICapacite c : attaquant.getCapacitesApprises()) {
-				System.out.println(c+" PP : "+c.getPP()+"/"+((Capacite)c).getPPBase());
-			}
-			System.out.println("Choississez le numéro de l'attaque à utiliser : ");
-			int input = InputViaScanner.getInputInt(1, attaquant.getCapacitesApprises().length);
-			this.actionChoisie = (Capacite) ((Pokemon)attaquant).getCapacitesApprises()[input-1];
-		}else {
-			try {
-				this.actionChoisie = Pokedex.createCapacite(((Capacite)Pokedex.getCapaciteStatic("Lutte")).id);
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		System.out.println(attaquant.getNom()+" va utiliser "+this.actionChoisie);
-		((Pokemon) attaquant).setAttaqueChoisie(this.actionChoisie);
-		return this.actionChoisie;
-	}
+	public abstract IAttaque choisitAttaque(IPokemon attaquant, IPokemon defenseur);
 
-	
 	/////////////////////// methode de IEchange ///////////////////////
-	
+
 	public int calculeDommage(IPokemon lanceur, IPokemon receveur) {
-		//On return 0 puisque echange ne fait aucun degat
-		// de toute facons on appelle jamais cette méthode puisque le calcul des dommage d'un dresseur n'a pas de sens
+		// On return 0 puisque echange ne fait aucun degat
+		// de toute facons on appelle jamais cette méthode puisque le calcul des dommage
+		// d'un dresseur n'a pas de sens
 		return 0;
 	}
 
@@ -201,107 +203,199 @@ On recherche l'identifiant de l'utilisateur.
 	}
 
 	public void setPokemon(IPokemon pok) {
-		System.out.println(this.getNom()+" envoie "+pok.getNom()+" au combat.");
-		this.pokemonChoisi = (Pokemon) pok;
+		System.out.println(this.getNom() + " envoie " + pok.getNom() + " au combat.");
+		this.pokemon = (Pokemon) pok;
 	}
-	
 
 	public IPokemon echangeCombattant() {
 		Pokemon oldPokemonActif = this.pokemon;
-		this.pokemon=this.pokemonChoisi;
+		System.out.print(this.getNom() + " rapelle " + oldPokemonActif.getNom() + " et ");
+		this.pokemon = this.pokemonChoisi;
+		System.out.println("envoie " + this.getPokemon().getNom());
 		return oldPokemonActif;
 	}
 	/////////////////////////////////////////////////////////////////////
-	
-	
+
+	/**
+	 * La fonction prend deux objets IPokemon, et le dresseur du premier objet
+	 * IPokemon sélectionnera une action à effectuer : une capacité qui touchera le
+	 * Pokemon pAdv ou un changement de Pokemon
+	 * 
+	 * @param p    Le pokémon qui utilise le mouvement
+	 * @param pAdv Le pokémon de l'adversaire
+	 */
+	public abstract void selectAction(IPokemon p, IPokemon pAdv);
+
+	/**
+	 * Retourne le pokémon actif du dresseur
+	 * 
+	 * @return L'objet pokémon actif du dresseur.
+	 */
 	public Pokemon getPokemon() {
 		return this.pokemon;
 	}
 
+	/**
+	 * Cette fonction renvoie l'attribut pokemonChoisi (le pokemonChoisi est le
+	 * pokemon qui sera envoyé au combat lors de l'appel de la méthode
+	 * echangeCombattant() )
+	 * 
+	 * @return Le pokemonChoisi par le dresseur.
+	 */
 	public Pokemon getPokemonChoisi() {
 		return pokemonChoisi;
 	}
 
+	/**
+	 * Défini le pokemon que le dresseur veut envoyer au combat dans l'attribut
+	 * pokemonChoisi
+	 * 
+	 * @param pokemonChoisi le pokémon que le dresseur veut envoyer au combat
+	 */
 	public void setPokemonChoisi(IPokemon pokemonChoisi) {
 		this.pokemonChoisi = (Pokemon) pokemonChoisi;
 	}
-	
+
+	/**
+	 * Cette fonction renvoie le ranch du ranch du Dresseur sous forme de tableau de
+	 * Pokemon
+	 * 
+	 * @return Le tableau équipe.
+	 */
 	public Pokemon[] getEquipe() {
 		return this.equipe;
 	}
-	
+
+	/**
+	 * Cette fonction renvoie l'identifiant du dresseur
+	 * 
+	 * @return L'identifiant du dresseur
+	 */
 	public String getIdentifiant() {
 		return identifiant;
 	}
 
+	/**
+	 * Cette fonction renvoie le mot de passe du dresseur
+	 * 
+	 * @return La méthode renvoie la valeur de la variable motDepasse.
+	 */
 	public String getMotDepasse() {
 		return motDepasse;
 	}
 
+	/**
+	 * Cette fonction renvoie le nom du du dresseur
+	 * 
+	 * @return Le nom du du dresseur
+	 */
 	public String getNom() {
 		return nom;
 	}
 
-	public int getNiveau() {
+	/**
+	 * Cette fonction renvoie le niveau du dresseur
+	 * 
+	 * @return La valeur de la variable niveau.
+	 */
+	public int getNiveau() { // TODO update ca
 		return niveau;
 	}
 
-	public String getType() {
-		return type;
-	}
-
+	/**
+	 * Cette fonction fixe la valeur de l'attribut identifiant du dresseur à la
+	 * valeur du paramètre
+	 * identifiant
+	 * 
+	 * @param identifiant L'identifiant unique du dresseur.
+	 */
 	public void setIdentifiant(String identifiant) {
 		this.identifiant = identifiant;
 	}
 
+	/**
+	 * Cette fonction définit le mot de passe du dresseur
+	 * 
+	 * @param motDepasse Le mot de passe du dresseur
+	 */
 	public void setMotDepasse(String motDepasse) {
 		this.motDepasse = motDepasse;
 	}
 
+	/**
+	 * Cette fonction fixe la valeur de la variable nom à la valeur du paramètre nom
+	 * 
+	 * @param nom Le nom du paramètre.
+	 */
 	public void setNom(String nom) {
 		this.nom = nom;
 	}
 
-	public void setNiveau() {
-		for(Pokemon p : this.getEquipe()) {
-			this.niveau+=p.getNiveau();
+	/**
+	 * Cette fonction calcule le niveau total du dresseur en fonction du niveau des
+	 * pokemons de son ranch
+	 */
+	public void updateNiveau() {
+		for (Pokemon p : this.getEquipe()) {
+			this.niveau += p.getNiveau();
 		}
 	}
 
-	public void setType(String type) {
-		this.type = type;
-	}
-
+	/**
+	 * Cette fonction renvoie l'action choisie par le dresseur
+	 * 
+	 * @return L'action choisie par le dresseur.
+	 */
 	public Capacite getActionChoisie() {
 		return actionChoisie;
 	}
 
+	/**
+	 * Cette fonction définit l'action choisie par le dresseur
+	 * 
+	 * @param actionChoisie L'action que le dresseur a choisi d'utiliser.
+	 */
 	public void setActionChoisie(Capacite actionChoisie) {
 		this.actionChoisie = actionChoisie;
 	}
-	/*
-	public void attaquer(Dresseur other) {
-		other.getPokemon().subitAttaqueDe(this.getPokemon(), this.actionChoisie);
-		this.utilise();
-	}
-	*/
+
+	/**
+	 * Cette fonction retourne vrai si le joueur peut combattre, faux si tout ces
+	 * pokemons sont KO
+	 * 
+	 * @return Une valeur booléenne.
+	 */
 	public boolean pouvoirSeBattre() {
-		boolean peutSeBattre = false;
-		int i=0;
-		while (!peutSeBattre && i<6) {
-			peutSeBattre = !this.equipe[i].estEvanoui();
-			i++;
-		}
-		return peutSeBattre;
+		return this.getNbPokemonAlive()>0;
 	}
 	
+	public int getNbPokemonAlive() {
+		int nb=0;
+		for(Pokemon p : this.getEquipe()) {
+			if(!p.estEvanoui()) {
+				nb++;
+			}
+		}
+		return nb;
+	}
+		
+
+	/**
+	 * Il renvoie le mouvement que le pokémon peut apprendre à son niveau actuel
+	 * 
+	 * @return La méthode renvoie le mouvement apprenable du pokemon.
+	 */
 	public Capacite canTeachAMove() {
-		//System.out.println("appel de getLearnableMove().");
+		// System.out.println("appel de getLearnableMove().");
 		return this.getPokemon().espPoke.getLearnableMove(this.getPokemon().getNiveau());
 	}
-	
+
+	/**
+	 * Cette fonction affiche l'équipe du joueur, utile lorsqu'on veut qu'il
+	 * choisisse un pokemon
+	 */
 	public void showTeam() {
-		for(Pokemon p : this.getEquipe()) {
+		for (Pokemon p : this.getEquipe()) {
 			System.out.println(p);
 		}
 	}

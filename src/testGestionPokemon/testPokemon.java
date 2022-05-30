@@ -1,16 +1,11 @@
 package testGestionPokemon;
 import gestionPokemon.Pokedex;
 import gestionPokemon.Pokemon;
-import gestionPokemon.Espece;
 import org.json.simple.parser.ParseException;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.FileNotFoundException;
-
 import java.io.IOException;
-import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -64,7 +59,7 @@ public class testPokemon {
         int pvAvantAttaque = pokeTest.getStat().getPV();
         pokeTest.subirDegats(5);
         assertNotEquals(pvAvantAttaque,pokeTest.getStat().getPV());
-        assertEquals(pokeTest.obtenirDeniersDegatsSubits(),5);
+        assertEquals(pokeTest.getDerniersDegatsSubits(),5);
     }
     @Test
     public void testGainNiveau(){
