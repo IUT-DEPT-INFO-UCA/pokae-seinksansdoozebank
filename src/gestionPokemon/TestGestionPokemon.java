@@ -1,16 +1,12 @@
 package gestionPokemon;
 
 import org.json.simple.parser.ParseException;
-
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Arrays;
-
 import gestionCombat.Combat;
-import gestionCombat.Dresseur;
-import interfaces.ICapacite;
-//import java.util.Arrays;
+import gestionCombat.IARandom;
+import gestionCombat.Joueur;
 
+@SuppressWarnings("unused")
 public class TestGestionPokemon {
 
         public static void main(String[] args) throws IOException, ParseException {
@@ -21,7 +17,7 @@ public class TestGestionPokemon {
             //System.out.println(Arrays.toString(Pokedex.engendreRanch()));
             //Espece
             /*
-            System.out.println("Espece n°3  = "+Pokedex.especeParId(3));
+            System.out.println("Espece n°3  = "+Pokedex.especeParId(abstract3));
             System.out.println("Espece qui a pour nom Pikachu :"+Pokedex.especeParNom("Pikachu"));
             //Capacite
             System.out.println("Capacite n°18 = "+Pokedex.capaciteParId(18));

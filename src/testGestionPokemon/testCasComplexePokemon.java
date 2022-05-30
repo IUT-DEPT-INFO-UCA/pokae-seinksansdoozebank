@@ -15,9 +15,7 @@ public class testCasComplexePokemon {
     @BeforeEach
     public void createPokedex() throws IOException{
         // Initialisation du pokedex et du pokemon Test.
-        Pokedex pokedex = new Pokedex();
-        Pokedex.createListeCapacite();
-        Pokedex.createListeEspece();
+        Pokedex.initialiser();
         pokeTest = new Pokemon(Pokedex.listeEspece[1]);
     }
 
@@ -38,7 +36,7 @@ public class testCasComplexePokemon {
         int pvAvantAttaque = pokeTest.getStat().getPV();
         pokeTest.subirDegats(0);
         assertEquals(pvAvantAttaque, pokeTest.getStat().getPV());
-        assertEquals(pokeTest.obtenirDeniersDegatsSubits(), 0);
+        assertEquals(pokeTest.getDerniersDegatsSubits(), 0);
     }
 
     @Test

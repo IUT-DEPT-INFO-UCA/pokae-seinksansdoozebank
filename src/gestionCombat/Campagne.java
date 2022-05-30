@@ -4,34 +4,42 @@ public class Campagne {
     public Dresseur joueur;
     public int nbVictoires;
 
-    Campagne(){
+    Campagne() {
 
     }
-    public void seConnecter(){
+
+    public void seConnecter() {
 
     }
-    public void sInscrire(){
+
+    public void sInscrire() {
 
     }
-    public void continuerCampagne(){
+
+    public void continuerCampagne() {
 
     }
+
     @SuppressWarnings("unused")
-	private void lancerNouveauCombat(){
+    private void lancerNouveauCombat() {
 
     }
+
     @SuppressWarnings("unused")
-    private void genererNouvelAdversaire(){
+    private void genererNouvelAdversaire() {
 
     }
+
     @SuppressWarnings("unused")
     private String choisirTypeAdversaire() {
         return null;
     }
-    public void sauvegarder(){
+
+    public void sauvegarder() {
 
     }
-    public void afficherStat(){
+
+    public void afficherStat() {
 
     }
 }
