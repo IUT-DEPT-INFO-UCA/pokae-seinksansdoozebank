@@ -1,22 +1,16 @@
 package gestionCombat;
 
-import java.io.*;
-import java.util.Scanner;
-
-import gestionPokemon.*;
-import interfaces.IAttaque;
-import interfaces.ICapacite;
-import interfaces.IDresseur;
-import interfaces.IEchange;
-import interfaces.IPokemon;
-import interfaces.IStrategy;
+import gestionPokemon.Capacite;
+import gestionPokemon.Pokedex;
+import gestionPokemon.Pokemon;
+import interfaces.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-
 import org.json.simple.parser.ParseException;
 
-import java.io.IOException;
+import java.io.*;
+import java.util.Scanner;
 /**
  * Un objet représenant un dresseur
  *
@@ -72,13 +66,13 @@ public abstract class Dresseur implements IDresseur, IEchange, IStrategy {
 
 	}
 
-	public void saveData(String id, String mdp,String nom) throws IOException, ParseException {
-		if (testPresence()){
+	public void saveData(String id, String mdp, String nom) throws IOException, ParseException {
+		if (testPresence()) {
 			JSONParser parser = new JSONParser();
 			JSONObject datafile = (JSONObject) parser.parse(new BufferedReader(new FileReader("./dataSave/DataFile.json")));
 
 			JSONArray dresseurs = (JSONArray) datafile.get("user");
-			if(testUserDejaAjoute(dresseurs, id)==0) {
+			if (testUserDejaAjoute(dresseurs, id) == 0) {
 				assert (dresseurs.size() > 0);
 				JSONObject dresseur = new JSONObject();
 				dresseur.put("id", id);
@@ -88,32 +82,31 @@ public abstract class Dresseur implements IDresseur, IEchange, IStrategy {
 				FileWriter myWriter = new FileWriter("./dataSave/DataFile.json");
 				myWriter.write(datafile.toJSONString());
 				myWriter.close();
-			}
-			else{
+			} else {
 				System.out.println("Ce dresseur existe deja");
 			}
-		}
-		else{
+		} else {
 			String JSONComplet;
 			File newFile = new File("./dataSave/DataFile.json");
 			FileWriter myWriter = new FileWriter("./dataSave/DataFile.json");
 			JSONObject jsonNewData = new JSONObject();
 			JSONObject infoUser = new JSONObject();
 			JSONArray newUserData = new JSONArray();
-			infoUser.put("id",id);
-			infoUser.put("mdp",mdp);
-			infoUser.put("nom",nom);
+			infoUser.put("id", id);
+			infoUser.put("mdp", mdp);
+			infoUser.put("nom", nom);
 			newUserData.add(infoUser);
-			jsonNewData.put("user",newUserData);
+			jsonNewData.put("user", newUserData);
 			JSONComplet = jsonNewData.toJSONString();
 			myWriter.write(JSONComplet);
 			myWriter.close();
 		}
 	}
+
 	public int testUserDejaAjoute(JSONArray dresseurs, String id) {
 		int test = 0;
-		int i=0;
-		while(i<dresseurs.size()) {
+		int i = 0;
+		while (i < dresseurs.size()) {
 			JSONObject dresseur = (JSONObject) dresseurs.get(i);
 			if (dresseur.get("id").equals(id)) {
 				test = i;
@@ -122,17 +115,17 @@ public abstract class Dresseur implements IDresseur, IEchange, IStrategy {
 		}
 		return test;
 	}
-	private boolean testPresence(){
+
+	private boolean testPresence() {
 		File repertoire = new File("./dataSave/");
 		String[] listeFichiers = repertoire.list();
 		boolean testPresence = false;
-		if(listeFichiers==null){
+		if (listeFichiers == null) {
 			System.out.println("Mauvais répertoire");
-		}
-		else{
-			int i=0;
-			while(!testPresence&&i<listeFichiers.length) {
-				if(listeFichiers[i].equals("DataFile.json")){
+		} else {
+			int i = 0;
+			while (!testPresence && i < listeFichiers.length) {
+				if (listeFichiers[i].equals("DataFile.json")) {
 					File fichier = new File("./dataSave/DataFile.json");
 					if (fichier.length() > 0) {
 						testPresence = true;
@@ -146,31 +139,29 @@ public abstract class Dresseur implements IDresseur, IEchange, IStrategy {
 	}
 
 	public boolean connection(String id) throws IOException, ParseException {
-		if (testPresence()){
+		if (testPresence()) {
 			JSONParser parser = new JSONParser();
 			JSONObject datafile = (JSONObject) parser.parse(new BufferedReader(new FileReader("./dataSave/DataFile.json")));
 			JSONArray dresseurs = (JSONArray) datafile.get("user");
 			boolean test = false;
 			boolean connected = false;
-			int i=0;
-			if(dresseurs==null) {
+			int i = 0;
+			if (dresseurs == null) {
 				System.out.println("Aucun dresseur n'est enregistré");
-			}
-			else{
-				while(!test&&i<dresseurs.size()) {
+			} else {
+				while (!test && i < dresseurs.size()) {
 					JSONObject dresseur = (JSONObject) dresseurs.get(i);
 					if (dresseur.get("id").equals(id)) {
 						test = true;
-						System.out.println("Bienvenue "+dresseur.get("id"));
-						while (!connected){
+						System.out.println("Bienvenue " + dresseur.get("id"));
+						while (!connected) {
 							System.out.println("Votre mot de passe : ");
 							Scanner sc = new Scanner(System.in);
 							String mdp = sc.nextLine();
-							if(dresseur.get("mdp").equals(mdp)) {
+							if (dresseur.get("mdp").equals(mdp)) {
 								System.out.println("Vous etes connecté");
-								connected= true;
-							}
-							else {
+								connected = true;
+							} else {
 								System.out.println("Mauvais mot de passe");
 							}
 						}
@@ -179,78 +170,78 @@ public abstract class Dresseur implements IDresseur, IEchange, IStrategy {
 				}
 			}
 			return connected;
-		}
-		else{
+		} else {
 			System.out.println("Aucun dresseur n'est enregistré");
 			return false;
 		}
 	}
-	public void enregistrerRanch(){
-		try{
-			if (testPresence()){
+
+	public void enregistrerRanch() {
+		try {
+			if (testPresence()) {
 				JSONParser parser = new JSONParser();
 				JSONObject datafile = (JSONObject) parser.parse(new BufferedReader(new FileReader("./dataSave/DataFile.json")));
 				JSONArray dresseurs = (JSONArray) datafile.get("user");
-				int indexDresseur=testUserDejaAjoute(dresseurs, this.identifiant);
-				JSONObject dresseur=(JSONObject)dresseurs.get(indexDresseur);
+				int indexDresseur = testUserDejaAjoute(dresseurs, this.identifiant);
+				JSONObject dresseur = (JSONObject) dresseurs.get(indexDresseur);
 				JSONArray ranch = new JSONArray();
-				for (int i=0;i<this.equipe.length;i++){
+				for (int i = 0; i < this.equipe.length; i++) {
 					JSONObject pokemon = new JSONObject();
-					pokemon.put("id",this.equipe[i].id);
-					pokemon.put("nom",this.equipe[i].nom);
+					pokemon.put("id", this.equipe[i].id);
+					pokemon.put("nom", this.equipe[i].nom);
 					ranch.add(pokemon);
 				}
-				dresseur.put("ranch",ranch);
+				dresseur.put("ranch", ranch);
 				dresseurs.remove(indexDresseur);
 				dresseurs.add(dresseur);
 				JSONObject newDataFile = new JSONObject();
-				newDataFile.put("user",dresseurs);
+				newDataFile.put("user", dresseurs);
 				FileWriter myWriter = new FileWriter("./dataSave/DataFile.json");
 				myWriter.write(newDataFile.toJSONString());
 				myWriter.close();
 			}
-		}catch(Exception e){
+		} catch (Exception e) {
 			System.out.println("Erreur");
 		}
 	}
 
 
-		/**
-		 * le constructeur du Dresseur lorsqu'un joueur se connecte
-		 *
-		 * @param id  identifiant unqiue de l'utilisateur
-		 * @param mdp le mot de passe de l'utilisateur
-		 */
+	/**
+	 * le constructeur du Dresseur lorsqu'un joueur se connecte
+	 *
+	 * @param id  identifiant unqiue de l'utilisateur
+	 * @param mdp le mot de passe de l'utilisateur
+	 */
 	public Dresseur(String id, String mdp) {
-			// on cree un dresseur en le recuperant dans le stockage
-		}
+		// on cree un dresseur en le recuperant dans le stockage
+	}
 
-		/**
-		 * le constructeur du Dresseur lorsqu'un joueur s'inscrit
-		 *
-		 * @param id  identifiant unqiue de l'utilisateur
-		 * @param mdp le mot de passe de l'utilisateur
-		 * @param nom le nom du dresseur que l'utilisateur créé sint dresseur
-		 */
+	/**
+	 * le constructeur du Dresseur lorsqu'un joueur s'inscrit
+	 *
+	 * @param id  identifiant unqiue de l'utilisateur
+	 * @param mdp le mot de passe de l'utilisateur
+	 * @param nom le nom du dresseur que l'utilisateur créé sint dresseur
+	 */
 	public Dresseur(String id, String mdp, String nom) {
 
 		// on cree un dresseur en l'ajoutant au stockage
 		this.identifiant = id;
 		this.motDepasse = mdp;
 		this.nom = nom;
-		boolean connected=false;
+		boolean connected = false;
 		try {
 			System.out.println("1 Pour vous connecter, 2 Pour vous inscrire");
 			int inputConnection = InputViaScanner.getInputInt(1, 2);
 			if (inputConnection == 1) {
-				connected=this.connection(id);
+				connected = this.connection(id);
 				if (connected) {
 					this.equipe = (Pokemon[]) Pokedex.engendreRanchStatic();
 					this.updateNiveau();
 					this.pokemon = this.equipe[0];
 				}
 			} else if (inputConnection == 2) {
-				this.saveData(id, mdp,nom);
+				this.saveData(id, mdp, nom);
 				this.equipe = (Pokemon[]) Pokedex.engendreRanchStatic();
 				this.updateNiveau();
 				this.pokemon = this.equipe[0];
@@ -265,9 +256,7 @@ public abstract class Dresseur implements IDresseur, IEchange, IStrategy {
 	/**
 	 * Definition de l'affichage d'un dresseur par son nom
 	 */
-	public String toString() {
-		return this.nom;
-	}
+
 	/////////////////////// methode de IDresseur ///////////////////////
 
 	public IPokemon getPokemon(int i) {
@@ -306,10 +295,11 @@ public abstract class Dresseur implements IDresseur, IEchange, IStrategy {
 				}
 
 			}
+
 			this.updateNiveau();
 			this.pokemon = this.equipe[0];
 		}
-
+	}
 		/**
 		 * Definition de l'affichage d'un dresseur par son nom
 		 */
@@ -319,12 +309,8 @@ public abstract class Dresseur implements IDresseur, IEchange, IStrategy {
 		}
 		/////////////////////// methode de IDresseur (et IStrategy) ///////////////////////
 
-		public IPokemon getPokemon ( int i){
-			return this.equipe[i];
-		}
 
-		@Override
-		public abstract void enseigne (IPokemon pok, ICapacite[]caps);
+
 
 		@Override
 		public void soigneRanch () {
