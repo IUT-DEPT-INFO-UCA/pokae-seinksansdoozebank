@@ -194,6 +194,19 @@ public abstract class Dresseur implements IDresseur, IEchange, IStrategy {
 					JSONObject pokemon = new JSONObject();
 					pokemon.put("id",this.equipe[i].id);
 					pokemon.put("nom",this.equipe[i].nom);
+					pokemon.put("niv",this.equipe[i].getNiveau());
+					pokemon.put("type1",this.equipe[i].getType1());
+					pokemon.put("type2",this.equipe[i].getType2());
+					pokemon.put("aChangeNiveau",this.equipe[i].aChangeNiveau());
+					pokemon.put("xp",this.equipe[i].xp);
+					pokemon.put("espPoke",this.equipe[i].espPoke.getNom());
+					JSONArray capacites = new JSONArray();
+					for (int j=0;j<this.equipe[i].getCapacitesApprises().length;j++){
+						capacites.add(this.equipe[i].getCapacitesApprises()[j].getNom());
+					}
+					pokemon.put("capacites",capacites);
+					pokemon.put("pvMax",this.equipe[i].pvMax);
+
 					ranch.add(pokemon);
 				}
 				dresseur.put("ranch",ranch);

@@ -3,28 +3,89 @@
     {
       "ranch": [
         {
-          "id": 6,
-          "nom": "Tygnon"
+          "aChangeNiveau": true,
+          "capacites": [
+            "Pilonnage"
+          ],
+          "type2": PSY,
+          "xp": 18.8,
+          "espPoke": "Noeunoeuf",
+          "niv": 4,
+          "id": 0,
+          "type1": PLANTE,
+          "nom": "Noeunoeuf",
+          "pvMax": 19
         },
         {
-          "id": 7,
-          "nom": "Carapuce"
+          "aChangeNiveau": true,
+          "capacites": [
+            "Bec Vrille",
+            "Éclair"
+          ],
+          "type2": VOL,
+          "xp": 36.8,
+          "espPoke": "Électhor",
+          "niv": 5,
+          "id": 1,
+          "type1": ELECTRIK,
+          "nom": "Électhor",
+          "pvMax": 24
         },
         {
-          "id": 8,
-          "nom": "Machoc"
+          "aChangeNiveau": true,
+          "capacites": [
+            "Dard-Venin"
+          ],
+          "type2": POISON,
+          "xp": 24.0,
+          "espPoke": "Aspicot",
+          "niv": 3,
+          "id": 2,
+          "type1": INSECTE,
+          "nom": "Aspicot",
+          "pvMax": 16
         },
         {
-          "id": 9,
-          "nom": "Abra"
+          "aChangeNiveau": true,
+          "capacites": [
+            "Poing Karaté"
+          ],
+          "type2": null,
+          "xp": 8.8,
+          "espPoke": "Machoc",
+          "niv": 4,
+          "id": 3,
+          "type1": COMBAT,
+          "nom": "Machoc",
+          "pvMax": 20
         },
         {
-          "id": 10,
-          "nom": "Férosinge"
+          "aChangeNiveau": true,
+          "capacites": [
+            "Picpic"
+          ],
+          "type2": null,
+          "xp": 31.8,
+          "espPoke": "Poissirène",
+          "niv": 4,
+          "id": 4,
+          "type1": EAU,
+          "nom": "Poissirène",
+          "pvMax": 17
         },
         {
-          "id": 11,
-          "nom": "Krabby"
+          "aChangeNiveau": true,
+          "capacites": [
+            "Pistolet à O"
+          ],
+          "type2": null,
+          "xp": 39.8,
+          "espPoke": "Lokhlass",
+          "niv": 5,
+          "id": 5,
+          "type1": EAU,
+          "nom": "Lokhlass",
+          "pvMax": 28
         }
       ],
       "mdp": "123",
