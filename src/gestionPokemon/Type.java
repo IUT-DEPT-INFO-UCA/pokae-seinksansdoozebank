@@ -1,11 +1,11 @@
 package gestionPokemon;
 
+import interfaces.IType;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Objects;
-
-import interfaces.IType;
 
 /**
  * Enumeration Type qui implemente IType qui sert a definir tout les types et leurs coefficients
@@ -26,7 +26,7 @@ public enum Type implements IType {
 	/**
 	 * Enum Électrik : Type
 	 */
-	ELECTRIK("Electrik",3),
+	ELECTRIK("Électrik",3),
 	/**
 	 * Enum Feu : Type
 	 */
