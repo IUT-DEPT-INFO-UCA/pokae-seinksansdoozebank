@@ -90,6 +90,11 @@ public class Pokemon implements IPokemon {
      * Le nombre de tours avat que le Pokemon puisse à nouveau attaquer
      */
     private int nombreDeToursAvantAttaque = 0;
+    
+    /**
+     * Indique si le Pokemon est en cours de création ou s'il est créé
+     */
+    private boolean created = false;
 
     /**
      * Creer un objet Pokemon avec 2 parametres
@@ -116,12 +121,13 @@ public class Pokemon implements IPokemon {
         this.niv = espPoke.nivDepart;
         gagnerXp(this.espPoke.getExpDeBase());
         this.apprendCapacites(this.espPoke.capaciteDispo(this));
-        calculPV();
+        this.statsSpecifiques.setPV(pvMax);
         calculPVMax();
         calculDefense();
         calculSpecial();
         calculForce();
         calculVitesse();
+        this.created=true;
     }
 
     /**
@@ -148,12 +154,13 @@ public class Pokemon implements IPokemon {
         this.niv = espPoke.nivDepart;
         gagnerXp(this.espPoke.getExpDeBase());
         this.apprendCapacites(this.espPoke.capaciteDispo(this));
-        calculPV();
         calculPVMax();
+        this.statsSpecifiques.setPV(pvMax);
         calculDefense();
         calculSpecial();
         calculForce();
         calculVitesse();
+        this.created=true;
     }
 
     /**
@@ -313,6 +320,7 @@ public class Pokemon implements IPokemon {
 
     public void soigne() {
         this.getStat().setPV(this.pvMax);
+        this.resetAllPp();
     }
 
     //////////////////////////////////////////////////////////
@@ -488,9 +496,12 @@ public class Pokemon implements IPokemon {
     public void gagnerXp(double expAGagner) {
         // double gainExp = expAGagner;
         double xpTemporaire = this.getExperience() + expAGagner;
-        double seuil = (Math.pow(this.niv + 1, 3) * 0.8);
-        if (xpTemporaire >= seuil) {
+        double seuil = (Math.pow(this.niv + 1, 3) * 0.8);        
+        if(this.created) {
             System.out.println((this.getNom() + " a gagne " + (int) expAGagner + " points d'experience."));
+        }
+        if (xpTemporaire >= seuil) {
+            //System.out.println((this.getNom() + " a gagne " + (int) expAGagner + " points d'experience."));
             while (xpTemporaire >= seuil) {
                 augmenterNiveau();
                 this.xp = expAGagner - seuil;
@@ -500,7 +511,7 @@ public class Pokemon implements IPokemon {
                 xpTemporaire = this.getExperience() + (expAGagner - seuil);
             }
         } else {
-            System.out.println((this.getNom() + " a gagne " + (int) expAGagner + " points d'experience.\n"));
+            //System.out.println((this.getNom() + " a gagne " + (int) expAGagner + " points d'experience.\n"));
             this.xp += expAGagner;
         }
     }
@@ -514,16 +525,16 @@ public class Pokemon implements IPokemon {
     public void augmenterNiveau() {
         this.niv++;
         this.aChangeNiveau = true;
-        System.out.println("" + this.getNom() + " a atteint le niveau " + this.getNiveau() + ".\n");
-        if (this.niv >= espPoke.nivEvolution && this.getEspece().getEvolution(this.niv) != null
-                && this.espPoke.nivEvolution != 0) {
+        if(created) {
+        	 System.out.println("" + this.getNom() + " a atteint le niveau " + this.getNiveau() + ".\n");
+        }
+        if (this.niv >= espPoke.nivEvolution && this.getEspece().getEvolution(this.niv) != null && this.espPoke.nivEvolution != 0) {
             this.vaMuterEn(this.getEspece().getEvolution(this.niv));
         }
         // Les stats de base sont celles de l'espece actuelle du pokemon. Ainsi, si le
         // pokemon a evolue, son espece a change juste avant donc les stats sont
         // calculees sur les nouvelles stat de base.
         calculPVMax();
-        // calculPV(); //TODO ca doit pas heal quand il level up
         calculForce();
         calculDefense();
         calculVitesse();
@@ -537,15 +548,6 @@ public class Pokemon implements IPokemon {
     public void calculPVMax() {
         this.pvMax = (((2 * (this.espPoke.getBaseStat().getPV() + this.getStatsDV().getPV())
                 + this.getStatsEV().getPV() / 4) * this.getNiveau()) / 100) + this.getNiveau() + 10;
-    }
-
-    /**
-     * Il calcule le PV d'un Pokémon en fonction de sa vitesse de base, de ses
-     * statistiques DV et EV et de son niveau
-     */
-    public void calculPV() {
-        this.getStat().setPV((((2 * (this.espPoke.getBaseStat().getPV() + this.getStatsDV().getPV())
-                + this.getStatsEV().getPV() / 4) * this.getNiveau()) / 100) + this.getNiveau() + 10);
     }
 
     /**

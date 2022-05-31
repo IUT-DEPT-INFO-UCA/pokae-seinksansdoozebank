@@ -1,20 +1,14 @@
 package gestionCombat;
 
+import gestionPokemon.Pokemon;
+import interfaces.*;
+import org.json.simple.parser.ParseException;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.json.simple.parser.ParseException;
-
-import gestionPokemon.Pokemon;
-import interfaces.IAttaque;
-import interfaces.ICombat;
-import interfaces.IDresseur;
-import interfaces.IPokemon;
-import interfaces.ITour;
 /**
  * Un objet Combat representant un duel entre 2 dresseurs
- * @author fadda
  *
  */
 public class Combat implements ICombat {
@@ -50,7 +44,9 @@ public class Combat implements ICombat {
 	 * Le dresseur vainqueur du combat
 	 */
 	private Dresseur vainqueur;
-
+	public int getNbTours(){
+		return this.nbTours;
+	}
 	/**
 	 * Le constructeur de la classe Combat à partir des dresseurs qui s'affrontent
 	 *
@@ -88,7 +84,9 @@ public class Combat implements ICombat {
 
 	public void termine() {
 		dresseur1.soigneRanch();
+		dresseur1.updateNiveau();
 		dresseur2.soigneRanch();
+		dresseur2.updateNiveau();
 	}
 
 	///////////////////////////////////////////////////////////////
@@ -171,6 +169,7 @@ public class Combat implements ICombat {
 				System.out.println("");
 				pokemon1.subitAttaqueDe(pokemon2, dresseur2.getActionChoisie());
 				this.testerPokeAMisKOPok(dresseur2, pokemon2, dresseur1, pokemon1);
+				System.out.println("");
 				this.switchIfKO(pokemon2, false);
 			}
 		} else {
@@ -181,6 +180,7 @@ public class Combat implements ICombat {
 				System.out.println("");
 				pokemon2.subitAttaqueDe(pokemon1, dresseur1.getActionChoisie());
 				this.testerPokeAMisKOPok(dresseur1, pokemon1, dresseur2, pokemon2);
+				System.out.println("");
 				this.switchIfKO(pokemon1, false);
 				// d1 et d2 attaquent
 			} else {
@@ -192,6 +192,7 @@ public class Combat implements ICombat {
 						System.out.println("");
 						pokemon1.subitAttaqueDe(pokemon2, dresseur2.getActionChoisie());
 						this.testerPokeAMisKOPok(dresseur2, pokemon2, dresseur1, pokemon1);
+						System.out.println("");
 						this.switchIfKO(pokemon2, false);
 					} else {
 						this.switchIfKO(pokemon1, false);
@@ -204,6 +205,7 @@ public class Combat implements ICombat {
 						System.out.println("");
 						pokemon2.subitAttaqueDe(pokemon1, dresseur1.getActionChoisie());
 						this.testerPokeAMisKOPok(dresseur1, pokemon1, dresseur2, pokemon2);
+						System.out.println("");
 						this.switchIfKO(pokemon1, false);
 					} else {
 						this.switchIfKO(pokemon2, false);
@@ -215,9 +217,9 @@ public class Combat implements ICombat {
 
 	/**
 	 * Il vérifie si le pokémon est KO et si c'est le cas, le maitre de ce pokemon
-	 * doit, si le combat n'ets pas fini, envoyer un autre epokemon de son ranch au
+	 * doit, si le combat n'est pas fini, envoyer un autre pokemon de son ranch au
 	 * combat. Dans ce cas, le pokemon lanceur de l'attaque recoit de l'exp et s'il
-	 * a gagné un niveau, son maitre peut peut etre lui apprendre une capacité
+	 * a gagné un niveau, son maitre peut peut-etre lui apprendre une capacitee
 	 * 
 	 * @param dresseurLanceur  l'entraîneur qui utilise le mouvement, et qui peut
 	 *                         potentiellement apprendre une capacité a son pokemon
@@ -242,7 +244,7 @@ public class Combat implements ICombat {
 			}
 			if (lanceur.aChangeNiveau()) {
 				dresseurLanceur.enseigne(lanceur, lanceur.getCapacitesApprises());
-				((Dresseur)dresseurLanceur).updateNiveau();
+				//((Dresseur)dresseurLanceur).updateNiveau();
 			}
 			this.switchIfKO(receveur, true);
 			return true;
@@ -276,5 +278,8 @@ public class Combat implements ICombat {
 			}
 		}
 	}
+
+
+
 
 }
