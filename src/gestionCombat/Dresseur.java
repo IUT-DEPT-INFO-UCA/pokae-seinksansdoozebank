@@ -1,6 +1,7 @@
 package gestionCombat;
 
-import java.io.IOException;
+import java.io.*;
+import java.util.Scanner;
 
 import gestionPokemon.*;
 import interfaces.IAttaque;
@@ -65,7 +66,6 @@ public abstract class Dresseur implements IDresseur, IEchange, IStrategy {
 		}
 		this.updateNiveau();
 		this.pokemon = this.equipe[0];
-		saveData(identifiant, motDepasse);
 
 	}
 	public void saveData(String id, String mdp) throws IOException, ParseException {
@@ -138,7 +138,7 @@ public abstract class Dresseur implements IDresseur, IEchange, IStrategy {
 		return testPresence;
 	}
 
-	public void connection(String nom, String mdp){
+	public void connection(String id) throws IOException, ParseException {
 /*
 Ecrire un systeme de sauvegarde de données
 Algo :
@@ -151,8 +151,33 @@ On recherche l'identifiant de l'utilisateur.
 			Sinon connected = true et dans tous nos getters de pokémon on met :
 				Si connected alors tu peux return sinon return null
  */
-		if(this.nom == nom && this.identifiant == mdp){
-			System.out.println("Vous etes connecté");
+		if (testPresence()){
+			JSONParser parser = new JSONParser();
+			JSONObject datafile = (JSONObject) parser.parse(new BufferedReader(new FileReader("./dataSave/DataFile.json")));
+			JSONArray dresseurs = (JSONArray) datafile.get("user");
+			boolean test = false;
+			boolean connected = false;
+			int i=0;
+			while(!test&&i<dresseurs.size()) {
+				JSONObject dresseur = (JSONObject) dresseurs.get(i);
+				if (dresseur.get("id").equals(id)) {
+					test = true;
+					System.out.println("Bienvenue "+dresseur.get("id"));
+					while (!connected){
+						System.out.println("Votre mot de passe : ");
+						Scanner sc = new Scanner(System.in);
+						String mdp = sc.nextLine();
+						if(dresseur.get("mdp").equals(mdp)) {
+							System.out.println("Vous etes connecté");
+							connected= true;
+						}
+						else {
+							System.out.println("Mauvais mot de passe");
+						}
+					}
+				}
+				i++;
+			}
 		}
 	}
 
@@ -179,6 +204,13 @@ On recherche l'identifiant de l'utilisateur.
 		this.motDepasse = mdp;
 		this.nom = nom;
 		try {
+			System.out.println("1 Pour vous connecter, 2 Pour vous inscrire");
+			int inputConnection = InputViaScanner.getInputInt(1, 2);
+			if (inputConnection == 1) {
+				this.connection(id);
+			} else if (inputConnection == 2) {
+				this.saveData(id, mdp);
+			}
 			this.equipe = (Pokemon[]) Pokedex.engendreRanchStatic();
 		} catch (IOException | ParseException e) {
 			e.printStackTrace();

@@ -116,9 +116,9 @@ public class TestGestionPokemon {
             }*/
             
             
-            Dresseur d1 = new Dresseur("arcsti","mdp","antoine");
+//            Dresseur d1 = new Dresseur("arcsti","mdp","antoine");
             //d1.showTeam();
-            Dresseur d2 = new Dresseur("firelods","1234","clement");
+//            Dresseur d2 = new Dresseur("firelods","1234","clement");
             //d2.showTeam();
 //            Combat combat = new Combat(d1,d2);
 //            System.out.println(combat.getVainqueur().getNom());

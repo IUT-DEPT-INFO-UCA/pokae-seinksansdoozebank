@@ -10,7 +10,7 @@ public class testCasSimplesCombats {
     Dresseur d1;
     @BeforeEach
     public void init() throws IOException, ParseException {
-        d1 = new Dresseur("Thomas","Admin","Thomas");
+//        d1 = new Dresseur("Thomas","Admin","Thomas");
 
     }
 
