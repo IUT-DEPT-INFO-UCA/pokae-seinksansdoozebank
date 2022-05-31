@@ -91,6 +91,44 @@ public class TestGestionPokemon {
             	
             }
             */
+            /*
+            Pokemon magicarpe = new Pokemon(Pokedex.getEspeceParNom("Magicarpe"));
+            System.out.println("Les capacites de magicarpe sont :");
+            for (Capacite c : magicarpe.getCapacitesApprises()) {
+            	System.out.println(c);
+            }
+            System.out.println("Celles qu'il peut apprendre sont : ");
+            magicarpe.espPoke.showCapSet();
+            System.out.println();
+            Pokemon leviator = new Pokemon(Pokedex.getEspeceParNom("Léviator"));
+            System.out.println("Les capacites de leviator sont :");
+            for (Capacite c : leviator.getCapacitesApprises()) {
+            	System.out.println(c);
+            }
+            System.out.println("Celles qu'il peut apprendre sont : ");
+            leviator.espPoke.showCapSet();
+            
+            magicarpe.vaMuterEn(Pokedex.getEspeceParNom("Léviator"));
+
+            System.out.println("Les capacites de magicarpe sont maintenant:");
+            for (Capacite c : magicarpe.getCapacitesApprises()) {
+            	System.out.println(c);
+            }*/
+            
+            
+//            Dresseur d1 = new Dresseur("arcsti","mdp","antoine");
+            //d1.showTeam();
+//            Dresseur d2 = new Dresseur("firelods","1234","clement");
+            //d2.showTeam();
+//            Combat combat = new Combat(d1,d2);
+//            System.out.println(combat.getVainqueur().getNom());
+            
+            /*
+            System.out.println("Choisir un nb entre 1 et 6");
+            System.out.println(d1.getInputInt(1, 6));
+            System.out.println("Choisir un nb entre 1 et 4");
+            System.out.println(d1.getInputInt(1, 4));*/
+            
             
         }
 

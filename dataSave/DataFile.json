@@ -1,0 +1,35 @@
+{
+  "user": [
+    {
+      "ranch": [
+        {
+          "id": 6,
+          "nom": "Tygnon"
+        },
+        {
+          "id": 7,
+          "nom": "Carapuce"
+        },
+        {
+          "id": 8,
+          "nom": "Machoc"
+        },
+        {
+          "id": 9,
+          "nom": "Abra"
+        },
+        {
+          "id": 10,
+          "nom": "Férosinge"
+        },
+        {
+          "id": 11,
+          "nom": "Krabby"
+        }
+      ],
+      "mdp": "123",
+      "id": "firelods",
+      "nom": "Clement"
+    }
+  ]
+}

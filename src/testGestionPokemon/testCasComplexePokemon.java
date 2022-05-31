@@ -49,5 +49,8 @@ public class testCasComplexePokemon {
         //Ainsi, on test seulement si le resultat est définit.
         assertNotNull(pokeTest.estPlusRapideQue(florizarre));
     }
+
+//    @Test
+//    public void
 }
 
