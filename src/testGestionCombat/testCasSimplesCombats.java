@@ -25,7 +25,7 @@ public class testCasSimplesCombats {
         // Initialisation du pokedex et du pokemon Test.
         Pokedex.initialiser();
         pokeTest = new Pokemon(Pokedex.listeEspece[3]);
-        j1= new Joueur("Thomas","Admin","Thomas");
+       // j1= new Joueur("Thomas","Admin","Thomas");
         GwendIA = new IARandom("Gwendoline");
         DonatIA = new IARandom ("Donati");
         c1 = new Combat(DonatIA,GwendIA);
@@ -35,55 +35,55 @@ public class testCasSimplesCombats {
     public void testEchangePokemon()
     {
         // Test si le pokemon courrant est bien modifié
-        assertNotEquals(j1.getPokemon(),pokeTest);
-        j1.setPokemonChoisi(pokeTest);
-        j1.echangeCombattant();
-        assertEquals(j1.getPokemon(),pokeTest);
+        assertNotEquals(GwendIA.getPokemon(),pokeTest);
+        GwendIA.setPokemonChoisi(pokeTest);
+        GwendIA.echangeCombattant();
+        assertEquals(GwendIA.getPokemon(),pokeTest);
     }
     @Test
     public void testKO(){
-        assertTrue(j1.pouvoirSeBattre());
-        for(int i =0;i<j1.getEquipe().length;i++){
-            j1.getEquipe()[i].getStat().setPV(0);
+        assertTrue(GwendIA.pouvoirSeBattre());
+        for(int i =0;i<GwendIA.getEquipe().length;i++){
+            GwendIA.getEquipe()[i].getStat().setPV(0);
         }
-        assertFalse(j1.pouvoirSeBattre());
+        assertFalse(GwendIA.pouvoirSeBattre());
     }
     @Test
     public void testSoigneRanch(){
-        for(int i =0;i<j1.getEquipe().length;i++){
-            j1.getEquipe()[i].getStat().setPV(0);
+        for(int i =0;i<GwendIA.getEquipe().length;i++){
+            GwendIA.getEquipe()[i].getStat().setPV(0);
         }
-        assertFalse(j1.pouvoirSeBattre());
-        j1.soigneRanch();
-        assertTrue(j1.pouvoirSeBattre());
+        assertFalse(GwendIA.pouvoirSeBattre());
+        GwendIA.soigneRanch();
+        assertTrue(GwendIA.pouvoirSeBattre());
     }
     @Test
     public void testUtilise(){
-        j1.setPokemon(pokeTest);
-        int PPdeBase = j1.getPokemon().getCapacitesApprises()[0].getPP();
-        j1.setActionChoisie((Capacite) j1.getPokemon().getCapacitesApprises()[0]);
-        j1.utilise();
-        assertNotEquals(j1.getPokemon().getCapacitesApprises()[0].getPP(), PPdeBase);
+        GwendIA.setPokemon(pokeTest);
+        int PPdeBase = GwendIA.getPokemon().getCapacitesApprises()[0].getPP();
+        GwendIA.setActionChoisie((Capacite) GwendIA.getPokemon().getCapacitesApprises()[0]);
+        GwendIA.utilise();
+        assertNotEquals(GwendIA.getPokemon().getCapacitesApprises()[0].getPP(), PPdeBase);
     }
     @Test
     public void testnbPokemon(){
-        assertEquals(j1.getNbPokemonAlive(),6);
-        j1.getPokemon().getStat().setPV(0);
-        assertNotEquals(j1.getNbPokemonAlive(),6);
+        assertEquals(GwendIA.getNbPokemonAlive(),6);
+        GwendIA.getPokemon().getStat().setPV(0);
+        assertNotEquals(GwendIA.getNbPokemonAlive(),6);
 
-        assertEquals(j1.getNbPokemonAlive(),5);
+        assertEquals(GwendIA.getNbPokemonAlive(),5);
     }
     @Test
     public void testTermine(){
         //Test si un pokemon est soigné a la fin d'un combat
 
-        j1.getPokemon().getStat().setPV(0);
-        assertEquals(j1.getNbPokemonAlive(),5);
+        DonatIA.getPokemon().getStat().setPV(0);
+        assertEquals(DonatIA.getNbPokemonAlive(),5);
         GwendIA.getPokemon().getStat().setPV(0);
         assertEquals(GwendIA.getNbPokemonAlive(),5);
 
         c1.termine();
-        assertEquals(j1.getNbPokemonAlive(),6);
+        assertEquals(DonatIA.getNbPokemonAlive(),6);
         assertEquals(GwendIA.getNbPokemonAlive(),6);
     }
     @Test
