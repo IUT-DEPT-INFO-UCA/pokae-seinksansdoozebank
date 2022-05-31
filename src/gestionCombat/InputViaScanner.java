@@ -35,6 +35,19 @@ public abstract class InputViaScanner {
         return rep;
     }
 
+
+    /**
+     * Récupère une entrée de l'utilisateur sous forme de chaine de caractère
+     * @return La chaine entrée par l'utilisateur
+     */
+    public static String getInputString(){
+        @SuppressWarnings("resource")
+        Scanner reader = new Scanner(System.in);
+        String input = reader.next();
+        //rep = String.parseString(input);
+        return input;
+    }
+    
     /**
      * Elle prend une entrée entière de l'utilisateur et vérifie si elle correspond
      * bien à un Pokemon non KO

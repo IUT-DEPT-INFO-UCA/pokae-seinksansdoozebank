@@ -14,7 +14,6 @@ import interfaces.IPokemon;
 import interfaces.ITour;
 /**
  * Un objet Combat representant un duel entre 2 dresseurs
- * @author fadda
  *
  */
 public class Combat implements ICombat {
@@ -88,7 +87,9 @@ public class Combat implements ICombat {
 
 	public void termine() {
 		dresseur1.soigneRanch();
+		dresseur1.updateNiveau();
 		dresseur2.soigneRanch();
+		dresseur2.updateNiveau();
 	}
 
 	///////////////////////////////////////////////////////////////
@@ -171,6 +172,7 @@ public class Combat implements ICombat {
 				System.out.println("");
 				pokemon1.subitAttaqueDe(pokemon2, dresseur2.getActionChoisie());
 				this.testerPokeAMisKOPok(dresseur2, pokemon2, dresseur1, pokemon1);
+				System.out.println("");
 				this.switchIfKO(pokemon2, false);
 			}
 		} else {
@@ -181,6 +183,7 @@ public class Combat implements ICombat {
 				System.out.println("");
 				pokemon2.subitAttaqueDe(pokemon1, dresseur1.getActionChoisie());
 				this.testerPokeAMisKOPok(dresseur1, pokemon1, dresseur2, pokemon2);
+				System.out.println("");
 				this.switchIfKO(pokemon1, false);
 				// d1 et d2 attaquent
 			} else {
@@ -192,6 +195,7 @@ public class Combat implements ICombat {
 						System.out.println("");
 						pokemon1.subitAttaqueDe(pokemon2, dresseur2.getActionChoisie());
 						this.testerPokeAMisKOPok(dresseur2, pokemon2, dresseur1, pokemon1);
+						System.out.println("");
 						this.switchIfKO(pokemon2, false);
 					} else {
 						this.switchIfKO(pokemon1, false);
@@ -204,6 +208,7 @@ public class Combat implements ICombat {
 						System.out.println("");
 						pokemon2.subitAttaqueDe(pokemon1, dresseur1.getActionChoisie());
 						this.testerPokeAMisKOPok(dresseur1, pokemon1, dresseur2, pokemon2);
+						System.out.println("");
 						this.switchIfKO(pokemon1, false);
 					} else {
 						this.switchIfKO(pokemon2, false);
@@ -242,7 +247,7 @@ public class Combat implements ICombat {
 			}
 			if (lanceur.aChangeNiveau()) {
 				dresseurLanceur.enseigne(lanceur, lanceur.getCapacitesApprises());
-				((Dresseur)dresseurLanceur).updateNiveau();
+				//((Dresseur)dresseurLanceur).updateNiveau();
 			}
 			this.switchIfKO(receveur, true);
 			return true;
@@ -276,5 +281,4 @@ public class Combat implements ICombat {
 			}
 		}
 	}
-
 }

@@ -6,6 +6,7 @@ import gestionPokemon.Capacite;
 import gestionPokemon.Pokedex;
 import gestionPokemon.Pokemon;
 import interfaces.IAttaque;
+import interfaces.ICapacite;
 import interfaces.IPokemon;
 
 /**
@@ -17,7 +18,7 @@ public class IARandom extends Dresseur {
 	/**
 	 * entier représentant la durée en ms des pauses du thread pendant les choix de L'IARandom
 	 */
-	private static final int delai = 500;
+	private static final int delai = 0;
 
 	/**
 	 * Le constructeur d'un IARandom en indiquant son nom
@@ -109,6 +110,40 @@ public class IARandom extends Dresseur {
 			this.setActionChoisie(null);
 		} else {
 			this.choisitAttaque(p, pAdv);
+		}
+	}
+
+	@Override
+	public void enseigne(IPokemon pok, ICapacite[] caps) {
+		Capacite capaciteAApprendre = this.canTeachAMove();
+		if (capaciteAApprendre != null) {
+			if (caps.length < 4) {
+				try {
+					this.getPokemon().remplaceCapacite(caps.length, capaciteAApprendre);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				//System.out.println("\t" + pok.getNom() + " a appris " + capaciteAApprendre.getNom() + " !");
+			} else {
+				//System.out.println("\t" + pok.getNom() + " veut apprendre " + capaciteAApprendre.getNom() + ".");
+				//System.out.println("\tVoulez vous lui faire oublier une des ses capacités (1) ou ne pas l'apprendre (2) ?");
+				int inputChoix = InputViaScanner.getInputInt(1, 2);
+				if (inputChoix == 1) {
+					//((Pokemon) pok).showCapaciteApprise();
+					//System.out.println("\tEntrer le numéro de la capacité à oublier (ou 0 pour annuler) :");
+					int inputCapacite = (int) (Math.random() * caps.length);
+					try {
+						pok.remplaceCapacite(inputCapacite - 1, capaciteAApprendre);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				} else {
+					//System.out.println("\t" + pok.getNom() + " n'a pas appris " + capaciteAApprendre.getNom() + ".");
+				}
+			}
+		} else {
+			// System.out.println(pok.getNom()+" n'a aucune capacite a apprendre au niveau
+			// "+pok.getNiveau());
 		}
 	}
 
