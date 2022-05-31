@@ -20,6 +20,7 @@ public class testCasSimplesCombats {
     IARandom GwendIA;
     IARandom DonatIA;
     @BeforeEach
+
     public void instanciationObjets(){
         // Initialisation du pokedex et du pokemon Test.
         Pokedex.initialiser();
