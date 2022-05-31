@@ -5,8 +5,13 @@ package gestionCombat;
  * Objet modélisant la campagne d'un dresseur, il lui permet de lancer un combat pour entrainer ses pokemon ou de consulter ses stats
  */
 public class Campagne {
-
-	private static String[] listeNoms= {"Violette","Lino","Cornélia","Amaro","Lem","Valériane","Astera","Urup","Pierre","Ondine","Major Bob","Erika","Koga","Morgane","Auguste","Blue"};
+	private static String strMenuCampagne = 
+			"\nMenu de la campagne : \n"
+			+ "1 - Lancer le combat suivant\n"
+			+ "2 - Afficher les statistiques\n"
+			+ "3 - Quitter";
+	private static String[] listeNoms= {"Violette","Lino","Cornélia","Amaro","Lem","Valériane","Astera",
+			"Urup","Pierre","Ondine","Major Bob","Erika","Koga","Morgane","Auguste","Blue"};
     public Dresseur joueur;
     public int nbVictoires;
 
@@ -24,7 +29,7 @@ public class Campagne {
     public static void continuer(Dresseur player) {
     	int input=0;
     	while(true) {
-        	System.out.println("\nLancer le combat suivant : 1 | Afficher les stats : 2 | Quitter : 3");
+        	System.out.println(Campagne.strMenuCampagne);
         	input = InputViaScanner.getInputInt(1, 3);
         	if(input==1) {
         		Campagne.lancerNouveauCombat(player);
@@ -55,8 +60,8 @@ public class Campagne {
     	return adv;
     }
 
-    private String choisirTypeAdversaire() {
-        return null;
+    @SuppressWarnings("unused")
+	private void choisirTypeAdversaire() {
     }
 
     public void sauvegarder() {
