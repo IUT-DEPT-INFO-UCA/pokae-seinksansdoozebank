@@ -62,7 +62,7 @@ public class Pokemon implements IPokemon {
     public Stats statsEV = new Stats();
 
     /**
-     * L'ensemble de stats des EV du Pokemon
+     * L'ensemble de stats des DV du Pokemon
      */
     public Stats statsDV = new Stats();
 
@@ -95,6 +95,20 @@ public class Pokemon implements IPokemon {
      * Indique si le Pokemon est en cours de création ou s'il est créé
      */
     private boolean created = false;
+
+    public Pokemon(int id, String nom, int niv, boolean aChangeNiveau, double xp, Espece espPoke, Capacite[] listeCapacite,int pvMax, Stats statsEV, Stats statsDV) {
+        this.id = id;
+        this.nom = nom;
+        this.niv = niv;
+        this.aChangeNiveau = aChangeNiveau;
+        this.xp = xp;
+        this.espPoke = espPoke;
+        this.listeCapacite = listeCapacite;
+        this.statsSpecifiques = new Stats(this.espPoke.statsDeBase);;
+        this.pvMax = pvMax;
+        this.statsEV = statsEV;
+        this.statsDV = statsDV;
+    }
 
     /**
      * Creer un objet Pokemon avec 2 parametres
