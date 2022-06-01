@@ -32,7 +32,7 @@ public class TestGestionCombat {
         
         
 //        Joueur d1 = new Joueur("arcsti","mdp","Antoine");
-		Joueur d2 = new Joueur("firelods","123","Clement");
+		Joueur d2 = new Joueur("firelods");
 //		d1.enregistrerRanch();
 		d2.enregistrerRanch();
 		//Joueur d2 = new Joueur("Koxy","pdm","Thomas");

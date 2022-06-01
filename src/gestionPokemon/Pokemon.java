@@ -96,11 +96,10 @@ public class Pokemon implements IPokemon {
      */
     private boolean created = false;
 
-    public Pokemon(int id, String nom, int niv, boolean aChangeNiveau, double xp, Espece espPoke, Capacite[] listeCapacite,int pvMax, Stats statsEV, Stats statsDV) {
+    public Pokemon(int id, String nom, int niv, double xp, Espece espPoke, Capacite[] listeCapacite,int pvMax, Stats statsEV, Stats statsDV) {
         this.id = id;
         this.nom = nom;
         this.niv = niv;
-        this.aChangeNiveau = aChangeNiveau;
         this.xp = xp;
         this.espPoke = espPoke;
         this.listeCapacite = listeCapacite;
@@ -108,6 +107,12 @@ public class Pokemon implements IPokemon {
         this.pvMax = pvMax;
         this.statsEV = statsEV;
         this.statsDV = statsDV;
+
+        this.statsSpecifiques.setPV(pvMax);
+        calculDefense();
+        calculSpecial();
+        calculForce();
+        calculVitesse();
     }
 
     /**
@@ -135,8 +140,9 @@ public class Pokemon implements IPokemon {
         this.niv = espPoke.nivDepart;
         gagnerXp(this.espPoke.getExpDeBase());
         this.apprendCapacites(this.espPoke.capaciteDispo(this));
-        this.statsSpecifiques.setPV(pvMax);
+
         calculPVMax();
+        this.statsSpecifiques.setPV(pvMax);
         calculDefense();
         calculSpecial();
         calculForce();

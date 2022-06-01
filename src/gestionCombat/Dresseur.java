@@ -8,6 +8,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.io.*;
+import java.util.Arrays;
 import java.util.Scanner;
 /**
  * Un objet représenant un dresseur
@@ -52,6 +53,7 @@ public abstract class Dresseur implements IDresseur, IEchange, IStrategy {
 	 *
 	 * @param nom le nom du dresseur
 	 */
+	/*
 	public Dresseur(String nom) {
 		this.nom = nom;
 		try {
@@ -62,8 +64,17 @@ public abstract class Dresseur implements IDresseur, IEchange, IStrategy {
 		this.updateNiveau();
 		this.pokemon = this.equipe[0];
 
-	}
+	}*/
 
+	/**
+	 * Il vérifie si le fichier existe, si c'est le cas, il vérifie si l'utilisateur est déjà dans le fichier, si ce n'est pas
+	 * le cas, il ajoute l'utilisateur au fichier, si c'est le cas, il renvoie false
+	 *
+	 * @param id l'identifiant de l'utilisateur
+	 * @param mdp le mot de passe de l'utilisateur
+	 * @param nom Le nom d'utilisateur
+	 * @return Un booléen
+	 */
 	public boolean saveData(String id, String mdp, String nom) throws IOException, ParseException {
 		if (testPresence()) {
 			JSONParser parser = new JSONParser();
@@ -80,6 +91,7 @@ public abstract class Dresseur implements IDresseur, IEchange, IStrategy {
 				FileWriter myWriter = new FileWriter("./dataSave/DataFile.json");
 				myWriter.write(datafile.toJSONString());
 				myWriter.close();
+				System.out.println("Dresseur ajouté");
 				return true;
 			} else {
 				System.out.println("Ce dresseur existe deja");
@@ -100,10 +112,19 @@ public abstract class Dresseur implements IDresseur, IEchange, IStrategy {
 			JSONComplet = jsonNewData.toJSONString();
 			myWriter.write(JSONComplet);
 			myWriter.close();
+			System.out.println("Dresseur et fichier de jeu ajoutés");
 			return true;
 		}
 	}
 
+	/**
+	 * Il renvoie l'index de l'utilisateur avec l'identifiant donné dans le JSON d'utilisateurs donné, ou -1 si
+	 * l'utilisateur n'est pas dans le JSON
+	 *
+	 * @param dresseurs la panoplie d'utilisateurs
+	 * @param id l'identifiant de l'utilisateur
+	 * @return L'index de l'utilisateur dans le JSONArray si l'utilisateur est déjà dans le JSONArray, -1 sinon.
+	 */
 	public int testUserDejaAjoute(JSONArray dresseurs, String id) {
 		int test = -1;
 		int i = 0;
@@ -117,6 +138,11 @@ public abstract class Dresseur implements IDresseur, IEchange, IStrategy {
 		return test;
 	}
 
+	/**
+	 * Il vérifie si le fichier existe et si il est vide ou non
+	 *
+	 * @return Un booléen
+	 */
 	private boolean testPresence() {
 		File repertoire = new File("./dataSave/");
 		String[] listeFichiers = repertoire.list();
@@ -139,6 +165,13 @@ public abstract class Dresseur implements IDresseur, IEchange, IStrategy {
 		return testPresence;
 	}
 
+	/**
+	 * Il vérifie si l'utilisateur existe, si c'est le cas, il demande le mot de passe et s'il est correct, il connecte
+	 * l'utilisateur
+	 *
+	 * @param id l'identifiant de l'utilisateur
+	 * @return Un booléen
+	 */
 	public boolean connection(String id) throws IOException, ParseException {
 		if (testPresence()) {
 			JSONParser parser = new JSONParser();
@@ -154,6 +187,7 @@ public abstract class Dresseur implements IDresseur, IEchange, IStrategy {
 					JSONObject dresseur = (JSONObject) dresseurs.get(i);
 					if (dresseur.get("id").equals(id)) {
 						test = true;
+						this.nom=dresseur.get("nom").toString();
 						System.out.println("Bienvenue " + dresseur.get("id"));
 						while (!connected) {
 							System.out.println("Votre mot de passe : ");
@@ -176,6 +210,9 @@ public abstract class Dresseur implements IDresseur, IEchange, IStrategy {
 			return false;
 		}
 	}
+	/**
+	 * Il charge le ranch de l'utilisateur à partir du fichier JSON
+	 */
 	public void loadRanch(){
 		try{
 			if (testPresence()) {
@@ -187,11 +224,10 @@ public abstract class Dresseur implements IDresseur, IEchange, IStrategy {
 				JSONArray ranchDresseur=(JSONArray) dresseur.get("ranch");
 				for (int i = 0; i <ranchDresseur.size();i++){
 					JSONObject objet=(JSONObject) ranchDresseur.get(i);
-					int id=(int) objet.get("id");
-					String nom=(String) objet.get("nom");
-					int niv=(int) objet.get("niv");
-					boolean aChangeNiveau= (boolean) objet.get("boolean");
-					double xp=(double) objet.get("xp");
+					int id=Integer.parseInt(objet.get("id").toString());
+					String nom= objet.get("nom").toString();
+					int niv=Integer.parseInt(objet.get("niv").toString());
+					double xp=Double.parseDouble(objet.get("xp").toString());
 					String nomEspPoke=(String) objet.get("espPoke");
 					Espece espece=Pokedex.getEspeceParNom(nomEspPoke);
 					Capacite[] capacites=new Capacite[4];
@@ -203,25 +239,25 @@ public abstract class Dresseur implements IDresseur, IEchange, IStrategy {
 					int force = 0;int vitesse=0;int defense=0;int pv=0;int special=0;
 
 					for (int y=0; y<4; y++) {
-						force= (int) ((JSONObject)((JSONArray)objet.get("stats")).get(0)).get("force");
-						vitesse= (int) ((JSONObject)((JSONArray)objet.get("stats")).get(0)).get("vitesse");
-						defense= (int) ((JSONObject)((JSONArray)objet.get("stats")).get(0)).get("defense");
-						pv= (int) ((JSONObject)((JSONArray)objet.get("stats")).get(0)).get("pv");
-						special= (int) ((JSONObject)((JSONArray)objet.get("stats")).get(0)).get("special");
-					}
-					Stats statsDV=new Stats(force,vitesse,defense,pv,special);
-					for (int w=0; w<4; w++) {
-						force= (int) ((JSONObject)((JSONArray)objet.get("stats")).get(1)).get("force");
-						vitesse= (int) ((JSONObject)((JSONArray)objet.get("stats")).get(1)).get("vitesse");
-						defense= (int) ((JSONObject)((JSONArray)objet.get("stats")).get(1)).get("defense");
-						pv= (int) ((JSONObject)((JSONArray)objet.get("stats")).get(1)).get("pv");
-						special= (int) ((JSONObject)((JSONArray)objet.get("stats")).get(1)).get("special");
+						force= Integer.parseInt(((JSONObject)((JSONArray)objet.get("stats")).get(0)).get("force").toString());
+						vitesse= Integer.parseInt(((JSONObject)((JSONArray)objet.get("stats")).get(0)).get("vitesse").toString());
+						defense= Integer.parseInt(((JSONObject)((JSONArray)objet.get("stats")).get(0)).get("defense").toString());
+						pv= Integer.parseInt(((JSONObject)((JSONArray)objet.get("stats")).get(0)).get("pv").toString());
+						special=Integer.parseInt(((JSONObject)((JSONArray)objet.get("stats")).get(0)).get("special").toString());
 					}
 					Stats statsEV=new Stats(force,vitesse,defense,pv,special);
+					for (int w=0; w<4; w++) {
+						force= Integer.parseInt(((JSONObject)((JSONArray)objet.get("stats")).get(1)).get("force").toString());
+						vitesse= Integer.parseInt(((JSONObject)((JSONArray)objet.get("stats")).get(1)).get("vitesse").toString());
+						defense= Integer.parseInt(((JSONObject)((JSONArray)objet.get("stats")).get(1)).get("defense").toString());
+						pv= Integer.parseInt(((JSONObject)((JSONArray)objet.get("stats")).get(1)).get("pv").toString());
+						special= Integer.parseInt(((JSONObject)((JSONArray)objet.get("stats")).get(1)).get("special").toString());
+					}
+					Stats statsDV=new Stats(force,vitesse,defense,pv,special);
 
-					int pvMax=(int) objet.get("pvMax");
+					int pvMax=Integer.parseInt( objet.get("pvMax").toString());
 
-					this.equipe[i]=new Pokemon(id,nom,niv,aChangeNiveau,xp,espece,capacites,pvMax,statsDV,statsEV);
+					this.equipe[i]=new Pokemon(id,nom,niv,xp,espece,capacites,pvMax,statsDV,statsEV);
 				}
 			}
 		}catch(Exception e){
@@ -229,6 +265,9 @@ public abstract class Dresseur implements IDresseur, IEchange, IStrategy {
 		}
 
 	}
+	/**
+	 * Il enregistre le ranch de l'utilisateur dans le fichier JSON
+	 */
 	public void enregistrerRanch() {
 		try {
 			if (testPresence()) {
@@ -290,10 +329,21 @@ public abstract class Dresseur implements IDresseur, IEchange, IStrategy {
 	 * le constructeur du Dresseur lorsqu'un joueur se connecte
 	 *
 	 * @param id  identifiant unqiue de l'utilisateur
-	 * @param mdp le mot de passe de l'utilisateur
 	 */
-	public Dresseur(String id, String mdp) {
+	public Dresseur(String id) {
 		// on cree un dresseur en le recuperant dans le stockage
+		this.identifiant = id;
+		boolean connected = false;
+		try{
+			connected = this.connection(id);
+			if (connected) {
+				this.loadRanch();
+				this.updateNiveau();
+				this.pokemon = this.equipe[0];
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -309,36 +359,20 @@ public abstract class Dresseur implements IDresseur, IEchange, IStrategy {
 		this.identifiant = id;
 		this.motDepasse = mdp;
 		this.nom = nom;
-		boolean connected = false;
 		boolean inscription=false;
 		try {
-			System.out.println("1 Pour vous connecter, 2 Pour vous inscrire");
-			int inputConnection = InputViaScanner.getInputInt(1, 2);
-			if (inputConnection == 1) {
-				connected = this.connection(id);
-				if (connected) {
-					this.equipe = (Pokemon[]) Pokedex.engendreRanchStatic();
-					this.updateNiveau();
-					this.pokemon = this.equipe[0];
-				}
-			} else if (inputConnection == 2) {
-
-				inscription=this.saveData(id, mdp, nom);
-				if (inscription) {
-					this.equipe = (Pokemon[]) Pokedex.engendreRanchStatic();
-					this.updateNiveau();
-					this.pokemon = this.equipe[0];
-				}
+			inscription=this.saveData(id, mdp, nom);
+			if (inscription) {
+				this.equipe = (Pokemon[]) Pokedex.engendreRanchStatic();
+				this.updateNiveau();
+				this.pokemon = this.equipe[0];
 			}
 		} catch (IOException | ParseException e) {
 			e.printStackTrace();
 		}
-
 	}
 
-	/**
-	 * Definition de l'affichage d'un dresseur par son nom
-	 */
+	
 
 	/////////////////////// methode de IDresseur ///////////////////////
 
