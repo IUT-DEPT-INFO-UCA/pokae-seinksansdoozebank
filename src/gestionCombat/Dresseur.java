@@ -662,4 +662,11 @@ public abstract class Dresseur implements IDresseur, IEchange, IStrategy {
 			this.showTeam();
 		}
 	}
-
+	/**
+	 * Permet d'afficher les statistique d'un dresseur comme son niveau et la composition de son équipe
+	 */
+	public void afficherStat(){
+    	System.out.println("\n"+this.getNom()+" est niveau "+this.getNiveau() + " et son equipe est composé de :");
+    	this.showTeam();
+	}
+}

@@ -17,6 +17,8 @@ public class Pokemon implements IPokemon {
 
     /** Le compteur d'id attribuant un id à chaque nouveau Pokemon */
     public static int cptId = 0;
+    
+    public static int delai = 1000;
 
     /**
      * L'identifiant unique du Pokémon
@@ -181,6 +183,8 @@ public class Pokemon implements IPokemon {
         calculForce();
         calculVitesse();
         this.created=true;
+        //System.out.println(nom);
+        //this.espPoke.showCapSet();
     }
 
     /**
@@ -277,7 +281,7 @@ public class Pokemon implements IPokemon {
     public void remplaceCapacite(int i, ICapacite cap) {
         if (this.listeCapacite[i] != null) {
             System.out.println(
-                    this.getNom() + " oublie " + this.listeCapacite[i].getNom() + " et apprend " + cap.getNom() + " !");
+                    this.getNom() + " oublie " + this.listeCapacite[i].getNom() + " et apprend " + cap.getNom() + " !\n");
         }
         this.listeCapacite[i] = (Capacite) cap;
     }
@@ -286,7 +290,7 @@ public class Pokemon implements IPokemon {
     public void gagneExperienceDe(IPokemon pok) {
         this.augmenterEV(pok);
         double gainXp = (1.5 * pok.getNiveau() * pok.getEspece().getBaseExp()) / 7;
-        this.gagnerXp(gainXp);
+        this.gagnerXp(gainXp*10000);
     }
 
     public void vaMuterEn(IEspece especeEvolution) {
@@ -314,10 +318,21 @@ public class Pokemon implements IPokemon {
     public void subitAttaqueDe(IPokemon attaquant, IAttaque attaque) {
         if (((Pokemon) attaquant).getNombreDeToursAvantAttaque() <= 0) {// si le lanceur n'a pas Patience en cours
             System.out.println(attaquant.getNom() + " utilise " + ((ICapacite) attaque).getNom() + " !");
+            try {
+				Thread.sleep(delai);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
             this.subirDegats(attaque.calculeDommage(attaquant, this));
             this.derniereCapaciteEncaissee = (Capacite) attaque;
         } else { // si le lanceur a Patience en cours d'utilisation
-            System.out.println(attaquant.getNom() + " se concentre ...");
+            System.out.println(attaquant.getNom() + " se concentre ...");try {
+				Thread.sleep(delai);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
         }
     }
 
