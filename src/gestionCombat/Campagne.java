@@ -17,11 +17,20 @@ public class Campagne {
     public int nbVictoires;
 
 
-    public void seConnecter(Dresseur player) {
+    public static Joueur seConnecter() {
+        System.out.println("Identifiant : ");
+        String id=InputViaScanner.getInputString();
+        return new Joueur(id);
     }
 
-    public void sInscrire() {
-    	
+    public static Joueur sInscrire() {
+		System.out.println("Identifiant : ");
+		String id=InputViaScanner.getInputString();
+		System.out.println("Mot de passe : ");
+		String mdp=InputViaScanner.getInputString();
+		System.out.println("Nom du dresseur : ");
+		String nom=InputViaScanner.getInputString();
+		return  new Joueur(id, mdp, nom);
     }
 
     /**

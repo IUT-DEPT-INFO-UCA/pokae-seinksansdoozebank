@@ -32,7 +32,7 @@ public class TestGestionCombat {
         
         
         Joueur d1 = new Joueur();
-		Joueur d2 = new Joueur();
+		//Joueur d2 = new Joueur();
 		/*d1.enregistrerRanch();
 		d2.enregistrerRanch();*/
 		//Joueur d2 = new Joueur("Koxy","pdm","Thomas");
@@ -40,7 +40,7 @@ public class TestGestionCombat {
         //d1.showTeam();
 		//IARandom d1 = new IARandom();
 		
-		//IARandom d2 = new IARandom();
+		IARandom d2 = new IARandom();
         //d2.showTeam();
         Combat combat = new Combat(d1,d2);
         System.out.println(combat.getVainqueur().getNom() + " a gagne le combat !");

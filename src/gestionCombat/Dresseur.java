@@ -67,6 +67,68 @@ public abstract class Dresseur implements IDresseur, IEchange, IStrategy {
 
 	}
 
+
+	/**
+	 * le constructeur du Dresseur lorsqu'un joueur se connecte
+	 *
+	 * @param id  identifiant unqiue de l'utilisateur
+	 */
+	public Dresseur(String id) {
+		this.identifiant = id;
+		try {
+			JSONParser parser = new JSONParser();
+			JSONObject datafile = (JSONObject) parser.parse(new BufferedReader(new FileReader("./dataSave/DataFile.json")));
+			JSONArray dresseurs = (JSONArray) datafile.get("user");
+			while(this.testUserDejaAjoute(dresseurs, this.identifiant)==-1) {
+				System.out.println("Identifiant invalide");
+				System.out.println("Identifiant : ");
+				this.identifiant = InputViaScanner.getInputString();
+			}
+		} catch (IOException | ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		boolean connected = false;
+		try{
+			connected = this.connection(this.identifiant);
+			if (connected) {
+				this.loadRanch();
+				this.showTeam();
+				this.updateNiveau();
+				this.pokemon = this.equipe[0];
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+
+
+	/**
+	 * le constructeur du Dresseur lorsqu'un joueur s'inscrit
+	 *
+	 * @param id  identifiant unqiue de l'utilisateur
+	 * @param mdp le mot de passe de l'utilisateur
+	 * @param nom le nom du dresseur que l'utilisateur créé sint dresseur
+	 */
+	public Dresseur(String id, String mdp, String nom) {
+
+		// on cree un dresseur en l'ajoutant au stockage
+		this.identifiant = id;
+		this.motDepasse = mdp;
+		this.nom = nom;
+		boolean inscription=false;
+		try {
+			inscription=this.saveData(id, mdp, nom);
+			if (inscription) {
+				this.equipe = (Pokemon[]) Pokedex.engendreRanchStatic();
+				this.updateNiveau();
+				this.pokemon = this.equipe[0];
+			}
+		} catch (IOException | ParseException e) {
+			e.printStackTrace();
+		}
+	}
+
 	/**
 	 * Il vérifie si le fichier existe, si c'est le cas, il vérifie si l'utilisateur est déjà dans le fichier, si ce n'est pas
 	 * le cas, il ajoute l'utilisateur au fichier, si c'est le cas, il renvoie false
@@ -81,7 +143,6 @@ public abstract class Dresseur implements IDresseur, IEchange, IStrategy {
 		if (testPresence()) {
 			JSONParser parser = new JSONParser();
 			JSONObject datafile = (JSONObject) parser.parse(new BufferedReader(new FileReader("./dataSave/DataFile.json")));
-
 			JSONArray dresseurs = (JSONArray) datafile.get("user");
 			if (testUserDejaAjoute(dresseurs, id) == -1) {
 				assert (dresseurs.size() > 0);
@@ -200,7 +261,7 @@ public abstract class Dresseur implements IDresseur, IEchange, IStrategy {
 								//System.out.println("Vous etes connecté");
 								connected = true;
 							} else {
-								System.out.println("Mauvais mot de passe");
+								System.out.println("Mot de passe invalide");
 							}
 						}
 					}
@@ -327,55 +388,6 @@ public abstract class Dresseur implements IDresseur, IEchange, IStrategy {
 			e.printStackTrace();
 		}
 	}
-
-
-	/**
-	 * le constructeur du Dresseur lorsqu'un joueur se connecte
-	 *
-	 * @param id  identifiant unqiue de l'utilisateur
-	 */
-	public Dresseur(String id) {
-		// on cree un dresseur en le recuperant dans le stockage
-		this.identifiant = id;
-		boolean connected = false;
-		try{
-			connected = this.connection(id);
-			if (connected) {
-				this.loadRanch();
-				this.updateNiveau();
-				this.pokemon = this.equipe[0];
-			}
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * le constructeur du Dresseur lorsqu'un joueur s'inscrit
-	 *
-	 * @param id  identifiant unqiue de l'utilisateur
-	 * @param mdp le mot de passe de l'utilisateur
-	 * @param nom le nom du dresseur que l'utilisateur créé sint dresseur
-	 */
-	public Dresseur(String id, String mdp, String nom) {
-
-		// on cree un dresseur en l'ajoutant au stockage
-		this.identifiant = id;
-		this.motDepasse = mdp;
-		this.nom = nom;
-		boolean inscription=false;
-		try {
-			inscription=this.saveData(id, mdp, nom);
-			if (inscription) {
-				this.equipe = (Pokemon[]) Pokedex.engendreRanchStatic();
-				this.updateNiveau();
-				this.pokemon = this.equipe[0];
-			}
-		} catch (IOException | ParseException e) {
-			e.printStackTrace();
-		}
-	}
-
 	
 
 	/////////////////////// methode de IDresseur ///////////////////////

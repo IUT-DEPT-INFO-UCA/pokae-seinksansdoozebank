@@ -322,7 +322,6 @@ public class Pokemon implements IPokemon {
             try {
 				Thread.sleep(delai);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
             this.subirDegats(attaque.calculeDommage(attaquant, this));
@@ -331,7 +330,6 @@ public class Pokemon implements IPokemon {
             System.out.println(attaquant.getNom() + " se concentre ...");try {
 				Thread.sleep(delai);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
         }
@@ -530,7 +528,6 @@ public class Pokemon implements IPokemon {
      * @param expAGagner la quantité d'expérience à acquérir
      */
     public void gagnerXp(double expAGagner) {
-    	System.out.println("LA ON EST DANS APPEL XP");
         // double gainExp = expAGagner;
         double xpTemporaire = this.getExperience() + expAGagner;
         double seuil = (Math.pow(this.niv + 1, 3) * 0.8);        
@@ -538,7 +535,6 @@ public class Pokemon implements IPokemon {
             System.out.println((this.getNom() + " a gagne " + (int) expAGagner + " points d'experience."));
         }
         if (xpTemporaire >= seuil) {
-            //System.out.println((this.getNom() + " a gagne " + (int) expAGagner + " points d'experience."));
             while (xpTemporaire >= seuil) {
                 augmenterNiveau();
                 this.xp = expAGagner - seuil;
