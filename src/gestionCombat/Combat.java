@@ -144,6 +144,9 @@ public class Combat implements ICombat {
 		System.out.println(dresseur1.getNom() + "\t" + this.pokemon1/* .getNom()+" "+((Pokemon)pokemon1).getPVBar() */);
 		System.out.println(dresseur2.getNom() + "\t" + this.pokemon2/* .getNom()+" "+((Pokemon)pokemon2).getPVBar() */);
 		System.out.println("");
+		//TODO
+		//TODO trouver pq ca skip tuos les choix parfois
+		//TODO
 		// recuperation du choix d'action du dresseur1
 		dresseur1.selectAction(pokemon1, pokemon2);
 		System.out.println("");
@@ -173,7 +176,7 @@ public class Combat implements ICombat {
 				pokemon1.subitAttaqueDe(pokemon2, dresseur2.getActionChoisie());
 				this.testerPokeAMisKOPok(dresseur2, pokemon2, dresseur1, pokemon1);
 				System.out.println("");
-				this.switchIfKO(pokemon2, false);
+				this.switchIfKO(pokemon1, dresseur1, pokemon2, false);
 			}
 		} else {
 			// d2 echange puis d1 attaque
@@ -184,34 +187,34 @@ public class Combat implements ICombat {
 				pokemon2.subitAttaqueDe(pokemon1, dresseur1.getActionChoisie());
 				this.testerPokeAMisKOPok(dresseur1, pokemon1, dresseur2, pokemon2);
 				System.out.println("");
-				this.switchIfKO(pokemon1, false);
+				this.switchIfKO(pokemon2, dresseur2, pokemon1, false);
 				// d1 et d2 attaquent
 			} else {
 				// d1 attaque avant
 				if (((Pokemon) pokemon1).estPlusRapideQue((Pokemon) pokemon2)) {
 					pokemon2.subitAttaqueDe(pokemon1, dresseur1.getActionChoisie());
 					if (!this.testerPokeAMisKOPok(dresseur1, pokemon1, dresseur2, pokemon2)) {
-						this.switchIfKO(pokemon1, false);
+						this.switchIfKO(pokemon2, dresseur2, pokemon1, false);
 						System.out.println("");
 						pokemon1.subitAttaqueDe(pokemon2, dresseur2.getActionChoisie());
 						this.testerPokeAMisKOPok(dresseur2, pokemon2, dresseur1, pokemon1);
 						System.out.println("");
-						this.switchIfKO(pokemon2, false);
+						this.switchIfKO(pokemon1, dresseur1, pokemon2, false);
 					} else {
-						this.switchIfKO(pokemon1, false);
+						this.switchIfKO(pokemon2, dresseur2, pokemon1, false);
 					}
 					// d2 attaque avant
 				} else {
 					pokemon1.subitAttaqueDe(pokemon2, dresseur2.getActionChoisie());
 					if (!this.testerPokeAMisKOPok(dresseur2, pokemon2, dresseur1, pokemon1)) {
-						this.switchIfKO(pokemon2, false);
+						this.switchIfKO(pokemon1, dresseur1, pokemon2, false);
 						System.out.println("");
 						pokemon2.subitAttaqueDe(pokemon1, dresseur1.getActionChoisie());
 						this.testerPokeAMisKOPok(dresseur1, pokemon1, dresseur2, pokemon2);
 						System.out.println("");
-						this.switchIfKO(pokemon1, false);
+						this.switchIfKO(pokemon2, dresseur2, pokemon1, false);
 					} else {
-						this.switchIfKO(pokemon2, false);
+						this.switchIfKO(pokemon1, dresseur1, pokemon2, false);
 					}
 				}
 			}
@@ -237,19 +240,14 @@ public class Combat implements ICombat {
 	 */
 	public boolean testerPokeAMisKOPok(IDresseur dresseurLanceur, IPokemon lanceur, IDresseur dresseurReceveur,
 			IPokemon receveur) {
-		IPokemon oldReceveur = receveur;
 		if (receveur.estEvanoui()) {
 			System.out.println(receveur.getNom() + " est KO !");
-			try {
-				lanceur.gagneExperienceDe(oldReceveur);
+			/*try {
+				lanceur.gagneExperienceDe(receveur);
 			} catch (IOException | ParseException e) {
 				e.printStackTrace();
-			}
-			if (lanceur.aChangeNiveau()) {
-				dresseurLanceur.enseigne(lanceur, lanceur.getCapacitesApprises());
-				//((Dresseur)dresseurLanceur).updateNiveau();
-			}
-			this.switchIfKO(receveur, true);
+			}*/
+			this.switchIfKO(lanceur, dresseurLanceur, receveur, true);
 			return true;
 		}
 		return false;
@@ -264,10 +262,19 @@ public class Combat implements ICombat {
 	 *                       été affiché, ce cas ce présente si cette methode est
 	 *                       appelé par testerPokeAMisKOPok().
 	 */
-	public void switchIfKO(IPokemon pokKO, boolean alreadyPrinted) {
+	public void switchIfKO(IPokemon pokAdv, IDresseur dresseurLanceur, IPokemon pokKO, boolean alreadyPrinted) {
 		if (pokKO.estEvanoui()) {
 			if (!alreadyPrinted) {
 				System.out.println(pokKO.getNom() + " est KO !");
+			}
+			try {
+				pokAdv.gagneExperienceDe(pokKO);
+			} catch (IOException | ParseException e) {
+				e.printStackTrace();
+			}
+			if (pokAdv.aChangeNiveau()) {
+				dresseurLanceur.enseigne(pokAdv, pokAdv.getCapacitesApprises());
+				//((Dresseur)dresseurLanceur).updateNiveau();
 			}
 			if (!this.estTermine()) { // si le combat n'est pas terminé, d2 envoie un autre pokemon
 				if (pokKO.equals(pokemon1)) {

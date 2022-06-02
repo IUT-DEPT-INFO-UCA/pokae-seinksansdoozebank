@@ -31,6 +31,10 @@ public class Joueur extends Dresseur {
 
 	static final String strChoixAttaque = "\tChoix de l'attaque à utiliser : " ;
 	
+	public Joueur() {
+		super();
+	}
+	
 	/**
 	 * le constructeur d'un joueur lorsqu'il se connecte
 	 * 
@@ -68,9 +72,11 @@ public class Joueur extends Dresseur {
 	public void selectAction(IPokemon p, IPokemon pAdv) {
 		System.out.println(this.getNom() + "\t" + p.getNom() + Joueur.strChoixAction);
 		if(this.getNbPokemonAlive()>1) {
+			//System.out.println("NBPKMN>1");
 			System.out.println("\t" + strListeChoixAction);
 			int input = InputViaScanner.getInputInt(1, 2);
 			if (input == 1) {
+				//System.out.println("JUSTE AVANT DE L'APPEL DE CHOISIATTAQUE()");
 				this.choisitAttaque(p, pAdv);
 			} else {
 				p = this.choisitCombattantContre(pAdv);
@@ -78,6 +84,7 @@ public class Joueur extends Dresseur {
 			}
 		}else {
 			System.out.println(this.getNom() + "\t"+p.getNom()+strDernierPokemon);
+			//System.out.println("JUSTE AVANT DE L'APPEL DE CHOISIATTAQUE()");
 			this.choisitAttaque(p, pAdv);
 		}
 	}
@@ -91,8 +98,8 @@ public class Joueur extends Dresseur {
 				for (int i = 0; i < caps.length; i++) {
 					System.out.println("\t\t" + (i + 1) + "- " + caps[i]);
 				}
-				int input = InputViaScanner.getInputIntCapacite(1, attaquant.getCapacitesApprises().length,
-						attaquant.getCapacitesApprises());
+				//System.out.println("LA ON EST JUSTE SUR L'APPEL DE L'INPUT DANS CHOISATTAQUE()");
+				int input = InputViaScanner.getInputIntCapacite(1, attaquant.getCapacitesApprises().length,attaquant.getCapacitesApprises());
 				this.setActionChoisie((Capacite) ((Pokemon) attaquant).getCapacitesApprises()[input - 1]);
 			} else {// utilisation de Lutte si aucune capacite n'est dispo
 				try {

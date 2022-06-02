@@ -25,8 +25,8 @@ public class IARandom extends Dresseur {
 	 * 
 	 * @param nom le nom du dresseur créé
 	 */
-	public IARandom(String nom) {
-		super(nom);
+	public IARandom() {
+		super();
 	}
 
 	@Override

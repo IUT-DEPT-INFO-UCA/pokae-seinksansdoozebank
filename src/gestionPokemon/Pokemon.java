@@ -270,7 +270,7 @@ public class Pokemon implements IPokemon {
     public void gagneExperienceDe(IPokemon pok) {
         this.augmenterEV(pok);
         double gainXp = (1.5 * pok.getNiveau() * pok.getEspece().getBaseExp()) / 7;
-        this.gagnerXp(gainXp*10000);
+        this.gagnerXp(gainXp);
     }
 
     public void vaMuterEn(IEspece especeEvolution) {

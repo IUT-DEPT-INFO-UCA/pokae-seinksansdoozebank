@@ -10,9 +10,10 @@ public class Campagne {
 			+ "1 - Lancer le combat suivant\n"
 			+ "2 - Afficher les statistiques\n"
 			+ "3 - Quitter";
-	private static String[] listeNoms= {"Violette","Lino","Cornélia","Amaro","Lem","Valériane","Astera",
+	/*private static String[] listeNoms= {"Violette","Lino","Cornélia","Amaro","Lem","Valériane","Astera",
 			"Urup","Pierre","Ondine","Major Bob","Erika","Koga","Morgane","Auguste","Blue"};
-    public Dresseur joueur;
+    */
+	public Dresseur joueur;
     public int nbVictoires;
 
 
@@ -30,6 +31,7 @@ public class Campagne {
     	int input=0;
     	while(true) {
         	System.out.println(Campagne.strMenuCampagne);
+        	player.enregistrerRanch();
         	input = InputViaScanner.getInputInt(1, 3);
         	if(input==1) {
         		Campagne.lancerNouveauCombat(player);
@@ -56,7 +58,7 @@ public class Campagne {
      * @return le dresseur généré
      */
     private static Dresseur genererNouvelAdversaire() {
-		IARandom adv = new IARandom(listeNoms[(int) (Math.random()*listeNoms.length)]);
+		IARandom adv = new IARandom();
     	return adv;
     }
 
