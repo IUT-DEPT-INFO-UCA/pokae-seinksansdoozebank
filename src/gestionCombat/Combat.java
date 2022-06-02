@@ -268,6 +268,7 @@ public class Combat implements ICombat {
 				System.out.println(pokKO.getNom() + " est KO !");
 			}
 			try {
+				System.out.println("APPEL DE GANEEXP()");
 				pokAdv.gagneExperienceDe(pokKO);
 			} catch (IOException | ParseException e) {
 				e.printStackTrace();

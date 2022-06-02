@@ -115,6 +115,7 @@ public class Pokemon implements IPokemon {
         calculSpecial();
         calculForce();
         calculVitesse();
+        this.created = true;
     }
     /**
      * Creer un objet Pokemon avec 2 parametres
@@ -286,8 +287,10 @@ public class Pokemon implements IPokemon {
 
     @Override
     public void gagneExperienceDe(IPokemon pok) {
+    	System.out.println("APPEL DE AUGMENTER EV");
         this.augmenterEV(pok);
         double gainXp = (1.5 * pok.getNiveau() * pok.getEspece().getBaseExp()) / 7;
+    	System.out.println("APPEL DE GAGNERXP");
         this.gagnerXp(gainXp);
     }
 
@@ -527,6 +530,7 @@ public class Pokemon implements IPokemon {
      * @param expAGagner la quantité d'expérience à acquérir
      */
     public void gagnerXp(double expAGagner) {
+    	System.out.println("LA ON EST DANS APPEL XP");
         // double gainExp = expAGagner;
         double xpTemporaire = this.getExperience() + expAGagner;
         double seuil = (Math.pow(this.niv + 1, 3) * 0.8);        
