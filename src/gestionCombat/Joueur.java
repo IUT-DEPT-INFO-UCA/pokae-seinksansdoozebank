@@ -41,8 +41,8 @@ public class Joueur extends Dresseur {
 	 * @param id  l'identifiant unique du joueur
 	 * @param mdp le mot de passe du joueur
 	 */
-	public Joueur(String id, String mdp) {
-		super(id, mdp);
+	public Joueur(String id) {
+		super(id);
 	}
 
 	/**

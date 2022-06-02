@@ -98,6 +98,24 @@ public class Pokemon implements IPokemon {
      */
     private boolean created = false;
 
+    public Pokemon(int id, String nom, int niv, double xp, Espece espPoke, Capacite[] listeCapacite,int pvMax, Stats statsEV, Stats statsDV) {
+        this.id = id;
+        this.nom = nom;
+        this.niv = niv;
+        this.xp = xp;
+        this.espPoke = espPoke;
+        this.listeCapacite = listeCapacite;
+        this.statsSpecifiques = new Stats(this.espPoke.statsDeBase);;
+        this.pvMax = pvMax;
+        this.statsEV = statsEV;
+        this.statsDV = statsDV;
+
+        this.statsSpecifiques.setPV(pvMax);
+        calculDefense();
+        calculSpecial();
+        calculForce();
+        calculVitesse();
+    }
     /**
      * Creer un objet Pokemon avec 2 parametres
      *

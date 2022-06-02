@@ -38,6 +38,15 @@ public class Stats implements IStat {
         this.special = 0;
         this.pv = 0;
     }
+    
+
+    public Stats(int force, int defense, int vitesse, int special, int pv) {
+        this.force = force;
+        this.defense = defense;
+        this.vitesse = vitesse;
+        this.special = special;
+        this.pv = pv;
+    }
 
     /**
      * Creer un objet Stat en copiant l'argument de type stats passe en parametre

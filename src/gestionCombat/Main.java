@@ -22,9 +22,9 @@ public class Main {
 			if(input2==1) { // connexion
 		        System.out.println("Identifiant : ");
 		        String id=InputViaScanner.getInputString();
-		        System.out.println("Mot de passe : ");
-		        String mdp=InputViaScanner.getInputString();
-		        player = new Joueur(id, mdp);
+		        //System.out.println("Mot de passe : ");
+		        //String mdp=InputViaScanner.getInputString();
+		        player = new Joueur(id);
 				Campagne.continuer(player);
 			}else {//inscription
 				System.out.println("Identifiant : ");
