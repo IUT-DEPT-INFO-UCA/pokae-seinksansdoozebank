@@ -4,6 +4,8 @@ import gestionPokemon.Pokemon;
 import interfaces.*;
 import org.json.simple.parser.ParseException;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -287,6 +289,39 @@ public class Combat implements ICombat {
 		}
 	}
 
+	/**
+	 * Il vérifie si le fichier logs.txt existe
+	 *
+	 * @return Un booléen
+	 */
+	private boolean testPresence() {
+		File repertoire = new File("./dataSave/");
+		String[] listeFichiers = repertoire.list();
+		boolean testPresence = false;
+		if (listeFichiers == null) {
+			System.out.println("Mauvais répertoire");
+		} else {
+			int i = 0;
+			while (!testPresence && i < listeFichiers.length) {
+				if (listeFichiers[i].equals("logs.txt")) {
+					testPresence = true;
+				}
+				i++;
+			}
+		}
+		return testPresence;
+	}
+	public void addLog(String message) {
+		if (testPresence()) {
+			try {
+				FileWriter fw = new FileWriter("./dataSave/logs.txt", true);
+				fw.write(message + "\n");
+				fw.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
 
 

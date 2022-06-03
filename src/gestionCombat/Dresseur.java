@@ -52,7 +52,6 @@ public abstract class Dresseur implements IDresseur, IEchange, IStrategy {
 	/**
 	 * le constructeur d'un dresseur pour une IARandom
 	 *
-	 * @param nom le nom du dresseur
 	 */
 	
 	public Dresseur() {
