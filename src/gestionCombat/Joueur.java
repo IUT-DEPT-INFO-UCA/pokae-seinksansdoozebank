@@ -24,12 +24,18 @@ public class Joueur extends Dresseur {
 	 */
 	static final String strChoixAction = " est sur le terrain. Choix de l'action : ";
 	
-	static final String strListeChoixAction = "\t1 - Attaquer\n"
-										  + "\t\t2 - Changer de pokemon";
+	static final String strListeChoixAction = "\t1- Attaquer\n"
+										  + "\t\t2- Changer de pokemon";
 	
 	static final String strDernierPokemon = " est votre dernier pokemon, vous devez attaquer !";
 
 	static final String strChoixAttaque = "\tChoix de l'attaque à utiliser : " ;
+	
+	private static boolean nextStep = false;
+	
+	public Joueur() {
+		super();
+	}
 	
 	/**
 	 * le constructeur d'un joueur lorsqu'il se connecte
@@ -54,7 +60,7 @@ public class Joueur extends Dresseur {
 	public IPokemon choisitCombattant() {
 		System.out.println(this.getNom() + strChoixCombattant);
 		for (int i = 0; i < this.getEquipe().length; i++) {
-			System.out.println("\t\t" + (i + 1) + " - " + this.getEquipe()[i]);
+			System.out.println("\t\t" + (i + 1) + "- " + this.getEquipe()[i]);
 		}
 		//System.out.println("\tEntrer le numéro du pokemon à envoyer au combat : ");
 		int input = InputViaScanner.getInputInt(1, 6);
@@ -67,16 +73,25 @@ public class Joueur extends Dresseur {
 	public void selectAction(IPokemon p, IPokemon pAdv) {
 		System.out.println(this.getNom() + "\t" + p.getNom() + Joueur.strChoixAction);
 		if(this.getNbPokemonAlive()>1) {
-			System.out.println("\t" + strListeChoixAction);
-			int input = InputViaScanner.getInputInt(1, 2);
-			if (input == 1) {
-				this.choisitAttaque(p, pAdv);
-			} else {
-				p = this.choisitCombattantContre(pAdv);
-				this.setActionChoisie(null);
+			nextStep = false;
+			while(!nextStep) {
+				//System.out.println("nextStep = "+nextStep);
+				System.out.println("\t" + strListeChoixAction);
+				int input = InputViaScanner.getInputInt(1, 2);
+				if (input == 1) {
+					//System.out.println("JUSTE AVANT DE L'APPEL DE CHOISIATTAQUE()");
+					this.choisitAttaque(p, pAdv);
+				} else if(input == 2){
+					p = this.choisitCombattantContre(pAdv);
+					this.setActionChoisie(null);
+				}
+				if(!nextStep) {
+					System.out.println(this.getNom() + "\t" + p.getNom() + Joueur.strChoixAction);
+				}
 			}
 		}else {
 			System.out.println(this.getNom() + "\t"+p.getNom()+strDernierPokemon);
+			//System.out.println("JUSTE AVANT DE L'APPEL DE CHOISIATTAQUE()");
 			this.choisitAttaque(p, pAdv);
 		}
 	}
@@ -90,9 +105,14 @@ public class Joueur extends Dresseur {
 				for (int i = 0; i < caps.length; i++) {
 					System.out.println("\t\t" + (i + 1) + "- " + caps[i]);
 				}
-				int input = InputViaScanner.getInputIntCapacite(1, attaquant.getCapacitesApprises().length,
-						attaquant.getCapacitesApprises());
-				this.setActionChoisie((Capacite) ((Pokemon) attaquant).getCapacitesApprises()[input - 1]);
+				System.out.println("\t\t0- Retour");
+				int input = InputViaScanner.getInputIntCapacite(0, attaquant.getCapacitesApprises().length,attaquant.getCapacitesApprises());
+				if(input!=0) {
+					this.setActionChoisie((Capacite) ((Pokemon) attaquant).getCapacitesApprises()[input - 1]);
+					nextStep = true;
+				}else {
+					System.out.println("retour");
+				}
 			} else {// utilisation de Lutte si aucune capacite n'est dispo
 				try {
 					this.setActionChoisie(Pokedex.createCapacite(((Capacite) Pokedex.getCapaciteStatic("Lutte")).id));
@@ -102,7 +122,7 @@ public class Joueur extends Dresseur {
 			}
 		} else {// utilisation de patience
 			((Pokemon) attaquant).updateNombreDeToursAvantAttaque();// on decremente la duree avant la fin de Patience
-			if (((Pokemon) attaquant).getNombreDeToursAvantAttaque() == 0) {// si Patiece est prete
+			if (((Pokemon) attaquant).getNombreDeToursAvantAttaque() == 0) {// si Patience est prete
 				((Pokemon) attaquant).setNombreDeToursAvantAttaque(-1); // on met le nb de tour a -1 pour que dans
 																		// calculDommage() le nb nne soit pas remis a 2
 			}
@@ -125,14 +145,23 @@ public class Joueur extends Dresseur {
 				System.out.println("\t\t" + "KO " + this.getEquipe()[i]);
 			}
 		}
-		int input = InputViaScanner.getInputIntPokemon(1, 6, this.getEquipe());
-		while (this.getEquipe()[input - 1].equals(this.getPokemon())) {
-			System.out.println(this.getPokemon().getNom() + " est déjà au combat."); //TODO
-			input = InputViaScanner.getInputIntPokemon(1, 6, this.getEquipe());
+		System.out.println("\t\t0- Retour");
+		int input = InputViaScanner.getInputIntPokemon(0, 6, this.getEquipe());
+		if(input!=0) {
+			while (this.getEquipe()[input - 1].equals(this.getPokemon())) {
+				System.out.println(this.getPokemon().getNom() + " est déjà au combat."); //TODO
+				input = InputViaScanner.getInputIntPokemon(0, 6, this.getEquipe());
+				if(input==0) {
+					return this.getPokemon();
+				}
+			}
+			Pokemon choosen = this.getEquipe()[input - 1];
+			nextStep = true;
+			this.setPokemonChoisi(choosen);
+			return choosen;
+		}else {
+			return this.getPokemon();
 		}
-		Pokemon choosen = this.getEquipe()[input - 1];
-		this.setPokemonChoisi(choosen);
-		return choosen;
 	}
 	
 	@Override

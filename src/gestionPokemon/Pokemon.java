@@ -64,7 +64,7 @@ public class Pokemon implements IPokemon {
     public Stats statsEV = new Stats();
 
     /**
-     * L'ensemble de stats des DV du Pokemon
+     * L'ensemble de stats des EV du Pokemon
      */
     public Stats statsDV = new Stats();
 
@@ -115,8 +115,8 @@ public class Pokemon implements IPokemon {
         calculSpecial();
         calculForce();
         calculVitesse();
+        this.created = true;
     }
-
     /**
      * Creer un objet Pokemon avec 2 parametres
      *
@@ -142,9 +142,8 @@ public class Pokemon implements IPokemon {
         this.niv = espPoke.nivDepart;
         gagnerXp(this.espPoke.getExpDeBase());
         this.apprendCapacites(this.espPoke.capaciteDispo(this));
-
-        calculPVMax();
         this.statsSpecifiques.setPV(pvMax);
+        calculPVMax();
         calculDefense();
         calculSpecial();
         calculForce();
@@ -288,9 +287,11 @@ public class Pokemon implements IPokemon {
 
     @Override
     public void gagneExperienceDe(IPokemon pok) {
+    	System.out.println("APPEL DE AUGMENTER EV");
         this.augmenterEV(pok);
         double gainXp = (1.5 * pok.getNiveau() * pok.getEspece().getBaseExp()) / 7;
-        this.gagnerXp(gainXp*10000);
+    	System.out.println("APPEL DE GAGNERXP");
+        this.gagnerXp(gainXp);
     }
 
     public void vaMuterEn(IEspece especeEvolution) {
@@ -321,7 +322,6 @@ public class Pokemon implements IPokemon {
             try {
 				Thread.sleep(delai);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
             this.subirDegats(attaque.calculeDommage(attaquant, this));
@@ -330,7 +330,6 @@ public class Pokemon implements IPokemon {
             System.out.println(attaquant.getNom() + " se concentre ...");try {
 				Thread.sleep(delai);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
         }
@@ -536,7 +535,6 @@ public class Pokemon implements IPokemon {
             System.out.println((this.getNom() + " a gagne " + (int) expAGagner + " points d'experience."));
         }
         if (xpTemporaire >= seuil) {
-            //System.out.println((this.getNom() + " a gagne " + (int) expAGagner + " points d'experience."));
             while (xpTemporaire >= seuil) {
                 augmenterNiveau();
                 this.xp = expAGagner - seuil;

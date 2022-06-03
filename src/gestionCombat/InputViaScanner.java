@@ -11,7 +11,7 @@ import interfaces.IPokemon;
  * 
  */
 public abstract class InputViaScanner {
-
+	
     /**
      * Elle prend une entrée entière de l'utilisateur et la renvoie dés qu'elle se
      * situe entre les deux entiers donnés
@@ -22,12 +22,11 @@ public abstract class InputViaScanner {
      */
     public static int getInputInt(int inf, int sup) {
         int rep = 0;
-        @SuppressWarnings("resource")
         Scanner reader = new Scanner(System.in);
         boolean intValid = false;
         while (!intValid) {
-            String input = reader.next();
-            rep = Integer.parseInt(input);
+            //rep = Integer.parseInt(reader.next());
+            rep = reader.nextInt();
             if (rep >= inf && rep <= sup) {
                 intValid = true;
             }
@@ -41,10 +40,9 @@ public abstract class InputViaScanner {
      * @return La chaine entrée par l'utilisateur
      */
     public static String getInputString(){
-        @SuppressWarnings("resource")
         Scanner reader = new Scanner(System.in);
-        String input = reader.next();
-        //rep = String.parseString(input);
+        //String input = reader.next();
+        String input = reader.nextLine();
         return input;
     }
     
@@ -60,13 +58,13 @@ public abstract class InputViaScanner {
     public static int getInputIntPokemon(int inf, int sup, IPokemon[] tab) { // tab de pokemon pour ne pas pouvoir pick
                                                                              // des pokemon KO
         int rep = 0;
-        @SuppressWarnings("resource")
         Scanner reader = new Scanner(System.in);
         boolean intValid = false;
         while (!intValid) {
-            String input = reader.next();
-            rep = Integer.parseInt(input);
-            if (rep >= inf && rep <= sup && !tab[rep - 1].estEvanoui()) {
+            /*String input = reader.next();
+            rep = Integer.parseInt(input);*/
+            rep = reader.nextInt();
+            if (rep == 0 || (rep >= inf && rep <= sup && !tab[rep - 1].estEvanoui())) {
                 intValid = true;
             }
         }
@@ -82,16 +80,15 @@ public abstract class InputViaScanner {
      * @param tab le tableau d'ICapacite que le Pokemon connait
      * @return La méthode retourne un int.
      */
-    public static int getInputIntCapacite(int inf, int sup, ICapacite[] tab) { // tab de capacite pour ne pas pouvoir
-                                                                               // pick des capacite a 0pp
-        int rep = 0;
-        @SuppressWarnings("resource")
+    public static int getInputIntCapacite(int inf, int sup, ICapacite[] tab) { // tab de capacite pour ne pas pouvoir pick des capacite a 0pp
+    	int rep = 0;
         Scanner reader = new Scanner(System.in);
         boolean intValid = false;
         while (!intValid) {
-            String input = reader.next();
-            rep = Integer.parseInt(input);
-            if (rep >= inf && rep <= sup && tab[rep - 1].getPP() != 0) {
+            /*String input = reader.next();
+            rep = Integer.parseInt(input);*/
+            rep = reader.nextInt();
+            if (rep==0 || ( rep >= inf && rep <= sup && tab[rep - 1].getPP() != 0)) {
                 intValid = true;
             }
         }

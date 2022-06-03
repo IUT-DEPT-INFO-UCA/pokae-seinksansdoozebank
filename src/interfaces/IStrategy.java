@@ -25,7 +25,7 @@ public interface IStrategy {
 
 	/**
 	 * Cette fonction renvoie le pokémon, en connaissant le pokémon adverse, choisi
-	 * par un dresseur parmis les Pokemon de son.
+	 * par un dresseur parmis les Pokemon de son ranch.
 	 * 
 	 * @param pok Le pokémon de l'adversaire
 	 * @return La méthode renvoie un objet IPokemon.
