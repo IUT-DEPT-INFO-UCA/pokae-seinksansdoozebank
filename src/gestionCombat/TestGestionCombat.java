@@ -44,6 +44,7 @@ public class TestGestionCombat {
         //d2.showTeam();
         Combat combat = new Combat(d1,d2);
         System.out.println(combat.getVainqueur().getNom() + " a gagne le combat !");
+		Combat.addLog(combat.getVainqueur().getNom() + " a gagne le combat !");
         /*
         System.out.println("Choisir un nb entre 1 et 6");
         System.out.println(d1.getInputInt(1, 6));

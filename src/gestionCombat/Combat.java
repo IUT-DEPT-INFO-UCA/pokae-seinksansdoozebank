@@ -294,7 +294,7 @@ public class Combat implements ICombat {
 	 *
 	 * @return Un booléen
 	 */
-	private boolean testPresence() {
+	private static boolean testPresence() {
 		File repertoire = new File("./dataSave/");
 		String[] listeFichiers = repertoire.list();
 		boolean testPresence = false;
@@ -311,7 +311,7 @@ public class Combat implements ICombat {
 		}
 		return testPresence;
 	}
-	public void addLog(String message) {
+	public static void addLog(String message) {
 		if (testPresence()) {
 			try {
 				FileWriter fw = new FileWriter("./dataSave/logs.txt", true);
