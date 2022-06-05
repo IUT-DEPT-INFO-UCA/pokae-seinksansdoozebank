@@ -22,8 +22,6 @@ public class IARandom extends Dresseur {
 
 	/**
 	 * Le constructeur d'un IARandom en indiquant son nom
-	 * 
-	 * @param nom le nom du dresseur créé
 	 */
 	public IARandom() {
 		super();

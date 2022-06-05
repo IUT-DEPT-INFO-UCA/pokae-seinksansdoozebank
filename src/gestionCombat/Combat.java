@@ -46,6 +46,11 @@ public class Combat implements ICombat {
 	 * Le dresseur vainqueur du combat
 	 */
 	private Dresseur vainqueur;
+
+	/**
+	 * Cette fonction renvois le nombre de tours du combat
+	 * @return Le nombre de tours du combat
+	 */
 	public int getNbTours(){
 		return this.nbTours;
 	}
@@ -260,6 +265,8 @@ public class Combat implements ICombat {
 	 * @param alreadyPrinted booléen indiquant si l'evanouissement du pokemon a déjà
 	 *                       été affiché, ce cas ce présente si cette methode est
 	 *                       appelé par testerPokeAMisKOPok().
+	 * @param pokAdv       Le pokemon adverse
+	 * @param dresseurLanceur  Le dresseur adverse
 	 */
 	public void switchIfKO(IPokemon pokAdv, IDresseur dresseurLanceur, IPokemon pokKO, boolean alreadyPrinted) {
 		if (pokKO.estEvanoui()) {
@@ -311,6 +318,11 @@ public class Combat implements ICombat {
 		}
 		return testPresence;
 	}
+	/**
+	 * Si le fichier existe, écrire le message dans le fichier
+	 *
+	 * @param message Le message que vous souhaitez ajouter au fichier log.
+	 */
 	public static void addLog(String message) {
 		if (testPresence()) {
 			try {

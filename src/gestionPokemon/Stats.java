@@ -38,8 +38,16 @@ public class Stats implements IStat {
         this.special = 0;
         this.pv = 0;
     }
-    
 
+
+    /**
+     * Un constructeur qui prend 5 paramètres et définit les valeurs des variables sur les paramètres.
+     * @param force
+     * @param defense
+     * @param vitesse
+     * @param special
+     * @param pv
+     */
     public Stats(int force, int defense, int vitesse, int special, int pv) {
         this.force = force;
         this.defense = defense;

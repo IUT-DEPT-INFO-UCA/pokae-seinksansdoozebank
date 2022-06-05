@@ -32,7 +32,10 @@ public class Joueur extends Dresseur {
 	static final String strChoixAttaque = "\tChoix de l'attaque à utiliser : " ;
 	
 	private static boolean nextStep = false;
-	
+
+	/**
+	 * Constructeur d'un joueur qui l'instancie avec Dresseur
+	 */
 	public Joueur() {
 		super();
 	}
