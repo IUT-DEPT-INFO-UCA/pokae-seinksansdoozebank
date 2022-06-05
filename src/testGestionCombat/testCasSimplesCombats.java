@@ -10,10 +10,14 @@ import gestionPokemon.Pokemon;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+
 import static org.junit.jupiter.api.Assertions.*;
 
 
+
+
 public class testCasSimplesCombats {
+
     Joueur j1;
     Pokemon pokeTest;
     Combat c1;
@@ -29,6 +33,7 @@ public class testCasSimplesCombats {
         GwendIA = new IARandom();
         DonatIA = new IARandom ();
         c1 = new Combat(DonatIA,GwendIA);
+
 
     }
     @Test
