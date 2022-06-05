@@ -102,15 +102,15 @@ public class Pokemon implements IPokemon {
 
     /**
      * Constructeur d'un Pokemon qui est utilisé lors de la récupération d'un pokemon a l'aide du fichier json de sauvegarde
-     * @param id
-     * @param nom
-     * @param niv
-     * @param xp
-     * @param espPoke
-     * @param listeCapacite
-     * @param pvMax
-     * @param statsEV
-     * @param statsDV
+     * @param id l'identifiant unique du pokemon
+     * @param nom le nom du pokemon
+     * @param niv le niveau du pokemon
+     * @param xp la quantité d'expérience du pokemon
+     * @param espPoke l'espèce du pokemon
+     * @param listeCapacite le tableau des capacites que le pokemon peut utiliser
+     * @param pvMax le nombre maximum de PV que le pokemon peut avoir
+     * @param statsEV l'ensemble des stats des EV du pokemon
+     * @param statsDV l'ensemble des stats des DV du pokemon
      */
     public Pokemon(int id, String nom, int niv, double xp, Espece espPoke, Capacite[] listeCapacite,int pvMax, Stats statsEV, Stats statsDV) {
         this.id = id;
