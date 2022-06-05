@@ -7,23 +7,29 @@
  */
 package interfaces;
 
-/**Présente les methodes pour utiliser une attaque.
+/**
+ * Présente les methodes pour utiliser une attaque.
+ * 
  * @author Leo Donati
- * Une attaque est une action du Pokemon durant une bataille.
- * Il y a deux types d'attaques :
- * - les capacités (interface ICapacity)
- * - les échanges (interface IEchange)
+ *         Une attaque est une action du Pokemon durant une bataille.
+ *         Il y a deux types d'attaques :
+ *         - les capacités (interface ICapacity)
+ *         - les échanges (interface IEchange)
  */
 public interface IAttaque {
-	/**Calcule la quantité de dégats que va recevoir un pokemon, soit le nombre de Points de Vie qu'il va perdre.
-	 * @param lanceur Le pokemon qui utilise l'attaque.
+	/**
+	 * Calcule la quantité de dégats que va recevoir un pokemon, soit le nombre de
+	 * Points de Vie qu'il va perdre.
+	 * 
+	 * @param lanceur  Le pokemon qui utilise l'attaque.
 	 * @param receveur Le pokemon qui subit l'attaque.
 	 * @return Un int représentant le nombre de dégats que va recevoir le recevoir.
 	 */
-	int calculeDommage(IPokemon lanceur, IPokemon receveur); 	
-	
-	//fait diminuer de 1 le nombre restant de fois où l'attaque peut être utilisée.
-	/**Décrémente le nombre de Points de Pouvoir de l'attaque utilisée.
+	int calculeDommage(IPokemon lanceur, IPokemon receveur);
+
+	// fait diminuer de 1 le nombre restant de fois où l'attaque peut être utilisée.
+	/**
+	 * Décrémente le nombre de Points de Pouvoir de l'attaque utilisée.
 	 * 
 	 */
 	void utilise();

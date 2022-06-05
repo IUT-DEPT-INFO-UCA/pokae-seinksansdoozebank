@@ -1,16 +1,12 @@
 package gestionPokemon;
 
 import org.json.simple.parser.ParseException;
-
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Arrays;
-
 import gestionCombat.Combat;
-import gestionCombat.Dresseur;
-import interfaces.ICapacite;
-//import java.util.Arrays;
+import gestionCombat.IARandom;
+import gestionCombat.Joueur;
 
+@SuppressWarnings("unused")
 public class TestGestionPokemon {
 
         public static void main(String[] args) throws IOException, ParseException {
@@ -21,7 +17,7 @@ public class TestGestionPokemon {
             //System.out.println(Arrays.toString(Pokedex.engendreRanch()));
             //Espece
             /*
-            System.out.println("Espece n°3  = "+Pokedex.especeParId(3));
+            System.out.println("Espece n°3  = "+Pokedex.especeParId(abstract3));
             System.out.println("Espece qui a pour nom Pikachu :"+Pokedex.especeParNom("Pikachu"));
             //Capacite
             System.out.println("Capacite n°18 = "+Pokedex.capaciteParId(18));
@@ -120,12 +116,12 @@ public class TestGestionPokemon {
             }*/
             
             
-            Dresseur d1 = new Dresseur("arcsti","mdp","antoine");
+//            Dresseur d1 = new Dresseur("arcsti","mdp","antoine");
             //d1.showTeam();
-            Dresseur d2 = new Dresseur("firelods","1234","clement");
+//            Dresseur d2 = new Dresseur("firelods","1234","clement");
             //d2.showTeam();
-            Combat combat = new Combat(d1,d2);
-            System.out.println(combat.getVainqueur().getNom());
+//            Combat combat = new Combat(d1,d2);
+//            System.out.println(combat.getVainqueur().getNom());
             
             /*
             System.out.println("Choisir un nb entre 1 et 6");
