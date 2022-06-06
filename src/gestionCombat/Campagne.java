@@ -5,20 +5,32 @@ package gestionCombat;
  * Objet modélisant la campagne d'un dresseur, il lui permet de lancer un combat pour entrainer ses pokemon ou de consulter ses stats
  */
 public class Campagne {
-
+	/**
+	 * Une chaîne constante stockant le message à écrire dans les logs quand un utilsateur commence un combat
+	 */
 	private static String strLogStartCombat = "a commencé un combat.";
+	/**
+	 * Une chaîne constante stockant le message à écrire dans les logs quand un utilsateur finit un combat
+	 */
 	private static String strLogEndCombat = "a fini son combat.";
+	/**
+	 * Une chaîne constante stockant le message à écrire dans les logs quand un utilsateur consulte ses stats
+	 */
 	private static String strLogStats = "a consulté ses statistiques.";
+	/**
+	 * Une chaîne constante stockant le message à écrire dans les logs quand un utilsateur quitte l'application
+	 */
 	private static String strLogExit = "a quitté l'application.";
-	
+
+	/**
+	 * Une chaîne constante stockant le message annonçant au l'utilisateurle menu de la campagne
+	 */
 	private static String strMenuCampagne = 
 			"\nMenu de la campagne : \n"
 			+ "1 - Lancer le combat suivant\n"
 			+ "2 - Afficher les statistiques\n"
 			+ "3 - Quitter";
-	/*private static String[] listeNoms= {"Violette","Lino","Cornélia","Amaro","Lem","Valériane","Astera",
-			"Urup","Pierre","Ondine","Major Bob","Erika","Koga","Morgane","Auguste","Blue"};
-    */
+	
 	/**
 	 * Joueur de la campagne
 	 */
@@ -106,9 +118,4 @@ public class Campagne {
 		IARandom adv = new IARandom();
     	return adv;
     }
-
-    @SuppressWarnings("unused")
-	private void choisirTypeAdversaire() {
-    }
-
 }

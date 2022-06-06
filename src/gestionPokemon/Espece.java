@@ -79,6 +79,12 @@ public class Espece implements IEspece {
 		this.setId(id);
 	}
 
+	/**
+	 * La méthode toString() renvoie une représentation sous forme de chaîne de
+	 * l'Espèce
+	 * 
+	 * @return La méthode toString() est renvoyée.
+	 */
 	@Override
 	public String toString() {
 		return "Espece{" +
@@ -144,6 +150,135 @@ public class Espece implements IEspece {
 	@Override
 	public IStat getGainsStat() {
 		return this.statsGain;
+	}
+
+	/**
+	 * Il renvoie un tableau de toutes les capacites que l'espece peut apprendre
+	 *
+	 * @return Une gamme d'ICapacite
+	 */
+	@Override
+	public ICapacite[] getCapSet() {
+		Capacite[] liste = new Capacite[this.capaciteSelonNiveau.size()];
+		int i = 0;
+		for (Entry<Capacite, Integer> c : this.capaciteSelonNiveau.entrySet()) {
+			liste[i] = c.getKey();
+			i++;
+		}
+		return liste;
+	}
+
+	/**
+	 * Il renvoie l'espece dans laquelle cette espece evolue
+	 *
+	 * @param niveau Le niveau du Pokemon.
+	 * @return L'evolution du pokemon
+	 */
+	public IEspece getEvolution(int niveau) {
+		if (niveau == this.nivEvolution) {
+			return Pokedex.getEspeceParNom(this.evolution);
+		} else {
+			return null;
+		}
+	}
+
+	/**
+	 * Renvoie un tableau des types des deux operandes.
+	 *
+	 * @return Un tableau des deux types.
+	 */
+	@Override
+	public IType[] getTypes() {
+		return new Type[] { this.type1, this.type2 };
+	}
+	//////////////////////////////////////////////////////////////
+
+	/**
+	 * Cette fonction renvoie l'identifiant de l'Espece.
+	 *
+	 * @return L'identifiant de l'Espece.
+	 */
+	public int getId() {
+		return id;
+	}
+
+	/**
+	 * Cette fonction definit l'id de l'Espece sur la valeur du parametre id.
+	 *
+	 * @param id L'identifiant de l'Espece.
+	 */
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	/**
+	 * Cette fonction fixe la valeur de l'attribut `expDeBase` a la valeur du
+	 * parametre `expDeBase`
+	 *
+	 * @param expDeBase L'experience de base du Pokemon.
+	 */
+	public void setExpDeBase(int expDeBase) {
+		this.expDeBase = expDeBase;
+	}
+
+	/**
+	 * Il renvoie la valeur de l'attibut privee `expDeBase`
+	 *
+	 * @return La variable expDeBase est renvoyee.
+	 */
+	/*
+	 * public int getExpDeBase() {
+	 * return this.expDeBase;
+	 * }
+	 */
+
+	/**
+	 * Il renvoie la premiere capacite disponible d'un pokemon
+	 *
+	 * @param pokemon le pokemon qui utilisera le mouvement
+	 * @return La methode renvoie le premier objet Capacite disponible pour l'objet
+	 *         Pokemon.
+	 */
+	public Capacite[] capaciteDispo(Pokemon pokemon) {
+		Capacite[] tabCapaciteDispo = new Capacite[50];
+
+		int i = 0;
+		for (Entry<Capacite, Integer> c : this.capaciteSelonNiveau.entrySet()) {
+			if (Integer.parseInt(c.getValue().toString()) <= pokemon.getNiveau()) {
+				tabCapaciteDispo[i] = c.getKey();
+				i++;
+			}
+		}
+		return tabCapaciteDispo;
+	}
+
+	/**
+	 * Il renvoie un mouvement que le pokémon peut apprendre au niveau donné
+	 * 
+	 * @param niv le niveau du pokémon
+	 * @return La méthode renvoie un objet Capacite.
+	 */
+	public Capacite getLearnableMove(int niv) {
+		for (Entry<Capacite, Integer> c : this.capaciteSelonNiveau.entrySet()) {
+			if (c.getValue() == niv) {
+				// System.out.println("return de "+c.getKey()+ " parfait pour le niveau "+niv);
+				return c.getKey();
+			} else {
+				// System.out.println(this.getNom()+" ne peut pas aprendre "+c.getKey()+" au
+				// niveau "+niv);
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Il imprime le nom de la capacité et le niveau de la capacité pour chaque
+	 * element de la liste que le pokemon peut apprendre
+	 */
+	public void showCapSet() {
+		for (Entry<Capacite, Integer> c : this.capaciteSelonNiveau.entrySet()) {
+			System.out.println("\t" + c.getKey().getNom() + " : niv " + c.getValue());
+		}
 	}
 
 	/**
@@ -236,133 +371,6 @@ public class Espece implements IEspece {
 			}
 		}
 		return testPresence;
-	}
-
-	/**
-	 * Il renvoie un tableau de toutes les capacites que l'espece peut apprendre
-	 *
-	 * @return Une gamme d'ICapacite
-	 */
-	@Override
-	public ICapacite[] getCapSet() {
-		Capacite[] liste = new Capacite[this.capaciteSelonNiveau.size()];
-		int i = 0;
-		for (Entry<Capacite, Integer> c : this.capaciteSelonNiveau.entrySet()) {
-			liste[i] = c.getKey();
-			i++;
-		}
-		return liste;
-	}
-
-	/**
-	 * Il renvoie l'espece dans laquelle cette espece evolue
-	 *
-	 * @param niveau Le niveau du Pokemon.
-	 * @return L'evolution du pokemon
-	 */
-	public IEspece getEvolution(int niveau) {
-		if (niveau == this.nivEvolution) {
-			return Pokedex.getEspeceParNom(this.evolution);
-		} else {
-			return null;
-		}
-	}
-
-	/**
-	 * Renvoie un tableau des types des deux operandes.
-	 *
-	 * @return Un tableau des deux types.
-	 */
-	@Override
-	public IType[] getTypes() {
-		return new Type[] { this.type1, this.type2 };
-	}
-	//////////////////////////////////////////////////////////////
-
-	/**
-	 * Cette fonction renvoie l'identifiant de l'Espece.
-	 *
-	 * @return L'identifiant de l'Espece.
-	 */
-	public int getId() {
-		return id;
-	}
-
-	/**
-	 * Cette fonction definit l'id de l'Espece sur la valeur du parametre id.
-	 *
-	 * @param id L'identifiant de l'Espece.
-	 */
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	/**
-	 * Cette fonction fixe la valeur de l'attribut `expDeBase` a la valeur du
-	 * parametre `expDeBase`
-	 *
-	 * @param expDeBase L'experience de base du Pokemon.
-	 */
-	public void setExpDeBase(int expDeBase) {
-		this.expDeBase = expDeBase;
-	}
-
-	/**
-	 * Il renvoie la valeur de l'attibut privee `expDeBase`
-	 *
-	 * @return La variable expDeBase est renvoyee.
-	 */
-	public int getExpDeBase() {
-		return this.expDeBase;
-	}
-
-	/**
-	 * Il renvoie la premiere capacite disponible d'un pokemon
-	 *
-	 * @param pokemon le pokemon qui utilisera le mouvement
-	 * @return La methode renvoie le premier objet Capacite disponible pour l'objet
-	 *         Pokemon.
-	 */
-	public Capacite[] capaciteDispo(Pokemon pokemon) {
-		Capacite[] tabCapaciteDispo = new Capacite[50];
-
-		int i = 0;
-		for (Entry<Capacite, Integer> c : this.capaciteSelonNiveau.entrySet()) {
-			if (Integer.parseInt(c.getValue().toString()) <= pokemon.getNiveau()) {
-				tabCapaciteDispo[i] = c.getKey();
-				i++;
-			}
-		}
-		return tabCapaciteDispo;
-	}
-
-	/**
-	 * Il renvoie un mouvement que le pokémon peut apprendre au niveau donné
-	 * 
-	 * @param niv le niveau du pokémon
-	 * @return La méthode renvoie un objet Capacite.
-	 */
-	public Capacite getLearnableMove(int niv) {
-		for (Entry<Capacite, Integer> c : this.capaciteSelonNiveau.entrySet()) {
-			if (c.getValue() == niv) {
-				// System.out.println("return de "+c.getKey()+ " parfait pour le niveau "+niv);
-				return c.getKey();
-			} else {
-				// System.out.println(this.getNom()+" ne peut pas aprendre "+c.getKey()+" au
-				// niveau "+niv);
-			}
-		}
-		return null;
-	}
-
-	/**
-	 * Il imprime le nom de la capacité et le niveau de la capacité pour chaque
-	 * element de la liste que le pokemon peut apprendre
-	 */
-	public void showCapSet() {
-		for (Entry<Capacite, Integer> c : this.capaciteSelonNiveau.entrySet()) {
-			System.out.println("\t" + c.getKey().getNom() + " : niv " + c.getValue());
-		}
 	}
 
 }
