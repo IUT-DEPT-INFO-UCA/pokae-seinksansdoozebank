@@ -32,7 +32,10 @@ public class Joueur extends Dresseur {
 	static final String strChoixAttaque = "\tChoix de l'attaque à utiliser : " ;
 	
 	private static boolean nextStep = false;
-	
+
+	/**
+	 * Constructeur d'un joueur qui l'instancie avec Dresseur
+	 */
 	public Joueur() {
 		super();
 	}
@@ -41,7 +44,6 @@ public class Joueur extends Dresseur {
 	 * le constructeur d'un joueur lorsqu'il se connecte
 	 * 
 	 * @param id  l'identifiant unique du joueur
-	 * @param mdp le mot de passe du joueur
 	 */
 	public Joueur(String id) {
 		super(id);

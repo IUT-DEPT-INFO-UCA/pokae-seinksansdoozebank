@@ -13,16 +13,32 @@ public class Campagne {
 	/*private static String[] listeNoms= {"Violette","Lino","Cornélia","Amaro","Lem","Valériane","Astera",
 			"Urup","Pierre","Ondine","Major Bob","Erika","Koga","Morgane","Auguste","Blue"};
     */
+	/**
+	 * Joueur de la campagne
+	 */
 	public Dresseur joueur;
+	/**
+	 * Nombre de victoire dans la campagne
+	 */
     public int nbVictoires;
 
 
+    /**
+     * Il demande à l'utilisateur un identifiant et renvoie un nouveau joueur avec cet identifiant
+     *
+     * @return Une nouvelle instance de la classe Joueur.
+     */
     public static Joueur seConnecter() {
         System.out.println("Identifiant : ");
         String id=InputViaScanner.getInputString();
         return new Joueur(id);
     }
 
+    /**
+     * Il demande à l'utilisateur un identifiant, un mot de passe et un nom, et renvoie un nouveau joueur avec ces valeurs
+     *
+     * @return Une nouvelle instance de la classe Joueur.
+     */
     public static Joueur sInscrire() {
 		System.out.println("Identifiant : ");
 		String id=InputViaScanner.getInputString();
@@ -33,8 +49,18 @@ public class Campagne {
 		return  new Joueur(id, mdp, nom);
     }
 
+
     /**
-     * Permet au joueur de continuer sa campagne tant qu'il le souhaite
+     * La fonction `continuer` est une boucle qui affiche le menu du jeu et permet au joueur de choisir entre trois options
+     * :
+     *
+     * 1. Commencez une nouvelle bataille
+     * 2. Afficher les statistiques du joueur
+     * 3. Quittez le jeu
+     *
+     * La fonction `continuer` est appelée dans la fonction principale du jeu:
+     *
+     * @param player Le joueur
      */
     public static void continuer(Dresseur player) {
     	int input=0;
@@ -75,7 +101,4 @@ public class Campagne {
 	private void choisirTypeAdversaire() {
     }
 
-    public void sauvegarder() {
-
-    }
 }

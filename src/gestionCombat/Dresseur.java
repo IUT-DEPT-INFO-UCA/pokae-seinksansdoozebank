@@ -54,7 +54,6 @@ public abstract class Dresseur implements IDresseur,IStrategy {
 	/**
 	 * le constructeur d'un dresseur pour une IARandom
 	 *
-	 * @param nom le nom du dresseur
 	 */
 	
 	public Dresseur() {
@@ -139,6 +138,8 @@ public abstract class Dresseur implements IDresseur,IStrategy {
 	 * @param mdp le mot de passe de l'utilisateur
 	 * @param nom Le nom d'utilisateur
 	 * @return Un booléen
+	 * @throws IOException si le fichier n'existe pas
+	 * @throws ParseException si le fichier n'est pas un fichier JSON
 	 */
 	@SuppressWarnings("unchecked")
 	public boolean saveData(String id, String mdp, String nom) throws IOException, ParseException {
@@ -231,12 +232,15 @@ public abstract class Dresseur implements IDresseur,IStrategy {
 		return testPresence;
 	}
 
+
 	/**
-	 * Il vérifie si l'utilisateur existe, si c'est le cas, il demande le mot de passe et s'il est correct, il connecte
-	 * l'utilisateur
+	 * Il vérifie si l'utilisateur existe, si c'est le cas, il demande le mot de passe et si le mot de passe est correct, il
+	 * connecte l'utilisateur
 	 *
 	 * @param id l'identifiant de l'utilisateur
 	 * @return Un booléen
+	 * @throws IOException Si le fichier n'existe pas
+	 * @throws ParseException Si le fichier n'est pas un JSON
 	 */
 	public boolean connection(String id) throws IOException, ParseException {
 		if (testPresence()) {
@@ -622,6 +626,10 @@ public abstract class Dresseur implements IDresseur,IStrategy {
 		return this.getNbPokemonAlive() > 0;
 	}
 
+	/**
+	 * Cette fonction renvoie le nombre de pokemons vivants du dresseur
+	 * @return Le nombre de pokemons vivant du dresseur
+	 */
 	public int getNbPokemonAlive () {
 		int nb = 0;
 		for (Pokemon p : this.getEquipe()) {

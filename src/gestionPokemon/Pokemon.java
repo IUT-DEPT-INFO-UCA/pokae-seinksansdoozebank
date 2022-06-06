@@ -17,7 +17,9 @@ public class Pokemon implements IPokemon {
 
     /** Le compteur d'id attribuant un id à chaque nouveau Pokemon */
     public static int cptId = 0;
-    
+    /**
+     * Delai entre les phases du jeu pour fluidifier la lecture du jeu.
+     */
     public static int delai = 1000;
 
     /**
@@ -98,6 +100,18 @@ public class Pokemon implements IPokemon {
      */
     private boolean created = false;
 
+    /**
+     * Constructeur d'un Pokemon qui est utilisé lors de la récupération d'un pokemon a l'aide du fichier json de sauvegarde
+     * @param id l'identifiant unique du pokemon
+     * @param nom le nom du pokemon
+     * @param niv le niveau du pokemon
+     * @param xp la quantité d'expérience du pokemon
+     * @param espPoke l'espèce du pokemon
+     * @param listeCapacite le tableau des capacites que le pokemon peut utiliser
+     * @param pvMax le nombre maximum de PV que le pokemon peut avoir
+     * @param statsEV l'ensemble des stats des EV du pokemon
+     * @param statsDV l'ensemble des stats des DV du pokemon
+     */
     public Pokemon(int id, String nom, int niv, double xp, Espece espPoke, Capacite[] listeCapacite,int pvMax, Stats statsEV, Stats statsDV) {
         this.id = id;
         this.nom = nom;
