@@ -252,9 +252,6 @@ public class Espece implements IEspece {
 			if (c.getValue() == niv) {
 				// System.out.println("return de "+c.getKey()+ " parfait pour le niveau "+niv);
 				return c.getKey();
-			} else {
-				// System.out.println(this.getNom()+" ne peut pas aprendre "+c.getKey()+" au
-				// niveau "+niv);
 			}
 		}
 		return null;
@@ -323,10 +320,10 @@ public class Espece implements IEspece {
 			if (capaTemp != null) {
 				JSONArray listeVersionGroupDetail = (JSONArray) ((JSONObject) listeMove).get("version_group_details");
 				for (Object o : listeVersionGroupDetail) {
-					if ((Objects.equals((String) (((JSONObject) ((JSONObject) o).get("version_group")).get("name")),
+					if ((Objects.equals(((JSONObject) ((JSONObject) o).get("version_group")).get("name"),
 							"red-blue"))
 							&& (Objects.equals(
-									(String) (((JSONObject) ((JSONObject) o).get("move_learn_method")).get("name")),
+							((JSONObject) ((JSONObject) o).get("move_learn_method")).get("name"),
 									"level-up"))) {
 						capaTemp.nivNecessaire = Integer
 								.parseInt((((JSONObject) o).get("level_learned_at")).toString());

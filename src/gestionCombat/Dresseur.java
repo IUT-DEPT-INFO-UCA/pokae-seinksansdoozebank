@@ -94,15 +94,13 @@ public abstract class Dresseur implements IDresseur, IStrategy {
 				this.identifiant = InputViaScanner.getInputString();
 			}
 		} catch (IOException | ParseException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		boolean connected = false;
+		boolean connected;
 		try {
 			connected = this.connection(this.identifiant);
 			if (connected) {
 				this.loadRanch();
-				//this.showTeam();
 				this.updateNiveau();
 				this.pokemon = this.equipe[0];
 			}
@@ -124,7 +122,7 @@ public abstract class Dresseur implements IDresseur, IStrategy {
 		this.identifiant = id;
 		this.motDepasse = mdp;
 		this.nom = nom;
-		boolean inscription = false;
+		boolean inscription;
 		try {
 			inscription = this.saveData(id, mdp, nom);
 			if (inscription) {
@@ -688,7 +686,7 @@ public abstract class Dresseur implements IDresseur, IStrategy {
 	 */
 	//methode codé en prévision de l'implémentation d'une IA élaborée
 	public IAttaque[] getCoupsPossibles() {
-		int nbCapaUtilisable = ((Pokemon) this.getPokemon()).getCapacitesUtilisables().length;
+		int nbCapaUtilisable = this.getPokemon().getCapacitesUtilisables().length;
 		int nbPokeAlive = this.getNbPokemonAlive();
 		IAttaque[] listeCoup = new IAttaque[nbCapaUtilisable + nbPokeAlive];
 		int cptTab = 0;

@@ -193,7 +193,6 @@ public class Joueur extends Dresseur {
 					System.out.println("\t" + pok.getNom() + " n'a pas appris " + capaciteAApprendre.getNom() + ".");
 				}
 			}
-		} else {
 		}
 	}
 	/////////////////////////////////////////////////////////////////////
@@ -218,7 +217,7 @@ public class Joueur extends Dresseur {
 				// input valide
 				if (input2 != 0) {// si on fait pas retour
 					// on set l'action
-					this.setActionChoisie((Capacite) ((Pokemon) attaquant).getCapacitesApprises()[input2 - 1]);
+					this.setActionChoisie(attaquant.getCapacitesApprises()[input2 - 1]);
 					nextStep = true; // et on valide la sortie de la boucle
 				}
 			} else {// utilisation de Lutte si aucune capacite n'est dispo

@@ -94,10 +94,8 @@ public class IARandom extends Dresseur {
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
-				} else {
 				}
 			}
-		} else {
 		}
 	}
 	/////////////////////////////////////////////////////////////////////
@@ -120,7 +118,7 @@ public class IARandom extends Dresseur {
 					i = (int) (Math.random() * attaquant.getCapacitesApprises().length);
 				}
 				// input valide
-				this.setActionChoisie((Capacite) ((Pokemon) attaquant).getCapacitesApprises()[i]);
+				this.setActionChoisie(attaquant.getCapacitesApprises()[i]);
 			} else {
 				// utilisation de Lutte si aucune capacite n'est dispo
 				try {

@@ -22,9 +22,6 @@ public class Tour implements ITour {
 
 	////////////////// méthode de ITour //////////////////
 	@Override
-	/**
-	 * @deprecated
-	 */
 	public void commence() {
 		// TODO Auto-generated method stub
 

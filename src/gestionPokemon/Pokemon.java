@@ -98,7 +98,7 @@ public class Pokemon implements IPokemon {
     /**
      * Indique si le Pokemon est en cours de création ou s'il est créé
      */
-    private boolean created = false;
+    private boolean created;
 
     /**
      * Constructeur d'un Pokemon qui est utilisé lors de la récupération d'un
@@ -123,7 +123,6 @@ public class Pokemon implements IPokemon {
         this.espPoke = espPoke;
         this.listeCapacite = listeCapacite;
         this.statsSpecifiques = new Stats(this.espPoke.statsDeBase);
-        ;
         this.pvMax = pvMax;
         this.statsEV = statsEV;
         this.statsDV = statsDV;
@@ -250,9 +249,7 @@ public class Pokemon implements IPokemon {
             }
         }
         Capacite[] rep = new Capacite[nb];
-        for (int i = 0; i < nb; i++) {
-            rep[i] = this.listeCapacite[i];
-        }
+        System.arraycopy(this.listeCapacite, 0, rep, 0, nb);
         return rep;
     }
 
@@ -299,7 +296,7 @@ public class Pokemon implements IPokemon {
         }
         System.out.println(this.getNom() + " a evolue en " + especeEvolution.getNom() + ".");
         if (Objects.equals(this.nom, this.espPoke.getNom())) {
-            this.nom = ((Espece) especeEvolution).getNom();
+            this.nom = especeEvolution.getNom();
         }
         this.espPoke = (Espece) especeEvolution;
         this.espPoke.initCapaciteSelonNiveau();
@@ -499,12 +496,12 @@ public class Pokemon implements IPokemon {
      * @return La méthode renvoie une chaîne.
      */
     public String getPVBar() {
-        String rep ="[";
+        StringBuilder rep = new StringBuilder("[");
         for (int i = 0; i < this.getPourcentagePV() / 10; i++) {
-            rep += "#";
+            rep.append("#");
         }
         for (int i = 0; i < 10 - (this.getPourcentagePV() / 10); i++) {
-            rep += "-";
+            rep.append("-");
         }
         return rep + "] " + this.getStat().getPV() + "/" + this.pvMax + "";
     }

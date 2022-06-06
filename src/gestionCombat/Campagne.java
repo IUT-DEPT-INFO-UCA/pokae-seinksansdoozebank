@@ -25,11 +25,13 @@ public class Campagne {
 	/**
 	 * Une chaîne constante stockant le message annonçant au l'utilisateurle menu de la campagne
 	 */
-	private static String strMenuCampagne = 
-			"\nMenu de la campagne : \n"
-			+ "1 - Lancer le combat suivant\n"
-			+ "2 - Afficher les statistiques\n"
-			+ "3 - Quitter";
+	private static String strMenuCampagne =
+			"""
+
+					Menu de la campagne :\s
+					1 - Lancer le combat suivant
+					2 - Afficher les statistiques
+					3 - Quitter""";
 	
 	/**
 	 * Joueur de la campagne
@@ -80,7 +82,7 @@ public class Campagne {
      * @param player Le joueur
      */
     public static void continuer(Dresseur player) {
-    	int input=0;
+    	int input;
     	while(true) {
         	System.out.println(Campagne.strMenuCampagne);
         	player.enregistrerRanch();
@@ -114,7 +116,6 @@ public class Campagne {
      * @return le dresseur généré
      */
     private static Dresseur genererNouvelAdversaire() {
-		IARandom adv = new IARandom();
-    	return adv;
+		return new IARandom();
     }
 }

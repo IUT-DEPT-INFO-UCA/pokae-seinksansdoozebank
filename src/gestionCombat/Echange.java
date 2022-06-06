@@ -56,7 +56,7 @@ public class Echange implements IEchange {
 
 	@Override
 	public IPokemon echangeCombattant() {
-		System.out.println(((Dresseur) this.dresseur).getNom() + " rapelle "
+		System.out.println(this.dresseur.getNom() + " rapelle "
 				+ ((Dresseur) this.dresseur).getPokemon().getNom() + " et envoie " + this.newPokemon.getNom());
 		return this.newPokemon;
 	}

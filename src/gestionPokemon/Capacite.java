@@ -150,7 +150,7 @@ public class Capacite implements ICapacite {
                         }
                         break;
                     case -8:
-                    	degats = lanceur.getNiveau() * (Math.random() * + 0.5);
+                    	degats = lanceur.getNiveau() * (Math.random() * 0.5);
                         break;
                     case -9 :// Croc-Fatale : degat = moitie des pv restant de la cible
                     	degats = Math.ceil(receveur.getStat().getPV()/2);
@@ -234,8 +234,7 @@ public class Capacite implements ICapacite {
 			}
 			efficacite = attaquant.getAttaqueChoisie().getEfficiencyOn(defenseur);
 		}
-		double coeff =stab * efficacite * (Math.random() * (0.15) + 0.85);
-		return coeff;
+        return stab * efficacite * (Math.random() * (0.15) + 0.85);
 	}
 
 	
