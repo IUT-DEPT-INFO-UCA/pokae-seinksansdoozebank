@@ -43,25 +43,29 @@ public class IARandom extends Dresseur {
 		return choosen;
 	}
 
+
+	//TODO tout ca marche, faut le mettre dans joueur et IAMinMax mtn
+
 	@Override
-	public void selectAction(IPokemon p, IPokemon pAdv) {
-		System.out.println(this.getNom() + "\ta " + p.getNom() + " sur le terrain. Il choisi quoi faire...");
+	public IAttaque choisitAttaque(IPokemon attaquant, IPokemon defenseur) {
+		System.out.println(this.getNom() + "\ta " + attaquant.getNom() + " sur le terrain. Il choisi quoi faire...");
 		try {
 			Thread.sleep(delai);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		boolean echange = (int) (Math.random() * 10) < 1;
+		boolean echange = (int) (Math.random() * 3) < 1;
 		if (echange && this.getNbPokemonAlive()>1) {
-			p = this.choisitCombattantContre(pAdv);
-			this.setActionChoisie(null);
+			//System.out.println("ok la ya echange");
+			//attaquant = this.choisitCombattantContre(defenseur);
+			//this.setActionChoisie(null);
+			return new Echange(this.choisitCombattantContre(defenseur),this);
 		} else {
-			this.choisitAttaque(p, pAdv);
+			return this.choisiCapacite(attaquant);
 		}
 	}
-
-	@Override
-	public IAttaque choisitAttaque(IPokemon attaquant, IPokemon defenseur) {
+	
+	private IAttaque choisiCapacite(IPokemon attaquant) {
 		if (((Pokemon) attaquant).getNombreDeToursAvantAttaque() == 0) { // dans le cas ou patience a ete utilisee
 			if (((Pokemon) attaquant).getCapacitesUtilisables().length > 0) {
 				//System.out.println(this.getNom() + "\tchoisi une attaque a utiliser...");
@@ -75,6 +79,7 @@ public class IARandom extends Dresseur {
 																			// choisi n'aa plus de PP
 					i = (int) (Math.random() * attaquant.getCapacitesApprises().length);
 				}
+				//input valide
 				this.setActionChoisie((Capacite) ((Pokemon) attaquant).getCapacitesApprises()[i]);
 			} else {
 				// utilisation de Lutte si aucune capacite n'est dispo
@@ -90,10 +95,10 @@ public class IARandom extends Dresseur {
 				((Pokemon) attaquant).setNombreDeToursAvantAttaque(-1); // on met le nb de tour a -1 pour que dans
 																		// calculDommage() le nb nne soit pas remis a 2
 			}
-
 		}
-		this.getPokemon().setAttaqueChoisie(this.getActionChoisie());
+		this.getPokemon().setAttaqueChoisie((Capacite) this.getActionChoisie());
 		return this.getActionChoisie();
+		
 	}
 
 	@Override

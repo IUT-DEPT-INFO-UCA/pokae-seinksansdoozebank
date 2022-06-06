@@ -287,10 +287,10 @@ public class Pokemon implements IPokemon {
 
     @Override
     public void gagneExperienceDe(IPokemon pok) {
-    	System.out.println("APPEL DE AUGMENTER EV");
+    	//System.out.println("APPEL DE AUGMENTER EV");
         this.augmenterEV(pok);
         double gainXp = (1.5 * pok.getNiveau() * pok.getEspece().getBaseExp()) / 7;
-    	System.out.println("APPEL DE GAGNERXP");
+    	//System.out.println("APPEL DE GAGNERXP");
         this.gagnerXp(gainXp);
     }
 

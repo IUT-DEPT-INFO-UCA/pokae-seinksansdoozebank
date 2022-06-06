@@ -71,35 +71,88 @@ public class Joueur extends Dresseur {
 	}
 
 	@Override
-	public void selectAction(IPokemon p, IPokemon pAdv) {
-		System.out.println(this.getNom() + "\t" + p.getNom() + Joueur.strChoixAction);
+	public IAttaque choisitAttaque(IPokemon attaquant, IPokemon defenseur) {
+		System.out.println(this.getNom() + "\t" + attaquant.getNom() + Joueur.strChoixAction);
 		if(this.getNbPokemonAlive()>1) {
 			nextStep = false;
 			while(!nextStep) {
-				//System.out.println("nextStep = "+nextStep);
 				System.out.println("\t" + strListeChoixAction);
 				int input = InputViaScanner.getInputInt(1, 2);
 				if (input == 1) {
-					//System.out.println("JUSTE AVANT DE L'APPEL DE CHOISIATTAQUE()");
-					this.choisitAttaque(p, pAdv);
+					IAttaque tmp = this.choisitCapacite(attaquant);
+					if(nextStep) {
+						return tmp;
+					}
 				} else if(input == 2){
-					p = this.choisitCombattantContre(pAdv);
-					this.setActionChoisie(null);
+					IAttaque tmp = new Echange(this.choisitCombattantContre(defenseur),this);
+					if(nextStep) {
+						//attaquant = this.choisitCombattantContre(defenseur);
+						return tmp;
+					}
 				}
 				if(!nextStep) {
-					System.out.println(this.getNom() + "\t" + p.getNom() + Joueur.strChoixAction);
+					System.out.println(this.getNom() + "\t" + attaquant.getNom() + Joueur.strChoixAction);
 				}
 			}
 		}else {
-			System.out.println(this.getNom() + "\t"+p.getNom()+strDernierPokemon);
+			System.out.println(this.getNom() + "\t"+attaquant.getNom()+strDernierPokemon);
 			//System.out.println("JUSTE AVANT DE L'APPEL DE CHOISIATTAQUE()");
-			this.choisitAttaque(p, pAdv);
+			return this.choisitCapacite(attaquant);
 		}
+		System.out.println("LES PROBLEMES a  la in de choisitAttaque()");
+		return null;
 	}
 
-	public IAttaque choisitAttaque(IPokemon attaquant, IPokemon defenseur) {
-		// TODO choix "annuler" pour revenir au choix des actions
+	public IAttaque choisitCapacite(IPokemon attaquant) {
 		if (((Pokemon) attaquant).getNombreDeToursAvantAttaque() == 0) { // dans le cas ou patience a ete utilisee
+			if (((Pokemon) attaquant).getCapacitesUtilisables().length > 0) {
+				System.out.println(strChoixAttaque);
+				ICapacite[] caps = attaquant.getCapacitesApprises();
+				for (int i = 0; i < caps.length; i++) {
+					System.out.println("\t\t" + (i + 1) + "- " + caps[i]);
+				}
+				System.out.println("\t\t0- Retour");
+				int input2 = InputViaScanner.getInputIntCapacite(0, attaquant.getCapacitesApprises().length,attaquant.getCapacitesApprises());
+				//input valide
+				if(input2!=0) {//si on fait pas retour 
+					//on set l'action
+					this.setActionChoisie((Capacite) ((Pokemon) attaquant).getCapacitesApprises()[input2 - 1]);
+					nextStep = true; //et on valide la sortie de la boucle
+				}else {
+					//System.out.println("retour");
+				}
+			} else {// utilisation de Lutte si aucune capacite n'est dispo
+				ICapacite cap = null;
+				try {
+					cap = Pokedex.createCapacite(((Capacite) Pokedex.getCapaciteStatic("Lutte")).id);
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				}
+				System.out.println(strChoixAttaque);
+				System.out.println("\t\t1- " + cap);
+				System.out.println("\t\t0- Retour");				
+				int input3 = InputViaScanner.getInputInt(0,1);
+				if(input3==1) {
+					this.setActionChoisie(cap);
+					nextStep = true;
+				}else {
+					//System.out.println("retour");
+				}
+			}
+		} else {// utilisation de patience
+			((Pokemon) attaquant).updateNombreDeToursAvantAttaque();// on decremente la duree avant la fin de Patience
+			if (((Pokemon) attaquant).getNombreDeToursAvantAttaque() == 0) {// si Patience est prete
+				((Pokemon) attaquant).setNombreDeToursAvantAttaque(-1); // on met le nb de tour a -1 pour que dans
+																		// calculDommage() le nb nne soit pas remis a 2
+			}
+		}
+		// System.out.println(attaquant.getNom()+" va utiliser "+this.actionChoisie);
+		this.getPokemon().setAttaqueChoisie((Capacite) this.getActionChoisie());
+		return this.getActionChoisie();
+	}
+		
+		
+		/*if (((Pokemon) attaquant).getNombreDeToursAvantAttaque() == 0) { // dans le cas ou patience a ete utilisee
 			if (((Pokemon) attaquant).getCapacitesUtilisables().length > 0) {
 				System.out.println(strChoixAttaque);
 				ICapacite[] caps = attaquant.getCapacitesApprises();
@@ -131,13 +184,13 @@ public class Joueur extends Dresseur {
 		}
 		// System.out.println(attaquant.getNom()+" va utiliser "+this.actionChoisie);
 		((Pokemon) attaquant).setAttaqueChoisie(this.getActionChoisie());
-		return this.getActionChoisie();
+		return this.getActionChoisie();*/
 
-	}
 
 
 	public IPokemon choisitCombattantContre(IPokemon pok) {
-		// TODO choix "annuler" pour revenir au choix des actions
+		boolean avecRetour = !this.getPokemon().estEvanoui();
+		//TODO empecher le retour si on vient d'un KO de pokemon
 		System.out.println(strChoixCombattant);
 		for (int i = 0; i < this.getEquipe().length; i++) {
 			if (!this.getEquipe()[i].estEvanoui())
@@ -146,12 +199,18 @@ public class Joueur extends Dresseur {
 				System.out.println("\t\t" + "KO " + this.getEquipe()[i]);
 			}
 		}
-		System.out.println("\t\t0- Retour");
-		int input = InputViaScanner.getInputIntPokemon(0, 6, this.getEquipe());
+		int inputMin;
+		if(avecRetour) {
+			System.out.println("\t\t0- Retour");
+			inputMin = 0;
+		}else {
+			inputMin = 1;
+		}
+		int input = InputViaScanner.getInputIntPokemon(inputMin, 6, this.getEquipe());
 		if(input!=0) {
 			while (this.getEquipe()[input - 1].equals(this.getPokemon())) {
-				System.out.println(this.getPokemon().getNom() + " est déjà au combat."); //TODO
-				input = InputViaScanner.getInputIntPokemon(0, 6, this.getEquipe());
+				System.out.println(this.getPokemon().getNom() + " est déjà au combat.");
+				input = InputViaScanner.getInputIntPokemon(inputMin, 6, this.getEquipe());
 				if(input==0) {
 					return this.getPokemon();
 				}

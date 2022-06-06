@@ -39,7 +39,6 @@ public class TestGestionCombat {
 		//d1.getEquipe()[0] =  new Pokemon (Pokedex.getEspeceParNom("Fantominus"));
         //d1.showTeam();
 		//IARandom d1 = new IARandom();
-		
 		IARandom d2 = new IARandom();
         //d2.showTeam();
         Combat combat = new Combat(d1,d2);

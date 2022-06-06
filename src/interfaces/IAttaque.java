@@ -27,9 +27,8 @@ public interface IAttaque {
 	 */
 	int calculeDommage(IPokemon lanceur, IPokemon receveur);
 
-	// fait diminuer de 1 le nombre restant de fois où l'attaque peut être utilisée.
 	/**
-	 * Décrémente le nombre de Points de Pouvoir de l'attaque utilisée.
+	 * Décrémente le nombre de Points de Pouvoir de la capacité utilisée ou actionne l'echange
 	 * 
 	 */
 	void utilise();

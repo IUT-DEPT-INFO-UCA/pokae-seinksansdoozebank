@@ -12,7 +12,7 @@ import java.io.*;
  * Un objet représenant un dresseur
  *
  */
-public abstract class Dresseur implements IDresseur, IEchange, IStrategy {
+public abstract class Dresseur implements IDresseur,IStrategy {
 	private static String[] listeNoms= {"Violette","Lino","Cornélia","Amaro","Lem","Valériane","Astera",
 		"Urup","Pierre","Ondine","Major Bob","Erika","Koga","Morgane","Auguste","Blue"};
 
@@ -47,8 +47,10 @@ public abstract class Dresseur implements IDresseur, IEchange, IStrategy {
 	/**
 	 * l'action choisi par le dresseur pour le tour actuel
 	 */
-	private Capacite actionChoisie;
+	private IAttaque actionChoisie;
 
+	private Dresseur adversaire = null;
+	
 	/**
 	 * le constructeur d'un dresseur pour une IARandom
 	 *
@@ -274,7 +276,8 @@ public abstract class Dresseur implements IDresseur, IEchange, IStrategy {
 			return false;
 		}
 	}
-	/**
+	
+	/**s
 	 * Il charge le ranch de l'utilisateur à partir du fichier JSON
 	 */
 	public void loadRanch(){
@@ -329,6 +332,7 @@ public abstract class Dresseur implements IDresseur, IEchange, IStrategy {
 		}
 
 	}
+	
 	/**
 	 * Il enregistre le ranch de l'utilisateur dans le fichier JSON
 	 */
@@ -440,10 +444,6 @@ public abstract class Dresseur implements IDresseur, IEchange, IStrategy {
 		return this.nom;
 
 	}
-	/////////////////////// methode de IDresseur (et IStrategy) ///////////////////////
-
-
-
 
 	@Override
 	public void soigneRanch () {
@@ -451,6 +451,8 @@ public abstract class Dresseur implements IDresseur, IEchange, IStrategy {
 			p.soigne();
 		}
 	}
+	/////////////////////// methode de IStrategy ///////////////////////
+
 
 	public abstract IPokemon choisitCombattant ();
 
@@ -458,42 +460,7 @@ public abstract class Dresseur implements IDresseur, IEchange, IStrategy {
 
 	public abstract IAttaque choisitAttaque (IPokemon attaquant, IPokemon defenseur);
 
-	/////////////////////// methode de IEchange ///////////////////////
-
-	public int calculeDommage (IPokemon lanceur, IPokemon receveur){
-		// On return 0 puisque echange ne fait aucun degat
-		// de toute facons on appelle jamais cette méthode puisque le calcul des dommage
-		// d'un dresseur n'a pas de sens
-		return 0;
-	}
-
-	public void utilise () {
-		this.getPokemon().utilise(this.getActionChoisie());
-	}
-
-	public void setPokemon (IPokemon pok){
-		System.out.println(this.getNom() + " envoie " + pok.getNom() + " au combat.");
-		this.pokemon = (Pokemon) pok;
-	}
-
-	public IPokemon echangeCombattant () {
-		Pokemon oldPokemonActif = this.pokemon;
-		System.out.print(this.getNom() + " rapelle " + oldPokemonActif.getNom() + " et ");
-		this.pokemon = this.pokemonChoisi;
-		System.out.println("envoie " + this.getPokemon().getNom());
-		return oldPokemonActif;
-	}
 	/////////////////////////////////////////////////////////////////////
-
-	/**
-	 * La fonction prend deux objets IPokemon, et le dresseur du premier objet
-	 * IPokemon sélectionnera une action à effectuer : une capacité qui touchera le
-	 * Pokemon pAdv ou un changement de Pokemon
-	 *
-	 * @param p    Le pokémon qui utilise le mouvement
-	 * @param pAdv Le pokémon de l'adversaire
-	 */
-	public abstract void selectAction (IPokemon p, IPokemon pAdv);
 
 	/**
 	 * Retourne le pokémon actif du dresseur
@@ -502,6 +469,11 @@ public abstract class Dresseur implements IDresseur, IEchange, IStrategy {
 	 */
 	public Pokemon getPokemon () {
 		return this.pokemon;
+	}
+	
+
+	public void setPokemon (IPokemon pokemon) {
+		this.pokemon = (Pokemon) pokemon;
 	}
 
 	/**
@@ -600,6 +572,16 @@ public abstract class Dresseur implements IDresseur, IEchange, IStrategy {
 		this.nom = nom;
 	}
 
+	public Dresseur getAdversaire() {
+		return adversaire;
+	}
+
+
+	public void setAdversaire(Dresseur adversaire) {
+		this.adversaire = adversaire;
+	}
+
+
 	/**
 	 * Cette fonction calcule le niveau total du dresseur en fonction du niveau des
 	 * pokemons de son ranch
@@ -617,7 +599,7 @@ public abstract class Dresseur implements IDresseur, IEchange, IStrategy {
 	 *
 	 * @return L'action choisie par le dresseur.
 	 */
-	public Capacite getActionChoisie () {
+	public IAttaque getActionChoisie () {
 		return actionChoisie;
 	}
 
@@ -626,7 +608,7 @@ public abstract class Dresseur implements IDresseur, IEchange, IStrategy {
 	 *
 	 * @param actionChoisie L'action que le dresseur a choisi d'utiliser.
 	 */
-	public void setActionChoisie (Capacite actionChoisie){
+	public void setActionChoisie (IAttaque actionChoisie){
 		this.actionChoisie = actionChoisie;
 	}
 
@@ -649,7 +631,21 @@ public abstract class Dresseur implements IDresseur, IEchange, IStrategy {
 		}
 		return nb;
 	}
-
+	
+	public IAttaque[] getCoupsPossibles() {
+		int nbCapaUtilisable = ((Pokemon) this.getPokemon()).getCapacitesUtilisables().length;
+		int nbPokeAlive = this.getNbPokemonAlive();
+		IAttaque[] listeCoup = new IAttaque[nbCapaUtilisable+nbPokeAlive];
+		int cptTab = 0;
+		for(int i=0; i<nbPokeAlive; i++) {
+			listeCoup[i] = new Echange(this.getPokemon(i),this);
+			cptTab++;
+		}
+		for(int i=0; i<nbCapaUtilisable; i++) {
+			listeCoup[cptTab+i] = new Capacite(((Capacite)this.getPokemon().getCapacitesUtilisables()[i]));
+		}
+		return listeCoup;
+	}
 
 	/**
 	 * Il renvoie le mouvement que le pokémon peut apprendre à son niveau actuel
