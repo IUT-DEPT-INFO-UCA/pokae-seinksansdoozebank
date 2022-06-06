@@ -222,17 +222,6 @@ public class Espece implements IEspece {
 	}
 
 	/**
-	 * Il renvoie la valeur de l'attibut privee `expDeBase`
-	 *
-	 * @return La variable expDeBase est renvoyee.
-	 */
-	/*
-	 * public int getExpDeBase() {
-	 * return this.expDeBase;
-	 * }
-	 */
-
-	/**
 	 * Il renvoie la premiere capacite disponible d'un pokemon
 	 *
 	 * @param pokemon le pokemon qui utilisera le mouvement

@@ -67,7 +67,6 @@ public class Campagne {
 		return  new Joueur(id, mdp, nom);
     }
 
-
     /**
      * La fonction `continuer` est une boucle qui affiche le menu du jeu et permet au joueur de choisir entre trois options
      * :
@@ -76,7 +75,7 @@ public class Campagne {
      * 2. Afficher les statistiques du joueur
      * 3. Quittez le jeu
      *
-     * La fonction `continuer` est appelée dans la fonction principale du jeu:
+     * La fonction `continuer` est appelée dans la fonction principale du jeu
      *
      * @param player Le joueur
      */

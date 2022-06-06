@@ -244,7 +244,6 @@ public class Combat implements ICombat {
 	 */
 	public boolean testerPokAMisKOPok(IDresseur dresseurLanceur, IPokemon lanceur, IDresseur dresseurReceveur,
 			IPokemon receveur) {
-		// TODO DRY/KISS ca
 		if (receveur.estEvanoui()) {
 			System.out.println(receveur.getNom() + " est KO !");
 			try {
@@ -257,12 +256,6 @@ public class Combat implements ICombat {
 				// ((Dresseur)dresseurLanceur).updateNiveau();
 			}
 			if (!this.estTermine()) { // si le combat n'est pas terminé, d2 envoie un autre pokemon
-				/*
-				 * receveur = dresseurReceveur.choisitCombattantContre(lanceur);
-				 * System.out.println(dresseurReceveur.getNom()+" envoie "+receveur.getNom());
-				 * pokemon1 = dresseur1.getPokemon();
-				 * pokemon2 = dresseur2.getPokemon();
-				 */
 				if (receveur.equals(pokemon1)) {
 					pokemon1 = dresseur1.choisitCombattantContre(pokemon2);
 					System.out.println(dresseur1.getNom() + " envoie " + pokemon1.getNom());
@@ -276,48 +269,6 @@ public class Combat implements ICombat {
 			return true;
 		}
 		return false;
-	}
-
-	/**
-	 * Si le pokémon est KO et que le combat n'est pas fini, le dresseur maître de
-	 * ce pokémon envoie un autre pokémon
-	 * 
-	 * @param pokKO           le pokémon qui est peut-être KO
-	 * @param alreadyPrinted  booléen indiquant si l'evanouissement du pokemon a
-	 *                        déjà
-	 *                        été affiché, ce cas ce présente si cette methode est
-	 *                        appelé par testerPokeAMisKOPok().
-	 * @param pokAdv          Le pokemon adverse
-	 * @param dresseurLanceur Le dresseur adverse
-	 */
-	// TODO virer cette methode
-	public void switchIfKO(IPokemon pokAdv, IDresseur dresseurLanceur, IPokemon pokKO, boolean alreadyPrinted) {
-		if (pokKO.estEvanoui()) {
-			if (!alreadyPrinted) {
-				System.out.println(pokKO.getNom() + " est KO !");
-			}
-			try {
-				pokAdv.gagneExperienceDe(pokKO);
-			} catch (IOException | ParseException e) {
-				e.printStackTrace();
-			}
-			if (pokAdv.aChangeNiveau()) {
-				dresseurLanceur.enseigne(pokAdv, pokAdv.getCapacitesApprises());
-				// ((Dresseur)dresseurLanceur).updateNiveau();
-			}
-			if (!this.estTermine()) { // si le combat n'est pas terminé, d2 envoie un autre pokemon
-				if (pokKO.equals(pokemon1)) {
-					pokemon1 = dresseur1.choisitCombattantContre(pokemon2);
-					System.out.println(dresseur1.getNom() + " envoie " + pokemon1.getNom());
-					((Dresseur) dresseur1).setPokemon(pokemon1);
-				}
-				if (pokKO.equals(pokemon2)) {
-					pokemon2 = dresseur2.choisitCombattantContre(pokemon1);
-					System.out.println(dresseur2.getNom() + " envoie " + pokemon2.getNom());
-					((Dresseur) dresseur2).setPokemon(pokemon2);
-				}
-			}
-		}
 	}
 
 	/**

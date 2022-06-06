@@ -201,8 +201,6 @@ public class Pokemon implements IPokemon {
         calculForce();
         calculVitesse();
         this.created = true;
-        // System.out.println(nom);
-        // this.espPoke.showCapSet();
     }
 
     /**
@@ -213,26 +211,6 @@ public class Pokemon implements IPokemon {
     @Override
     public String toString() {
         return this.getNom() + " niv." + this.getNiveau() + " PV " + this.getPVBar();
-        /*
-         * return "Pokemon{" +
-         * "nom='" + nom + '\'' +
-         * ", niv=" + niv +
-         * ", "+ Arrays.toString(listeCapacite)+"}";
-         */
-        /*
-         * return "\nPokemon{" +
-         * "id=" + id +
-         * ", nom='" + nom + '\'' +
-         * ", niv=" + niv +
-         * ", xp=" + xp +
-         * ",\n\tespPoke=" + espPoke +
-         * ",\n\tlisteCapacite=" + Arrays.toString(listeCapacite) +
-         * ",\n\tstatsSpecifiques=" + statsSpecifiques +
-         * ",\n\tpvMax=" + pvMax +
-         * ",\n\tstatsEV=" + statsEV +
-         * ",\n\tstatsDV=" + statsDV +
-         * '}';
-         */
     }
 
     //////////////// methodes de IPokemon ///////////////////////
@@ -265,18 +243,14 @@ public class Pokemon implements IPokemon {
     }
 
     public ICapacite[] getCapacitesApprises() {
-        // System.out.println("\taffichage de listeCapacite :");
         int nb = 0;
         for (Capacite c : this.listeCapacite) {
             if (c != null) {
                 nb++;
-                // System.out.println("\t\t"+c);
             }
         }
-        // System.out.println("initialisation de rep : ");
         Capacite[] rep = new Capacite[nb];
         for (int i = 0; i < nb; i++) {
-            // System.out.println("\t\t"+this.listeCapacite[i]);
             rep[i] = this.listeCapacite[i];
         }
         return rep;
@@ -307,10 +281,8 @@ public class Pokemon implements IPokemon {
 
     @Override
     public void gagneExperienceDe(IPokemon pok) {
-        // System.out.println("APPEL DE AUGMENTER EV");
         this.augmenterEV(pok);
         double gainXp = (1.5 * pok.getNiveau() * pok.getEspece().getBaseExp()) / 7;
-        // System.out.println("APPEL DE GAGNERXP");
         this.gagnerXp(gainXp);
     }
 
@@ -516,9 +488,6 @@ public class Pokemon implements IPokemon {
          */
         this.getStat().setPV(this.getStat().getPV() - degats);
         System.out.println(this.getNom() + " " + this.getPVBar());
-        // System.out.println(this.getNom()+" PV "+(int)this.getPourcentagePV()+"%");
-        // System.out.println("Il reste "+this.getStat().getPV()+"/"+this.pvMax+" PV a
-        // "+this.getNom()+".");
         this.avantDerniersDegatsSubits = this.derniersDegatsSubits;
         this.derniersDegatsSubits = degats;
     }
@@ -530,7 +499,7 @@ public class Pokemon implements IPokemon {
      * @return La méthode renvoie une chaîne.
      */
     public String getPVBar() {
-        String rep = /* this.getNom()+ */"[";
+        String rep ="[";
         for (int i = 0; i < this.getPourcentagePV() / 10; i++) {
             rep += "#";
         }
@@ -565,8 +534,6 @@ public class Pokemon implements IPokemon {
                 xpTemporaire = this.getExperience() + (expAGagner - seuil);
             }
         } else {
-            // System.out.println((this.getNom() + " a gagne " + (int) expAGagner + " points
-            // d'experience.\n"));
             this.xp += expAGagner;
         }
     }
@@ -757,10 +724,8 @@ public class Pokemon implements IPokemon {
                 nb++;
             }
         }
-        // System.out.println("initialisation de rep : ");
         Capacite[] rep = new Capacite[nb];
         for (int i = 0; i < nb; i++) {
-            // System.out.println("\t\t"+this.listeCapacite[i]);
             rep[i] = (Capacite) tmp[i];
         }
         return rep;

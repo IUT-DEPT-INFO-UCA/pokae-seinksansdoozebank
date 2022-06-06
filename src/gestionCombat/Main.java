@@ -20,9 +20,9 @@ public class Main {
 			System.out.println("Se connecter : 1 | S'inscrire : 2");
 			int input2 = InputViaScanner.getInputInt(1, 2);
 			Joueur player;
-			if (input2 == 1) { // connexion
+			if (input2 == 1) {
 				player = Campagne.seConnecter();
-			} else {// inscription
+			} else {
 				player = Campagne.sInscrire();
 			}
 			Campagne.continuer(player);

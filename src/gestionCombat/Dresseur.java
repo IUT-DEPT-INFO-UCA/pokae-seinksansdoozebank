@@ -102,7 +102,7 @@ public abstract class Dresseur implements IDresseur, IStrategy {
 			connected = this.connection(this.identifiant);
 			if (connected) {
 				this.loadRanch();
-				this.showTeam();
+				//this.showTeam();
 				this.updateNiveau();
 				this.pokemon = this.equipe[0];
 			}
@@ -271,7 +271,6 @@ public abstract class Dresseur implements IDresseur, IStrategy {
 					if (dresseur.get("id").equals(id)) {
 						test = true;
 						this.nom = dresseur.get("nom").toString();
-						// System.out.println("Bienvenue " + dresseur.get("id"));
 						while (!connected) {
 							System.out.println("Mot de passe : ");
 							String mdp = InputViaScanner.getInputString();
@@ -384,7 +383,6 @@ public abstract class Dresseur implements IDresseur, IStrategy {
 					pokemon.put("id", this.equipe[i].id);
 					pokemon.put("nom", this.equipe[i].nom);
 					pokemon.put("niv", this.equipe[i].getNiveau());
-					// System.out.println(this.equipe[i]);
 					pokemon.put("aChangeNiveau", this.equipe[i].aChangeNiveau());
 					pokemon.put("xp", this.equipe[i].xp);
 					pokemon.put("espPoke", this.equipe[i].espPoke.getNom());
@@ -437,8 +435,6 @@ public abstract class Dresseur implements IDresseur, IStrategy {
 		Capacite capaciteAApprendre = this.canTeachAMove();
 		if (capaciteAApprendre != null) {
 			if (caps.length < 4) {
-				// System.out.println(pok.getNom()+" peut apprendre
-				// "+capaciteAApprendre.getNom()+" et il peut le faire seul.");
 				try {
 					this.getPokemon().remplaceCapacite(caps.length, capaciteAApprendre);
 				} catch (Exception e) {
@@ -690,7 +686,7 @@ public abstract class Dresseur implements IDresseur, IStrategy {
 	 * 
 	 * @return Un tableau d'objets IAttaque.
 	 */
-	// TODO methode codé en prévision de l'implémentation d'une IA élaborée
+	//methode codé en prévision de l'implémentation d'une IA élaborée
 	public IAttaque[] getCoupsPossibles() {
 		int nbCapaUtilisable = ((Pokemon) this.getPokemon()).getCapacitesUtilisables().length;
 		int nbPokeAlive = this.getNbPokemonAlive();

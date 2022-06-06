@@ -92,7 +92,6 @@ public class Joueur extends Dresseur {
 		for (int i = 0; i < this.getEquipe().length; i++) {
 			System.out.println("\t\t" + (i + 1) + "- " + this.getEquipe()[i]);
 		}
-		// System.out.println("\tEntrer le numéro du pokemon à envoyer au combat : ");
 		int input = InputViaScanner.getInputInt(1, 6);
 		Pokemon choosen = this.getEquipe()[input - 1];
 		this.setPokemon(choosen);
@@ -115,7 +114,6 @@ public class Joueur extends Dresseur {
 				} else if (input == 2) {
 					IAttaque tmp = new Echange(this.choisitCombattantContre(defenseur), this);
 					if (nextStep) {
-						// attaquant = this.choisitCombattantContre(defenseur);
 						return tmp;
 					}
 				}
@@ -125,7 +123,6 @@ public class Joueur extends Dresseur {
 			}
 		} else {
 			System.out.println(this.getNom() + "\t" + attaquant.getNom() + strDernierPokemon);
-			// System.out.println("JUSTE AVANT DE L'APPEL DE CHOISIATTAQUE()");
 			return this.choisitCapacite(attaquant);
 		}
 		return null;
@@ -172,8 +169,6 @@ public class Joueur extends Dresseur {
 		Capacite capaciteAApprendre = this.canTeachAMove();
 		if (capaciteAApprendre != null) {
 			if (caps.length < 4) {
-				// System.out.println(pok.getNom()+" peut apprendre
-				// "+capaciteAApprendre.getNom()+" et il peut le faire seul.");
 				try {
 					this.getPokemon().remplaceCapacite(caps.length, capaciteAApprendre);
 				} catch (Exception e) {
@@ -199,8 +194,6 @@ public class Joueur extends Dresseur {
 				}
 			}
 		} else {
-			// System.out.println(pok.getNom()+" n'a aucune capacite a apprendre au niveau
-			// "+pok.getNiveau());
 		}
 	}
 	/////////////////////////////////////////////////////////////////////
@@ -227,8 +220,6 @@ public class Joueur extends Dresseur {
 					// on set l'action
 					this.setActionChoisie((Capacite) ((Pokemon) attaquant).getCapacitesApprises()[input2 - 1]);
 					nextStep = true; // et on valide la sortie de la boucle
-				} else {
-					// System.out.println("retour");
 				}
 			} else {// utilisation de Lutte si aucune capacite n'est dispo
 				ICapacite cap = null;
@@ -244,9 +235,7 @@ public class Joueur extends Dresseur {
 				if (input3 == 1) {
 					this.setActionChoisie(cap);
 					nextStep = true;
-				} else {
-					// System.out.println("retour");
-				}
+				} //Sinon on ne fait rien
 			}
 		} else {// utilisation de patience
 			((Pokemon) attaquant).updateNombreDeToursAvantAttaque();// on decremente la duree avant la fin de Patience

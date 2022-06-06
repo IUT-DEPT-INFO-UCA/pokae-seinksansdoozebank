@@ -26,7 +26,6 @@ public abstract class InputViaScanner {
         Scanner reader = new Scanner(System.in);
         boolean intValid = false;
         while (!intValid) {
-            //rep = Integer.parseInt(reader.next());
             rep = reader.nextInt();
             if (rep >= inf && rep <= sup) {
                 intValid = true;
@@ -43,7 +42,6 @@ public abstract class InputViaScanner {
     @SuppressWarnings("resource")
     public static String getInputString(){
         Scanner reader = new Scanner(System.in);
-        //String input = reader.next();
         String input = reader.nextLine();
         return input;
     }
@@ -64,8 +62,6 @@ public abstract class InputViaScanner {
         Scanner reader = new Scanner(System.in);
         boolean intValid = false;
         while (!intValid) {
-            /*String input = reader.next();
-            rep = Integer.parseInt(input);*/
             rep = reader.nextInt();
             if ((rep == 0 && inf==0) || (rep >= inf && rep <= sup && !tab[rep - 1].estEvanoui())) {
                 intValid = true;
@@ -89,8 +85,6 @@ public abstract class InputViaScanner {
         Scanner reader = new Scanner(System.in);
         boolean intValid = false;
         while (!intValid) {
-            /*String input = reader.next();
-            rep = Integer.parseInt(input);*/
             rep = reader.nextInt();
             if (rep==0 || ( rep >= inf && rep <= sup && tab[rep - 1].getPP() != 0)) {
                 intValid = true;
