@@ -16,6 +16,9 @@ import interfaces.IPokemon;
  */
 public class Joueur extends Dresseur {
 
+	private static String strLogConnexion = "s'est connecté.";
+	private static String strLogIinscription = "s'est inscrit.";
+
 	static final String strChoixCombattant = "\tChoix du Pokemon à envoyer au combat :";
 	
 	/**
@@ -47,6 +50,7 @@ public class Joueur extends Dresseur {
 	 */
 	public Joueur(String id) {
 		super(id);
+		Combat.addLog(id+" "+strLogConnexion);
 	}
 
 	/**
@@ -58,6 +62,7 @@ public class Joueur extends Dresseur {
 	 */
 	public Joueur(String id, String mdp, String nom) {
 		super(id, mdp, nom);
+		Combat.addLog(id+" "+strLogIinscription);
 	}
 
 	public IPokemon choisitCombattant() {

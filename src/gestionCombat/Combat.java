@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 /**
  * Un objet Combat representant un duel entre 2 dresseurs
@@ -351,8 +352,9 @@ public class Combat implements ICombat {
 	public static void addLog(String message) {
 		if (testPresence()) {
 			try {
+				Calendar currentTime = Calendar.getInstance();
 				FileWriter fw = new FileWriter("./dataSave/logs.txt", true);
-				fw.write(message + "\n");
+				fw.write(currentTime.getTime() + "\t" + message + "\n");
 				fw.close();
 			} catch (IOException e) {
 				e.printStackTrace();

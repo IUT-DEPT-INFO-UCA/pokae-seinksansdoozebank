@@ -21,16 +21,8 @@ public class Main {
 			Joueur player;
 			if(input2==1) { // connexion
 		        player = Campagne.seConnecter();
-				Campagne.continuer(player);
 			}else {//inscription
 				player = Campagne.sInscrire();
-				/*System.out.println("Identifiant : ");
-				String id=InputViaScanner.getInputString();
-				System.out.println("Mot de passe : ");
-				String mdp=InputViaScanner.getInputString();
-				System.out.println("Nom du dresseur : ");
-				String nom=InputViaScanner.getInputString();
-				player = new Joueur(id, mdp, nom);*/
 			}
 			Campagne.continuer(player);
 		}else {

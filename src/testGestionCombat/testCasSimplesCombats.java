@@ -2,6 +2,7 @@ package testGestionCombat;
 
 import gestionCombat.Combat;
 import gestionCombat.Dresseur;
+import gestionCombat.Echange;
 import gestionCombat.IARandom;
 import gestionCombat.Joueur;
 import gestionPokemon.Capacite;
@@ -41,8 +42,8 @@ public class testCasSimplesCombats {
     {
         // Test si le pokemon courrant est bien modifié
         assertNotEquals(GwendIA.getPokemon(),pokeTest);
-        GwendIA.setPokemonChoisi(pokeTest);
-        GwendIA.echangeCombattant();
+        GwendIA.setActionChoisie(new Echange(pokeTest,GwendIA));
+        GwendIA.getActionChoisie().utilise();
         assertEquals(GwendIA.getPokemon(),pokeTest);
     }
     @Test
@@ -67,7 +68,7 @@ public class testCasSimplesCombats {
         GwendIA.setPokemon(pokeTest);
         int PPdeBase = GwendIA.getPokemon().getCapacitesApprises()[0].getPP();
         GwendIA.setActionChoisie((Capacite) GwendIA.getPokemon().getCapacitesApprises()[0]);
-        GwendIA.utilise();
+        GwendIA.getActionChoisie().utilise();
         assertNotEquals(GwendIA.getPokemon().getCapacitesApprises()[0].getPP(), PPdeBase);
     }
     @Test

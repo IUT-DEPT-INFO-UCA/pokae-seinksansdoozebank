@@ -5,6 +5,12 @@ package gestionCombat;
  * Objet modélisant la campagne d'un dresseur, il lui permet de lancer un combat pour entrainer ses pokemon ou de consulter ses stats
  */
 public class Campagne {
+
+	private static String strLogStartCombat = "a commencé un combat.";
+	private static String strLogEndCombat = "a fini son combat.";
+	private static String strLogStats = "a consulté ses statistiques.";
+	private static String strLogExit = "a quitté l'application.";
+	
 	private static String strMenuCampagne = 
 			"\nMenu de la campagne : \n"
 			+ "1 - Lancer le combat suivant\n"
@@ -69,10 +75,14 @@ public class Campagne {
         	player.enregistrerRanch();
         	input = InputViaScanner.getInputInt(1, 3);
         	if(input==1) {
+        		Combat.addLog(strLogStartCombat);
         		Campagne.lancerNouveauCombat(player);
+        		Combat.addLog(strLogEndCombat);
         	}else if(input==2){
         		player.afficherStat();
+        		Combat.addLog(strLogStats);
         	}else{
+        		Combat.addLog(strLogExit);
         		System.exit(0);
         	}
     	}

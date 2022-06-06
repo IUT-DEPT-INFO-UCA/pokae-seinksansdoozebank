@@ -13,6 +13,7 @@ import java.io.*;
  *
  */
 public abstract class Dresseur implements IDresseur,IStrategy {
+	
 	private static String[] listeNoms= {"Violette","Lino","Cornélia","Amaro","Lem","Valériane","Astera",
 		"Urup","Pierre","Ondine","Major Bob","Erika","Koga","Morgane","Auguste","Blue"};
 
@@ -124,6 +125,7 @@ public abstract class Dresseur implements IDresseur,IStrategy {
 				this.equipe = (Pokemon[]) Pokedex.engendreRanchStatic();
 				this.updateNiveau();
 				this.pokemon = this.equipe[0];
+				
 			}
 		} catch (IOException | ParseException e) {
 			e.printStackTrace();

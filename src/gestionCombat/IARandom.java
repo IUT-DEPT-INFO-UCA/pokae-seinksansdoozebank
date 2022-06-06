@@ -18,7 +18,7 @@ public class IARandom extends Dresseur {
 	/**
 	 * entier représentant la durée en ms des pauses du thread pendant les choix de L'IARandom
 	 */
-	private static final int delai = 800;
+	private static final int delai = 0;
 
 	/**
 	 * Le constructeur d'un IARandom en indiquant son nom

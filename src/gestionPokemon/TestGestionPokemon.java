@@ -2,6 +2,8 @@ package gestionPokemon;
 
 import org.json.simple.parser.ParseException;
 import java.io.IOException;
+import java.util.Calendar;
+
 import gestionCombat.Combat;
 import gestionCombat.IARandom;
 import gestionCombat.Joueur;
@@ -10,7 +12,10 @@ import gestionCombat.Joueur;
 public class TestGestionPokemon {
 
         public static void main(String[] args) throws IOException, ParseException {
-            Pokedex.initialiser(); 
+
+			Calendar currentTime = Calendar.getInstance();
+			System.out.println(currentTime.getTime());
+        	//Pokedex.initialiser(); 
 
             ///////////////////////  Pokedex /////////////////////////////
             //Ranch
