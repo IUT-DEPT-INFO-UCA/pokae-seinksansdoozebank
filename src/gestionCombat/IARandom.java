@@ -19,7 +19,7 @@ public class IARandom extends Dresseur {
 	 * entier représentant la durée en ms des pauses du thread pendant les choix de
 	 * L'IARandom
 	 */
-	private static final int delai = 800;
+	private static final int delai = 0; //800;
 
 	/**
 	 * Le constructeur d'un IARandom en indiquant son nom
@@ -51,7 +51,7 @@ public class IARandom extends Dresseur {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		boolean echange = (int) (Math.random() * 3) < 1;
+		boolean echange = (int) (Math.random() * 2) < 1;
 		if (echange && this.getNbPokemonAlive() > 1) {
 			return new Echange(this.choisitCombattantContre(defenseur), this);
 		} else {

@@ -232,7 +232,7 @@ public class Capacite implements ICapacite {
 			if (attaquant.possedeLeType(this.type)) {
 				stab = 1.5;
 			}
-			efficacite = attaquant.getAttaqueChoisie().getEfficiencyOn(defenseur);
+			efficacite = /*attaquant.getAttaqueChoisie()*/this.getEfficiencyOn(defenseur);//TODO BIIIG TEST LA
 		}
         return stab * efficacite * (Math.random() * (0.15) + 0.85);
 	}

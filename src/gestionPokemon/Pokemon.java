@@ -20,7 +20,7 @@ public class Pokemon implements IPokemon {
     /**
      * Delai entre les phases du jeu pour fluidifier la lecture du jeu.
      */
-    public static int delai = 1000;
+    public static int delai = 0;//1000;
 
     /**
      * L'identifiant unique du Pokémon

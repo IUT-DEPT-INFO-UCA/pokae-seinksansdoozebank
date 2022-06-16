@@ -1,8 +1,6 @@
 package gestionCombat;
 
-import gestionPokemon.Pokemon;
 import interfaces.*;
-import org.json.simple.parser.ParseException;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -24,22 +22,8 @@ public class Combat implements ICombat {
 	 * Le nombre de tours du combat
 	 */
 	private int nbTours;
-	/**
-	 * Le premier dresseur participant du Combat
-	 */
-	private Dresseur dresseur1;
-	/**
-	 * Le Pokemon du premier dresseur
-	 */
-	private IPokemon pokemon1;
-	/**
-	 * Le deuxieme dresseur participant du Combat
-	 */
-	private Dresseur dresseur2;
-	/**
-	 * Le Pokemon du deuxième dresseur
-	 */
-	private IPokemon pokemon2;
+	
+	private EtatDuJeu edj;
 	/**
 	 * Une liste des tours de ce combat
 	 */
@@ -47,7 +31,7 @@ public class Combat implements ICombat {
 	/**
 	 * Le dresseur vainqueur du combat
 	 */
-	private Dresseur vainqueur;
+	private IDresseur vainqueur;
 
 	/**
 	 * Cette fonction renvois le nombre de tours du combat
@@ -66,40 +50,39 @@ public class Combat implements ICombat {
 	 */
 	public Combat(Dresseur d1, Dresseur d2) {
 		this.nbTours = 0;
-		this.dresseur1 = d1;
-		this.dresseur2 = d2;
-		this.dresseur1.setAdversaire(this.dresseur2);
-		this.dresseur2.setAdversaire(this.dresseur1);
+		this.edj=new EtatDuJeu(d1, d2, d1.getPokemon(0), d2.getPokemon(0));
+		((Dresseur) this.edj.getDresseur1()).setAdversaire((Dresseur) this.edj.getDresseur2());
+		((Dresseur) this.edj.getDresseur2()).setAdversaire((Dresseur) this.edj.getDresseur1());
 	}
 
 	///////////////////// Méthodes de ICombat /////////////////////
 
 	public void commence() {
 		this.nbTours = 1;
-		this.pokemon1 = this.dresseur1.choisitCombattant();
+		this.edj.setPokemon1(this.edj.getDresseur1().choisitCombattant());
 		System.out.println("");
-		this.pokemon2 = this.dresseur2.choisitCombattant();
+		this.edj.setPokemon2(this.edj.getDresseur2().choisitCombattant());
 		System.out.println(msgDebutCombat);
 	}
 
 	public IDresseur getDresseur1() {
-		return this.dresseur1;
+		return this.edj.getDresseur1();
 	}
 
 	public IDresseur getDresseur2() {
-		return this.dresseur2;
+		return this.edj.getDresseur2();
 	}
 
 	public ITour nouveauTour(IPokemon pok1, IAttaque atk1, IPokemon pok2, IAttaque atk2) {
 		this.nbTours++;
-		return new Tour(this.nbTours);
+		return new Tour(this.nbTours,this.edj);
 	}
 
 	public void termine() {
-		dresseur1.soigneRanch();
-		dresseur1.updateNiveau();
-		dresseur2.soigneRanch();
-		dresseur2.updateNiveau();
+		this.edj.getDresseur1().soigneRanch();
+		((Dresseur) this.edj.getDresseur1()).updateNiveau();
+		this.edj.getDresseur2().soigneRanch();
+		((Dresseur) this.edj.getDresseur2()).updateNiveau();
 	}
 
 	///////////////////////////////////////////////////////////////
@@ -111,14 +94,15 @@ public class Combat implements ICombat {
 	 * 
 	 * @return Le Dresseur vainqueur de la bataille.
 	 */
-	public Dresseur getVainqueur() {
+	public IDresseur getVainqueur() {
 		this.commence();
 		while (!this.estTermine()) {
 			this.startTour();
-			tours.add(this.nouveauTour(this.pokemon1, this.dresseur1.getActionChoisie(), this.pokemon2,
-					this.dresseur2.getActionChoisie()));
+			ITour currentTour = this.nouveauTour(this.edj.getPokemon1(), ((Dresseur) this.getDresseur1()).getActionChoisie(), this.edj.getPokemon2(),((Dresseur) this.getDresseur2()).getActionChoisie());
 			System.out.println("");
-			this.executerActions();
+			currentTour.commence();//TODO mettre les coup choisi ici en parametre
+			tours.add(currentTour);
+			
 		}
 		this.termine();
 		return this.vainqueur;
@@ -134,12 +118,12 @@ public class Combat implements ICombat {
 	private boolean estTermine() {
 		// System.out.println(dresseur1.pouvoirSeBattre());
 		// System.out.println(dresseur2.pouvoirSeBattre());
-		if (dresseur1.pouvoirSeBattre() && dresseur2.pouvoirSeBattre()) {
+		if (((Dresseur) this.edj.getDresseur1()).pouvoirSeBattre() && ((Dresseur) this.edj.getDresseur2()).pouvoirSeBattre()) {
 			return false;
-		} else if (!dresseur1.pouvoirSeBattre()) {
-			this.vainqueur = dresseur2;
-		} else if (!dresseur2.pouvoirSeBattre()) {
-			this.vainqueur = dresseur1;
+		} else if (!((Dresseur) this.edj.getDresseur1()).pouvoirSeBattre()) {
+			this.vainqueur = this.edj.getDresseur2();
+		} else if (!((Dresseur) this.edj.getDresseur2()).pouvoirSeBattre()) {
+			this.vainqueur = this.edj.getDresseur1();
 		}
 		return true;
 	}
@@ -151,116 +135,14 @@ public class Combat implements ICombat {
 	 */
 	private void startTour() {
 		System.out.println("\n\n======================= Début du tour " + this.nbTours + " =======================\n");
-		System.out.println(dresseur1.getNom() + "\t" + this.pokemon1/* .getNom()+" "+((Pokemon)pokemon1).getPVBar() */);
-		System.out.println(dresseur2.getNom() + "\t" + this.pokemon2/* .getNom()+" "+((Pokemon)pokemon2).getPVBar() */);
+		System.out.println(edj.getDresseur1().getNom() + "\t" + edj.getPokemon1()/* .getNom()+" "+((Pokemon)pokemon1).getPVBar() */);
+		System.out.println(edj.getDresseur2().getNom() + "\t" + edj.getPokemon2()/* .getNom()+" "+((Pokemon)pokemon2).getPVBar() */);
 		System.out.println("");
 		// recuperation du choix d'action du dresseur1
-		dresseur1.setActionChoisie(dresseur1.choisitAttaque(pokemon1, pokemon2));
+		((Dresseur) edj.getDresseur1()).setActionChoisie(edj.getDresseur1().choisitAttaque(edj.getPokemon1(), edj.getPokemon2()));
 		System.out.println("");
 		// recuperation du choix d'action du dresseur2
-		dresseur2.setActionChoisie(dresseur2.choisitAttaque(pokemon2, pokemon1));
-	}
-
-	/**
-	 * C'ets la méthode principale de déroulement d'un tour. Si les 2 dresseur
-	 * veulent changer de pokémon, l'ordre d'actino n'est pas important. Si l'un
-	 * change de pokémon et l'autre attaque, alors c'est l'echange qui se fait en
-	 * premier. Enfin si les 2 veulent attaquer, alors le pokémon le plus rapide
-	 * attaque en premier
-	 */
-	private void executerActions() {
-		// d1 echange...
-		if (this.dresseur1.getActionChoisie() instanceof Echange) { // d1 echange
-			dresseur1.getActionChoisie().utilise();
-			pokemon1 = dresseur1.getPokemon();
-			// ...et d2 echange
-			if (this.dresseur2.getActionChoisie() instanceof Echange) {
-				dresseur2.getActionChoisie().utilise();
-				pokemon2 = dresseur2.getPokemon();
-				// ...et d2 attaque
-			} else {
-				System.out.println("");
-				pokemon1.subitAttaqueDe(pokemon2, dresseur2.getActionChoisie());
-				this.testerPokAMisKOPok(dresseur2, pokemon2, pokemon1);
-				System.out.println("");
-				this.testerPokAMisKOPok(dresseur1, pokemon1, pokemon2);
-			}
-		} else if (this.dresseur2.getActionChoisie() instanceof Echange) { // d2 echange puis d1 attaque
-			// d2 echange
-			dresseur2.getActionChoisie().utilise();
-			pokemon2 = dresseur2.getPokemon();
-			System.out.println("");
-			pokemon2.subitAttaqueDe(pokemon1, dresseur1.getActionChoisie());
-			this.testerPokAMisKOPok(dresseur1, pokemon1, pokemon2);
-			System.out.println("");
-			this.testerPokAMisKOPok(dresseur2, pokemon2, pokemon1);
-		} else {// d1 et d2 attaquent
-			// d1 attaque avant
-			if (((Pokemon) pokemon1).estPlusRapideQue((Pokemon) pokemon2)) {
-				doubleAttaque(pokemon2, pokemon1, dresseur1, dresseur2);
-				// d2 attaque avant
-			} else {
-				doubleAttaque(pokemon1, pokemon2, dresseur2, dresseur1);
-			}
-		}
-	}
-
-	private void doubleAttaque(IPokemon pokemon2, IPokemon pokemon1, Dresseur dresseur1, Dresseur dresseur2) {
-		pokemon2.subitAttaqueDe(pokemon1, dresseur1.getActionChoisie());
-		if (!this.testerPokAMisKOPok(dresseur1, pokemon1, pokemon2)) {
-			this.testerPokAMisKOPok(dresseur2, pokemon2, pokemon1);
-			System.out.println("");
-			pokemon1.subitAttaqueDe(pokemon2, dresseur2.getActionChoisie());
-			this.testerPokAMisKOPok(dresseur2, pokemon2, pokemon1);
-			System.out.println("");
-			this.testerPokAMisKOPok(dresseur1, pokemon1, pokemon2);
-		} else {
-			this.testerPokAMisKOPok(dresseur2, pokemon2, pokemon1);
-		}
-	}
-
-	/**
-	 * Il vérifie si le pokémon est KO et si c'est le cas, le maitre de ce pokemon
-	 * doit, si le combat n'est pas fini, envoyer un autre pokemon de son ranch au
-	 * combat. Dans ce cas, le pokemon lanceur de l'attaque recoit de l'exp et s'il
-	 * a gagné un niveau, son maitre peut peut-etre lui apprendre une capacitee
-	 * 
-	 * @param dresseurLanceur  l'entraîneur qui utilise le mouvement, et qui peut
-	 *                         potentiellement apprendre une capacité a son pokemon
-	 * @param lanceur          le pokémon qui attaque et qui peut gagner de l'exp si
-	 *                         le receveur est KO
-	 * @param receveur         le pokémon qui reçoit l'attaque et qui est
-	 *                         potentiellement KO
-	 * @return Un booléen indiquant si le pokemon attaqué a été mis KO, auquel cas
-	 *         le maître de ce pokemon ne pourra pas attaquer pendant ce tour
-	 */
-	public boolean testerPokAMisKOPok(IDresseur dresseurLanceur, IPokemon lanceur,
-									  IPokemon receveur) {
-		if (receveur.estEvanoui()) {
-			System.out.println(receveur.getNom() + " est KO !");
-			try {
-				lanceur.gagneExperienceDe(receveur);
-			} catch (IOException | ParseException e) {
-				e.printStackTrace();
-			}
-			if (lanceur.aChangeNiveau()) {
-				dresseurLanceur.enseigne(lanceur, lanceur.getCapacitesApprises());
-				// ((Dresseur)dresseurLanceur).updateNiveau();
-			}
-			if (!this.estTermine()) { // si le combat n'est pas terminé, d2 envoie un autre pokemon
-				if (receveur.equals(pokemon1)) {
-					pokemon1 = dresseur1.choisitCombattantContre(pokemon2);
-					System.out.println(dresseur1.getNom() + " envoie " + pokemon1.getNom());
-					dresseur1.setPokemon(pokemon1);
-				} else if (receveur.equals(pokemon2)) {
-					pokemon2 = dresseur2.choisitCombattantContre(pokemon1);
-					System.out.println(dresseur2.getNom() + " envoie " + pokemon2.getNom());
-					dresseur2.setPokemon(pokemon2);
-				}
-			}
-			return true;
-		}
-		return false;
+		((Dresseur) edj.getDresseur2()).setActionChoisie(edj.getDresseur2().choisitAttaque(edj.getPokemon2(), edj.getPokemon1()));
 	}
 
 	/**

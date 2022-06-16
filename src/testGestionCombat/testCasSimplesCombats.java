@@ -1,13 +1,14 @@
 package testGestionCombat;
 
 import gestionCombat.Combat;
-import gestionCombat.Dresseur;
 import gestionCombat.Echange;
 import gestionCombat.IARandom;
 import gestionCombat.Joueur;
 import gestionPokemon.Capacite;
 import gestionPokemon.Pokedex;
 import gestionPokemon.Pokemon;
+import interfaces.IDresseur;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -99,7 +100,7 @@ public class testCasSimplesCombats {
     }
     @Test
     public void testWinner(){
-        Dresseur resultat = c1.getVainqueur();
+        IDresseur resultat = c1.getVainqueur();
         assertNotNull(resultat);
         if(resultat==DonatIA) assertEquals(DonatIA,resultat);
         else assertEquals(GwendIA,resultat);

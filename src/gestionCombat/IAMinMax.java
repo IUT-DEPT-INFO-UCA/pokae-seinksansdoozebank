@@ -9,46 +9,49 @@ import interfaces.IPokemon;
 
 public class IAMinMax extends Dresseur {
 	
-	private Object[] getProbaVictoire(IPokemon attaquant, IPokemon defenseur, IDresseur dresseurAdv) { 
+	private Object[] getProbaVictoire(EtatDuJeu edj) { 
 		Object[] rep = new Object[2];
-		if(this.estEtatTerminal(attaquant, defenseur, dresseurAdv)) {
-			rep[0] = this.getGain(attaquant, defenseur);
+		if(edj.estTerminal()) {
+			if(this.pouvoirSeBattre()) {
+				rep[0]=1;
+			}else {
+				rep[0]=0;
+			}
 			rep[1] = null;
-			return rep;
 		}else {
 			int maxi=0;
 			IAttaque[] C1 = this.getCoupsPossibles();
 			IAttaque cmax = C1[0];
 			for(int i=0; i<C1.length;i++) {
 				int mini=1;			
-				IAttaque[] C2 = ((Dresseur) dresseurAdv).getCoupsPossibles();
+				IAttaque[] C2 = ((Dresseur) edj.getDresseur2()).getCoupsPossibles();
 				for(int j=0; j<C2.length;j++) {
-					//TODO
-					//On note (P_i,X_i) les états possibles ainsi que leurs probabilités à l'issue des coups choisis
-					Object[] PiXi = null;
-					
-					Object[] etatDuJeu = {this,dresseurAdv};
-					PiXi[0] = etatDuJeu;
-					PiXi[1] = 0;
+					//TODO On note (P_i,X_i) les états possibles ainsi que leurs probabilités à l'issue des coups choisis
+					Object[] PiXi = new Object[2]; //[0]-> P(Xi)  [1]-> Xi=Etat du jeu i
+					PiXi[0] = 0;//getProbaVictoire(etatDuJeu);
+					PiXi[1] = edj;
 							
-					int val=0; //TODO somme_i P_i P(X_i)[0]
+					int val=0; //TODO val=somme_i P_i P(X_i)[0]
 					mini = Math.min(mini,val);
 					maxi = Math.max(mini,maxi);
 				}
 			}
 			rep[0] = maxi;
 			rep[1] = cmax;
-			return rep;
 		}
+		return rep;
 	}
 	
-	private int getGain(IPokemon attaquant, IPokemon defenseur) {
-		return 0;
+	private double getGain(IPokemon attaquant, IPokemon defenseur) {
+		//TODO faire ca correctement en prenant en compte l'equipe entiere
+		if(attaquant.estEvanoui()) {
+			return 0;
+		}else if(defenseur.estEvanoui()){
+			return 1;
+		}else {
+			return 0.5;
+		}
 		
-	}
-	
-	private boolean estEtatTerminal(IPokemon attaquant, IPokemon defenseur,IDresseur dresseurAdv) {
-		return !this.pouvoirSeBattre() || !((Dresseur)dresseurAdv).pouvoirSeBattre();
 	}
 	
 	@Override
