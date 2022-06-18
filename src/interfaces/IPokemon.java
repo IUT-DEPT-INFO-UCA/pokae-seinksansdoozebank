@@ -152,4 +152,5 @@ public interface IPokemon {
 	 * ses attaques à leur maximum.
 	 */
 	public void soigne(); // Remet les PV au maximum
+
 }

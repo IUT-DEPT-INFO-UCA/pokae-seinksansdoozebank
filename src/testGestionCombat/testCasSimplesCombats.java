@@ -32,8 +32,8 @@ public class testCasSimplesCombats {
         Pokedex.initialiser();
         pokeTest = new Pokemon(Pokedex.listeEspece[3]);
        // j1= new Joueur("Thomas","Admin","Thomas");
-        GwendIA = new IARandom();
-        DonatIA = new IARandom ();
+        GwendIA = new IARandom(false);
+        DonatIA = new IARandom (false);
         c1 = new Combat(DonatIA,GwendIA);
 
 

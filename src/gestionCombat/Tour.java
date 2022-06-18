@@ -5,7 +5,7 @@ import java.io.IOException;
 import org.json.simple.parser.ParseException;
 
 import gestionPokemon.Pokemon;
-import interfaces.ICapacite;
+import interfaces.IAttaque;
 import interfaces.IDresseur;
 import interfaces.IPokemon;
 import interfaces.ITour;
@@ -19,8 +19,8 @@ public class Tour implements ITour {
 	 */
 	private int id;
 	private EtatDuJeu edj;
-	private ICapacite cap1;
-	private ICapacite cap2;
+	private IAttaque atq1;
+	private IAttaque atq2;
 	
 
 	/**
@@ -28,16 +28,24 @@ public class Tour implements ITour {
 	 * 
 	 * @param nbTours l'identifiant du Tour
 	 */
-	public Tour(int nbTours, EtatDuJeu edj) {
+	public Tour(int nbTours, EtatDuJeu edj, IAttaque atq1, IAttaque atq2) {
 		this.setId(nbTours);
 		this.edj = edj;
+		this.atq1 = atq1;
+		this.atq2 = atq2;
 	}
+	
+	public Tour(EtatDuJeu edj, IAttaque atq1, IAttaque atq2) {
+		this.edj = edj;
+		this.atq1 = atq1;
+		this.atq2 = atq2;
+	}
+
 
 	////////////////// méthode de ITour //////////////////
 	@Override
 	public void commence() {
-		this.executerActions();
-
+		this.executerActions();//TODO retirer les affichage
 	}
 	//////////////////////////////////////////////////////
 
@@ -75,60 +83,101 @@ public class Tour implements ITour {
 	 * premier. Enfin si les 2 veulent attaquer, alors le pokémon le plus rapide
 	 * attaque en premier
 	 */
-	private void executerActions() {
-		Dresseur dresseur1= (Dresseur)this.edj.getDresseur1();
-		IPokemon pokemon1=(Pokemon)this.edj.getPokemon1();
-		Dresseur dresseur2=(Dresseur)this.edj.getDresseur2();
-		IPokemon pokemon2=(Pokemon)edj.getPokemon2();
-		
+	private void executerActions() { 
+		//TODO empecher de switch si aucun pokemon alive
+		//TODO empecher d'esquiver lors des simulations
+		//TODO empecher que les 2 pokemon soient KO si etatTerminal
 		// d1 echange...
-		if (dresseur1.getActionChoisie() instanceof Echange) { // d1 echange
-			dresseur1.getActionChoisie().utilise();
-			pokemon1 = dresseur1.getPokemon();
+		if (this.atq1 instanceof Echange || this.atq1 == null) { // d1 echange 				//ajout d'un test pour laisser passer atq1 null
+			if(this.atq1!=null) this.atq1.utilise(); 										//ajout d'un test pour laisser bloquer atq1 null
+			this.edj.setPokemon1(((Dresseur)this.edj.getDresseur1()).getPokemon());
 			// ...et d2 echange
-			if (dresseur2.getActionChoisie() instanceof Echange) {
-				dresseur2.getActionChoisie().utilise();
-				pokemon2 = dresseur2.getPokemon();
-				// ...et d2 attaque
+			if (this.atq2 instanceof Echange || this.atq2==null) {							//ajout d'un test pour laisser passer atq2 null
+				if(this.atq2!=null) this.atq2.utilise();
+				this.edj.setPokemon2(((Dresseur)this.edj.getDresseur2()).getPokemon());
+				//((Pokemon)this.edj.getPokemon2()).incNbEchange();
+			// ...et d2 attaque
 			} else {
 				System.out.println("");
-				pokemon1.subitAttaqueDe(pokemon2, dresseur2.getActionChoisie());
-				this.testerPokAMisKOPok(dresseur2, pokemon2, pokemon1);
+				if(this.atq2!=null) this.edj.getPokemon1().subitAttaqueDe(this.edj.getPokemon2(), this.atq2);
+				this.testerPokAMisKOPok(((Dresseur)this.edj.getDresseur1()), this.edj.getPokemon2(), this.edj.getPokemon1());
 				System.out.println("");
-				this.testerPokAMisKOPok(dresseur1, pokemon1, pokemon2);
+				this.testerPokAMisKOPok(((Dresseur)this.edj.getDresseur1()), this.edj.getPokemon1(), this.edj.getPokemon2());
 			}
-		} else if (dresseur2.getActionChoisie() instanceof Echange) { // d2 echange puis d1 attaque
+			//((Pokemon)this.edj.getPokemon1()).incNbEchange();
+		} else if (this.atq2 instanceof Echange || this.atq2==null) { // d2 echange puis d1 attaque
 			// d2 echange
-			dresseur2.getActionChoisie().utilise();
-			pokemon2 = dresseur2.getPokemon();
+			if(this.atq2!=null) this.atq2.utilise();
+			this.edj.setPokemon2(((Dresseur)this.edj.getDresseur2()).getPokemon());
 			System.out.println("");
-			pokemon2.subitAttaqueDe(pokemon1, dresseur1.getActionChoisie());
-			this.testerPokAMisKOPok(dresseur1, pokemon1, pokemon2);
+			if(this.atq1!=null) this.edj.getPokemon2().subitAttaqueDe(this.edj.getPokemon1(), this.atq1);
+			this.testerPokAMisKOPok(((Dresseur)this.edj.getDresseur1()), this.edj.getPokemon1(), this.edj.getPokemon2());
 			System.out.println("");
-			this.testerPokAMisKOPok(dresseur2, pokemon2, pokemon1);
+			this.testerPokAMisKOPok(((Dresseur)this.edj.getDresseur2()), this.edj.getPokemon2(), this.edj.getPokemon1());
+			//((Pokemon)this.edj.getPokemon2()).incNbEchange();
 		} else {// d1 et d2 attaquent
 			// d1 attaque avant
-			if (((Pokemon) pokemon1).estPlusRapideQue((Pokemon) pokemon2)) {
-				doubleAttaque(pokemon2, pokemon1, dresseur1, dresseur2);
+			if (((Pokemon) this.edj.getPokemon1()).estPlusRapideQue((Pokemon) this.edj.getPokemon2())) {
+				//doubleAttaque(this.edj.getPokemon2(), this.edj.getPokemon1(),((Dresseur)this.edj.getDresseur1()), ((Dresseur)this.edj.getDresseur2()));
+
+				System.out.println(this.edj.getPokemon1().getStat().getPV());
+				System.out.println(this.edj.getPokemon2().getStat().getPV());
+				if(this.atq1!=null) this.edj.getPokemon2().subitAttaqueDe(this.edj.getPokemon1(), this.atq1);
+				System.out.println(this.edj.getPokemon1().getStat().getPV());
+				System.out.println(this.edj.getPokemon2().getStat().getPV());
+				System.out.println(this.edj.estTerminal());
+				if (!this.testerPokAMisKOPok(((Dresseur)this.edj.getDresseur1()), this.edj.getPokemon1(), this.edj.getPokemon2())) {
+					this.testerPokAMisKOPok(((Dresseur)this.edj.getDresseur2()), this.edj.getPokemon2(), this.edj.getPokemon1());
+					System.out.println("");
+					if(this.atq2!=null) this.edj.getPokemon1().subitAttaqueDe(this.edj.getPokemon2(), this.atq2);
+					this.testerPokAMisKOPok(((Dresseur)this.edj.getDresseur2()), this.edj.getPokemon2(), this.edj.getPokemon1());
+					System.out.println("");
+					this.testerPokAMisKOPok(((Dresseur)this.edj.getDresseur1()), this.edj.getPokemon1(), this.edj.getPokemon2());
+				} else {
+					this.testerPokAMisKOPok(((Dresseur)this.edj.getDresseur2()), this.edj.getPokemon2(), this.edj.getPokemon1());
+				}
+				
+				
+				
 				// d2 attaque avant
 			} else {
-				doubleAttaque(pokemon1, pokemon2, dresseur2, dresseur1);
+				//doubleAttaque(this.edj.getPokemon1(), this.edj.getPokemon2(), ((Dresseur)this.edj.getDresseur2()), ((Dresseur)this.edj.getDresseur1()));
+
+				
+				
+				if(this.atq2!=null) this.edj.getPokemon1().subitAttaqueDe(this.edj.getPokemon2(), this.atq2);
+				if (!this.testerPokAMisKOPok(((Dresseur)this.edj.getDresseur2()), this.edj.getPokemon2(), this.edj.getPokemon1())) {
+					this.testerPokAMisKOPok(((Dresseur)this.edj.getDresseur1()), this.edj.getPokemon1(), this.edj.getPokemon2());
+					System.out.println("");
+					if(this.atq1!=null) this.edj.getPokemon2().subitAttaqueDe(this.edj.getPokemon1(), this.atq1);
+					this.testerPokAMisKOPok(((Dresseur)this.edj.getDresseur1()), this.edj.getPokemon1(), this.edj.getPokemon2());
+					System.out.println("");
+					this.testerPokAMisKOPok(((Dresseur)this.edj.getDresseur2()), this.edj.getPokemon2(), this.edj.getPokemon1());
+				} else {
+					this.testerPokAMisKOPok(((Dresseur)this.edj.getDresseur1()), this.edj.getPokemon1(), this.edj.getPokemon2());
+				}
+				
+				
+				
 			}
 		}
 	}
 
 	private void doubleAttaque(IPokemon pokemon2, IPokemon pokemon1, Dresseur dresseur1, Dresseur dresseur2) {
-		pokemon2.subitAttaqueDe(pokemon1, dresseur1.getActionChoisie());
+		System.out.println("double attaque");
+		if(this.atq1!=null) pokemon2.subitAttaqueDe(pokemon1, this.atq1);
+        System.out.println("\t"+pokemon2.getNom()+" "+((Pokemon) pokemon2).getPVBar());
 		if (!this.testerPokAMisKOPok(dresseur1, pokemon1, pokemon2)) {
 			this.testerPokAMisKOPok(dresseur2, pokemon2, pokemon1);
 			System.out.println("");
-			pokemon1.subitAttaqueDe(pokemon2, dresseur2.getActionChoisie());
+			if(this.atq2!=null) pokemon1.subitAttaqueDe(pokemon2, this.atq2);
 			this.testerPokAMisKOPok(dresseur2, pokemon2, pokemon1);
 			System.out.println("");
 			this.testerPokAMisKOPok(dresseur1, pokemon1, pokemon2);
 		} else {
 			this.testerPokAMisKOPok(dresseur2, pokemon2, pokemon1);
 		}
+		
 	}
 
 	/**
@@ -148,6 +197,7 @@ public class Tour implements ITour {
 	 */
 	public boolean testerPokAMisKOPok(IDresseur dresseurLanceur, IPokemon lanceur,
 									  IPokemon receveur) {
+        System.out.println("\t"+receveur.getNom()+" "+((Pokemon) receveur).getPVBar());
 		if (receveur.estEvanoui()) {
 			System.out.println(receveur.getNom() + " est KO !");
 			try {
@@ -159,7 +209,25 @@ public class Tour implements ITour {
 				dresseurLanceur.enseigne(lanceur, lanceur.getCapacitesApprises());
 				// ((Dresseur)dresseurLanceur).updateNiveau();
 			}
+			//System.out.println("Terminal = "+this.edj.estTerminal());
 			if (!this.edj.estTerminal()) { // si le combat n'est pas terminé, d2 envoie un autre pokemon
+
+		        System.out.println("\t"+receveur.getNom()+" "+((Pokemon) receveur).getPVBar());
+				/*
+				System.out.println("ETAT NON TERMINAL");
+				System.out.println("d1 "+((Dresseur)edj.getDresseur1()).pouvoirSeBattre());
+				System.out.println("\t"+((Dresseur)edj.getDresseur1()).getNbPokemonAlive());
+				for(Pokemon p:((Dresseur)edj.getDresseur1()).getEquipe()) {
+					System.out.println(p.getNom()+" "+p.getPVBar());
+				}
+				
+				System.out.println("d2 "+((Dresseur)edj.getDresseur2()).pouvoirSeBattre());
+				System.out.println("\t"+((Dresseur)edj.getDresseur2()).getNbPokemonAlive());
+				for(Pokemon p:((Dresseur)edj.getDresseur2()).getEquipe()) {
+					System.out.println(p.getNom()+" "+p.getPVBar());
+				}
+				*/
+				
 				if (receveur.equals(edj.getPokemon1())) {
 					edj.setPokemon1(edj.getDresseur1().choisitCombattantContre(edj.getPokemon2()));
 					System.out.println(edj.getDresseur1().getNom() + " envoie " + edj.getPokemon1().getNom());

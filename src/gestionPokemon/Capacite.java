@@ -1,5 +1,6 @@
 package gestionPokemon;
 
+import interfaces.IAttaque;
 import interfaces.ICapacite;
 import interfaces.ICategorie;
 import interfaces.IPokemon;
@@ -256,6 +257,13 @@ public class Capacite implements ICapacite {
 		}
 		return efficacite;
 
+	}
+
+	public IAttaque copy() {
+		System.out.println("Debut de la copie d'une "+this.getClass().getSimpleName());
+		Capacite copy = new Capacite(this);
+		copy.nivNecessaire=this.nivNecessaire;
+		return copy;
 	}
 
 }

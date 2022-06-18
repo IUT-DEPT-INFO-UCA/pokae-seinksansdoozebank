@@ -75,7 +75,7 @@ public class Combat implements ICombat {
 
 	public ITour nouveauTour(IPokemon pok1, IAttaque atk1, IPokemon pok2, IAttaque atk2) {
 		this.nbTours++;
-		return new Tour(this.nbTours,this.edj);
+		return new Tour(this.nbTours,this.edj, atk1, atk2);
 	}
 
 	public void termine() {
@@ -100,7 +100,7 @@ public class Combat implements ICombat {
 			this.startTour();
 			ITour currentTour = this.nouveauTour(this.edj.getPokemon1(), ((Dresseur) this.getDresseur1()).getActionChoisie(), this.edj.getPokemon2(),((Dresseur) this.getDresseur2()).getActionChoisie());
 			System.out.println("");
-			currentTour.commence();//TODO mettre les coup choisi ici en parametre
+			currentTour.commence();
 			tours.add(currentTour);
 			
 		}
