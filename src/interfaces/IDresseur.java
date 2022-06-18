@@ -74,4 +74,6 @@ public interface IDresseur {
 	 * @return L'objet Pokemon à l'index donné.
 	 */
 	public IPokemon getPokemon(int i);
+	
+	public IPokemon[] getRanchCopy(); 
 }

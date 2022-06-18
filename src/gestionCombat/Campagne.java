@@ -116,6 +116,6 @@ public class Campagne {
      * @return le dresseur généré
      */
     private static Dresseur genererNouvelAdversaire() {
-		return new IARandom();
+		return new IARandom(false);
     }
 }

@@ -59,8 +59,8 @@ public class Joueur extends Dresseur {
 	/**
 	 * Constructeur d'un joueur qui l'instancie avec Dresseur
 	 */
-	public Joueur() {
-		super();
+	public Joueur(boolean empty) {
+		super(empty);
 	}
 
 	/**
@@ -101,6 +101,7 @@ public class Joueur extends Dresseur {
 	@Override
 	public IAttaque choisitAttaque(IPokemon attaquant, IPokemon defenseur) {
 		System.out.println(this.getNom() + "\t" + attaquant.getNom() + Joueur.strChoixAction);
+		//System.out.println("Il reste "+this.getNbPokemonAlive()+" pokemons utilisables");
 		if (this.getNbPokemonAlive() > 1) {
 			nextStep = false;
 			while (!nextStep) {
@@ -130,13 +131,16 @@ public class Joueur extends Dresseur {
 
 	@Override
 	public IPokemon choisitCombattantContre(IPokemon pok) {
+		//TODO laisser le retur s'il reste 2 pokemon
 		boolean avecRetour = !this.getPokemon().estEvanoui();
 		System.out.println(strChoixCombattant);
 		for (int i = 0; i < this.getEquipe().length; i++) {
-			if (!this.getEquipe()[i].estEvanoui())
+			if (!this.getEquipe()[i].estEvanoui() && ((Pokemon)this.getEquipe()[i]).echangePossible())
 				System.out.println("\t\t" + (i + 1) + "- " + this.getEquipe()[i]);
-			else {
+			else if (this.getEquipe()[i].estEvanoui()){
 				System.out.println("\t\t" + "KO " + this.getEquipe()[i]);
+			}else {
+				System.out.println("\t\t" + "OF " + this.getEquipe()[i]+" (!)impossible à envoyer au combat");
 			}
 		}
 		int inputMin;
@@ -160,7 +164,7 @@ public class Joueur extends Dresseur {
 			this.setPokemonChoisi(choosen);
 			return choosen;
 		} else {
-			return this.getPokemon();
+			return this.getPokemon(); 
 		}
 	}
 
@@ -204,6 +208,7 @@ public class Joueur extends Dresseur {
 	 * @return La capacité à utiliser sous forme d'un IAttaque
 	 */
 	public IAttaque choisitCapacite(IPokemon attaquant) {
+		boolean avecRetour = this.getNbPokemonAlive()>1 ;
 		if (((Pokemon) attaquant).getNombreDeToursAvantAttaque() == 0) { // dans le cas ou patience a ete utilisee
 			if (((Pokemon) attaquant).getCapacitesUtilisables().length > 0) {
 				System.out.println(strChoixAttaque);
@@ -211,8 +216,14 @@ public class Joueur extends Dresseur {
 				for (int i = 0; i < caps.length; i++) {
 					System.out.println("\t\t" + (i + 1) + "- " + caps[i]);
 				}
-				System.out.println("\t\t0- Retour");
-				int input2 = InputViaScanner.getInputIntCapacite(0, attaquant.getCapacitesApprises().length,
+				int inputMin;
+				if (avecRetour) {
+					System.out.println("\t\t0- Retour");
+					inputMin = 0;
+				} else {
+					inputMin = 1;
+				}
+				int input2 = InputViaScanner.getInputIntCapacite(inputMin, attaquant.getCapacitesApprises().length,
 						attaquant.getCapacitesApprises());
 				// input valide
 				if (input2 != 0) {// si on fait pas retour
@@ -229,8 +240,14 @@ public class Joueur extends Dresseur {
 				}
 				System.out.println(strChoixAttaque);
 				System.out.println("\t\t1- " + cap);
-				System.out.println("\t\t0- Retour");
-				int input3 = InputViaScanner.getInputInt(0, 1);
+				int inputMin;
+				if (avecRetour) {
+					System.out.println("\t\t0- Retour");
+					inputMin = 0;
+				} else {
+					inputMin = 1;
+				}
+				int input3 = InputViaScanner.getInputInt(inputMin, 1);
 				if (input3 == 1) {
 					this.setActionChoisie(cap);
 					nextStep = true;
@@ -244,7 +261,31 @@ public class Joueur extends Dresseur {
 			}
 		}
 		// System.out.println(attaquant.getNom()+" va utiliser "+this.actionChoisie);
-		this.getPokemon().setAttaqueChoisie((Capacite) this.getActionChoisie());
+		if(this.getActionChoisie() instanceof Capacite) {
+			this.getPokemon().setAttaqueChoisie((Capacite) this.getActionChoisie());
+		}
 		return this.getActionChoisie();
+	}
+
+	@Override
+	protected Joueur copy() {
+		Joueur copy = new Joueur(true);
+		if(this.getActionChoisie() instanceof Echange) {
+			copy.setActionChoisie(((Echange)this.getActionChoisie()).copy(copy));
+		}else if(this.getActionChoisie() instanceof Capacite) {
+			copy.setActionChoisie(((Capacite)this.getActionChoisie()).copy());
+		}else {
+			copy.setActionChoisie(null);
+		}
+		for(int i=0;i<Pokedex.getNbPokemonParRanch();i++) {
+			copy.setPokemon(i,(Pokemon) ((Pokemon) this.getPokemon(i)).copy());//TODO creer les methodes
+		}
+		copy.setIdentifiant(this.getIdentifiant());
+		copy.setMotDepasse(this.getMotDepasse());
+		copy.updateNiveau();
+		copy.setNom(this.getNom());
+		copy.setPokemon(this.getPokemon());
+		copy.setPokemonChoisi(this.getPokemonChoisi());
+		return copy;
 	}
 }

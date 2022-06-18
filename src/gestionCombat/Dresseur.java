@@ -60,20 +60,21 @@ public abstract class Dresseur implements IDresseur, IStrategy {
 	private Dresseur adversaire = null;
 
 	/**
-	 * le constructeur d'un dresseur pour une IARandom
+	 * le constructeur d'un dresseur pour une IA
 	 *
 	 */
 
-	public Dresseur() {
-		this.nom = listeNoms[(int) (Math.random() * listeNoms.length)];
-		try {
-			this.equipe = (Pokemon[]) Pokedex.engendreRanchStatic();
-		} catch (IOException | ParseException e) {
-			e.printStackTrace();
+	public Dresseur(boolean empty) {
+		if(!empty) {
+			this.nom = listeNoms[(int) (Math.random() * listeNoms.length)];
+			try {
+				this.equipe = (Pokemon[]) Pokedex.engendreRanchStatic();
+			} catch (IOException | ParseException e) {
+				e.printStackTrace();
+			}
+			this.updateNiveau();
+			this.pokemon = this.equipe[0];
 		}
-		this.updateNiveau();
-		this.pokemon = this.equipe[0];
-
 	}
 
 	/**
@@ -456,9 +457,7 @@ public abstract class Dresseur implements IDresseur, IStrategy {
 				} else {
 					System.out.println("\t" + pok.getNom() + " n'a pas appris " + capaciteAApprendre.getNom() + ".");
 				}
-
 			}
-
 			this.updateNiveau();
 			this.pokemon = this.equipe[0];
 		}
@@ -477,6 +476,15 @@ public abstract class Dresseur implements IDresseur, IStrategy {
 		for (Pokemon p : this.equipe) {
 			p.soigne();
 		}
+	}
+	
+	@Deprecated
+	public IPokemon[] getRanchCopy() {
+		IPokemon[] copy = new IPokemon[6];
+		for(int i=0;i<this.equipe.length;i++) {
+			copy[i]=this.equipe[i];
+		}
+		return copy;
 	}
 	/////////////////////// methode de IStrategy ///////////////////////
 
@@ -506,6 +514,10 @@ public abstract class Dresseur implements IDresseur, IStrategy {
 	 */
 	public void setPokemon(IPokemon pokemon) {
 		this.pokemon = (Pokemon) pokemon;
+	}
+
+	public void setPokemon(int i, Pokemon copy) {
+		this.equipe[i]=copy;
 	}
 
 	/**
@@ -660,6 +672,7 @@ public abstract class Dresseur implements IDresseur, IStrategy {
 	 * @return Une valeur booléenne.
 	 */
 	public boolean pouvoirSeBattre() {
+		//System.out.println("=============================== nb pokemon alive" + this.getNbPokemonAlive());
 		return this.getNbPokemonAlive() > 0;
 	}
 
@@ -669,9 +682,26 @@ public abstract class Dresseur implements IDresseur, IStrategy {
 	 * @return Le nombre de pokemons vivant du dresseur
 	 */
 	public int getNbPokemonAlive() {
+		//TODO emepcher d'avoir des etat avec 0 pkmn alive
 		int nb = 0;
+		/*
+		for (int i = 0; i < this.getEquipe().length; i++) {
+			if (!this.getEquipe()[i].estEvanoui() && ((Pokemon)this.getEquipe()[i]).echangePossible())
+				System.out.println("\t\t" + (i + 1) + "- " + this.getEquipe()[i]);
+			else if (this.getEquipe()[i].estEvanoui()){
+				System.out.println("\t\t" + "KO " + this.getEquipe()[i]);
+			}else {
+				System.out.println("\t\t" + "OF " + this.getEquipe()[i]+" (!)impossible à envoyer au combat");
+			}
+		}
+		*/
 		for (Pokemon p : this.getEquipe()) {
-			if (!p.estEvanoui()) {
+			/*
+			System.out.println(p.getNom());
+			System.out.println("\test evanoui = "+p.estEvanoui());
+			System.out.println("\tpeut etre echange = "+p.echangePossible());
+			*/
+			if (!p.estEvanoui() && p.echangePossible()) {
 				nb++;
 			}
 		}
@@ -686,20 +716,39 @@ public abstract class Dresseur implements IDresseur, IStrategy {
 	 */
 	//methode codé en prévision de l'implémentation d'une IA élaborée
 	public IAttaque[] getCoupsPossibles() {
-		int nbCapaUtilisable = this.getPokemon().getCapacitesUtilisables().length;
-		int nbPokeAlive = this.getNbPokemonAlive();
-		IAttaque[] listeCoup = new IAttaque[nbCapaUtilisable + nbPokeAlive];
+		int nbCapaUtilisable = Math.max( this.getPokemon().getCapacitesUtilisables().length,1);
+        //System.out.println("nbCapaUtilisable vaut : "+nbCapaUtilisable);
+		int nbEchangesPossibles = this.getNbPokemonAlive()-1; //TODO empecher ca d'etre a -1 <=======
+        //System.out.println(nbEchangesPossibles);
+		IAttaque[] listeCoup = new IAttaque[nbCapaUtilisable + nbEchangesPossibles];
 		int cptTab = 0;
-		for (int i = 0; i < nbPokeAlive; i++) {
-			listeCoup[i] = new Echange(this.getPokemon(i), this);
-			cptTab++;
+		if(nbEchangesPossibles>0) {
+			for (Pokemon p : this.getEquipe()) {
+				if (!p.estEvanoui() && p.echangePossible() && !this.getPokemon().equals(p)) {
+					listeCoup[cptTab] = new Echange(p, this);
+					cptTab++;
+				}
+			}
 		}
-		for (int i = 0; i < nbCapaUtilisable; i++) {
-			listeCoup[cptTab + i] = new Capacite(((Capacite) this.getPokemon().getCapacitesUtilisables()[i]));
+		//System.out.println(this.getPokemon().getCapacitesUtilisables()[0]);
+		//System.out.println("listecoup mesure " + listeCoup.length);
+		if(this.getPokemon().getCapacitesUtilisables().length!=0) {
+			for (int i = 0; i < nbCapaUtilisable; i++) {
+				Capacite tmp = new Capacite(((Capacite) this.getPokemon().getCapacitesUtilisables()[i])); //TODO la copie est elle necessaire puisque no est censé etre dans une copie de l'etat du jeu
+				//listeCoup[cptTab + i] = new Capacite(((Capacite) this.getPokemon().getCapacitesUtilisables()[i]));
+				listeCoup[cptTab + i] = tmp;
+			}
+		}else {
+			try {
+				listeCoup[cptTab] = Pokedex.createCapacite(((Capacite) Pokedex.getCapaciteStatic("Lutte")).id);
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
 		}
+			
 		return listeCoup;
 	}
-
+	
 	/**
 	 * Il renvoie le mouvement que le pokémon peut apprendre à son niveau actuel
 	 *
@@ -728,4 +777,7 @@ public abstract class Dresseur implements IDresseur, IStrategy {
 		System.out.println(this.getNom() + " est niveau " + this.getNiveau() + " et son equipe est composé de :");
 		this.showTeam();
 	}
+
+	protected abstract Dresseur copy();
+	
 }
