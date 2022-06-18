@@ -86,6 +86,7 @@ public class TestGestionCombat {
 		EtatDuJeu copy = new EtatDuJeu(edj);
 		copy.show();
 		*/
+
 		if(!edj.estTerminal()) {
 			double[] pi = d2.getPi(edj, pok1.getCapacitesUtilisables()[0], pok2.getCapacitesUtilisables()[0]);
 		    for (double p : pi) {
@@ -100,7 +101,7 @@ public class TestGestionCombat {
 		}
 
 		edj.show();
-		
+
 	}
 	
 	private static void test(IPokemon p) {

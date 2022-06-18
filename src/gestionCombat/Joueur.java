@@ -284,8 +284,12 @@ public class Joueur extends Dresseur {
 		copy.setMotDepasse(this.getMotDepasse());
 		copy.updateNiveau();
 		copy.setNom(this.getNom());
-		copy.setPokemon(this.getPokemon());
-		copy.setPokemonChoisi(this.getPokemonChoisi());
+		copy.setPokemon(copy.getEquipe()[copy.getIndexPokemon(this.getPokemon())]);
+		if(this.getPokemonChoisi() != null) {
+			copy.setPokemonChoisi(copy.getEquipe()[copy.getIndexPokemon(this.getPokemonChoisi())]);
+		}else{
+			copy.setPokemonChoisi(null);
+		}
 		return copy;
 	}
 }

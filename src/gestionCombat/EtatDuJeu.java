@@ -30,8 +30,6 @@ public class EtatDuJeu implements Cloneable{
 		this.dresseur2= ((Dresseur)edj.dresseur2).copy();
 		this.pokemon1=((Dresseur)this.dresseur1).getPokemon();
 		this.pokemon2=((Dresseur)this.dresseur2).getPokemon();
-		((Dresseur)dresseur1).setPokemon(pokemon1);
-		((Dresseur)dresseur2).setPokemon(pokemon2);
 	}
 
 	public void show() {
@@ -107,6 +105,9 @@ public class EtatDuJeu implements Cloneable{
 		System.out.println("test terminal");
 		System.out.println(((Dresseur) this.dresseur1).getNbPokemonAlive());
 		System.out.println(((Dresseur) this.dresseur2).getNbPokemonAlive());
+		System.out.println(!((Dresseur) this.dresseur1).pouvoirSeBattre() || !((Dresseur)this.dresseur2).pouvoirSeBattre());
+		System.out.println(((Dresseur) this.dresseur1).pouvoirSeBattre());
+		System.out.println(((Dresseur)this.dresseur2).pouvoirSeBattre());
 		return !((Dresseur) this.dresseur1).pouvoirSeBattre() || !((Dresseur)this.dresseur2).pouvoirSeBattre();
 	}
 }

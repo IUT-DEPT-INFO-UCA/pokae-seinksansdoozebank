@@ -708,6 +708,22 @@ public abstract class Dresseur implements IDresseur, IStrategy {
 		return nb;
 	}
 
+	int getIndexPokemon(Pokemon p){
+		int index = 0;
+		boolean trouve = false;
+		while (index < this.getEquipe().length && !trouve) {
+			if(this.getEquipe()[index].getId() == p.getId()){
+				trouve = true;
+			}
+			index++;
+		}
+		if(trouve) {
+			return index-1;
+		}else {
+			return -1;
+		}
+	}
+
 	/**
 	 * Il renvoie un tableau de tous les mouvements possibles que le dresseur peut
 	 * faire
