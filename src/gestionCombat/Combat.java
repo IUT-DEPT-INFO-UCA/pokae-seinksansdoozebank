@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.logging.*;
 
 /**
  * Un objet Combat representant un duel entre 2 dresseurs
@@ -32,7 +33,10 @@ public class Combat implements ICombat {
 	 * Le dresseur vainqueur du combat
 	 */
 	private IDresseur vainqueur;
-
+	/**
+	 * Variable de log pour le combat
+	 */
+	public static Logger logger = Logger.getLogger("logger");
 	/**
 	 * Cette fonction renvois le nombre de tours du combat
 	 * 
@@ -168,22 +172,30 @@ public class Combat implements ICombat {
 		return testPresence;
 	}
 
+
 	/**
-	 * Si le fichier existe, écrire le message en paramètre dans le fichier et la
-	 * date à laquelle il a été écrit
+	 * Il crée un logger, définit son niveau sur INFO, lui ajoute un FileHandler sur logs.txt et supprime le ConsoleHandler pour clear le logger
 	 *
-	 * @param message Le message que vous souhaitez ajouter au fichier log.
+	 * @param message le message à enregistrer
 	 */
 	public static void addLog(String message) {
-		if (testPresence()) {
-			try {
-				Calendar currentTime = Calendar.getInstance();
-				FileWriter fw = new FileWriter("./dataSave/logs.txt", true);
-				fw.write(currentTime.getTime() + "\t" + message + "\n");
-				fw.close();
-			} catch (IOException e) {
-				e.printStackTrace();
+		try {
+			logger.setLevel(Level.INFO);
+			FileHandler fileHandler = new FileHandler("dataSave/logs.txt");
+			fileHandler.setFormatter(new SimpleFormatter());
+			logger.addHandler(fileHandler);
+			int i = 0;
+			boolean trouve = false;
+			while (i < logger.getHandlers().length && !trouve) {
+				if (logger.getHandlers()[i] instanceof ConsoleHandler) {
+					logger.removeHandler(logger.getHandlers()[i]);
+					trouve = true;
+				}
+				i++;
 			}
+			logger.info(message);
+		}catch(Exception e){
+			System.out.println("Erreur lors de l'écriture du fichier log");
 		}
 	}
 

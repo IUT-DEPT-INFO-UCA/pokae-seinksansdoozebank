@@ -8,19 +8,19 @@ public class Campagne {
 	/**
 	 * Une chaîne constante stockant le message à écrire dans les logs quand un utilsateur commence un combat
 	 */
-	private static String strLogStartCombat = "a commencé un combat.";
+	private static String strLogStartCombat = " a commencé un combat.";
 	/**
 	 * Une chaîne constante stockant le message à écrire dans les logs quand un utilsateur finit un combat
 	 */
-	private static String strLogEndCombat = "a fini son combat.";
+	private static String strLogEndCombat = " a fini son combat.";
 	/**
 	 * Une chaîne constante stockant le message à écrire dans les logs quand un utilsateur consulte ses stats
 	 */
-	private static String strLogStats = "a consulté ses statistiques.";
+	private static String strLogStats = " a consulté ses statistiques.";
 	/**
 	 * Une chaîne constante stockant le message à écrire dans les logs quand un utilsateur quitte l'application
 	 */
-	private static String strLogExit = "a quitté l'application.";
+	private static String strLogExit = " a quitté l'application.";
 
 	/**
 	 * Une chaîne constante stockant le message annonçant au l'utilisateurle menu de la campagne
@@ -88,14 +88,14 @@ public class Campagne {
         	player.enregistrerRanch();
         	input = InputViaScanner.getInputInt(1, 3);
         	if(input==1) {
-        		Combat.addLog(strLogStartCombat);
+				Combat.logger.info(player.getIdentifiant()+strLogStartCombat);
         		Campagne.lancerNouveauCombat(player);
-        		Combat.addLog(strLogEndCombat);
+				Combat.logger.info(player.getIdentifiant()+strLogEndCombat);
         	}else if(input==2){
         		player.afficherStat();
-        		Combat.addLog(strLogStats);
+				Combat.logger.info(player.getIdentifiant()+strLogStats);
         	}else{
-        		Combat.addLog(strLogExit);
+				Combat.logger.info(player.getIdentifiant()+strLogExit);
         		System.exit(0);
         	}
     	}
