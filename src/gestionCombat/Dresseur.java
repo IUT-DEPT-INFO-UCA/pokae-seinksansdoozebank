@@ -806,6 +806,7 @@ public abstract class Dresseur implements IDresseur, IStrategy {
 	public void showTeam() {
 		for (Pokemon p : this.getEquipe()) {
 			System.out.println(p);
+			System.out.println(p.getStat());
 		}
 	}
 

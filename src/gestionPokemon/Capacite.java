@@ -208,6 +208,17 @@ public class Capacite implements ICapacite {
     public int getPPBase() {
         return this.ppBase;
     }
+    
+    public double get(String s) {
+    	double rep = 0;
+    	if(s.equals("Puissance")) {
+    		rep =  this.getPuissance();
+    	}
+    	if(s.equals("Precision")) {
+    		rep =  this.getPrecision();
+    	}
+    	return rep;	
+    }
 
     /**
      * Si le nombre aléatoire est inférieur ou égal à la précision, alors l'attaque
