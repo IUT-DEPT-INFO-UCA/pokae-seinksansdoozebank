@@ -9,7 +9,6 @@ import interfaces.IEspece;
 import interfaces.IPokemon;
 import interfaces.IStat;
 
-import java.io.FileNotFoundException;
 import java.util.Objects;
 
 /**
@@ -331,7 +330,7 @@ public class Pokemon implements IPokemon {
                 e.printStackTrace();
             }
         }
-        System.out.println("\t"+this.getNom()+" "+this.getPVBar());
+        //System.out.println("\t"+this.getNom()+" "+this.getPVBar());
     }
 
     public boolean estEvanoui() {
@@ -732,16 +731,13 @@ public class Pokemon implements IPokemon {
             }
         }
         //VRAI CODE ICI
-        /*
         Capacite[] rep = new Capacite[nb];
         //System.out.println("nb vaut : "+nb);
     	for (int i = 0; i < nb; i++) {
     		rep[i] = (Capacite) tmp[i];
-    	}*/
-    	
-    	
+    	}
     	//TODO TEMPORAIRE 
-    	
+    	/*
         Capacite[] rep;
     	if(nb!=0) {
             rep = new Capacite[nb];
@@ -757,8 +753,8 @@ public class Pokemon implements IPokemon {
 				e.printStackTrace();
 			}
     	}
+    	*/
     	//-------------
-    	
         return rep;
     }
     
@@ -777,12 +773,12 @@ public class Pokemon implements IPokemon {
 		copy.aChangeNiveau=this.aChangeNiveau;
 		copy.attaqueChoisie=this.getAttaqueChoisie() instanceof Capacite? (Capacite) this.attaqueChoisie.copy() : null;
 		copy.avantDerniersDegatsSubits=this.avantDerniersDegatsSubits;
-		copy.derniereCapaciteEncaissee=this.getAttaqueChoisie() instanceof Capacite? (Capacite) this.derniereCapaciteEncaissee.copy() : null;
+		copy.derniereCapaciteEncaissee=this.getDerniereCapaciteEncaissee() instanceof Capacite? (Capacite) this.derniereCapaciteEncaissee.copy() : null;
 		copy.derniersDegatsSubits=this.derniersDegatsSubits;
 		copy.espPoke=this.espPoke;
 		copy.id=this.id;
 		for(int i=0;i<4;i++) {
-			copy.listeCapacite[i] = this.getAttaqueChoisie() instanceof Capacite? (Capacite) this.listeCapacite[i].copy() : null;
+			copy.listeCapacite[i] = this.listeCapacite[i] instanceof Capacite? (Capacite) this.listeCapacite[i].copy() : null;
 		}
 		copy.nbEchanges=this.nbEchanges;
 		copy.niv=this.niv;
@@ -807,5 +803,14 @@ public class Pokemon implements IPokemon {
 		copy.xp=this.xp;
 		copy.created = true;
 		return copy;
+	}
+	
+
+	public int getPPTotaux() {
+		int s = 0;
+		for(ICapacite c : this.getCapacitesUtilisables()) {
+			s+=c.getPP();
+		}
+		return s;
 	}
 }

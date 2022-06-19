@@ -66,7 +66,7 @@ public class Echange implements IEchange {
 	/////////////////////////////////////////////////////////////////////
 
 	public IAttaque copy(Dresseur copy) {
-		System.out.println("Debut de la copie d'un "+this.getClass().getSimpleName());
+		//System.out.println("Debut de la copie d'un "+this.getClass().getSimpleName());
 		return new Echange(((Pokemon) this.newPokemon).copy(),copy);
 	}
 }

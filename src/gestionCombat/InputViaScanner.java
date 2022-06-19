@@ -2,6 +2,7 @@ package gestionCombat;
 
 import java.util.Scanner;
 
+import gestionPokemon.Pokemon;
 import interfaces.ICapacite;
 import interfaces.IPokemon;
 
@@ -63,7 +64,7 @@ public abstract class InputViaScanner {
         boolean intValid = false;
         while (!intValid) {
             rep = reader.nextInt();
-            if ((rep == 0 && inf==0) || (rep >= inf && rep <= sup && !tab[rep - 1].estEvanoui())) {
+            if ((rep == 0 && inf==0) || (rep >= inf && rep <= sup && !tab[rep - 1].estEvanoui() && ((Pokemon) tab[rep-1]).echangePossible() )) {
                 intValid = true;
             }
         }

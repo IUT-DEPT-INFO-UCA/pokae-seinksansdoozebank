@@ -51,7 +51,7 @@ public class IARandom extends Dresseur {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		boolean echange = (int) (Math.random() * 2) < 1;
+		boolean echange = (int) (Math.random() * 10) < 1;
 		if (echange && this.getNbPokemonAlive() > 1) {
 			return new Echange(this.choisitCombattantContre(defenseur), this);
 		} else {
@@ -157,7 +157,6 @@ public class IARandom extends Dresseur {
 		copy.updateNiveau();
 		copy.setNom(this.getNom());
 		copy.setPokemon(copy.getEquipe()[copy.getIndexPokemon(this.getPokemon())]);
-		System.out.println("ehoh");
 		if(this.getPokemonChoisi() != null) {
 			copy.setPokemonChoisi(copy.getEquipe()[copy.getIndexPokemon(this.getPokemonChoisi())]);
 		}else{

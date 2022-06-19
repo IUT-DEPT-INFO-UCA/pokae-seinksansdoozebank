@@ -63,6 +63,15 @@ public class TestGestionCombat {
         System.out.println(d1.getInputInt(1, 4));*/
 		
 		
+		Joueur d1 = new Joueur(false);
+		IAElaboreePerso d2 = new IAElaboreePerso(false);
+		//IARandom d2 = new IARandom(false);
+		//TODO gerer le changement de pokemon
+        Combat combat = new Combat(d1,d2);
+        System.out.println(combat.getVainqueur().getNom() + " a gagne le combat !");
+		
+		
+		/*
 		IARandom d1 = new IARandom(false);
 		IAMinMax d2 = new IAMinMax(false);
 		Pokemon pok1 = (Pokemon) d1.getPokemon(5);
@@ -72,10 +81,12 @@ public class TestGestionCombat {
         	d2.getEquipe()[i].getStat().setPV(0);
         }
         pok1.getStat().setPV(1);
-        pok2.getStat().setPV(1);
+        pok2.getStat().setPV(0);
 		
 		EtatDuJeu edj = new EtatDuJeu(d1, d2, pok1, pok2);
 		edj.show();
+		*/
+        
 		/*
 		edj.getPokemon1().getStat().setPV(10);
 		System.out.println(edj.getPokemon1());
@@ -86,7 +97,8 @@ public class TestGestionCombat {
 		EtatDuJeu copy = new EtatDuJeu(edj);
 		copy.show();
 		*/
-
+        
+		/*
 		if(!edj.estTerminal()) {
 			double[] pi = d2.getPi(edj, pok1.getCapacitesUtilisables()[0], pok2.getCapacitesUtilisables()[0]);
 		    for (double p : pi) {
@@ -101,12 +113,6 @@ public class TestGestionCombat {
 		}
 
 		edj.show();
-
+		*/
 	}
-	
-	private static void test(IPokemon p) {
-		((Pokemon) p).subirDegats(10);
-		System.out.println(p);
-	}
-
 }

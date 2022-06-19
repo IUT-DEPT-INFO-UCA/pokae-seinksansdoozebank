@@ -153,4 +153,5 @@ public interface IPokemon {
 	 */
 	public void soigne(); // Remet les PV au maximum
 
+
 }

@@ -732,26 +732,51 @@ public abstract class Dresseur implements IDresseur, IStrategy {
 	 */
 	//methode codé en prévision de l'implémentation d'une IA élaborée
 	public IAttaque[] getCoupsPossibles() {
-		int nbCapaUtilisable = Math.max( this.getPokemon().getCapacitesUtilisables().length,1);
-        //System.out.println("nbCapaUtilisable vaut : "+nbCapaUtilisable);
+		int nbCapaUtilisable = Math.max( this.getPokemon().getCapacitesApprises().length,1);
+		/*
+		ICapacite[] caps = this.getPokemon().getCapacitesApprises();
+		for (int i = 0; i < caps.length; i++) {
+			System.out.println("\t\t" + (i + 1) + "- " + caps[i]);
+		}
+		 */
+        System.out.println("nbCapaUtilisable vaut : "+nbCapaUtilisable);
+        
+
+        
 		int nbEchangesPossibles = this.getNbPokemonAlive()-1; //TODO empecher ca d'etre a -1 <=======
-        //System.out.println(nbEchangesPossibles);
+		/*
+		for (int i = 0; i < this.getEquipe().length; i++) {
+			if (!this.getEquipe()[i].estEvanoui() && ((Pokemon)this.getEquipe()[i]).echangePossible())
+				System.out.println("\t\t" + (i + 1) + "- " + this.getEquipe()[i]);
+			else if (this.getEquipe()[i].estEvanoui()){
+				System.out.println("\t\t" + "KO " + this.getEquipe()[i]);
+			}else {
+				System.out.println("\t\t" + "OF " + this.getEquipe()[i]+" (!)impossible à envoyer au combat");
+			}
+		}
+		*/
+		System.out.println("nbEchangesPossibles vaut : "+nbEchangesPossibles);
+		
+		
 		IAttaque[] listeCoup = new IAttaque[nbCapaUtilisable + nbEchangesPossibles];
+		
+		
+		
 		int cptTab = 0;
 		if(nbEchangesPossibles>0) {
 			for (Pokemon p : this.getEquipe()) {
 				if (!p.estEvanoui() && p.echangePossible() && !this.getPokemon().equals(p)) {
 					listeCoup[cptTab] = new Echange(p, this);
+					//System.out.println(listeCoup[cptTab]);
 					cptTab++;
 				}
 			}
 		}
-		//System.out.println(this.getPokemon().getCapacitesUtilisables()[0]);
-		//System.out.println("listecoup mesure " + listeCoup.length);
-		if(this.getPokemon().getCapacitesUtilisables().length!=0) {
+		if(this.getPokemon().getCapacitesApprises().length!=0) {
 			for (int i = 0; i < nbCapaUtilisable; i++) {
-				Capacite tmp = new Capacite(((Capacite) this.getPokemon().getCapacitesUtilisables()[i])); //TODO la copie est elle necessaire puisque no est censé etre dans une copie de l'etat du jeu
+				Capacite tmp = new Capacite(((Capacite) this.getPokemon().getCapacitesApprises()[i])); //TODO la copie est elle necessaire puisque no est censé etre dans une copie de l'etat du jeu
 				//listeCoup[cptTab + i] = new Capacite(((Capacite) this.getPokemon().getCapacitesUtilisables()[i]));
+				//System.out.println(listeCoup[cptTab+i]);
 				listeCoup[cptTab + i] = tmp;
 			}
 		}else {
@@ -761,7 +786,6 @@ public abstract class Dresseur implements IDresseur, IStrategy {
 				e.printStackTrace();
 			}
 		}
-			
 		return listeCoup;
 	}
 	

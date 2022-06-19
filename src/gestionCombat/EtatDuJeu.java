@@ -25,7 +25,12 @@ public class EtatDuJeu implements Cloneable{
 	}
 	
 	public EtatDuJeu(EtatDuJeu edj) {
-		System.out.println("Creation d'un nouvel etat");
+		/*
+		String nomAtq1 = atq1!=null?atq1.getClass().getSimpleName():"null";
+		String nomAtq2 = atq2!=null?atq2.getClass().getSimpleName():"null";
+		System.out.println("########## Creation d'un nouvel etat : "+nomAtq1+" / "+nomAtq2+" ##########");
+		*/
+		System.out.println("########## Creation d'un nouvel etat ##########");
 		this.dresseur1= ((Dresseur)edj.dresseur1).copy();
 		this.dresseur2= ((Dresseur)edj.dresseur2).copy();
 		this.pokemon1=((Dresseur)this.dresseur1).getPokemon();
@@ -102,12 +107,6 @@ public class EtatDuJeu implements Cloneable{
 	}
 	
 	public boolean estTerminal() {
-		System.out.println("test terminal");
-		System.out.println(((Dresseur) this.dresseur1).getNbPokemonAlive());
-		System.out.println(((Dresseur) this.dresseur2).getNbPokemonAlive());
-		System.out.println(!((Dresseur) this.dresseur1).pouvoirSeBattre() || !((Dresseur)this.dresseur2).pouvoirSeBattre());
-		System.out.println(((Dresseur) this.dresseur1).pouvoirSeBattre());
-		System.out.println(((Dresseur)this.dresseur2).pouvoirSeBattre());
 		return !((Dresseur) this.dresseur1).pouvoirSeBattre() || !((Dresseur)this.dresseur2).pouvoirSeBattre();
 	}
 }
