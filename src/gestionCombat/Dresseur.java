@@ -61,9 +61,8 @@ public abstract class Dresseur implements IDresseur, IStrategy {
 
 	/**
 	 * le constructeur d'un dresseur pour une IA
-	 *
+	 * @param empty true si le dresseur est vide, false sinon
 	 */
-
 	public Dresseur(boolean empty) {
 		if(!empty) {
 			this.nom = listeNoms[(int) (Math.random() * listeNoms.length)];
@@ -478,6 +477,11 @@ public abstract class Dresseur implements IDresseur, IStrategy {
 		}
 	}
 	
+	/**
+	 * Il renvoie une copie du ranch
+	 *
+	 * @return Une copie du ranch.
+	 */
 	@Deprecated
 	public IPokemon[] getRanchCopy() {
 		IPokemon[] copy = new IPokemon[6];
@@ -516,6 +520,12 @@ public abstract class Dresseur implements IDresseur, IStrategy {
 		this.pokemon = (Pokemon) pokemon;
 	}
 
+	/**
+	 * Il copie le Pokemon dans le paramètre dans l'équipe à l'index spécifié par l'autre paramètre
+	 *
+	 * @param i l'index du Pokémon que vous souhaitez modifier
+	 * @param copy Le Pokémon que vous souhaitez copier.
+	 */
 	public void setPokemon(int i, Pokemon copy) {
 		this.equipe[i]=copy;
 	}
@@ -708,6 +718,12 @@ public abstract class Dresseur implements IDresseur, IStrategy {
 		return nb;
 	}
 
+	/**
+	 * Il renvoie l'index d'un pokémon dans l'équipe du dresseur
+	 *
+	 * @param p le Pokémon dont vous voulez trouver l'index
+	 * @return L'index du pokémon dans l'équipe.
+	 */
 	int getIndexPokemon(Pokemon p){
 		int index = 0;
 		boolean trouve = false;
@@ -819,6 +835,11 @@ public abstract class Dresseur implements IDresseur, IStrategy {
 		this.showTeam();
 	}
 
+	/**
+	 * Cette fonction renvoie une copie de l'objet courant.
+	 *
+	 * @return Une copie de l'objet.
+	 */
 	protected abstract Dresseur copy();
 	
 }

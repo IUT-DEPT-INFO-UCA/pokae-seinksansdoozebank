@@ -20,7 +20,9 @@ public class Combat implements ICombat {
 	 * Le nombre de tours du combat
 	 */
 	private int nbTours;
-	
+	/**
+	 * La variable qui stocke l'état du jeu
+	 */
 	private EtatDuJeu edj;
 	/**
 	 * Une liste des tours de ce combat

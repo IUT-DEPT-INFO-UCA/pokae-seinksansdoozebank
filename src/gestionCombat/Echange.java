@@ -65,8 +65,14 @@ public class Echange implements IEchange {
 	}
 	/////////////////////////////////////////////////////////////////////
 
+	/**
+	 * Il renvoie une nouvelle instance de la classe Echange, avec une nouvelle instance de la classe Pokemon en paramètre
+	 *
+	 * @param copy Le nouveau dresseur qui sera le propriétaire de la nouvelle attaque.
+	 * @return Un nouvel objet Echange.
+	 */
 	public IAttaque copy(Dresseur copy) {
 		//System.out.println("Debut de la copie d'un "+this.getClass().getSimpleName());
-		return new Echange(((Pokemon) this.newPokemon).copy(),copy);
+		return new Echange(this.newPokemon.copy(),copy);
 	}
 }

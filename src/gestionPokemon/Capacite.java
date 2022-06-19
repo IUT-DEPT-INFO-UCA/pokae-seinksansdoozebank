@@ -209,6 +209,12 @@ public class Capacite implements ICapacite {
         return this.ppBase;
     }
     
+    /**
+     * Il renvoie la valeur de l'attribut nommé par le paramètre
+     *
+     * @param s le nom du paramètre que vous voulez obtenir
+     * @return La valeur de l'attribut "s"
+     */
     public double get(String s) {
     	double rep = 0;
     	if(s.equals("Puissance")) {
@@ -255,6 +261,7 @@ public class Capacite implements ICapacite {
 	 * l'attaque sur le défenseur
 	 * 
 	 * @param defenseur Le Pokémon attaqués
+     * @param print si on doit afficher l'efficacité de l'attaque
 	 * @return L'efficacité de l'attaque sur le défenseur.
 	 */
 	public double getEfficiencyOn(Pokemon defenseur,boolean print) {
@@ -272,6 +279,12 @@ public class Capacite implements ICapacite {
 
 	}
 
+	/**
+	 * Il crée un nouvel objet du même type que l'objet courant et copie tous les champs de l'objet courant dans le nouvel
+	 * objet
+	 *
+	 * @return Une copie de l'objet.
+	 */
 	public IAttaque copy() {
 		Capacite copy = new Capacite(this);
 		copy.nivNecessaire=this.nivNecessaire;

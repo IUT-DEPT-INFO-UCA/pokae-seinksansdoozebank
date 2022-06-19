@@ -22,7 +22,8 @@ public class IARandom extends Dresseur {
 	private static final int delai = 0; //800;
 
 	/**
-	 * Le constructeur d'un IARandom 
+	 * Le constructeur d'un IARandom
+	 * @param empty true si le IARandom est vide, false sinon
 	 */
 	public IARandom(boolean empty) {
 		super(empty);
@@ -67,7 +68,7 @@ public class IARandom extends Dresseur {
 			e.printStackTrace();
 		}
 		int i = (int) (Math.random() * Pokedex.getNbPokemonParRanch());
-		while (this.getEquipe()[i].estEvanoui() ||  !((Pokemon)this.getEquipe()[i]).echangePossible() || this.getPokemon() == this.getEquipe()[i]) { // verification que le pokemon n'est pas KO
+		while (this.getEquipe()[i].estEvanoui() ||  !this.getEquipe()[i].echangePossible() || this.getPokemon() == this.getEquipe()[i]) { // verification que le pokemon n'est pas KO
 			i = (int) (Math.random() * Pokedex.getNbPokemonParRanch());
 		}
 		Pokemon choosen = this.getEquipe()[i];

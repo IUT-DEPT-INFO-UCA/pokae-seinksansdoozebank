@@ -58,6 +58,7 @@ public class Joueur extends Dresseur {
 
 	/**
 	 * Constructeur d'un joueur qui l'instancie avec Dresseur
+	 * @param empty true si le joueur est vide, false sinon
 	 */
 	public Joueur(boolean empty) {
 		super(empty);
