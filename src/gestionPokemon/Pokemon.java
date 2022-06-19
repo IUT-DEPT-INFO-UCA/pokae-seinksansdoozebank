@@ -21,9 +21,12 @@ public class Pokemon implements IPokemon {
     /**
      * Delai entre les phases du jeu pour fluidifier la lecture du jeu.
      */
-    public static final int delai = 0;//1000;
+    public static final int delai = 0;// 1000;
 
-    private static final int  nbEchangeMax=5;
+    /**
+     * Nombre d'echange qu'un pokemon peut faire
+     */
+    private static final int nbEchangeMax = 5;
 
     /**
      * L'identifiant unique du Pokémon
@@ -102,7 +105,9 @@ public class Pokemon implements IPokemon {
      * Indique si le Pokemon est en cours de création ou s'il est créé
      */
     private boolean created;
-    
+    /**
+     * le nombre d'echange qu ele pokemon a fait
+     */
     private int nbEchanges;
 
     /**
@@ -207,8 +212,6 @@ public class Pokemon implements IPokemon {
         this.created = true;
     }
 
-
-	
     /**
      * Il renvoie une représentation sous forme de chaîne de caractère du Pokémon
      *
@@ -330,11 +333,11 @@ public class Pokemon implements IPokemon {
                 e.printStackTrace();
             }
         }
-        //System.out.println("\t"+this.getNom()+" "+this.getPVBar());
+        // System.out.println("\t"+this.getNom()+" "+this.getPVBar());
     }
 
     public boolean estEvanoui() {
-    	//System.out.println("\tpv = "+ this.getStat().getPV());
+        // System.out.println("\tpv = "+ this.getStat().getPV());
         return this.getStat().getPV() <= 0;
     }
 
@@ -730,87 +733,110 @@ public class Pokemon implements IPokemon {
                 nb++;
             }
         }
-        //VRAI CODE ICI
+        // VRAI CODE ICI
         Capacite[] rep = new Capacite[nb];
-        //System.out.println("nb vaut : "+nb);
-    	for (int i = 0; i < nb; i++) {
-    		rep[i] = (Capacite) tmp[i];
-    	}
-    	//TODO TEMPORAIRE 
-    	/*
-        Capacite[] rep;
-    	if(nb!=0) {
-            rep = new Capacite[nb];
-            //System.out.println("nb vaut : "+nb);
-        	for (int i = 0; i < nb; i++) {
-        		rep[i] = (Capacite) tmp[i];
-        	}
-    	}else {
-            rep = new Capacite[1];
-    		try {
-				rep[0] = Pokedex.createCapacite(((Capacite) Pokedex.getCapaciteStatic("Lutte")).id);
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			}
-    	}
-    	*/
-    	//-------------
+        // System.out.println("nb vaut : "+nb);
+        for (int i = 0; i < nb; i++) {
+            rep[i] = (Capacite) tmp[i];
+        }
+        // TODO TEMPORAIRE
+        /*
+         * Capacite[] rep;
+         * if(nb!=0) {
+         * rep = new Capacite[nb];
+         * //System.out.println("nb vaut : "+nb);
+         * for (int i = 0; i < nb; i++) {
+         * rep[i] = (Capacite) tmp[i];
+         * }
+         * }else {
+         * rep = new Capacite[1];
+         * try {
+         * rep[0] = Pokedex.createCapacite(((Capacite)
+         * Pokedex.getCapaciteStatic("Lutte")).id);
+         * } catch (FileNotFoundException e) {
+         * e.printStackTrace();
+         * }
+         * }
+         */
+        // -------------
         return rep;
     }
-    
-    public boolean echangePossible() {
-    	return this.nbEchanges<nbEchangeMax;
-    }
-    
-    public void incNbEchange() {
-    	this.nbEchanges++;
-    	//System.out.println(this.getNom()+" echanges : "+this.nbEchanges+"/"+Pokemon.nbEchangeMax);
-    }
-    
-	public IPokemon copy() {
-		//System.out.println("Debut de la copie d'un "+this.getClass().getSimpleName());
-		Pokemon copy = new Pokemon(espPoke);
-		copy.aChangeNiveau=this.aChangeNiveau;
-		copy.attaqueChoisie=this.getAttaqueChoisie() instanceof Capacite? (Capacite) this.attaqueChoisie.copy() : null;
-		copy.avantDerniersDegatsSubits=this.avantDerniersDegatsSubits;
-		copy.derniereCapaciteEncaissee=this.getDerniereCapaciteEncaissee() instanceof Capacite? (Capacite) this.derniereCapaciteEncaissee.copy() : null;
-		copy.derniersDegatsSubits=this.derniersDegatsSubits;
-		copy.espPoke=this.espPoke;
-		copy.id=this.id;
-		for(int i=0;i<4;i++) {
-			copy.listeCapacite[i] = this.listeCapacite[i] instanceof Capacite? (Capacite) this.listeCapacite[i].copy() : null;
-		}
-		copy.nbEchanges=this.nbEchanges;
-		copy.niv=this.niv;
-		copy.nom=this.nom;
-		copy.nombreDeToursAvantAttaque = this.nombreDeToursAvantAttaque;
-		copy.pvMax=this.pvMax;
-		copy.statsEV.setForce(this.statsEV.getForce());
-		copy.statsEV.setDefense(this.statsEV.getDefense());
-		copy.statsEV.setVitesse(this.statsEV.getVitesse());
-		copy.statsEV.setSpecial(this.statsEV.getSpecial());
-		copy.statsEV.setPV(this.statsEV.getPV());
-		copy.statsDV.setForce(this.statsDV.getForce());
-		copy.statsDV.setDefense(this.statsDV.getDefense());
-		copy.statsDV.setVitesse(this.statsDV.getVitesse());
-		copy.statsDV.setSpecial(this.statsDV.getSpecial());
-		copy.statsDV.setPV(this.statsDV.getPV());
-		copy.statsSpecifiques.setForce(this.statsSpecifiques.getForce());
-		copy.statsSpecifiques.setDefense(this.statsSpecifiques.getDefense());
-		copy.statsSpecifiques.setVitesse(this.statsSpecifiques.getVitesse());
-		copy.statsSpecifiques.setSpecial(this.statsSpecifiques.getSpecial());
-		copy.statsSpecifiques.setPV(this.statsSpecifiques.getPV());
-		copy.xp=this.xp;
-		copy.created = true;
-		return copy;
-	}
-	
 
-	public int getPPTotaux() {
-		int s = 0;
-		for(ICapacite c : this.getCapacitesUtilisables()) {
-			s+=c.getPP();
-		}
-		return s;
-	}
+    /**
+     * Cette fonction renvoie vrai si le nombre d'échanges est inférieur au nombre
+     * maximum d'échanges
+     */
+    public boolean echangePossible() {
+        return this.nbEchanges < nbEchangeMax;
+    }
+
+    /**
+     * Cette fonction incrémente le nombre d'échanges qu'un Pokémon a fait
+     */
+    public void incNbEchange() {
+        this.nbEchanges++;
+        // System.out.println(this.getNom()+" echanges :
+        // "+this.nbEchanges+"/"+Pokemon.nbEchangeMax);
+    }
+
+    /**
+     * Creer une copie de l'objet this
+     * 
+     * @return une copie de l'objet this
+     */
+    public IPokemon copy() {
+        // System.out.println("Debut de la copie d'un
+        // "+this.getClass().getSimpleName());
+        Pokemon copy = new Pokemon(espPoke);
+        copy.aChangeNiveau = this.aChangeNiveau;
+        copy.attaqueChoisie = this.getAttaqueChoisie() instanceof Capacite ? (Capacite) this.attaqueChoisie.copy()
+                : null;
+        copy.avantDerniersDegatsSubits = this.avantDerniersDegatsSubits;
+        copy.derniereCapaciteEncaissee = this.getDerniereCapaciteEncaissee() instanceof Capacite
+                ? (Capacite) this.derniereCapaciteEncaissee.copy()
+                : null;
+        copy.derniersDegatsSubits = this.derniersDegatsSubits;
+        copy.espPoke = this.espPoke;
+        copy.id = this.id;
+        for (int i = 0; i < 4; i++) {
+            copy.listeCapacite[i] = this.listeCapacite[i] instanceof Capacite ? (Capacite) this.listeCapacite[i].copy()
+                    : null;
+        }
+        copy.nbEchanges = this.nbEchanges;
+        copy.niv = this.niv;
+        copy.nom = this.nom;
+        copy.nombreDeToursAvantAttaque = this.nombreDeToursAvantAttaque;
+        copy.pvMax = this.pvMax;
+        copy.statsEV.setForce(this.statsEV.getForce());
+        copy.statsEV.setDefense(this.statsEV.getDefense());
+        copy.statsEV.setVitesse(this.statsEV.getVitesse());
+        copy.statsEV.setSpecial(this.statsEV.getSpecial());
+        copy.statsEV.setPV(this.statsEV.getPV());
+        copy.statsDV.setForce(this.statsDV.getForce());
+        copy.statsDV.setDefense(this.statsDV.getDefense());
+        copy.statsDV.setVitesse(this.statsDV.getVitesse());
+        copy.statsDV.setSpecial(this.statsDV.getSpecial());
+        copy.statsDV.setPV(this.statsDV.getPV());
+        copy.statsSpecifiques.setForce(this.statsSpecifiques.getForce());
+        copy.statsSpecifiques.setDefense(this.statsSpecifiques.getDefense());
+        copy.statsSpecifiques.setVitesse(this.statsSpecifiques.getVitesse());
+        copy.statsSpecifiques.setSpecial(this.statsSpecifiques.getSpecial());
+        copy.statsSpecifiques.setPV(this.statsSpecifiques.getPV());
+        copy.xp = this.xp;
+        copy.created = true;
+        return copy;
+    }
+
+    /**
+     * Il renvoie la somme des PP de toutes les capacités utilisables d'un Pokémon
+     * 
+     * @return Les PP totaux de toutes les capacités utilisables du pokémon.
+     */
+    public int getPPTotaux() {
+        int s = 0;
+        for (ICapacite c : this.getCapacitesUtilisables()) {
+            s += c.getPP();
+        }
+        return s;
+    }
 }
