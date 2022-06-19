@@ -16,9 +16,9 @@ public class IAElaboreePerso extends Dresseur {
 		AGRESSIVE("Force", 1, "Puisance"),
 		DEFENSIVE("PV", 0.5, "Precision");
 		
-		protected String statChoixPokem;
-		protected double coeffDeSwitch;
-		protected String statChoixCapa;
+		private String statChoixPokem;
+		private double coeffDeSwitch;
+		private String statChoixCapa;
 		
 		Strategy(String statChoixPokem, double coeffDeSwitch, String statChoixCapa){
 			this.statChoixPokem = statChoixPokem;
@@ -62,7 +62,7 @@ public class IAElaboreePerso extends Dresseur {
 		//TODO virer tous les sout
 		System.out.println(this.getNom() + "\ta " + attaquant.getNom() + " sur le terrain. Il choisi quoi faire...");
 		double coeffMax = this.getMaxCoeffSubit(attaquant,defenseur);
-		System.out.println("\tL'efficacite max est de "+coeffMax+ " contre "+this.coeffDeSwitch);
+//		System.out.println("\tL'efficacite max est de "+coeffMax+ " contre "+this.coeffDeSwitch);
 		//rajouter pour tester l'efficite de l'attaquant sur le defenseur si strat est aggro
 		if(coeffMax>this.coeffDeSwitch || ((Pokemon) attaquant).getPPTotaux()==0){
 			IPokemon newPokemon = this.choisitCombattantContre(defenseur);
@@ -84,65 +84,69 @@ public class IAElaboreePerso extends Dresseur {
 
 	@Override
 	public IPokemon choisitCombattantContre(IPokemon pok) {
-		System.out.println("\tRecherche d'un echange a faire");
+//		System.out.println("\tRecherche d'un echange a faire");
 		Pokemon choosen = null;
 		double effMin = 4;
 		if(!this.getPokemon().estEvanoui()) {
 			effMin = this.getMaxCoeffSubit(this.getPokemon(), pok);
-		}else {
-			System.out.println("\tle pokemon est ko, on doit trouver un remplacant");
 		}
-		System.out.println("\tRecherche d'un pokemon dont l'eff min est < à "+effMin);
+//		else {
+//			System.out.println("\tle pokemon est ko, on doit trouver un remplacant");
+//		}
+//		System.out.println("\tRecherche d'un pokemon dont l'eff min est < à "+effMin);
 		//on cherche le pokemon qui resiste le mieux a une des capacite du pokemon adverse actif
 		//TODO faire le choix entre une ia qui envoie le pokemon qui resiste le mieux et une qui tappe le plus
 		for(Pokemon p : this.getEquipe()) {
-			System.out.println("on arrive sur "+p);
-			if(!p.equals(this.getPokemon()) && !p.estEvanoui() && ((Pokemon)p).echangePossible()) {
-				System.out.println("on teste "+p);
+//			System.out.println("on arrive sur "+p);
+			if(!p.equals(this.getPokemon()) && !p.estEvanoui() && p.echangePossible()) {
+//				System.out.println("on teste "+p);
 				if(this.getAdversaire().getPokemon().getCapacitesApprises().length>0) {
 					for(ICapacite c : this.getAdversaire().getPokemon().getCapacitesApprises()) {
 						double tmp = ((Capacite)c).getEfficiencyOn(p, false);
-						System.out.println("\tson efficacite serait de "+tmp);
+//						System.out.println("\tson efficacite serait de "+tmp);
 						if(tmp <effMin ){
-							System.out.println("\t\tEnvoyer "+p+" est mieux, l'efficacite min est de "+tmp);
+//							System.out.println("\t\tEnvoyer "+p+" est mieux, l'efficacite min est de "+tmp);
 							choosen = p;
 							effMin = tmp;
 						}else if(tmp ==effMin && choosen != null){
-							System.out.println("\t\tEnvoyer "+p+" est equivalente, l'efficacite min est de "+tmp);
-							System.out.println("\t\tdonc on teste la defense");
-							if(choosen.getStat().get(statChoixPokem)<p.getStat().get(statChoixPokem))
-								System.out.println("\tsa "+statChoixPokem+" est plus elevee");
+//							System.out.println("\t\tEnvoyer "+p+" est equivalente, l'efficacite min est de "+tmp);
+//							System.out.println("\t\tdonc on teste la defense");
+							if(choosen.getStat().get(statChoixPokem)<p.getStat().get(statChoixPokem)) {
+//								System.out.println("\tsa "+statChoixPokem+" est plus elevee");
 								choosen = p;
 								effMin = tmp;
+							}
 						}
 					}
 				}else {
 					double tmp = ((Capacite) Pokedex.getCapaciteStatic("Lutte")).getEfficiencyOn(p, false);
-					System.out.println("\tson efficacite serait de "+tmp);
+//					System.out.println("\tson efficacite serait de "+tmp);
 					if(tmp <effMin ){
-						System.out.println("\t\tEnvoyer "+p+" est mieux, l'efficacite min est de "+tmp);
+//						System.out.println("\t\tEnvoyer "+p+" est mieux, l'efficacite min est de "+tmp);
 						choosen = p;
 						effMin = tmp;
 					}else if(tmp ==effMin && choosen != null){
-						System.out.println("\t\tEnvoyer "+p+" est equivalente, l'efficacite min est de "+tmp);
-						System.out.println("\t\tdonc on teste la defense");
-						if(choosen.getStat().get(statChoixPokem)<p.getStat().get(statChoixPokem))
-							System.out.println("\tsa "+statChoixPokem+" est plus elevee");
+//						System.out.println("\t\tEnvoyer "+p+" est equivalente, l'efficacite min est de "+tmp);
+//						System.out.println("\t\tdonc on teste la defense");
+						if(choosen.getStat().get(statChoixPokem)<p.getStat().get(statChoixPokem)) {
+//							System.out.println("\tsa "+statChoixPokem+" est plus elevee");
 							choosen = p;
 							effMin = tmp;
+						}
 					}
 				}
-			}else {
-				if(!p.equals(this.getPokemon())) {
-					System.out.println("\t"+p+ " est deja au combat");
-				}
-				if( !p.estEvanoui()) {
-					System.out.println("\t"+p+ " est KO");
-				}
-				if( ((Pokemon)p).echangePossible()) {
-					System.out.println("\t"+p+ " ne peut plus etre echange");
-				}
 			}
+//			else {
+//				if(!p.equals(this.getPokemon())) {
+//					System.out.println("\t"+p+ " est deja au combat");
+//				}
+//				if( !p.estEvanoui()) {
+//					System.out.println("\t"+p+ " est KO");
+//				}
+//				if( ((Pokemon)p).echangePossible()) {
+//					System.out.println("\t"+p+ " ne peut plus etre echange");
+//				}
+//			}
 		}
 		this.setPokemonChoisi(choosen);
 		return choosen;
@@ -156,7 +160,7 @@ public class IAElaboreePerso extends Dresseur {
 	private IAttaque choisiCapacite(IPokemon attaquant,IPokemon cible) {
 		if (((Pokemon) attaquant).getNombreDeToursAvantAttaque() == 0) { // dans le cas ou patience a ete utilisee
 			if (((Pokemon) attaquant).getCapacitesUtilisables().length > 0) {
-				System.out.println("choix de la meilleure capacite");
+//				System.out.println("choix de la meilleure capacite");
 				this.setActionChoisie(this.getBestCapacite(attaquant, cible));
 			} else {
 				// utilisation de Lutte si aucune capacite n'est dispo
@@ -183,21 +187,22 @@ public class IAElaboreePerso extends Dresseur {
 		double effMax = 0;
 		//on cherche la capacite qui aura le meilleure coeff multiplicateur
 		for (ICapacite c : attaquant.getCapacitesApprises()) {
-			System.out.println("\t\ton teste "+c);
+//			System.out.println("\t\ton teste "+c);
 			double tmpEff = ((Capacite)c).getEfficiencyOn((Pokemon) adversaire, false);
-			System.out.println("\t\tdont l'efficacite est "+tmpEff);
+//			System.out.println("\t\tdont l'efficacite est "+tmpEff);
 			if(c.getPP()!=0 && maxi!=null) {
 				if( tmpEff >=effMax ) {
 					if(tmpEff==effMax) {
 						if(((Capacite) c).get(this.statChoixCapa) > maxi.get(this.statChoixCapa)) { //test ajouté plus tard que l'IA de base
 							maxi = (Capacite) c ;
 							effMax = maxi.getEfficiencyOn((Pokemon) adversaire, false);
-							System.out.println("\t\t"+c.getNom()+" est mieux eff = "+effMax+" et "+statChoixCapa+"= "+((Capacite) c).get(this.statChoixCapa));
-						}else {
-							System.out.println("\t\t"+c.getNom()+" aussi bien car eff= "+effMax+" mais "+statChoixCapa+"= " +((Capacite) c).get(this.statChoixCapa));
+//							System.out.println("\t\t"+c.getNom()+" est mieux eff = "+effMax+" et "+statChoixCapa+"= "+((Capacite) c).get(this.statChoixCapa));
 						}
+//						else {
+//							System.out.println("\t\t"+c.getNom()+" aussi bien car eff= "+effMax+" mais "+statChoixCapa+"= " +((Capacite) c).get(this.statChoixCapa));
+//						}
 					}else {
-						System.out.println("\t\tc'est plus efficace que "+ maxi+", "+effMax);
+//						System.out.println("\t\tc'est plus efficace que "+ maxi+", "+effMax);
 						maxi = (Capacite) c ;
 						effMax = maxi.getEfficiencyOn((Pokemon) adversaire, false);
 					}

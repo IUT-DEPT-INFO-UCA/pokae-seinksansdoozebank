@@ -79,7 +79,7 @@ public class Tour implements ITour {
 	}
 
 	/**
-	 * C'ets la méthode principale de déroulement d'un tour. Si les 2 dresseur
+	 * C'est la méthode principale de déroulement d'un tour. Si les 2 dresseur
 	 * veulent changer de pokémon, l'ordre d'actino n'est pas important. Si l'un
 	 * change de pokémon et l'autre attaque, alors c'est l'echange qui se fait en
 	 * premier. Enfin si les 2 veulent attaquer, alors le pokémon le plus rapide
