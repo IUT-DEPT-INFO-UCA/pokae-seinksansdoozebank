@@ -62,4 +62,6 @@ public interface IStat {
 	 * @param pv La nouvelle valeur de la stat de Point de Vie.
 	 */
 	void setPV(int pv);
+
+	public int get(String statRefChoixPremierPokem);
 }

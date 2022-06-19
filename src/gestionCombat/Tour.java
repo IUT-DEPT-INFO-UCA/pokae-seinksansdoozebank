@@ -207,7 +207,7 @@ public class Tour implements ITour {
 					((Dresseur) edj.getDresseur1()).setPokemon(edj.getPokemon1());
 				} else if (receveur.equals(edj.getPokemon2())) {
 					edj.setPokemon2(edj.getDresseur2().choisitCombattantContre(edj.getPokemon1()));
-					System.out.println(edj.getPokemon2());
+					//System.out.println(edj.getPokemon2());
 					System.out.println(edj.getDresseur2().getNom() + " envoies " + edj.getPokemon2().getNom());
 					((Dresseur) edj.getDresseur2()).setPokemon(edj.getPokemon2());
 				}

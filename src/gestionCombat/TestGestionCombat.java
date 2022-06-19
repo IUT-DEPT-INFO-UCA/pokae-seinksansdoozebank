@@ -1,5 +1,6 @@
 package gestionCombat;
 
+import gestionCombat.IAElaboreePerso.Strategy;
 import gestionPokemon.Pokedex;
 import gestionPokemon.Pokemon;
 import interfaces.IPokemon;
@@ -63,8 +64,10 @@ public class TestGestionCombat {
         System.out.println(d1.getInputInt(1, 4));*/
 		
 		
+		
 		Joueur d1 = new Joueur(false);
-		IAElaboreePerso d2 = new IAElaboreePerso(false);
+		IAElaboreePerso d2 = new IAElaboreePerso(Strategy.AGRESSIVE,false);
+		d2.showTeam();
 		//IARandom d2 = new IARandom(false);
 		//TODO gerer le changement de pokemon
         Combat combat = new Combat(d1,d2);
