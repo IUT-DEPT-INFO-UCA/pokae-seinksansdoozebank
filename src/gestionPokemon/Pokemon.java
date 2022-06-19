@@ -765,6 +765,7 @@ public class Pokemon implements IPokemon {
     /**
      * Cette fonction renvoie vrai si le nombre d'échanges est inférieur au nombre
      * maximum d'échanges
+     * @return un boolean indiquant si le nombre d'échanges est inférieur au nombre maximum d'échanges
      */
     public boolean echangePossible() {
         return this.nbEchanges < nbEchangeMax;

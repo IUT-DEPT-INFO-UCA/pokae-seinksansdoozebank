@@ -63,5 +63,11 @@ public interface IStat {
 	 */
 	void setPV(int pv);
 
+	/**
+	 * Il renvoie la statistique passé en paramètre.
+	 *
+	 * @param statRefChoixPremierPokem Le nom de la statistique dont on veut obtenir la valeur.
+	 * @return La valeur de la statistique.
+	 */
 	public int get(String statRefChoixPremierPokem);
 }

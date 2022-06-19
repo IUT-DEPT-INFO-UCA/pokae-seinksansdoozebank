@@ -61,7 +61,7 @@ public abstract class Dresseur implements IDresseur, IStrategy {
 
 	/**
 	 * le constructeur d'un dresseur pour une IA
-	 * @param empty true si le dresseur est vide, false sinon
+	 * @param empty true si le dresseur doit être vide, false sinon
 	 */
 	public Dresseur(boolean empty) {
 		if(!empty) {

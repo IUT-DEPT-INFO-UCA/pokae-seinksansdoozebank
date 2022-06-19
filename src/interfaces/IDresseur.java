@@ -74,6 +74,12 @@ public interface IDresseur {
 	 * @return L'objet Pokemon à l'index donné.
 	 */
 	public IPokemon getPokemon(int i);
-	
-	public IPokemon[] getRanchCopy(); 
+
+
+	/**
+	 * Renvoie une copie du ranch.
+	 *
+	 * @return Un tableau d'objets Pokemon.
+	 */
+	public IPokemon[] getRanchCopy();
 }

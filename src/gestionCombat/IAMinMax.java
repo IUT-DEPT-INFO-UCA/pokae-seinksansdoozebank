@@ -8,9 +8,15 @@ import interfaces.IAttaque;
 import interfaces.ICapacite;
 import interfaces.IPokemon;
 
+/**
+ * Permet de gérer un objet IAMinMax (un dresseur controlé par l'IA MinMax)
+ */
 public class IAMinMax extends Dresseur {
 	//private HashMap<Integer,Object[]> PiXi = new HashMap<>();//[0]-> P(Xi)  [1]-> Xi=Etat du jeu i
 	
+	/**
+	 * @param empty true si le IARandom doit être vide, false sinon
+	 */
 	public IAMinMax(boolean empty) {
 		super(empty);
 	}
@@ -53,6 +59,16 @@ public class IAMinMax extends Dresseur {
 		return rep;
 	}
 	
+	/**
+	 * Il renvoie un tableau de 4 états suivants possibles, étant donné l'état actuel, les deux attaques et les probabilités
+	 * de chacun des 4 états suivants possibles
+	 *
+	 * @param edj l'état actuel du jeu
+	 * @param c1 l'attaque du premier joueur
+	 * @param c2 l'attaque de l'adversaire
+	 * @param p_i la probabilité de chacun des quatre états du jeu possibles
+	 * @return La méthode renvoie un tableau d'EtatDuJeu.
+	 */
 	public EtatDuJeu[] getXi(EtatDuJeu edj, IAttaque c1, IAttaque c2, double[] p_i) {
 		EtatDuJeu[] x_i = new EtatDuJeu[4];
 		
@@ -87,6 +103,14 @@ public class IAMinMax extends Dresseur {
 		return x_i;
 	}
 	
+	/**
+	 * Il renvoie un tableau de 4 probabilités, chacune correspondant à une issue possible du tour
+	 *
+	 * @param edj l'état actuel du jeu
+	 * @param c1 La première attaque
+	 * @param c2 L'attaque de l'adversaire
+	 * @return La probabilité de chacun des 4 résultats possibles du tour.
+	 */
 	public double[] getPi(EtatDuJeu edj, IAttaque c1, IAttaque c2) {
 		double[] p_i = new double[4];
 		double probaC1 = 0;
@@ -112,6 +136,14 @@ public class IAMinMax extends Dresseur {
 		return p_i;
 	}
 	
+	/**
+	 * Il génère l'état suivant
+	 *
+	 * @param edj l'état actuel du jeu
+	 * @param atq1 l'attaque du premier joueur
+	 * @param atq2 L'attaque du deuxième joueur
+	 * @return Le prochain état du jeu.
+	 */
 	public EtatDuJeu etatSuivant(EtatDuJeu edj, IAttaque atq1, IAttaque atq2) {
 		EtatDuJeu etatSuivant = new EtatDuJeu(edj.getDresseur1(),edj.getDresseur2(),edj.getPokemon1(),edj.getPokemon2());
 		System.out.println("pokemon 1 = "+((Dresseur)etatSuivant.getDresseur1()).getPokemon());

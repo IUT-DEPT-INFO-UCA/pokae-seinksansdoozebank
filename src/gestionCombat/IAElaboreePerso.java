@@ -10,10 +10,23 @@ import interfaces.IAttaque;
 import interfaces.ICapacite;
 import interfaces.IPokemon;
 
+/**
+ * Classe représentant l'IA implémentée par notre équipe pour palier à l'IAMiniMax
+ */
 public class IAElaboreePerso extends Dresseur {
 	//private HashMap<Integer,Object[]> PiXi = new HashMap<>();//[0]-> P(Xi)  [1]-> Xi=Etat du jeu i
+
+	/**
+	 * Enumération de stratégie de l'IA
+	 */
 	public enum Strategy{
+		/**
+		 * Stratégie aggressive qui priorise la force
+		 */
 		AGRESSIVE("Force", 1, "Puisance"),
+		/**
+		 * Stratégie defensive qui priorise les PV
+		 */
 		DEFENSIVE("PV", 0.5, "Precision");
 		
 		private String statChoixPokem;
@@ -31,7 +44,12 @@ public class IAElaboreePerso extends Dresseur {
 	private String statChoixPokem;
 	private double coeffDeSwitch;
 	private String statChoixCapa;
-	
+
+	/**
+	 * Constructeur de IAElaboreePerso qui initialise la stratégie choisie
+	 * @param strat Stratégie choisie
+	 * @param empty true si le IARandom doit être vide, false sinon
+	 */
 	public IAElaboreePerso(Strategy strat,boolean empty) {
 		super(empty);
 		this.setup(strat);
