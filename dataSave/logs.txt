@@ -1,4 +1,6 @@
-juin 18, 2022 1:32:09 PM gestionCombat.Combat addLog
+juin 19, 2022 1:14:41 PM gestionCombat.Combat addLog
 INFO: firelods s'est connecté.
-juin 18, 2022 1:32:10 PM gestionCombat.Campagne continuer
+juin 19, 2022 1:14:45 PM gestionCombat.Campagne continuer
+INFO: firelods a consulté ses statistiques.
+juin 19, 2022 1:14:46 PM gestionCombat.Campagne continuer
 INFO: firelods a quitté l'application.

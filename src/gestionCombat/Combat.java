@@ -178,6 +178,8 @@ public class Combat implements ICombat {
 	public static void addLog(String message) {
 		try {
 			logger.setLevel(Level.INFO);
+			logger.config("");
+			logger.setUseParentHandlers(false);
 			FileHandler fileHandler = new FileHandler("dataSave/logs.txt");
 			fileHandler.setFormatter(new SimpleFormatter());
 			logger.addHandler(fileHandler);
