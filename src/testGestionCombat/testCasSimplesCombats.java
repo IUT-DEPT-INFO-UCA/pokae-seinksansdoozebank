@@ -1,13 +1,14 @@
 package testGestionCombat;
 
 import gestionCombat.Combat;
-import gestionCombat.Dresseur;
 import gestionCombat.Echange;
 import gestionCombat.IARandom;
 import gestionCombat.Joueur;
 import gestionPokemon.Capacite;
 import gestionPokemon.Pokedex;
 import gestionPokemon.Pokemon;
+import interfaces.IDresseur;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -31,8 +32,8 @@ public class testCasSimplesCombats {
         Pokedex.initialiser();
         pokeTest = new Pokemon(Pokedex.listeEspece[3]);
        // j1= new Joueur("Thomas","Admin","Thomas");
-        GwendIA = new IARandom();
-        DonatIA = new IARandom ();
+        GwendIA = new IARandom(false);
+        DonatIA = new IARandom (false);
         c1 = new Combat(DonatIA,GwendIA);
 
 
@@ -99,7 +100,7 @@ public class testCasSimplesCombats {
     }
     @Test
     public void testWinner(){
-        Dresseur resultat = c1.getVainqueur();
+        IDresseur resultat = c1.getVainqueur();
         assertNotNull(resultat);
         if(resultat==DonatIA) assertEquals(DonatIA,resultat);
         else assertEquals(GwendIA,resultat);

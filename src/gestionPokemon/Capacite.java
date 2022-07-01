@@ -1,5 +1,6 @@
 package gestionPokemon;
 
+import interfaces.IAttaque;
 import interfaces.ICapacite;
 import interfaces.ICategorie;
 import interfaces.IPokemon;
@@ -108,13 +109,13 @@ public class Capacite implements ICapacite {
             	System.out.println("Calcul des degats pour une capacite particuliere : "+this.puissance);
                 switch (this.puissance) {
                     case -1: // one shot
-                        if (this.getEfficiencyOn((Pokemon) receveur) != 0) {
+                        if (this.getEfficiencyOn((Pokemon) receveur,true) != 0) {
                         	System.out.println("pvmax de la cible = "+((Pokemon) receveur).pvMax);
                             degats = ((Pokemon) receveur).pvMax;
                         }
                         break;
                     case -2: // Sonic-Boom -20 sur les non spectre
-                        if (this.getEfficiencyOn((Pokemon) receveur) != 0) {
+                        if (this.getEfficiencyOn((Pokemon) receveur,true) != 0) {
                             degats = 20;
                         }
                         break;
@@ -127,7 +128,7 @@ public class Capacite implements ICapacite {
                     	}
                         break;
                     case -4: // Frappe-Atlas : degat = nivLanceur si la cible n'est pas imunise au type de l'attaque
-                        if (this.getEfficiencyOn((Pokemon) receveur) != 0) {
+                        if (this.getEfficiencyOn((Pokemon) receveur,true) != 0) {
                         	System.out.println("niv de la cible = "+lanceur.getNiveau());
                             degats = lanceur.getNiveau();
                         }
@@ -136,7 +137,7 @@ public class Capacite implements ICapacite {
                     	degats = 40;
                         break;
                     case -6: // Ombre Nocturne : degat = nivLanceur si la cible n'est pas imunise au type de l'attaque
-                        if (this.getEfficiencyOn((Pokemon) receveur) != 0) {
+                        if (this.getEfficiencyOn((Pokemon) receveur,true) != 0) {
                             degats = lanceur.getNiveau();
                         }
                         break;
@@ -207,6 +208,23 @@ public class Capacite implements ICapacite {
     public int getPPBase() {
         return this.ppBase;
     }
+    
+    /**
+     * Il renvoie la valeur de l'attribut nommé par le paramètre
+     *
+     * @param s le nom du paramètre que vous voulez obtenir
+     * @return La valeur de l'attribut "s"
+     */
+    public double get(String s) {
+    	double rep = 0;
+    	if(s.equals("Puissance")) {
+    		rep =  this.getPuissance();
+    	}
+    	if(s.equals("Precision")) {
+    		rep =  this.getPrecision();
+    	}
+    	return rep;	
+    }
 
     /**
      * Si le nombre aléatoire est inférieur ou égal à la précision, alors l'attaque
@@ -232,7 +250,7 @@ public class Capacite implements ICapacite {
 			if (attaquant.possedeLeType(this.type)) {
 				stab = 1.5;
 			}
-			efficacite = attaquant.getAttaqueChoisie().getEfficiencyOn(defenseur);
+			efficacite = /*attaquant.getAttaqueChoisie()*/this.getEfficiencyOn(defenseur,true);//TODO BIIIG TEST LA
 		}
         return stab * efficacite * (Math.random() * (0.15) + 0.85);
 	}
@@ -242,20 +260,35 @@ public class Capacite implements ICapacite {
 	 * Cette fonction renvoie le multiplicateur de dégâts en fonction du type de
 	 * l'attaque sur le défenseur
 	 * 
-	 * @param defenseur Le Pokémon attaqué
+	 * @param defenseur Le Pokémon attaqués
+     * @param print si on doit afficher l'efficacité de l'attaque
 	 * @return L'efficacité de l'attaque sur le défenseur.
 	 */
-	public double getEfficiencyOn(Pokemon defenseur) {
+	public double getEfficiencyOn(Pokemon defenseur,boolean print) {
 		double efficacite = ((Type)this.getType()).getCoeffTotal(defenseur.getType1(), defenseur.getType2());
-		if(efficacite>1) {
-			System.out.println("C'est super efficace !");
-		}else if(efficacite==0) {
-			System.out.println("Cela n'a aucun effet.");
-		}else if (efficacite<1) {
-			System.out.println("Ce n'est pas très efficace ...");
+		if(print) {
+			if(efficacite>1) {
+				System.out.println("C'est super efficace !");
+			}else if(efficacite==0) {
+				System.out.println("Cela n'a aucun effet.");
+			}else if (efficacite<1) {
+				System.out.println("Ce n'est pas très efficace ...");
+			}
 		}
 		return efficacite;
 
+	}
+
+	/**
+	 * Il crée un nouvel objet du même type que l'objet courant et copie tous les champs de l'objet courant dans le nouvel
+	 * objet
+	 *
+	 * @return Une copie de l'objet.
+	 */
+	public IAttaque copy() {
+		Capacite copy = new Capacite(this);
+		copy.nivNecessaire=this.nivNecessaire;
+		return copy;
 	}
 
 }

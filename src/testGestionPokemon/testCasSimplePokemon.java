@@ -114,8 +114,8 @@ public class testCasSimplePokemon {
         //Glace sur Herbe == 2
         Capacite neutre = Pokedex.listeCapacite[1];
         //neutre sur Herbe == 1
-        assertEquals(glace.getEfficiencyOn(pokeTest),2.0);
-        assertEquals(neutre.getEfficiencyOn(pokeTest),1.0);
+        assertEquals(glace.getEfficiencyOn(pokeTest,false),2.0);
+        assertEquals(neutre.getEfficiencyOn(pokeTest,false),1.0);
     }
     @Test
     public void testPokemonOutOfRange(){

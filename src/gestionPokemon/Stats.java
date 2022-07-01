@@ -56,8 +56,6 @@ public class Stats implements IStat {
         this.pv = pv;
     }
 
-
-
     /**
      * Creer un objet Stat en copiant l'argument de type stats passe en parametre
      * 
@@ -85,6 +83,27 @@ public class Stats implements IStat {
                 ", special=" + special +
                 ", pv=" + pv +
                 '}';
+    }
+    
+    public int get(String s) {
+    	int rep = 0;
+    	if(s.equals("Force")) {
+    		rep =  this.getForce();
+    	}
+    	if(s.equals("Defense")) {
+    		rep =  this.getDefense();
+    	}
+    	if(s.equals("Vitesse")) {
+    		rep =  this.getVitesse();
+    	}
+    	if(s.equals("Special")) {
+    		rep =  this.getSpecial();
+    	}
+    	if(s.equals("PV")) {
+    		rep =  this.getPV();
+    	}
+    	
+    	return rep;
     }
 
     /**

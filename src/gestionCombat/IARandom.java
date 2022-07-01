@@ -19,13 +19,14 @@ public class IARandom extends Dresseur {
 	 * entier représentant la durée en ms des pauses du thread pendant les choix de
 	 * L'IARandom
 	 */
-	private static final int delai = 800;
+	private static final int delai = 0; //800;
 
 	/**
-	 * Le constructeur d'un IARandom en indiquant son nom
+	 * Le constructeur d'un IARandom
+	 * @param empty true si le IARandom est vide, false sinon
 	 */
-	public IARandom() {
-		super();
+	public IARandom(boolean empty) {
+		super(empty);
 	}
 
 	/////////////////////// methode abstraites de Dresseur ///////////////////////
@@ -51,7 +52,7 @@ public class IARandom extends Dresseur {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		boolean echange = (int) (Math.random() * 3) < 1;
+		boolean echange = (int) (Math.random() * 10) < 1;
 		if (echange && this.getNbPokemonAlive() > 1) {
 			return new Echange(this.choisitCombattantContre(defenseur), this);
 		} else {
@@ -67,7 +68,7 @@ public class IARandom extends Dresseur {
 			e.printStackTrace();
 		}
 		int i = (int) (Math.random() * Pokedex.getNbPokemonParRanch());
-		while (this.getEquipe()[i].estEvanoui() || this.getPokemon() == this.getEquipe()[i]) { // verification que le pokemon n'est pas KO
+		while (this.getEquipe()[i].estEvanoui() ||  !this.getEquipe()[i].echangePossible() || this.getPokemon() == this.getEquipe()[i]) { // verification que le pokemon n'est pas KO
 			i = (int) (Math.random() * Pokedex.getNbPokemonParRanch());
 		}
 		Pokemon choosen = this.getEquipe()[i];
@@ -136,5 +137,32 @@ public class IARandom extends Dresseur {
 		}
 		this.getPokemon().setAttaqueChoisie((Capacite) this.getActionChoisie());
 		return this.getActionChoisie();
+	}
+
+	@Override
+	protected Joueur copy() {
+		System.out.println("Debut de la copie d'une "+this.getClass().getSimpleName());
+		Joueur copy = new Joueur(true);
+		if(this.getActionChoisie() instanceof Echange) {
+			copy.setActionChoisie(((Echange)this.getActionChoisie()).copy(copy));
+		}else if(this.getActionChoisie() instanceof Capacite) {
+			copy.setActionChoisie(((Capacite)this.getActionChoisie()).copy());
+		}else {
+			copy.setActionChoisie(null);
+		}
+		for(int i=0;i<Pokedex.getNbPokemonParRanch();i++) {
+			copy.setPokemon(i,(Pokemon) ((Pokemon) this.getPokemon(i)).copy());
+		}
+		copy.setIdentifiant(this.getIdentifiant());
+		copy.setMotDepasse(this.getMotDepasse());
+		copy.updateNiveau();
+		copy.setNom(this.getNom());
+		copy.setPokemon(copy.getEquipe()[copy.getIndexPokemon(this.getPokemon())]);
+		if(this.getPokemonChoisi() != null) {
+			copy.setPokemonChoisi(copy.getEquipe()[copy.getIndexPokemon(this.getPokemonChoisi())]);
+		}else{
+			copy.setPokemonChoisi(null);
+		}
+		return copy;
 	}
 }

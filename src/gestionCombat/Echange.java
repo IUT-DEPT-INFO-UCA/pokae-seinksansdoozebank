@@ -1,5 +1,7 @@
 package gestionCombat;
 
+import gestionPokemon.Pokemon;
+import interfaces.IAttaque;
 import interfaces.IDresseur;
 import interfaces.IEchange;
 import interfaces.IPokemon;
@@ -16,7 +18,7 @@ public class Echange implements IEchange {
 	/**
 	 * Le Pokemon qui va être envoyé au combat
 	 */
-	private IPokemon newPokemon;
+	private Pokemon newPokemon;
 	
 	/**
 	 * Le constructeur de la classe Echange
@@ -24,7 +26,7 @@ public class Echange implements IEchange {
 	 * @param dresseur Le dresseur à l'initiative de l'Echange
 	 */
 	public Echange(IPokemon pok, IDresseur dresseur) {
-		this.newPokemon = pok;
+		this.newPokemon = (Pokemon) pok;
 		this.dresseur = dresseur;
 	}
 	
@@ -39,7 +41,6 @@ public class Echange implements IEchange {
 	/////////////////// methode de IEchange (et IAttaque) ///////////////////
 	@Override
 	public int calculeDommage(IPokemon lanceur, IPokemon receveur) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
@@ -50,15 +51,28 @@ public class Echange implements IEchange {
 
 	@Override
 	public void setPokemon(IPokemon pok) {
-		this.newPokemon = pok;
+		this.newPokemon = (Pokemon) pok;
 
 	}
 
 	@Override
 	public IPokemon echangeCombattant() {
 		System.out.println(this.dresseur.getNom() + " rapelle "
-				+ ((Dresseur) this.dresseur).getPokemon().getNom() + " et envoie " + this.newPokemon.getNom());
+				+ ((Dresseur) this.dresseur).getPokemon().getNom() 
+				+ " et envoie " + this.newPokemon.getNom());
+		((Dresseur) this.dresseur).getPokemon().incNbEchange();
 		return this.newPokemon;
 	}
 	/////////////////////////////////////////////////////////////////////
+
+	/**
+	 * Il renvoie une nouvelle instance de la classe Echange, avec une nouvelle instance de la classe Pokemon en paramètre
+	 *
+	 * @param copy Le nouveau dresseur qui sera le propriétaire de la nouvelle attaque.
+	 * @return Un nouvel objet Echange.
+	 */
+	public IAttaque copy(Dresseur copy) {
+		//System.out.println("Debut de la copie d'un "+this.getClass().getSimpleName());
+		return new Echange(this.newPokemon.copy(),copy);
+	}
 }

@@ -7,6 +7,8 @@
  */
 package interfaces;
 
+
+
 /**
  * Présente les methodes pour utiliser une attaque.
  * 
