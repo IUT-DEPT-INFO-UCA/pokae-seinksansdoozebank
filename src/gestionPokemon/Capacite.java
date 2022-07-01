@@ -91,13 +91,10 @@ public class Capacite implements ICapacite {
      */
     public String toString() {
     	return Pokedex.createCase(new String[] {this.nom,this.type.getNom(),this.pp+"/"+this.ppBase});
-        //return "["+nom + ", " + this.getType().getNom()+"]";
-        //return "["+nom + ", " + this.getType().getNom()+","+this.nivNecessaire+"]";
     }
 
     /////////////////////// methodes de IAttaque ///////////////////////
     public int calculeDommage(IPokemon lanceur, IPokemon receveur) {
-    	//System.out.println(receveur);
 		this.utilise();
         double degats = 0;
         if (this.touche()) {
@@ -153,7 +150,7 @@ public class Capacite implements ICapacite {
                         }
                         break;
                     case -8:
-                    	degats = lanceur.getNiveau() * (Math.random() * + 0.5);
+                    	degats = lanceur.getNiveau() * (Math.random() * 0.5);
                         break;
                     case -9 :// Croc-Fatale : degat = moitie des pv restant de la cible
                     	degats = Math.ceil(receveur.getStat().getPV()/2);
@@ -161,7 +158,6 @@ public class Capacite implements ICapacite {
                     ///Meteores n'est pas géré ici, nous n'avons aucune capacité qui modifie ce à quoi Meteores n'est pas sensible, donc elle n'est pas dans les cas particuliers
                 }
             }
-            //System.out.println(degats);
         }else {
         	System.out.println(receveur.getNom()+" esquive !");
         }
@@ -230,7 +226,6 @@ public class Capacite implements ICapacite {
 	 * @return Le coefficient multiplicateur que l'attaque fera.
 	 */
 	public double calculerCM(Pokemon attaquant, Pokemon defenseur) {
-		//System.out.println(defenseur.getType1().getNom()+" "+defenseur.getType2().getNom());
 		double stab = 1;
 		double efficacite = 1;
 		if( this.id!=110) {
@@ -239,9 +234,7 @@ public class Capacite implements ICapacite {
 			}
 			efficacite = attaquant.getAttaqueChoisie().getEfficiencyOn(defenseur);
 		}
-		double coeff =stab * efficacite * (Math.random() * (0.15) + 0.85);
-		//System.out.println("Le CM vaut "+coeff);
-		return coeff;
+        return stab * efficacite * (Math.random() * (0.15) + 0.85);
 	}
 
 	

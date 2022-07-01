@@ -133,7 +133,6 @@ public enum Type implements IType {
 	 *         seront calcules.
 	 */
 	public double getCoeffTotal(IType type1, IType type2) {
-		//System.out.println(this.getNom()+" -> "+type1.getNom()+" et "+type2.getNom());
 		return this.getCoeffDamageOn(type1) * this.getCoeffDamageOn(type2);
 	}
 
@@ -147,7 +146,6 @@ public enum Type implements IType {
 	 */
 	public double getCoeffDamageOn(IType cible) {
 		if(cible!=null) {
-			//System.out.println(this.getNom()+" -> "+cible.getNom()+" = "+((Type) cible).tabCoeffEfficacite[this.id]);
 			return ((Type) cible).tabCoeffEfficacite[this.id];
 		}
 		return 1;
@@ -174,8 +172,6 @@ public enum Type implements IType {
 				}
 				// i++;
 			}
-			// System.out.println(this.nom+" tab =
-			// "+Arrays.toString(this.tabCoeffEfficacite));
 			reader.close();
 			fichier.close();
 		} catch (IOException e) {

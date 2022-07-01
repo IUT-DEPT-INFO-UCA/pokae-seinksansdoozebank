@@ -33,7 +33,7 @@ public enum CategorieAttaque implements ICategorie {
 	/**
 	 * Cette fonction renvoie le nom de la catégorie
 	 * 
-	 * @return Le nom de la personne.
+	 * @return Le nom de la catégorie.
 	 */
 	public String getNom() {
 		return nom;

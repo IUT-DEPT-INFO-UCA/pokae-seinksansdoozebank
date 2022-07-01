@@ -207,42 +207,7 @@ public abstract class Pokedex implements IPokedex {
             return null;
         }
     }
-
-    /*
-     * /**
-     * Il renvoie la capacité avec l'identifiant donné
-     *
-     * @param id L'identifiant du déplacement.
-     * 
-     * @return La capacité avec l'identifiant donné.
-     * 
-     * public static Capacite capaciteParId(int id) {
-     * return listeCapacite[id];
-     * }
-     * //
-     * /**
-     * Il renvoie le premier objet `Capacite` du tableau `listeCapacite` dont
-     * l'attribut `nom` est égal au paramètre `nom`
-     *
-     * @param nom le nom de la capacité
-     * 
-     * @return La méthode retourne la capacité avec le nom donné en paramètre.
-     * //
-     * public static Capacite capaciteParNom(String nom) {
-     * int i = 1;
-     * boolean trouve = false;
-     * ICapacite capacite = null;
-     * while (i < listeCapacite.length && !trouve) {
-     * if (listeEspece[i].nom.equals(nomCapacite)) {
-     * trouve = true;
-     * capacite = listeCapacite[i];
-     * }
-     * i++;
-     * }
-     * return capacite;
-     * }
-     */
-
+    
     /**
      * Il crée la liste des espèces et la liste des capacités
      */
@@ -454,29 +419,21 @@ public abstract class Pokedex implements IPokedex {
      */
     public static String createCase(String[] data) {
         int largeur = 20 - 2;
-        String rep = "+";
-        for (int i = 0; i < largeur; i++) {
-            rep += "-";
+        StringBuilder rep = new StringBuilder("+");
+        rep.append("-".repeat(largeur));
+        rep.append("+\n\t\t");
+        for (String datum : data) {
+            int lenData = (largeur - datum.length());
+            rep.append("   |");
+            rep.append(" ".repeat(Math.max(0, lenData / 2)));
+            rep.append(datum);
+            rep.append(" ".repeat(Math.max(0, lenData / 2 - ((lenData + 1) % 2) + 1)));
+            rep.append("|\n\t\t");
         }
-        rep += "+\n\t\t";
-        for (int j = 0; j < data.length; j++) {
-            int lenData = (largeur - data[j].length());
-            rep += "   |";
-            for (int i = 0; i < lenData / 2; i++) {
-                rep += " ";
-            }
-            rep += data[j];
-            for (int i = 0; i < lenData / 2 - ((lenData + 1) % 2) + 1; i++) {
-                rep += " ";
-            }
-            rep += "|\n\t\t";
-        }
-        rep += "   +";
-        for (int i = 0; i < largeur; i++) {
-            rep += "-";
-        }
-        rep += "+";
-        return rep;
+        rep.append("   +");
+        rep.append("-".repeat(largeur));
+        rep.append("+");
+        return rep.toString();
     }
 
 }

@@ -20,12 +20,12 @@ public abstract class InputViaScanner {
      * @param sup la valeur maximale que l'utilisateur peut entrer
      * @return La méthode l'entier entré.
      */
-    public static int getInputInt(int inf, int sup) {
+    @SuppressWarnings("resource")
+	public static int getInputInt(int inf, int sup) {
         int rep = 0;
         Scanner reader = new Scanner(System.in);
         boolean intValid = false;
         while (!intValid) {
-            //rep = Integer.parseInt(reader.next());
             rep = reader.nextInt();
             if (rep >= inf && rep <= sup) {
                 intValid = true;
@@ -39,9 +39,9 @@ public abstract class InputViaScanner {
      * Récupère une entrée de l'utilisateur sous forme de chaine de caractère
      * @return La chaine entrée par l'utilisateur
      */
+    @SuppressWarnings("resource")
     public static String getInputString(){
         Scanner reader = new Scanner(System.in);
-        //String input = reader.next();
         String input = reader.nextLine();
         return input;
     }
@@ -55,16 +55,15 @@ public abstract class InputViaScanner {
      * @param tab le ranch de Pokémon du joueur qui entre la valeur
      * @return La méthode renvoie un entier.
      */
+    @SuppressWarnings("resource")
     public static int getInputIntPokemon(int inf, int sup, IPokemon[] tab) { // tab de pokemon pour ne pas pouvoir pick
                                                                              // des pokemon KO
         int rep = 0;
         Scanner reader = new Scanner(System.in);
         boolean intValid = false;
         while (!intValid) {
-            /*String input = reader.next();
-            rep = Integer.parseInt(input);*/
             rep = reader.nextInt();
-            if (rep == 0 || (rep >= inf && rep <= sup && !tab[rep - 1].estEvanoui())) {
+            if ((rep == 0 && inf==0) || (rep >= inf && rep <= sup && !tab[rep - 1].estEvanoui())) {
                 intValid = true;
             }
         }
@@ -80,13 +79,12 @@ public abstract class InputViaScanner {
      * @param tab le tableau d'ICapacite que le Pokemon connait
      * @return La méthode retourne un int.
      */
+    @SuppressWarnings("resource")
     public static int getInputIntCapacite(int inf, int sup, ICapacite[] tab) { // tab de capacite pour ne pas pouvoir pick des capacite a 0pp
     	int rep = 0;
         Scanner reader = new Scanner(System.in);
         boolean intValid = false;
         while (!intValid) {
-            /*String input = reader.next();
-            rep = Integer.parseInt(input);*/
             rep = reader.nextInt();
             if (rep==0 || ( rep >= inf && rep <= sup && tab[rep - 1].getPP() != 0)) {
                 intValid = true;

@@ -79,6 +79,12 @@ public class Espece implements IEspece {
 		this.setId(id);
 	}
 
+	/**
+	 * La méthode toString() renvoie une représentation sous forme de chaîne de
+	 * l'Espèce
+	 * 
+	 * @return La méthode toString() est renvoyée.
+	 */
 	@Override
 	public String toString() {
 		return "Espece{" +
@@ -144,98 +150,6 @@ public class Espece implements IEspece {
 	@Override
 	public IStat getGainsStat() {
 		return this.statsGain;
-	}
-
-	/**
-	 * Il obtient les moves du pokemon de l'API, puis il obtient les noms des moves
-	 * de l'API, puis il obtient le
-	 * niveau des moves de l'API
-	 */
-	public void initCapaciteSelonNiveau() {
-		try {
-			boolean testPresencePoke = testPresence("Esp" + this.id + ".json");
-			if (testPresencePoke) {
-				JSONParser parser = new JSONParser();
-				JSONObject jsonPoke = (JSONObject) parser
-						.parse(new BufferedReader(new FileReader("./JSON/Esp" + this.id + ".json")));
-				InitCapPokemon(jsonPoke);
-			} else {
-				JSONObject pokemon = Pokedex.downloadJSONfromURL(("Esp" + this.id),
-						("https://pokeapi.co/api/v2/pokemon/" + this.id));
-				assert pokemon != null;
-				InitCapPokemon(pokemon);
-			}
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-	}
-
-	/**
-	 * Initialise les capacites d'une espece de Pokemon en lisant un JSON
-	 * 
-	 * @param jsonPokemon Le JSONObject du Pokémon
-	 * @throws IOException    une exception
-	 * @throws ParseException une autre exception
-	 */
-	private void InitCapPokemon(JSONObject jsonPokemon) throws IOException, ParseException {
-		assert jsonPokemon != null;
-		JSONArray listeMoves = (JSONArray) jsonPokemon.get("moves");
-		for (Object listeMove : listeMoves) {
-			boolean testPresenceCapacite = testPresence(
-					((JSONObject) ((JSONObject) listeMove).get("move")).get("name").toString() + ".json");
-			JSONObject jsonNomsMoves;
-			if (testPresenceCapacite) {
-				JSONParser parser = new JSONParser();
-				jsonNomsMoves = (JSONObject) parser.parse(new FileReader("./JSON/"
-						+ (((JSONObject) ((JSONObject) listeMove).get("move")).get("name").toString()) + ".json"));
-			} else {
-				jsonNomsMoves = Pokedex.downloadJSONfromURL(
-						((JSONObject) ((JSONObject) listeMove).get("move")).get("name").toString(),
-						((JSONObject) ((JSONObject) listeMove).get("move")).get("url").toString());
-			}
-			assert jsonNomsMoves != null;
-			String nomCapaTemp = ((JSONObject) ((JSONArray) jsonNomsMoves.get("names")).get(3)).get("name").toString();
-			Capacite capaTemp = (Capacite) Pokedex.getCapaciteStatic(nomCapaTemp);
-			if (capaTemp != null) {
-				JSONArray listeVersionGroupDetail = (JSONArray) ((JSONObject) listeMove).get("version_group_details");
-				for (Object o : listeVersionGroupDetail) {
-					if ((Objects.equals((String) (((JSONObject) ((JSONObject) o).get("version_group")).get("name")),
-							"red-blue"))
-							&& (Objects.equals(
-									(String) (((JSONObject) ((JSONObject) o).get("move_learn_method")).get("name")),
-									"level-up"))) {
-						capaTemp.nivNecessaire = Integer
-								.parseInt((((JSONObject) o).get("level_learned_at")).toString());
-						capaciteSelonNiveau.put(capaTemp,
-								Integer.parseInt((((JSONObject) o).get("level_learned_at")).toString()));
-					}
-				}
-			}
-		}
-	}
-
-	/**
-	 * Il vérifie si un fichier existe dans un répertoire
-	 * 
-	 * @param file le nom du fichier à tester
-	 * @return Une valeur booléenne.
-	 */
-	private boolean testPresence(String file) {
-		File repertoire = new File("./JSON/");
-		String[] listeFichiers = repertoire.list();
-		boolean testPresence = false;
-		if (listeFichiers == null) {
-			System.out.println("Mauvais répertoire");
-		} else {
-			int i = 0;
-			while (!testPresence && i < listeFichiers.length) {
-				if (listeFichiers[i].equals(file)) {
-					testPresence = true;
-				}
-				i++;
-			}
-		}
-		return testPresence;
 	}
 
 	/**
@@ -308,15 +222,6 @@ public class Espece implements IEspece {
 	}
 
 	/**
-	 * Il renvoie la valeur de l'attibut privee `expDeBase`
-	 *
-	 * @return La variable expDeBase est renvoyee.
-	 */
-	public int getExpDeBase() {
-		return this.expDeBase;
-	}
-
-	/**
 	 * Il renvoie la premiere capacite disponible d'un pokemon
 	 *
 	 * @param pokemon le pokemon qui utilisera le mouvement
@@ -347,9 +252,6 @@ public class Espece implements IEspece {
 			if (c.getValue() == niv) {
 				// System.out.println("return de "+c.getKey()+ " parfait pour le niveau "+niv);
 				return c.getKey();
-			} else {
-				// System.out.println(this.getNom()+" ne peut pas aprendre "+c.getKey()+" au
-				// niveau "+niv);
 			}
 		}
 		return null;
@@ -363,6 +265,98 @@ public class Espece implements IEspece {
 		for (Entry<Capacite, Integer> c : this.capaciteSelonNiveau.entrySet()) {
 			System.out.println("\t" + c.getKey().getNom() + " : niv " + c.getValue());
 		}
+	}
+
+	/**
+	 * Il obtient les moves du pokemon de l'API, puis il obtient les noms des moves
+	 * de l'API, puis il obtient le
+	 * niveau des moves de l'API
+	 */
+	public void initCapaciteSelonNiveau() {
+		try {
+			boolean testPresencePoke = testPresence("Esp" + this.id + ".json");
+			if (testPresencePoke) {
+				JSONParser parser = new JSONParser();
+				JSONObject jsonPoke = (JSONObject) parser
+						.parse(new BufferedReader(new FileReader("./JSON/Esp" + this.id + ".json")));
+				InitCapPokemon(jsonPoke);
+			} else {
+				JSONObject pokemon = Pokedex.downloadJSONfromURL(("Esp" + this.id),
+						("https://pokeapi.co/api/v2/pokemon/" + this.id));
+				assert pokemon != null;
+				InitCapPokemon(pokemon);
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
+
+	/**
+	 * Initialise les capacites d'une espece de Pokemon en lisant un JSON
+	 * 
+	 * @param jsonPokemon Le JSONObject du Pokémon
+	 * @throws IOException    une exception
+	 * @throws ParseException une autre exception
+	 */
+	private void InitCapPokemon(JSONObject jsonPokemon) throws IOException, ParseException {
+		assert jsonPokemon != null;
+		JSONArray listeMoves = (JSONArray) jsonPokemon.get("moves");
+		for (Object listeMove : listeMoves) {
+			boolean testPresenceCapacite = testPresence(
+					((JSONObject) ((JSONObject) listeMove).get("move")).get("name").toString() + ".json");
+			JSONObject jsonNomsMoves;
+			if (testPresenceCapacite) {
+				JSONParser parser = new JSONParser();
+				jsonNomsMoves = (JSONObject) parser.parse(new FileReader("./JSON/"
+						+ (((JSONObject) ((JSONObject) listeMove).get("move")).get("name").toString()) + ".json"));
+			} else {
+				jsonNomsMoves = Pokedex.downloadJSONfromURL(
+						((JSONObject) ((JSONObject) listeMove).get("move")).get("name").toString(),
+						((JSONObject) ((JSONObject) listeMove).get("move")).get("url").toString());
+			}
+			assert jsonNomsMoves != null;
+			String nomCapaTemp = ((JSONObject) ((JSONArray) jsonNomsMoves.get("names")).get(3)).get("name").toString();
+			Capacite capaTemp = (Capacite) Pokedex.getCapaciteStatic(nomCapaTemp);
+			if (capaTemp != null) {
+				JSONArray listeVersionGroupDetail = (JSONArray) ((JSONObject) listeMove).get("version_group_details");
+				for (Object o : listeVersionGroupDetail) {
+					if ((Objects.equals(((JSONObject) ((JSONObject) o).get("version_group")).get("name"),
+							"red-blue"))
+							&& (Objects.equals(
+							((JSONObject) ((JSONObject) o).get("move_learn_method")).get("name"),
+									"level-up"))) {
+						capaTemp.nivNecessaire = Integer
+								.parseInt((((JSONObject) o).get("level_learned_at")).toString());
+						capaciteSelonNiveau.put(capaTemp,
+								Integer.parseInt((((JSONObject) o).get("level_learned_at")).toString()));
+					}
+				}
+			}
+		}
+	}
+
+	/**
+	 * Il vérifie si un fichier existe dans un répertoire
+	 * 
+	 * @param file le nom du fichier à tester
+	 * @return Une valeur booléenne.
+	 */
+	private boolean testPresence(String file) {
+		File repertoire = new File("./JSON/");
+		String[] listeFichiers = repertoire.list();
+		boolean testPresence = false;
+		if (listeFichiers == null) {
+			System.out.println("Mauvais répertoire");
+		} else {
+			int i = 0;
+			while (!testPresence && i < listeFichiers.length) {
+				if (listeFichiers[i].equals(file)) {
+					testPresence = true;
+				}
+				i++;
+			}
+		}
+		return testPresence;
 	}
 
 }
