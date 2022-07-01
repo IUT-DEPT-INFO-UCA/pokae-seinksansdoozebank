@@ -5,17 +5,32 @@ package gestionCombat;
  * Objet modélisant la campagne d'un dresseur, il lui permet de lancer un combat pour entrainer ses pokemon ou de consulter ses stats
  */
 public class Campagne {
-
-	private static String[] listeNoms= {"Violette","Lino","Cornélia","Amaro","Lem","Valériane","Astera","Urup","Pierre","Ondine","Major Bob","Erika","Koga","Morgane","Auguste","Blue"};
-    public Dresseur joueur;
+	private static String strMenuCampagne = 
+			"\nMenu de la campagne : \n"
+			+ "1 - Lancer le combat suivant\n"
+			+ "2 - Afficher les statistiques\n"
+			+ "3 - Quitter";
+	/*private static String[] listeNoms= {"Violette","Lino","Cornélia","Amaro","Lem","Valériane","Astera",
+			"Urup","Pierre","Ondine","Major Bob","Erika","Koga","Morgane","Auguste","Blue"};
+    */
+	public Dresseur joueur;
     public int nbVictoires;
 
 
-    public void seConnecter(Dresseur player) {
+    public static Joueur seConnecter() {
+        System.out.println("Identifiant : ");
+        String id=InputViaScanner.getInputString();
+        return new Joueur(id);
     }
 
-    public void sInscrire() {
-    	
+    public static Joueur sInscrire() {
+		System.out.println("Identifiant : ");
+		String id=InputViaScanner.getInputString();
+		System.out.println("Mot de passe : ");
+		String mdp=InputViaScanner.getInputString();
+		System.out.println("Nom du dresseur : ");
+		String nom=InputViaScanner.getInputString();
+		return  new Joueur(id, mdp, nom);
     }
 
     /**
@@ -24,7 +39,8 @@ public class Campagne {
     public static void continuer(Dresseur player) {
     	int input=0;
     	while(true) {
-        	System.out.println("\nLancer le combat suivant : 1 | Afficher les stats : 2 | Quitter : 3");
+        	System.out.println(Campagne.strMenuCampagne);
+        	player.enregistrerRanch();
         	input = InputViaScanner.getInputInt(1, 3);
         	if(input==1) {
         		Campagne.lancerNouveauCombat(player);
@@ -51,12 +67,12 @@ public class Campagne {
      * @return le dresseur généré
      */
     private static Dresseur genererNouvelAdversaire() {
-		IARandom adv = new IARandom(listeNoms[(int) (Math.random()*listeNoms.length)]);
+		IARandom adv = new IARandom();
     	return adv;
     }
 
-    private String choisirTypeAdversaire() {
-        return null;
+    @SuppressWarnings("unused")
+	private void choisirTypeAdversaire() {
     }
 
     public void sauvegarder() {

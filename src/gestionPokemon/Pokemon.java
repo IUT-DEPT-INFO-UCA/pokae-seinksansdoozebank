@@ -17,6 +17,8 @@ public class Pokemon implements IPokemon {
 
     /** Le compteur d'id attribuant un id à chaque nouveau Pokemon */
     public static int cptId = 0;
+    
+    public static int delai = 1000;
 
     /**
      * L'identifiant unique du Pokémon
@@ -96,6 +98,25 @@ public class Pokemon implements IPokemon {
      */
     private boolean created = false;
 
+    public Pokemon(int id, String nom, int niv, double xp, Espece espPoke, Capacite[] listeCapacite,int pvMax, Stats statsEV, Stats statsDV) {
+        this.id = id;
+        this.nom = nom;
+        this.niv = niv;
+        this.xp = xp;
+        this.espPoke = espPoke;
+        this.listeCapacite = listeCapacite;
+        this.statsSpecifiques = new Stats(this.espPoke.statsDeBase);;
+        this.pvMax = pvMax;
+        this.statsEV = statsEV;
+        this.statsDV = statsDV;
+
+        this.statsSpecifiques.setPV(pvMax);
+        calculDefense();
+        calculSpecial();
+        calculForce();
+        calculVitesse();
+        this.created = true;
+    }
     /**
      * Creer un objet Pokemon avec 2 parametres
      *
@@ -161,6 +182,8 @@ public class Pokemon implements IPokemon {
         calculForce();
         calculVitesse();
         this.created=true;
+        //System.out.println(nom);
+        //this.espPoke.showCapSet();
     }
 
     /**
@@ -257,15 +280,17 @@ public class Pokemon implements IPokemon {
     public void remplaceCapacite(int i, ICapacite cap) {
         if (this.listeCapacite[i] != null) {
             System.out.println(
-                    this.getNom() + " oublie " + this.listeCapacite[i].getNom() + " et apprend " + cap.getNom() + " !");
+                    this.getNom() + " oublie " + this.listeCapacite[i].getNom() + " et apprend " + cap.getNom() + " !\n");
         }
         this.listeCapacite[i] = (Capacite) cap;
     }
 
     @Override
     public void gagneExperienceDe(IPokemon pok) {
+    	System.out.println("APPEL DE AUGMENTER EV");
         this.augmenterEV(pok);
         double gainXp = (1.5 * pok.getNiveau() * pok.getEspece().getBaseExp()) / 7;
+    	System.out.println("APPEL DE GAGNERXP");
         this.gagnerXp(gainXp);
     }
 
@@ -294,10 +319,19 @@ public class Pokemon implements IPokemon {
     public void subitAttaqueDe(IPokemon attaquant, IAttaque attaque) {
         if (((Pokemon) attaquant).getNombreDeToursAvantAttaque() <= 0) {// si le lanceur n'a pas Patience en cours
             System.out.println(attaquant.getNom() + " utilise " + ((ICapacite) attaque).getNom() + " !");
+            try {
+				Thread.sleep(delai);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
             this.subirDegats(attaque.calculeDommage(attaquant, this));
             this.derniereCapaciteEncaissee = (Capacite) attaque;
         } else { // si le lanceur a Patience en cours d'utilisation
-            System.out.println(attaquant.getNom() + " se concentre ...");
+            System.out.println(attaquant.getNom() + " se concentre ...");try {
+				Thread.sleep(delai);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
         }
     }
 
@@ -501,7 +535,6 @@ public class Pokemon implements IPokemon {
             System.out.println((this.getNom() + " a gagne " + (int) expAGagner + " points d'experience."));
         }
         if (xpTemporaire >= seuil) {
-            //System.out.println((this.getNom() + " a gagne " + (int) expAGagner + " points d'experience."));
             while (xpTemporaire >= seuil) {
                 augmenterNiveau();
                 this.xp = expAGagner - seuil;

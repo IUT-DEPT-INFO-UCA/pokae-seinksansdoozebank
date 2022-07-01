@@ -246,7 +246,7 @@ public class Capacite implements ICapacite {
 
 	
 	/**
-	 * Cette fonction renvoie le multiplicateur de dégâts en fonctio1n du type de
+	 * Cette fonction renvoie le multiplicateur de dégâts en fonction du type de
 	 * l'attaque sur le défenseur
 	 * 
 	 * @param defenseur Le Pokémon attaqué

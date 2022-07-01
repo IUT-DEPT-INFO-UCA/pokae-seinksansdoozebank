@@ -18,15 +18,15 @@ public class IARandom extends Dresseur {
 	/**
 	 * entier représentant la durée en ms des pauses du thread pendant les choix de L'IARandom
 	 */
-	private static final int delai = 0;
+	private static final int delai = 800;
 
 	/**
 	 * Le constructeur d'un IARandom en indiquant son nom
 	 * 
 	 * @param nom le nom du dresseur créé
 	 */
-	public IARandom(String nom) {
-		super(nom);
+	public IARandom() {
+		super();
 	}
 
 	@Override
@@ -44,27 +44,27 @@ public class IARandom extends Dresseur {
 	}
 
 	@Override
-	public IPokemon choisitCombattantContre(IPokemon pok) {
-		System.out.println(this.getNom() + "\tchoisi un pokemon a envoyer au combat...");
+	public void selectAction(IPokemon p, IPokemon pAdv) {
+		System.out.println(this.getNom() + "\ta " + p.getNom() + " sur le terrain. Il choisi quoi faire...");
 		try {
 			Thread.sleep(delai);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		int i = (int) (Math.random() * Pokedex.getNbPokemonParRanch());
-		while (this.getEquipe()[i].estEvanoui() || this.getPokemon()==this.getEquipe()[i]) { // verification que le pokemon n'est pas KO
-			i = (int) (Math.random() * Pokedex.getNbPokemonParRanch());
+		boolean echange = (int) (Math.random() * 10) < 1;
+		if (echange && this.getNbPokemonAlive()>1) {
+			p = this.choisitCombattantContre(pAdv);
+			this.setActionChoisie(null);
+		} else {
+			this.choisitAttaque(p, pAdv);
 		}
-		Pokemon choosen = this.getEquipe()[i];
-		this.setPokemonChoisi(choosen);
-		return choosen;
 	}
 
 	@Override
 	public IAttaque choisitAttaque(IPokemon attaquant, IPokemon defenseur) {
 		if (((Pokemon) attaquant).getNombreDeToursAvantAttaque() == 0) { // dans le cas ou patience a ete utilisee
 			if (((Pokemon) attaquant).getCapacitesUtilisables().length > 0) {
-				System.out.println(this.getNom() + "\tchoisi une attaque a utiliser...");
+				//System.out.println(this.getNom() + "\tchoisi une attaque a utiliser...");
 				try {
 					Thread.sleep(delai);
 				} catch (InterruptedException e) {
@@ -97,20 +97,20 @@ public class IARandom extends Dresseur {
 	}
 
 	@Override
-	public void selectAction(IPokemon p, IPokemon pAdv) {
-		System.out.println(this.getNom() + "\ta " + p.getNom() + " sur le terrain. Il choisi quoi faire...");
+	public IPokemon choisitCombattantContre(IPokemon pok) {
+		//System.out.println(this.getNom() + "\tchoisi un pokemon a envoyer au combat...");
 		try {
 			Thread.sleep(delai);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		boolean echange = (int) (Math.random() * 10) < 1;
-		if (echange && this.getNbPokemonAlive()>1) {
-			p = this.choisitCombattantContre(pAdv);
-			this.setActionChoisie(null);
-		} else {
-			this.choisitAttaque(p, pAdv);
+		int i = (int) (Math.random() * Pokedex.getNbPokemonParRanch());
+		while (this.getEquipe()[i].estEvanoui() || this.getPokemon()==this.getEquipe()[i]) { // verification que le pokemon n'est pas KO
+			i = (int) (Math.random() * Pokedex.getNbPokemonParRanch());
 		}
+		Pokemon choosen = this.getEquipe()[i];
+		this.setPokemonChoisi(choosen);
+		return choosen;
 	}
 
 	@Override
